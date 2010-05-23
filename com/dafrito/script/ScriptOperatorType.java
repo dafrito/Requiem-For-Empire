@@ -1,0 +1,32 @@
+package com.dafrito.script;
+
+public enum ScriptOperatorType {
+    UNKNOWN,
+    EQUIVALENCY,
+    NONEQUIVALENCY,
+    LESS,
+    LESSEQUALS,
+    GREATEREQUALS,
+    GREATER,
+    NOT,
+    AND,
+    OR,
+    ASSIGNMENT,
+    MINUS,
+    PLUS,
+    MULTIPLY,
+    DIVIDE,
+    MODULUS,
+    INCREMENT,
+    DECREMENT,
+    PLUSEQUALS,
+    MINUSEQUALS,
+    MULTIPLYEQUALS,
+    DIVIDEEQUALS,
+    MODULUSEQUALS,
+    PERIOD,
+    COLON,
+    COMMA,
+    POUNDSIGN,
+    SEMICOLON
+}
