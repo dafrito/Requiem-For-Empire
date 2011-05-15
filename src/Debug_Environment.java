@@ -935,7 +935,7 @@ class Debugger {
 
 	public static void setDebugger(Debug_Environment debugger) {
 		if (debugger == null) {
-			debugger = debugger;
+			Debugger.debugger = debugger;
 		}
 	}
 
