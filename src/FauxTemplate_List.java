@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String LISTSTRING = "List";
-	private List<ScriptValue_Abstract> m_list = new LinkedList<ScriptValue_Abstract>();
+	private List<ScriptValue_Abstract> list = new LinkedList<ScriptValue_Abstract>();
 
 	public FauxTemplate_List(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, LISTSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -16,7 +16,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 	// Convertible and Nodeable implementations
 	@Override
 	public Object convert() {
-		return this.m_list;
+		return this.list;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -54,7 +54,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 	}
 
 	public List<ScriptValue_Abstract> getList() {
-		return this.m_list;
+		return this.list;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -87,18 +87,18 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 
 	@Override
 	public boolean nodificate() {
-		if (this.m_list == null) {
+		if (this.list == null) {
 			assert Debugger.openNode("List Faux Template (0 element(s))");
 		} else {
-			assert Debugger.openNode("List Faux Template (" + this.m_list.size() + " element(s))");
+			assert Debugger.openNode("List Faux Template (" + this.list.size() + " element(s))");
 		}
 		assert super.nodificate();
-		assert Debugger.addSnapNode(DebugString.ELEMENTS, this.m_list);
+		assert Debugger.addSnapNode(DebugString.ELEMENTS, this.list);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setList(List<ScriptValue_Abstract> list) {
-		this.m_list = list;
+		this.list = list;
 	}
 }

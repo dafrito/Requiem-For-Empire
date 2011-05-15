@@ -2,15 +2,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Gradient_Radial implements Gradient {
-	private static final int m_polygonVertices = 4;
-	private Krumflex m_krumflex;
-	private double m_exponent, m_radius;
-	private Point m_focus;
+	private static final int polygonVertices = 4;
+	private Krumflex krumflex;
+	private double exponent, radius;
+	private Point focus;
 
 	public Gradient_Radial(Point focus, double radius, double exponent) {
-		this.m_focus = focus;
-		this.m_radius = radius;
-		this.m_exponent = exponent;
+		this.focus = focus;
+		this.radius = radius;
+		this.exponent = exponent;
 	}
 
 	@Override
@@ -19,16 +19,16 @@ public class Gradient_Radial implements Gradient {
 	}
 
 	public double getExponent() {
-		return this.m_exponent;
+		return this.exponent;
 	}
 
 	public Point getFocus() {
-		return this.m_focus;
+		return this.focus;
 	}
 
 	@Override
 	public Krumflex getKrumflex() {
-		return this.m_krumflex;
+		return this.krumflex;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class Gradient_Radial implements Gradient {
 	}
 
 	public double getRadius() {
-		return this.m_radius;
+		return this.radius;
 	}
 
 	@Override
@@ -59,8 +59,8 @@ public class Gradient_Radial implements Gradient {
 			radius += precision * this.getRadius();
 			DiscreteRegion newRegion = new DiscreteRegion();
 			newRegion.setProperty(this.getKrumflex().getName(), this.getKrumflex().getKrumflexFromIntensity(i));
-			for (int j = 0; j < Gradient_Radial.m_polygonVertices; j++) {
-				double radianOffset = ((Math.PI * 2) / m_polygonVertices) * j;
+			for (int j = 0; j < Gradient_Radial.polygonVertices; j++) {
+				double radianOffset = ((Math.PI * 2) / polygonVertices) * j;
 				double longOffset = Math.cos(radianOffset) * radius;
 				double latOffset = Math.sin(radianOffset) * radius;
 				newRegion.addPoint(Point.createPoint(this.getFocus(), this.getFocus().getX() + longOffset, this.getFocus().getY() + latOffset, 0.0d));
@@ -96,6 +96,6 @@ public class Gradient_Radial implements Gradient {
 	// Gradient implementation
 	@Override
 	public void setKrumflex(Krumflex krumflex) {
-		this.m_krumflex = krumflex;
+		this.krumflex = krumflex;
 	}
 }

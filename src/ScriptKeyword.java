@@ -111,12 +111,12 @@ public class ScriptKeyword extends ScriptElement implements Nodeable {
 		}
 	}
 
-	private final ScriptKeywordType m_type;
+	private final ScriptKeywordType type;
 
 	// Constructors
 	public ScriptKeyword(Referenced ref, ScriptKeywordType type) throws Exception_Nodeable {
 		super(ref);
-		this.m_type = type;
+		this.type = type;
 	}
 
 	@Override
@@ -126,12 +126,12 @@ public class ScriptKeyword extends ScriptElement implements Nodeable {
 		} else if (o instanceof ScriptKeywordType) {
 			return ((ScriptKeywordType) o) == this.getType();
 		} else {
-			return ((ScriptKeyword) o).getType() == this.m_type;
+			return ((ScriptKeyword) o).getType() == this.type;
 		}
 	}
 
 	public ScriptKeywordType getType() {
-		return this.m_type;
+		return this.type;
 	}
 
 	public ScriptValueType getValueType() {

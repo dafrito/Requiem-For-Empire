@@ -10,18 +10,18 @@ public class Terrestrial implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5769369184511259491L;
-	private double m_radius;
-	private DiscreteRegionBSPNode m_tree;
-	private ScriptEnvironment m_environment;
-	private volatile int m_openThreads = 0;
+	private double radius;
+	private DiscreteRegionBSPNode tree;
+	private ScriptEnvironment environment;
+	private volatile int openThreads = 0;
 
 	public Terrestrial(ScriptEnvironment env, double radius) {
-		this.m_environment = env;
-		this.m_radius = radius;
+		this.environment = env;
+		this.radius = radius;
 	}
 
 	public void add(DiscreteRegion region) {
-		this.m_openThreads++;
+		this.openThreads++;
 		PolygonPipeline pipeline = new PolygonPipeline(this, region);
 		pipeline.start();
 	}
@@ -45,15 +45,15 @@ public class Terrestrial implements Serializable {
 	}
 
 	public void decrementOpenThreads() {
-		this.m_openThreads--;
+		this.openThreads--;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	public Point_Path getPath(ScriptEnvironment env, Scenario scenario, ScriptTemplate_Abstract evaluator, Asset asset, Point currentPoint, Point destinationPoint) throws Exception_Nodeable {
-		while (this.m_openThreads != 0) {
+		while (this.openThreads != 0) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException ex) {
@@ -175,14 +175,14 @@ public class Terrestrial implements Serializable {
 	}
 
 	public double getRadius() {
-		return this.m_radius;
+		return this.radius;
 	}
 
 	public DiscreteRegionBSPNode getTree() {
-		return this.m_tree;
+		return this.tree;
 	}
 
 	public void setTree(DiscreteRegionBSPNode tree) {
-		this.m_tree = tree;
+		this.tree = tree;
 	}
 }

@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodeable, ScriptConvertible {
 	public static final String INTERFACEELEMENTSTRING = "InterfaceElement";
-	private InterfaceElement m_element;
+	private InterfaceElement element;
 
 	public FauxTemplate_InterfaceElement(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, INTERFACEELEMENTSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), true);
@@ -71,7 +71,7 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 	}
 
 	public InterfaceElement getElement() {
-		return this.m_element;
+		return this.element;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -121,7 +121,7 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 		assert Debugger.openNode("Interface Element Faux Template Changes", "Changing Interface Element");
 		assert Debugger.addNode(this);
 		assert Debugger.addNode(element);
-		this.m_element = element;
+		this.element = element;
 		assert Debugger.closeNode();
 	}
 }

@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, ScriptConvertible {
 	public static final String SCENARIOSTRING = "Scenario";
-	private Scenario m_scenario;
+	private Scenario scenario;
 
 	public FauxTemplate_Scenario(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, SCENARIOSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -11,13 +11,13 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 
 	public FauxTemplate_Scenario(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.m_scenario = new Scenario(env, new Terrestrial(env, 1), "Scenario");
+		this.scenario = new Scenario(env, new Terrestrial(env, 1), "Scenario");
 	}
 
 	// Nodeable implementation
 	@Override
 	public Object convert() {
-		return this.m_scenario;
+		return this.scenario;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -69,7 +69,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 	}
 
 	public Scenario getScenario() {
-		return this.m_scenario;
+		return this.scenario;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -106,12 +106,12 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 	public boolean nodificate() {
 		assert Debugger.openNode("Scenario Faux Template");
 		assert super.nodificate();
-		assert Debugger.addNode(this.m_scenario);
+		assert Debugger.addNode(this.scenario);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setScenario(Scenario scenario) {
-		this.m_scenario = scenario;
+		this.scenario = scenario;
 	}
 }

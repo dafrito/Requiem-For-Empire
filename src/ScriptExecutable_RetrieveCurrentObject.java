@@ -1,9 +1,9 @@
 public class ScriptExecutable_RetrieveCurrentObject extends ScriptValue_Variable implements ScriptExecutable, ScriptValue_Abstract, Nodeable, Referenced {
-	private ScriptElement m_reference;
+	private ScriptElement reference;
 
 	public ScriptExecutable_RetrieveCurrentObject(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		super(ref.getEnvironment(), type, null);
-		this.m_reference = ref.getDebugReference();
+		this.reference = ref.getDebugReference();
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class ScriptExecutable_RetrieveCurrentObject extends ScriptValue_Variable
 	// Referenced implementation
 	@Override
 	public ScriptElement getDebugReference() {
-		return this.m_reference;
+		return this.reference;
 	}
 
 	@Override

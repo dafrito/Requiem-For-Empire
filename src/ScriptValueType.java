@@ -123,9 +123,9 @@ public class ScriptValueType {
 		return type.equals(ScriptValueType.STRING);
 	}
 
-	private final int m_type;
+	private final int type;
 
-	private static int m_identifierSeed = 0;
+	private static int identifierSeed = 0;
 
 	public static List<ScriptValue_Abstract> createEmptyParamList() {
 		return new LinkedList<ScriptValue_Abstract>();
@@ -142,16 +142,16 @@ public class ScriptValueType {
 		env.addType(null, "String", ScriptValueType.STRING);
 	}
 
-	private final ScriptEnvironment m_environment;
+	private final ScriptEnvironment environment;
 
 	public ScriptValueType(ScriptEnvironment env) {
-		this.m_type = m_identifierSeed++;
-		this.m_environment = env;
+		this.type = identifierSeed++;
+		this.environment = env;
 	}
 
 	public ScriptValueType(ScriptEnvironment env, int type) {
-		this.m_type = type;
-		this.m_environment = env;
+		this.type = type;
+		this.environment = env;
 	}
 
 	// Overloaded functions
@@ -182,7 +182,7 @@ public class ScriptValueType {
 
 	// Miscellaneous functions
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	public ScriptKeywordType getKeywordType() {
@@ -219,7 +219,7 @@ public class ScriptValueType {
 
 	public int getType() throws Exception_Nodeable {
 		if (this.getBaseType() == this) {
-			return this.m_type;
+			return this.type;
 		} else {
 			return this.getBaseType().getType();
 		}

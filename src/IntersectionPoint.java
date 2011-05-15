@@ -1,10 +1,10 @@
 public class IntersectionPoint implements Nodeable {
-	private Point m_point;
-	private boolean m_isTangent;
+	private Point point;
+	private boolean isTangent;
 
 	public IntersectionPoint(Point point, boolean isTangent) {
-		this.m_isTangent = isTangent;
-		this.m_point = point;
+		this.isTangent = isTangent;
+		this.point = point;
 	}
 
 	@Override
@@ -16,18 +16,18 @@ public class IntersectionPoint implements Nodeable {
 	}
 
 	public Point getPoint() {
-		return this.m_point;
+		return this.point;
 	}
 
 	public boolean isTangent() {
-		return this.m_isTangent;
+		return this.isTangent;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Intersection Point");
-		assert Debugger.addNode("Point: " + this.m_point);
-		assert Debugger.addNode("Tangent: " + this.m_isTangent);
+		assert Debugger.addNode("Point: " + this.point);
+		assert Debugger.addNode("Tangent: " + this.isTangent);
 		assert Debugger.closeNode();
 		return true;
 	}

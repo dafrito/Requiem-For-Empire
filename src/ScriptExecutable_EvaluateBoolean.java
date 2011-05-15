@@ -1,12 +1,12 @@
 public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements ScriptExecutable, ScriptValue_Abstract {
-	private ScriptValue_Abstract m_lhs, m_rhs;
-	private ScriptOperatorType m_comparison;
+	private ScriptValue_Abstract lhs, rhs;
+	private ScriptOperatorType comparison;
 
 	public ScriptExecutable_EvaluateBoolean(Referenced ref, ScriptValue_Abstract lhs, ScriptValue_Abstract rhs, ScriptOperatorType comparison) {
 		super(ref);
-		this.m_lhs = lhs;
-		this.m_rhs = rhs;
-		this.m_comparison = comparison;
+		this.lhs = lhs;
+		this.rhs = rhs;
+		this.comparison = comparison;
 	}
 
 	@Override
@@ -25,16 +25,16 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 		assert Debugger.addNode(this);
 		ScriptValue_Abstract returning = null;
 		assert Debugger.openNode("Getting left value");
-		assert Debugger.addSnapNode("Left before resolution", this.m_lhs);
-		ScriptValue_Abstract lhs = this.m_lhs.getValue();
+		assert Debugger.addSnapNode("Left before resolution", this.lhs);
+		ScriptValue_Abstract lhs = this.lhs.getValue();
 		assert Debugger.addSnapNode("Left", lhs);
 		assert Debugger.closeNode();
 		assert Debugger.openNode("Getting right value");
-		assert Debugger.addSnapNode("Right before resolution", this.m_rhs);
-		ScriptValue_Abstract rhs = this.m_rhs.getValue();
+		assert Debugger.addSnapNode("Right before resolution", this.rhs);
+		ScriptValue_Abstract rhs = this.rhs.getValue();
 		assert Debugger.addSnapNode("Right", rhs);
 		assert Debugger.closeNode();
-		switch (this.m_comparison) {
+		switch (this.comparison) {
 		case NONEQUIVALENCY:
 			returning = new ScriptValue_Boolean(this.getEnvironment(), !lhs.valuesEqual(this, rhs));
 			break;
@@ -79,10 +79,10 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Boolean Expression (" + ScriptOperator.getName(this.m_comparison) + ")");
+		assert Debugger.openNode("Boolean Expression (" + ScriptOperator.getName(this.comparison) + ")");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Left hand", this.m_lhs);
-		assert Debugger.addSnapNode("Right hand", this.m_rhs);
+		assert Debugger.addSnapNode("Left hand", this.lhs);
+		assert Debugger.addSnapNode("Right hand", this.rhs);
 		assert Debugger.closeNode();
 		return true;
 	}

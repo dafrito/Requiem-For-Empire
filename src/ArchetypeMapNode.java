@@ -13,26 +13,26 @@ public class ArchetypeMapNode {
 		return node;
 	}
 
-	private Map<Archetype, ArchetypeMapNode> m_parents;
-	private Map<Archetype, ArchetypeMapNode> m_children;
-	private Archetype m_archetype;
-	private ArchetypeMapNode m_root;
-	private Map<Archetype, ArchetypeMapNode> m_index;
+	private Map<Archetype, ArchetypeMapNode> parents;
+	private Map<Archetype, ArchetypeMapNode> children;
+	private Archetype archetype;
+	private ArchetypeMapNode root;
+	private Map<Archetype, ArchetypeMapNode> index;
 
-	private List<Asset> m_assets;
+	private List<Asset> assets;
 
 	public ArchetypeMapNode(Archetype archetype) {
-		this.m_archetype = archetype;
-		this.m_children = new HashMap<Archetype, ArchetypeMapNode>();
-		this.m_parents = new HashMap<Archetype, ArchetypeMapNode>();
-		this.m_assets = new LinkedList<Asset>();
+		this.archetype = archetype;
+		this.children = new HashMap<Archetype, ArchetypeMapNode>();
+		this.parents = new HashMap<Archetype, ArchetypeMapNode>();
+		this.assets = new LinkedList<Asset>();
 	}
 
 	public void addAsset(Asset asset) {
 		for (Ace archetype : asset.getAces()) {
 			ArchetypeMapNode node = this.assertNode(archetype.getArchetype());
 			if (node == this) {
-				this.m_assets.add(asset);
+				this.assets.add(asset);
 				continue;
 			}
 			node.addAssetToList(asset);
@@ -40,7 +40,7 @@ public class ArchetypeMapNode {
 	}
 
 	public void addAssetToList(Asset asset) {
-		this.m_assets.add(asset);
+		this.assets.add(asset);
 	}
 
 	public ArchetypeMapNode addNode(Archetype type) {
@@ -50,12 +50,12 @@ public class ArchetypeMapNode {
 			this.getRoot().getIndex().put(type, node);
 		}
 		node.addParent(this);
-		this.m_children.put(type, node);
+		this.children.put(type, node);
 		return node;
 	}
 
 	public void addParent(ArchetypeMapNode node) {
-		this.m_parents.put(node.getArchetype(), node);
+		this.parents.put(node.getArchetype(), node);
 	}
 
 	public ArchetypeMapNode assertNode(Archetype type) {
@@ -72,20 +72,20 @@ public class ArchetypeMapNode {
 	}
 
 	public void createIndex() {
-		this.m_index = new HashMap<Archetype, ArchetypeMapNode>();
+		this.index = new HashMap<Archetype, ArchetypeMapNode>();
 	}
 
 	public List<Asset> getAllAssets() {
 		List<Asset> assets = new LinkedList<Asset>();
-		assets.addAll(this.m_assets);
-		for (ArchetypeMapNode node : this.m_children.values()) {
+		assets.addAll(this.assets);
+		for (ArchetypeMapNode node : this.children.values()) {
 			assets.addAll(node.getAllAssets());
 		}
 		return assets;
 	}
 
 	public Archetype getArchetype() {
-		return this.m_archetype;
+		return this.archetype;
 	}
 
 	public List<Asset> getAssetsOfType(Archetype type) {
@@ -94,31 +94,31 @@ public class ArchetypeMapNode {
 	}
 
 	public Map<Archetype, ArchetypeMapNode> getChildren() {
-		return this.m_children;
+		return this.children;
 	}
 
 	public Map<Archetype, ArchetypeMapNode> getIndex() {
 		if (this.getRoot() == this) {
-			return this.m_index;
+			return this.index;
 		}
 		return this.getRoot().getIndex();
 	}
 
 	public ArchetypeMapNode getNode(Archetype type) {
-		if (this.m_index != null) {
-			return this.m_index.get(type);
+		if (this.index != null) {
+			return this.index.get(type);
 		}
 		return this.getRoot().getNode(type);
 	}
 
 	public Map<Archetype, ArchetypeMapNode> getParents() {
-		return this.m_parents;
+		return this.parents;
 	}
 
 	public ArchetypeMapNode getRoot() {
-		if (this.m_parents == null || this.m_parents.size() == 0) {
+		if (this.parents == null || this.parents.size() == 0) {
 			return this;
 		}
-		return (this.m_parents.get(this.m_parents.keySet().iterator().next())).getRoot();
+		return (this.parents.get(this.parents.keySet().iterator().next())).getRoot();
 	}
 }

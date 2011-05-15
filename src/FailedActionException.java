@@ -3,17 +3,17 @@ public class FailedActionException extends OrderException {
 	 * 
 	 */
 	private static final long serialVersionUID = -6613983177694847620L;
-	private Exception m_exception;
+	private Exception exception;
 
 	public FailedActionException(Exception ex) {
-		this.m_exception = ex;
+		this.exception = ex;
 	}
 
 	@Override
 	public String getMessage() {
 		String string = new String();
 		string += "An action failed, returning this exception:";
-		string += "\n" + this.m_exception;
+		string += "\n" + this.exception;
 		return string;
 	}
 }

@@ -2,24 +2,24 @@ import java.util.Collection;
 import java.util.List;
 
 public class ScriptExecutable_ParseFunction extends ScriptElement implements ScriptFunction_Abstract, ScriptExecutable, Nodeable {
-	private boolean m_isStatic, m_isAbstract;
-	private ScriptGroup m_body;
-	private ScriptValue_Abstract m_template;
-	private String m_name;
-	private ScriptValueType m_returnType;
-	private List<ScriptValue_Abstract> m_parameters;
-	private ScriptKeywordType m_permission;
+	private boolean isStatic, isAbstract;
+	private ScriptGroup body;
+	private ScriptValue_Abstract template;
+	private String name;
+	private ScriptValueType returnType;
+	private List<ScriptValue_Abstract> parameters;
+	private ScriptKeywordType permission;
 
 	public ScriptExecutable_ParseFunction(Referenced ref, ScriptValueType returnType, ScriptValue_Abstract object, String name, List<ScriptValue_Abstract> paramList, ScriptKeywordType permission, boolean isStatic, boolean isAbstract, ScriptGroup body) {
 		super(ref);
-		this.m_name = name;
-		this.m_template = object;
-		this.m_returnType = returnType;
-		this.m_parameters = paramList;
-		this.m_permission = permission;
-		this.m_isStatic = isStatic;
-		this.m_isAbstract = isAbstract;
-		this.m_body = body;
+		this.name = name;
+		this.template = object;
+		this.returnType = returnType;
+		this.parameters = paramList;
+		this.permission = permission;
+		this.isStatic = isStatic;
+		this.isAbstract = isAbstract;
+		this.body = body;
 	}
 
 	@Override
@@ -54,26 +54,26 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	}
 
 	public ScriptGroup getBody() {
-		return this.m_body;
+		return this.body;
 	}
 
 	public String getName() {
-		return this.m_name;
+		return this.name;
 	}
 
 	@Override
 	public List<ScriptValue_Abstract> getParameters() {
-		return this.m_parameters;
+		return this.parameters;
 	}
 
 	@Override
 	public ScriptKeywordType getPermission() {
-		return this.m_permission;
+		return this.permission;
 	}
 
 	@Override
 	public ScriptValueType getReturnType() {
-		return this.m_returnType;
+		return this.returnType;
 	}
 
 	@Override
@@ -84,21 +84,21 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	// ScriptFunction implementation
 	@Override
 	public boolean isAbstract() {
-		return this.m_isAbstract;
+		return this.isAbstract;
 	}
 
 	@Override
 	public boolean isStatic() {
-		return this.m_isStatic;
+		return this.isStatic;
 	}
 
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Unparsed Script-Function (" + ScriptFunction.getDisplayableFunctionName(this.m_name) + ")");
+		assert Debugger.openNode("Unparsed Script-Function (" + ScriptFunction.getDisplayableFunctionName(this.name) + ")");
 		assert super.nodificate();
-		assert Debugger.addNode("Static: " + this.m_isStatic);
-		assert Debugger.addSnapNode("Body", this.m_body);
+		assert Debugger.addNode("Static: " + this.isStatic);
+		assert Debugger.addSnapNode("Body", this.body);
 		assert Debugger.closeNode();
 		return true;
 	}

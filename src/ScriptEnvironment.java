@@ -8,10 +8,10 @@ import java.util.Stack;
 import javax.swing.JOptionPane;
 
 public class ScriptEnvironment implements Nodeable {
-	private Map<String, ScriptValueType> m_variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)
-	private Map<String, ScriptTemplate_Abstract> m_templates = new HashMap<String, ScriptTemplate_Abstract>(); // Map of object templates(Short,ScriptTemplate)
-	private List<javax.swing.Timer> m_timers = new LinkedList<javax.swing.Timer>();
-	private Map<String, ThreadStack> m_threads = new HashMap<String, ThreadStack>();
+	private Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)
+	private Map<String, ScriptTemplate_Abstract> templates = new HashMap<String, ScriptTemplate_Abstract>(); // Map of object templates(Short,ScriptTemplate)
+	private List<javax.swing.Timer> timers = new LinkedList<javax.swing.Timer>();
+	private Map<String, ThreadStack> threads = new HashMap<String, ThreadStack>();
 
 	public ScriptEnvironment() {
 		this.initialize();
@@ -19,14 +19,14 @@ public class ScriptEnvironment implements Nodeable {
 
 	// Template functions
 	public void addTemplate(Referenced ref, String name, ScriptTemplate_Abstract template) throws Exception_Nodeable {
-		if (this.m_templates.get(name) != null) {
+		if (this.templates.get(name) != null) {
 			throw new Exception_Nodeable_TemplateAlreadyDefined(ref, name);
 		}
-		this.m_templates.put(name, template);
+		this.templates.put(name, template);
 	}
 
 	public void addTimer(javax.swing.Timer timer) {
-		this.m_timers.add(timer);
+		this.timers.add(timer);
 	}
 
 	// Variable-type functions
@@ -41,37 +41,37 @@ public class ScriptEnvironment implements Nodeable {
 
 	public void addType(Referenced ref, String name, ScriptValueType keyword) throws Exception_Nodeable {
 		assert Debugger.addNode("Variable-Type Additions", "Adding variable type name to the variable-map (" + name + ")");
-		if (this.m_variableTypes.get(name) != null) {
+		if (this.variableTypes.get(name) != null) {
 			throw new Exception_Nodeable_VariableTypeAlreadyDefined(ref, name);
 		}
-		this.m_variableTypes.put(name, keyword);
+		this.variableTypes.put(name, keyword);
 	}
 
 	public void addVariableToStack(String name, ScriptValue_Variable var) throws Exception_Nodeable {
-		this.m_threads.get(Thread.currentThread().getName()).addVariable(name, var);
+		this.threads.get(Thread.currentThread().getName()).addVariable(name, var);
 	}
 
 	public void advanceNestedStack() {
-		this.m_threads.get(Thread.currentThread().getName()).advanceNestedStack();
+		this.threads.get(Thread.currentThread().getName()).advanceNestedStack();
 	}
 
 	// Stack functions
 	public void advanceStack(ScriptTemplate_Abstract template, ScriptFunction_Abstract fxn) throws Exception_Nodeable {
-		if (this.m_threads.get(Thread.currentThread().getName()) == null) {
-			this.m_threads.put(Thread.currentThread().getName(), new ThreadStack());
+		if (this.threads.get(Thread.currentThread().getName()) == null) {
+			this.threads.put(Thread.currentThread().getName(), new ThreadStack());
 		}
-		this.m_threads.get(Thread.currentThread().getName()).advanceStack(template, fxn);
+		this.threads.get(Thread.currentThread().getName()).advanceStack(template, fxn);
 	}
 
 	public void clearStacks() {
-		this.m_threads.put(Thread.currentThread().getName(), new ThreadStack());
+		this.threads.put(Thread.currentThread().getName(), new ThreadStack());
 	}
 
 	public void execute() {
 		try {
 			assert Debugger.openNode("Executing Script-Environment (Default Run)");
 			this.clearStacks();
-			Iterator iter = this.m_templates.values().iterator();
+			Iterator iter = this.templates.values().iterator();
 			while (iter.hasNext()) {
 				((ScriptTemplate_Abstract) iter.next()).initialize();
 			}
@@ -84,7 +84,7 @@ public class ScriptEnvironment implements Nodeable {
 			}
 			ScriptFunction_Abstract function;
 			List<String> templateNames = new LinkedList<String>();
-			iter = this.m_templates.entrySet().iterator();
+			iter = this.templates.entrySet().iterator();
 			while (iter.hasNext()) {
 				Map.Entry entry = (Map.Entry) iter.next();
 				if ((function = ((ScriptTemplate_Abstract) entry.getValue()).getFunction("main", params)) != null) {
@@ -121,16 +121,16 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public ScriptFunction_Abstract getCurrentFunction() {
-		return this.m_threads.get(Thread.currentThread().getName()).getCurrentFunction();
+		return this.threads.get(Thread.currentThread().getName()).getCurrentFunction();
 	}
 
 	public ScriptTemplate_Abstract getCurrentObject() {
-		return this.m_threads.get(Thread.currentThread().getName()).getCurrentObject();
+		return this.threads.get(Thread.currentThread().getName()).getCurrentObject();
 	}
 
 	public String getName(ScriptValueType keyword) {
 		assert keyword != null;
-		Iterator iter = this.m_variableTypes.entrySet().iterator();
+		Iterator iter = this.variableTypes.entrySet().iterator();
 		while (iter.hasNext()) {
 			Map.Entry entry = (Map.Entry) iter.next();
 			if (keyword.equals(entry.getValue())) {
@@ -145,15 +145,15 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public ScriptTemplate_Abstract getTemplate(String name) {
-		return this.m_templates.get(name);
+		return this.templates.get(name);
 	}
 
 	public ScriptValueType getType(String name) {
-		return this.m_variableTypes.get(name);
+		return this.variableTypes.get(name);
 	}
 
 	public ScriptValue_Variable getVariableFromStack(String name) {
-		return this.m_threads.get(Thread.currentThread().getName()).getVariableFromStack(name);
+		return this.threads.get(Thread.currentThread().getName()).getVariableFromStack(name);
 	}
 
 	public void initialize() {
@@ -220,23 +220,23 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public boolean isTemplateDefined(String name) {
-		return this.m_templates.get(name) != null;
+		return this.templates.get(name) != null;
 	}
 
 	// Miscellaneous functions
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Script Environment");
-		assert Debugger.addSnapNode("Templates: " + this.m_templates.size() + " templates(s)", this.m_templates);
-		assert Debugger.addSnapNode("Thread Stacks", this.m_threads);
+		assert Debugger.addSnapNode("Templates: " + this.templates.size() + " templates(s)", this.templates);
+		assert Debugger.addSnapNode("Thread Stacks", this.threads);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void reset() {
 		assert Debugger.openNode("Resetting Environment");
-		this.m_variableTypes.clear();
-		this.m_templates.clear();
+		this.variableTypes.clear();
+		this.templates.clear();
 		this.clearStacks();
 		System.gc();
 		this.initialize();
@@ -244,11 +244,11 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public void retreatNestedStack() {
-		this.m_threads.get(Thread.currentThread().getName()).retreatNestedStack();
+		this.threads.get(Thread.currentThread().getName()).retreatNestedStack();
 	}
 
 	public void retreatStack() {
-		this.m_threads.get(Thread.currentThread().getName()).retreatStack();
+		this.threads.get(Thread.currentThread().getName()).retreatStack();
 	}
 
 	// Variable functions
@@ -256,7 +256,7 @@ public class ScriptEnvironment implements Nodeable {
 		assert Debugger.openNode("Variable Retrievals", "Retrieving Variable (" + name + ")");
 		ScriptValue_Variable value = null;
 		if (value == null) {
-			assert Debugger.addSnapNode("Checking current variable stack", this.m_threads.get(Thread.currentThread().getName()));
+			assert Debugger.addSnapNode("Checking current variable stack", this.threads.get(Thread.currentThread().getName()));
 			value = this.getVariableFromStack(name);
 		}
 		if (value == null) {
@@ -283,17 +283,17 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public void stopExecution() {
-		for (javax.swing.Timer timer : this.m_timers) {
+		for (javax.swing.Timer timer : this.timers) {
 			timer.stop();
 		}
-		this.m_timers.clear();
+		this.timers.clear();
 	}
 }
 
 class ThreadStack implements Nodeable {
-	private VariableTable m_variableTable = new VariableTable();
-	private Stack<ScriptTemplate_Abstract> m_objectStack = new Stack<ScriptTemplate_Abstract>(); // Stack of called objects
-	private Stack<ScriptFunction_Abstract> m_functionStack = new Stack<ScriptFunction_Abstract>(); // Stack of called functions
+	private VariableTable variableTable = new VariableTable();
+	private Stack<ScriptTemplate_Abstract> objectStack = new Stack<ScriptTemplate_Abstract>(); // Stack of called objects
+	private Stack<ScriptFunction_Abstract> functionStack = new Stack<ScriptFunction_Abstract>(); // Stack of called functions
 
 	public synchronized void addVariable(String name, ScriptValue_Variable variable) {
 		if (variable == null) {
@@ -303,17 +303,17 @@ class ThreadStack implements Nodeable {
 			assert Debugger.addNode(variable);
 		}
 		assert Debugger.addNode(this);
-		this.m_variableTable.addVariable(name, variable);
+		this.variableTable.addVariable(name, variable);
 		assert Debugger.closeNode();
 	}
 
 	public synchronized void advanceNestedStack() {
-		this.m_variableTable.advanceNestedStack();
+		this.variableTable.advanceNestedStack();
 	}
 
 	public synchronized void advanceStack(ScriptTemplate_Abstract template, ScriptFunction_Abstract fxn) throws Exception_Nodeable {
-		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Stack (Stack size before advance: " + this.m_functionStack.size() + ")");
-		assert (this.m_functionStack.size() == this.m_objectStack.size()) && (this.m_objectStack.size() == this.m_variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + this.m_functionStack.size() + " Object-stack: " + this.m_objectStack.size() + " Variable-stack: " + this.m_variableTable.getStacks().size();
+		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Stack (Stack size before advance: " + this.functionStack.size() + ")");
+		assert (this.functionStack.size() == this.objectStack.size()) && (this.objectStack.size() == this.variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + this.functionStack.size() + " Object-stack: " + this.objectStack.size() + " Variable-stack: " + this.variableTable.getStacks().size();
 		if (template != null) {
 			assert Debugger.addSnapNode("Advancing object", template);
 		}
@@ -322,63 +322,63 @@ class ThreadStack implements Nodeable {
 			template = this.getCurrentObject();
 		}
 		if (template != null) {
-			this.m_objectStack.push((ScriptTemplate_Abstract) template.getValue());
+			this.objectStack.push((ScriptTemplate_Abstract) template.getValue());
 		} else {
-			this.m_objectStack.push(null);
+			this.objectStack.push(null);
 		}
-		this.m_functionStack.push(fxn);
-		this.m_variableTable.advanceStack();
+		this.functionStack.push(fxn);
+		this.variableTable.advanceStack();
 		assert Debugger.closeNode();
 	}
 
 	public synchronized ScriptFunction_Abstract getCurrentFunction() {
-		if (this.m_functionStack.size() == 0) {
+		if (this.functionStack.size() == 0) {
 			throw new Exception_InternalError("No call stack");
 		}
-		return this.m_functionStack.peek();
+		return this.functionStack.peek();
 	}
 
 	public synchronized ScriptTemplate_Abstract getCurrentObject() {
-		if (this.m_objectStack.size() == 0) {
+		if (this.objectStack.size() == 0) {
 			throw new Exception_InternalError("No call stack");
 		}
-		return this.m_objectStack.peek();
+		return this.objectStack.peek();
 	}
 
 	public ScriptValue_Variable getVariableFromStack(String name) {
-		return this.m_variableTable.getVariableFromStack(name);
+		return this.variableTable.getVariableFromStack(name);
 	}
 
 	@Override
 	public synchronized boolean nodificate() {
 		assert Debugger.openNode("Thread Stack");
-		assert Debugger.addNode(this.m_variableTable);
-		assert Debugger.addSnapNode("Object stack (" + this.m_objectStack.size() + ")", this.m_objectStack);
-		assert Debugger.addSnapNode("Function stack (" + this.m_functionStack.size() + ")", this.m_functionStack);
+		assert Debugger.addNode(this.variableTable);
+		assert Debugger.addSnapNode("Object stack (" + this.objectStack.size() + ")", this.objectStack);
+		assert Debugger.addSnapNode("Function stack (" + this.functionStack.size() + ")", this.functionStack);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public synchronized void retreatNestedStack() {
-		this.m_variableTable.retreatNestedStack();
+		this.variableTable.retreatNestedStack();
 	}
 
 	public synchronized void retreatStack() {
-		assert Debugger.openNode("Stack Advancements and Retreats", "Retreating Stack (Stack size before retreat: " + this.m_functionStack.size() + ")");
-		assert (this.m_functionStack.size() == this.m_objectStack.size()) && (this.m_objectStack.size() == this.m_variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + this.m_functionStack.size() + " Object-stack: " + this.m_objectStack.size() + " Variable-stack: " + this.m_variableTable.getStacks().size();
-		if (this.m_variableTable.getStacks().size() > 0) {
-			this.m_variableTable.retreatStack();
+		assert Debugger.openNode("Stack Advancements and Retreats", "Retreating Stack (Stack size before retreat: " + this.functionStack.size() + ")");
+		assert (this.functionStack.size() == this.objectStack.size()) && (this.objectStack.size() == this.variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + this.functionStack.size() + " Object-stack: " + this.objectStack.size() + " Variable-stack: " + this.variableTable.getStacks().size();
+		if (this.variableTable.getStacks().size() > 0) {
+			this.variableTable.retreatStack();
 		}
-		if (this.m_objectStack.size() > 0) {
-			this.m_objectStack.pop();
-			if (this.m_objectStack.size() > 0) {
-				assert Debugger.addSnapNode("New Current Object", this.m_objectStack.peek());
+		if (this.objectStack.size() > 0) {
+			this.objectStack.pop();
+			if (this.objectStack.size() > 0) {
+				assert Debugger.addSnapNode("New Current Object", this.objectStack.peek());
 			}
 		}
-		if (this.m_functionStack.size() > 0) {
-			this.m_functionStack.pop();
-			if (this.m_functionStack.size() > 0) {
-				assert Debugger.addSnapNode("New Current Function", this.m_functionStack.peek());
+		if (this.functionStack.size() > 0) {
+			this.functionStack.pop();
+			if (this.functionStack.size() > 0) {
+				assert Debugger.addSnapNode("New Current Function", this.functionStack.peek());
 			}
 		}
 		assert Debugger.closeNode();
@@ -386,25 +386,25 @@ class ThreadStack implements Nodeable {
 }
 
 class VariableStack implements Nodeable {
-	private Stack<Map<String, ScriptValue_Variable>> m_nestedStacks = new Stack<Map<String, ScriptValue_Variable>>();
+	private Stack<Map<String, ScriptValue_Variable>> nestedStacks = new Stack<Map<String, ScriptValue_Variable>>();
 
 	public VariableStack() {
-		this.m_nestedStacks.push(new HashMap<String, ScriptValue_Variable>());
+		this.nestedStacks.push(new HashMap<String, ScriptValue_Variable>());
 	}
 
 	public synchronized void addVariable(String name, ScriptValue_Variable variable) {
-		this.m_nestedStacks.peek().put(name, variable);
+		this.nestedStacks.peek().put(name, variable);
 	}
 
 	public synchronized void advanceNestedStack() {
-		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Nested Stack (Nested stack size before advance: " + this.m_nestedStacks.size() + ")");
+		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Nested Stack (Nested stack size before advance: " + this.nestedStacks.size() + ")");
 		assert Debugger.addNode(this);
-		this.m_nestedStacks.push(new HashMap<String, ScriptValue_Variable>());
+		this.nestedStacks.push(new HashMap<String, ScriptValue_Variable>());
 		assert Debugger.closeNode();
 	}
 
 	public synchronized ScriptValue_Variable getVariableFromStack(String name) {
-		for (Map<String, ScriptValue_Variable> map : this.m_nestedStacks) {
+		for (Map<String, ScriptValue_Variable> map : this.nestedStacks) {
 			if (map.containsKey(name)) {
 				return map.get(name);
 			}
@@ -415,8 +415,8 @@ class VariableStack implements Nodeable {
 	@Override
 	public synchronized boolean nodificate() {
 		assert Debugger.openNode("Variable Stack");
-		assert Debugger.openNode("Nested Stacks (" + this.m_nestedStacks.size() + " stack(s))");
-		for (Map<String, ScriptValue_Variable> map : this.m_nestedStacks) {
+		assert Debugger.openNode("Nested Stacks (" + this.nestedStacks.size() + " stack(s))");
+		for (Map<String, ScriptValue_Variable> map : this.nestedStacks) {
 			assert Debugger.openNode("Stack (" + map.size() + " variable(s))");
 			assert Debugger.addNode(map);
 			assert Debugger.closeNode();
@@ -427,51 +427,51 @@ class VariableStack implements Nodeable {
 	}
 
 	public synchronized void retreatNestedStack() {
-		assert this.m_nestedStacks.size() > 0;
-		assert Debugger.openNode("Stack Advancements and Retreats", "Retreating Nested Stack (Nested stack size before retreat: " + this.m_nestedStacks.size() + ")");
+		assert this.nestedStacks.size() > 0;
+		assert Debugger.openNode("Stack Advancements and Retreats", "Retreating Nested Stack (Nested stack size before retreat: " + this.nestedStacks.size() + ")");
 		assert Debugger.addNode(this);
-		this.m_nestedStacks.pop();
+		this.nestedStacks.pop();
 		assert Debugger.closeNode();
 	}
 }
 
 class VariableTable implements Nodeable {
-	Stack<VariableStack> m_stacks = new Stack<VariableStack>();
+	Stack<VariableStack> stacks = new Stack<VariableStack>();
 
 	public synchronized void addVariable(String name, ScriptValue_Variable variable) {
-		this.m_stacks.peek().addVariable(name, variable);
+		this.stacks.peek().addVariable(name, variable);
 	}
 
 	public synchronized void advanceNestedStack() {
-		this.m_stacks.peek().advanceNestedStack();
+		this.stacks.peek().advanceNestedStack();
 	}
 
 	public synchronized void advanceStack() {
-		this.m_stacks.push(new VariableStack());
+		this.stacks.push(new VariableStack());
 	}
 
 	public Stack<VariableStack> getStacks() {
-		return this.m_stacks;
+		return this.stacks;
 	}
 
 	public ScriptValue_Variable getVariableFromStack(String name) {
-		ScriptValue_Variable variable = this.m_stacks.peek().getVariableFromStack(name);
+		ScriptValue_Variable variable = this.stacks.peek().getVariableFromStack(name);
 		return variable;
 	}
 
 	@Override
 	public synchronized boolean nodificate() {
 		assert Debugger.openNode("Variable Table");
-		assert Debugger.addSnapNode("Variable Stacks (" + this.m_stacks.size() + " stack(s))", this.m_stacks);
+		assert Debugger.addSnapNode("Variable Stacks (" + this.stacks.size() + " stack(s))", this.stacks);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public synchronized void retreatNestedStack() {
-		this.m_stacks.peek().retreatNestedStack();
+		this.stacks.peek().retreatNestedStack();
 	}
 
 	public synchronized void retreatStack() {
-		this.m_stacks.pop();
+		this.stacks.pop();
 	}
 }

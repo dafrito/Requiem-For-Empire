@@ -72,16 +72,16 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 		return returning;
 	}
 
-	private String m_functionName;
-	private List<ScriptValue_Abstract> m_params;
+	private String functionName;
+	private List<ScriptValue_Abstract> params;
 
-	private ScriptValue_Abstract m_object;
+	private ScriptValue_Abstract object;
 
 	public ScriptExecutable_CallFunction(Referenced ref, ScriptValue_Abstract object, String functionName, List<ScriptValue_Abstract> params) {
 		super(ref);
-		this.m_object = object;
-		this.m_functionName = functionName;
-		this.m_params = params;
+		this.object = object;
+		this.functionName = functionName;
+		this.params = params;
 	}
 
 	@Override
@@ -92,14 +92,14 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		return callFunction(this.getEnvironment(), this, this.m_object, this.m_functionName, this.m_params);
+		return callFunction(this.getEnvironment(), this, this.object, this.functionName, this.params);
 	}
 
 	// ScriptValue_Abstract implementation
 	@Override
 	public ScriptValueType getType() {
 		try {
-			return ((ScriptTemplate_Abstract) this.m_object.getValue()).getFunction(this.m_functionName, this.m_params).getReturnType();
+			return ((ScriptTemplate_Abstract) this.object.getValue()).getFunction(this.functionName, this.params).getReturnType();
 		} catch (Exception_Nodeable ex) {
 			throw new Exception_InternalError(this.getEnvironment(), ex.toString());
 		}
@@ -118,9 +118,9 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Function Call (" + ScriptFunction.getDisplayableFunctionName(this.m_functionName) + ")");
+		assert Debugger.openNode("Function Call (" + ScriptFunction.getDisplayableFunctionName(this.functionName) + ")");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Parameters", this.m_params);
+		assert Debugger.addSnapNode("Parameters", this.params);
 		assert Debugger.closeNode();
 		return true;
 	}

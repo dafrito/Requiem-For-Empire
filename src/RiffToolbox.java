@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class RiffToolbox {
 	public final static double DOUBLE_MIN = 1 * Math.pow(10, -10);
-	private static Random m_random;
-	private static boolean m_toggleDebugSpew;
+	private static Random random;
+	private static boolean toggleDebugSpew;
 
 	public static boolean areEqual(Point point, double a, double b) {
 		if (point instanceof Point_Spherical) {
@@ -166,10 +166,10 @@ public class RiffToolbox {
 
 	// Returns a static Random class.
 	public static Random getRandom() {
-		if (RiffToolbox.m_random == null) {
-			RiffToolbox.m_random = new Random();
+		if (RiffToolbox.random == null) {
+			RiffToolbox.random = new Random();
 		}
-		return RiffToolbox.m_random;
+		return RiffToolbox.random;
 	}
 
 	public static boolean isGreaterThan(double greater, double less) {

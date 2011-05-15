@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue_Abstract, ScriptConvertible {
-	private Map<StylesheetElementType, StylesheetElement> m_styleElements = new HashMap<StylesheetElementType, StylesheetElement>(); // element code, element
-	private String m_name;
-	private boolean m_isUnique;
+	private Map<StylesheetElementType, StylesheetElement> styleElements = new HashMap<StylesheetElementType, StylesheetElement>(); // element code, element
+	private String name;
+	private boolean isUnique;
 	public static final String STYLESHEETSTRING = "Stylesheet";
 
 	public Stylesheet(ScriptEnvironment env) {
@@ -21,7 +21,7 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue_Ab
 		assert Debugger.openNode("Stylesheet Element Additions", "Adding a" + element.getElementName() + " element to this stylesheet");
 		assert Debugger.addNode(this);
 		assert Debugger.addNode(element);
-		this.m_styleElements.put(type, element);
+		this.styleElements.put(type, element);
 		assert Debugger.closeNode();
 	}
 
@@ -38,11 +38,11 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue_Ab
 	}
 
 	public StylesheetElement getElement(StylesheetElementType elementCode) {
-		return this.m_styleElements.get(elementCode);
+		return this.styleElements.get(elementCode);
 	}
 
 	public String getName() {
-		return this.m_name;
+		return this.name;
 	}
 
 	// FauxTemplate extensions
@@ -52,27 +52,27 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue_Ab
 	}
 
 	public boolean isUnique() {
-		return this.m_isUnique;
+		return this.isUnique;
 	}
 
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		if (this.m_name == null) {
-			assert Debugger.openNode("Anonymous stylesheet (" + this.m_styleElements.size() + " element(s))");
+		if (this.name == null) {
+			assert Debugger.openNode("Anonymous stylesheet (" + this.styleElements.size() + " element(s))");
 		} else {
-			assert Debugger.openNode("Stylesheet: " + this.m_name + " (" + this.m_styleElements.size() + " element(s))");
+			assert Debugger.openNode("Stylesheet: " + this.name + " (" + this.styleElements.size() + " element(s))");
 		}
-		assert Debugger.addNode(this.m_styleElements.values());
+		assert Debugger.addNode(this.styleElements.values());
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setName(String name) {
-		this.m_name = name;
+		this.name = name;
 	}
 
 	public void setUnique(boolean isUnique) {
-		this.m_isUnique = isUnique;
+		this.isUnique = isUnique;
 	}
 }

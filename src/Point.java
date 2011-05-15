@@ -13,21 +13,21 @@ public abstract class Point {
 		throw new Exception_InternalError("Invalid default");
 	}
 
-	private String m_name;
+	private String name;
 
-	private ScriptEnvironment m_environment;
+	private ScriptEnvironment environment;
 
 	public Point(ScriptEnvironment env, String name) {
-		this.m_environment = env;
-		this.m_name = name;
+		this.environment = env;
+		this.name = name;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	public String getName() {
-		return this.m_name;
+		return this.name;
 	}
 
 	public abstract Point.System getSystem();
@@ -39,7 +39,7 @@ public abstract class Point {
 	public abstract double getZ();
 
 	public void setName(String name) {
-		this.m_name = name;
+		this.name = name;
 	}
 
 	public void setPosition(double x, double y, double z) {

@@ -1,8 +1,8 @@
 public class Point_Orbital extends Point {
-	private Point m_focus;
-	private double m_periapsis, m_apoapsis;
-	private double m_yawVelocity, m_pitchVelocity, m_rollVelocity;
-	private double m_yaw, m_pitch, m_roll;
+	private Point focus;
+	private double periapsis, apoapsis;
+	private double yawVelocity, pitchVelocity, rollVelocity;
+	private double yaw, pitch, roll;
 
 	// Constructors
 	public Point_Orbital(ScriptEnvironment env, String name) {
@@ -10,32 +10,32 @@ public class Point_Orbital extends Point {
 	}
 
 	public double getApoapsis() {
-		return this.m_apoapsis;
+		return this.apoapsis;
 	}
 
 	// Accessors
 	public Point getFocus() {
-		return this.m_focus;
+		return this.focus;
 	}
 
 	public double getPeriapsis() {
-		return this.m_periapsis;
+		return this.periapsis;
 	}
 
 	public double getPitch() {
-		return this.m_pitch;
+		return this.pitch;
 	}
 
 	public double getPitchVelocity() {
-		return this.m_pitchVelocity;
+		return this.pitchVelocity;
 	}
 
 	public double getRoll() {
-		return this.m_roll;
+		return this.roll;
 	}
 
 	public double getRollVelocity() {
-		return this.m_rollVelocity;
+		return this.rollVelocity;
 	}
 
 	@Override
@@ -55,11 +55,11 @@ public class Point_Orbital extends Point {
 	}
 
 	public double getYaw() {
-		return this.m_yaw;
+		return this.yaw;
 	}
 
 	public double getYawVelocity() {
-		return this.m_yawVelocity;
+		return this.yawVelocity;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class Point_Orbital extends Point {
 	}
 
 	public void setApoapsis(double apoapsis) {
-		this.m_apoapsis = apoapsis;
+		this.apoapsis = apoapsis;
 	}
 
 	// Accessor assistants
@@ -78,27 +78,27 @@ public class Point_Orbital extends Point {
 	}
 
 	public void setFocus(Point focus) {
-		this.m_focus = focus;
+		this.focus = focus;
 	}
 
 	public void setPeriapsis(double periapsis) {
-		this.m_periapsis = periapsis;
+		this.periapsis = periapsis;
 	}
 
 	public void setPitch(double pitch) {
-		this.m_pitch = pitch;
+		this.pitch = pitch;
 	}
 
 	public void setPitchVelocity(double velocity) {
-		this.m_pitchVelocity = velocity;
+		this.pitchVelocity = velocity;
 	}
 
 	public void setRoll(double roll) {
-		this.m_roll = roll;
+		this.roll = roll;
 	}
 
 	public void setRollVelocity(double velocity) {
-		this.m_rollVelocity = velocity;
+		this.rollVelocity = velocity;
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class Point_Orbital extends Point {
 	}
 
 	public void setYaw(double yaw) {
-		this.m_yaw = yaw;
+		this.yaw = yaw;
 	}
 
 	public void setYawPitchRoll(double yaw, double pitch, double roll) {
@@ -128,7 +128,7 @@ public class Point_Orbital extends Point {
 	}
 
 	public void setYawVelocity(double velocity) {
-		this.m_yawVelocity = velocity;
+		this.yawVelocity = velocity;
 	}
 
 	@Override

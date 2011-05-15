@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String ACESTRING = "Ace";
-	private Ace m_ace;
+	private Ace ace;
 
 	public FauxTemplate_Ace(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, ACESTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -16,7 +16,7 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible,
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return this.m_ace;
+		return this.ace;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -52,7 +52,7 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible,
 	}
 
 	public Ace getAce() {
-		return this.m_ace;
+		return this.ace;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
@@ -84,12 +84,12 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible,
 	public boolean nodificate() {
 		assert Debugger.openNode("Ace Faux Script-Element");
 		assert super.nodificate();
-		assert Debugger.addNode(this.m_ace);
+		assert Debugger.addNode(this.ace);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setAce(Ace ace) {
-		this.m_ace = ace;
+		this.ace = ace;
 	}
 }

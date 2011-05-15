@@ -149,11 +149,11 @@ public class ScriptOperator extends ScriptElement implements Nodeable {
 		return op.getType() == ScriptOperatorType.SEMICOLON;
 	}
 
-	private final ScriptOperatorType m_type;
+	private final ScriptOperatorType type;
 
 	public ScriptOperator(ScriptLine line, ScriptOperatorType type) {
 		super(line);
-		this.m_type = type;
+		this.type = type;
 	}
 
 	@Override
@@ -172,7 +172,7 @@ public class ScriptOperator extends ScriptElement implements Nodeable {
 	}
 
 	public ScriptOperatorType getType() {
-		return this.m_type;
+		return this.type;
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public class ScriptOperator extends ScriptElement implements Nodeable {
 
 	@Override
 	public String toString() {
-		return this.m_type.toString();
+		return this.type.toString();
 	}
 }
 

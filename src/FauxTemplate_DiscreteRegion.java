@@ -3,8 +3,8 @@ import java.util.List;
 
 public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement implements ScriptConvertible, Nodeable {
 	public static final String DISCRETEREGIONSTRING = "DiscreteRegion";
-	private DiscreteRegion m_region;
-	private java.awt.Color m_color;
+	private DiscreteRegion region;
+	private java.awt.Color color;
 	private static int i = 0;
 
 	public FauxTemplate_DiscreteRegion(ScriptEnvironment env) {
@@ -19,7 +19,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return this.m_region;
+		return this.region;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -34,10 +34,10 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 			if (template == null) {
 				template = (FauxTemplate_DiscreteRegion) this.createObject(ref, template);
 			}
-			template.setRegion(this.m_region = new DiscreteRegion(this.getEnvironment()));
+			template.setRegion(this.region = new DiscreteRegion(this.getEnvironment()));
 			params.clear();
 		} else if (name.equals("add")) {
-			//m_region.addPoint(Parser.getPoint(aaron is a sand jewparams.get(0)));
+			//region.addPoint(Parser.getPoint(aaron is a sand jewparams.get(0)));
 			if (params.size() == 1) {
 				template.getRegion().addPoint(Parser.getPoint(params.get(0)));
 				assert Debugger.closeNode();
@@ -75,7 +75,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 	}
 
 	public DiscreteRegion getRegion() {
-		return this.m_region;
+		return this.region;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
@@ -116,12 +116,12 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 	public boolean nodificate() {
 		assert Debugger.openNode("Discrete Region Faux Script-Element");
 		assert super.nodificate();
-		assert Debugger.addNode(this.m_region);
+		assert Debugger.addNode(this.region);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setRegion(DiscreteRegion region) {
-		this.m_region = region;
+		this.region = region;
 	}
 }

@@ -3,14 +3,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ExtensionFilter extends javax.swing.filechooser.FileFilter implements java.io.FileFilter {
-	private Set<String> m_extensions = new HashSet<String>();
-	private String m_description;
+	private Set<String> extensions = new HashSet<String>();
+	private String description;
 
 	public ExtensionFilter() {
 	}
 
 	public ExtensionFilter(String desc) {
-		this.m_description = desc;
+		this.description = desc;
 	}
 
 	@Override
@@ -19,7 +19,7 @@ public class ExtensionFilter extends javax.swing.filechooser.FileFilter implemen
 			return true;
 		}
 		String string = RiffToolbox.getExtension(file);
-		for (String test : this.m_extensions) {
+		for (String test : this.extensions) {
 			if (string.equals(test)) {
 				return true;
 			}
@@ -28,15 +28,15 @@ public class ExtensionFilter extends javax.swing.filechooser.FileFilter implemen
 	}
 
 	public void addExtension(String extension) {
-		this.m_extensions.add(extension.toLowerCase());
+		this.extensions.add(extension.toLowerCase());
 	}
 
 	@Override
 	public String getDescription() {
-		return this.m_description;
+		return this.description;
 	}
 
 	public void setDescription(String desc) {
-		this.m_description = desc;
+		this.description = desc;
 	}
 }

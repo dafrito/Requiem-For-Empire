@@ -1,10 +1,10 @@
 public class ScriptValue_Faux implements Nodeable, ScriptValue_Abstract {
-	private final ScriptEnvironment m_environment;
-	private final ScriptValueType m_type;
+	private final ScriptEnvironment environment;
+	private final ScriptValueType type;
 
 	public ScriptValue_Faux(ScriptEnvironment env, ScriptValueType type) {
-		this.m_environment = env;
-		this.m_type = type;
+		this.environment = env;
+		this.type = type;
 	}
 
 	@Override
@@ -14,12 +14,12 @@ public class ScriptValue_Faux implements Nodeable, ScriptValue_Abstract {
 
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	@Override
 	public ScriptValueType getType() {
-		return this.m_type;
+		return this.type;
 	}
 
 	@Override

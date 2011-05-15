@@ -5,95 +5,95 @@ import java.util.List;
 import java.util.Set;
 
 class PointSideStruct implements Nodeable {
-	private List<Point> m_left, m_right, m_indeterminates;
-	double m_leftWeight, m_rightWeight;
+	private List<Point> left, right, indeterminates;
+	double leftWeight, rightWeight;
 
 	public PointSideStruct() {
-		this.m_left = new LinkedList<Point>();
-		this.m_right = new LinkedList<Point>();
-		this.m_indeterminates = new LinkedList<Point>();
+		this.left = new LinkedList<Point>();
+		this.right = new LinkedList<Point>();
+		this.indeterminates = new LinkedList<Point>();
 	}
 
 	public PointSideStruct(List<Point> left, List<Point> right, List<Point> indet) {
-		this.m_left = left;
-		this.m_right = right;
-		this.m_indeterminates = indet;
+		this.left = left;
+		this.right = right;
+		this.indeterminates = indet;
 	}
 
 	public void addIndeterminate(Point point) {
-		this.m_indeterminates.add(point);
+		this.indeterminates.add(point);
 	}
 
 	public void addLeft(Point point, double value) {
-		this.m_left.add(point);
-		this.m_leftWeight += value;
+		this.left.add(point);
+		this.leftWeight += value;
 	}
 
 	public void addRight(Point point, double value) {
-		this.m_right.add(point);
-		this.m_rightWeight += value;
+		this.right.add(point);
+		this.rightWeight += value;
 	}
 
 	public List<Point> getIndeterminates() {
-		return this.m_indeterminates;
+		return this.indeterminates;
 	}
 
 	public List<Point> getLeftPoints() {
-		return this.m_left;
+		return this.left;
 	}
 
 	public List<Point> getRightPoints() {
-		return this.m_right;
+		return this.right;
 	}
 
 	public boolean hasIndeterminates() {
-		return !this.m_indeterminates.isEmpty();
+		return !this.indeterminates.isEmpty();
 	}
 
 	public boolean isColinear() {
-		return this.m_left.size() == 0 && this.m_right.size() == 0;
+		return this.left.size() == 0 && this.right.size() == 0;
 	}
 
 	public boolean isGreaterThan() {
-		return this.m_left.size() == 0 && this.m_right.size() != 0;
+		return this.left.size() == 0 && this.right.size() != 0;
 	}
 
 	public boolean isLessThan() {
-		return this.m_left.size() != 0 && this.m_right.size() == 0;
+		return this.left.size() != 0 && this.right.size() == 0;
 	}
 
 	public boolean isStraddling() {
-		return this.m_left.size() != 0 && this.m_right.size() != 0;
+		return this.left.size() != 0 && this.right.size() != 0;
 	}
 
 	public boolean nodificate() {
 		assert Debugger.openNode("Point-Side Test Results");
-		assert Debugger.addSnapNode("Left-side Points (Weight: " + this.m_leftWeight + "): " + this.m_left.size() + " element(s)", this.m_left);
-		assert Debugger.addSnapNode("Right-side Points (Weight: " + this.m_rightWeight + "): " + this.m_right.size() + " element(s)", this.m_right);
-		assert Debugger.addSnapNode("Indeterminate Points: " + this.m_indeterminates.size() + " element(s)", this.m_indeterminates);
+		assert Debugger.addSnapNode("Left-side Points (Weight: " + this.leftWeight + "): " + this.left.size() + " element(s)", this.left);
+		assert Debugger.addSnapNode("Right-side Points (Weight: " + this.rightWeight + "): " + this.right.size() + " element(s)", this.right);
+		assert Debugger.addSnapNode("Indeterminate Points: " + this.indeterminates.size() + " element(s)", this.indeterminates);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void validate() {
-		if (Math.abs(this.m_rightWeight) < Math.pow(10, -5) && this.m_right.size() > 0) {
+		if (Math.abs(this.rightWeight) < Math.pow(10, -5) && this.right.size() > 0) {
 			assert Debugger.addNode("Right-side list is insignificant, clearing.");
-			this.m_right.clear();
+			this.right.clear();
 		}
-		if (Math.abs(this.m_leftWeight) < Math.pow(10, -5) && this.m_left.size() > 0) {
+		if (Math.abs(this.leftWeight) < Math.pow(10, -5) && this.left.size() > 0) {
 			assert Debugger.addNode("Left-side list is insignificant, clearing.");
-			this.m_left.clear();
+			this.left.clear();
 		}
 	}
 }
 
 class RiffIntersectionPoint implements Nodeable {
-	private Point m_intersect;
-	private int m_location;
+	private Point intersect;
+	private int location;
 
 	public RiffIntersectionPoint(Point intersect, int location) {
-		this.m_intersect = intersect;
-		this.m_location = location;
+		this.intersect = intersect;
+		this.location = location;
 	}
 
 	public boolean equals(Object o) {
@@ -104,17 +104,17 @@ class RiffIntersectionPoint implements Nodeable {
 	}
 
 	public Point getIntersection() {
-		return this.m_intersect;
+		return this.intersect;
 	}
 
 	public int getLocation() {
-		return this.m_location;
+		return this.location;
 	}
 
 	public boolean nodificate() {
 		assert Debugger.openNode("Intersection-Point Struct");
-		assert Debugger.addNode("Intersection-Point: " + this.m_intersect);
-		assert Debugger.addNode("Point-list offset of intersection: " + this.m_location);
+		assert Debugger.addNode("Intersection-Point: " + this.intersect);
+		assert Debugger.addNode("Point-list offset of intersection: " + this.location);
 		assert Debugger.closeNode();
 		return true;
 	}

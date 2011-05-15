@@ -1,13 +1,13 @@
 public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable implements ScriptExecutable, ScriptValue_Abstract, Nodeable, Referenced {
-	private String m_name;
-	private ScriptValue_Abstract m_template;
-	private ScriptElement m_reference;
+	private String name;
+	private ScriptValue_Abstract template;
+	private ScriptElement reference;
 
 	public ScriptExecutable_RetrieveVariable(Referenced ref, ScriptValue_Abstract template, String name, ScriptValueType type) throws Exception_Nodeable {
 		super(ref.getEnvironment(), type, null);
-		this.m_reference = ref.getDebugReference();
-		this.m_name = name;
-		this.m_template = template;
+		this.reference = ref.getDebugReference();
+		this.name = name;
+		this.template = template;
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	// Referenced implementation
 	@Override
 	public ScriptElement getDebugReference() {
-		return this.m_reference;
+		return this.reference;
 	}
 
 	@Override
@@ -44,15 +44,15 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	}
 
 	public ScriptValue_Variable getVariable() throws Exception_Nodeable {
-		assert Debugger.openNode("Executing Variable Retrieval (" + this.m_name + ")");
+		assert Debugger.openNode("Executing Variable Retrieval (" + this.name + ")");
 		ScriptValue_Variable variable;
-		if (this.m_template != null) {
-			assert Debugger.addSnapNode("Template", this.m_template);
-			variable = ((ScriptTemplate_Abstract) this.m_template.getValue()).getVariable(this.m_name);
+		if (this.template != null) {
+			assert Debugger.addSnapNode("Template", this.template);
+			variable = ((ScriptTemplate_Abstract) this.template.getValue()).getVariable(this.name);
 		} else {
-			variable = this.getEnvironment().retrieveVariable(this.m_name);
+			variable = this.getEnvironment().retrieveVariable(this.name);
 		}
-		assert variable != null : "Variable not found (" + this.m_name + ")";
+		assert variable != null : "Variable not found (" + this.name + ")";
 		assert Debugger.closeNode();
 		return variable;
 	}
@@ -66,10 +66,10 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Variable-Placeholder (" + this.m_name + ")");
+		assert Debugger.openNode("Variable-Placeholder (" + this.name + ")");
 		assert super.nodificate();
-		if (this.m_template != null) {
-			assert Debugger.addSnapNode("Reference Template", this.m_template);
+		if (this.template != null) {
+			assert Debugger.addSnapNode("Reference Template", this.template);
 		}
 		assert Debugger.closeNode();
 		return true;

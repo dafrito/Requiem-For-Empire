@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Interface extends FauxTemplate implements Nodeable, ScriptConvertible {
 	public static final String INTERFACESTRING = "Interface";
-	private Interface m_interface;
+	private Interface riffInterface;
 
 	public FauxTemplate_Interface(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, INTERFACESTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -11,7 +11,7 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable, Sc
 
 	public FauxTemplate_Interface(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.m_interface = new Interface(env);
+		this.riffInterface = new Interface(env);
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -44,7 +44,7 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable, Sc
 	}
 
 	public Interface getInterface() {
-		return this.m_interface;
+		return this.riffInterface;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -73,7 +73,7 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable, Sc
 	public boolean nodificate() {
 		assert Debugger.openNode("Interface Faux Template");
 		assert super.nodificate();
-		assert Debugger.addNode(this.m_interface);
+		assert Debugger.addNode(this.riffInterface);
 		assert Debugger.closeNode();
 		return true;
 	}

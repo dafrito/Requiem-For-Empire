@@ -1,29 +1,29 @@
 class Number{
-	private double m_value;
+	private double value;
 	public Number(double value){
-		m_value=value;
+		value=value;
 	}
-	public double getValue(){return m_value;}
-	public void setValue(double value){m_value=value;}
+	public double getValue(){return value;}
+	public void setValue(double value){value=value;}
 }
 class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator{
-	private Scenario m_scenario;
-	private Point m_point;
-	private Point m_otherPoint;
-	private Terrestrial m_terrestrial;
-	static Stylesheet m_sheet{
+	private Scenario scenario;
+	private Point point;
+	private Point otherPoint;
+	private Terrestrial terrestrial;
+	static Stylesheet sheet{
 		border:1px solid gray;
 		margin:5px;
 	}
 	public double evaluateMovementCost(DiscreteRegion region,Asset asset){
 		return 1.0d-((Terrain)region.getProperty("Terrain")).getBrushDensity();
 	}
-	public Scenario getScenario(){return m_scenario;}
+	public Scenario getScenario(){return scenario;}
 	public NubBaseOne(){
-		Panel panel=new Panel(m_sheet);
-		m_terrestrial=new Terrestrial(1000);
+		Panel panel=new Panel(sheet);
+		terrestrial=new Terrestrial(1000);
 		panel.setRiffDali(this);
-		panel.setTerrestrial(m_terrestrial);
+		panel.setTerrestrial(terrestrial);
 		
 		// first region
 		DiscreteRegion region=new DiscreteRegion();
@@ -38,8 +38,8 @@ class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator
 		terrain.setTemperature(25.0d,1.0d);
 		terrain.setWaterDepth(0.0d,1.0d);
 		region.setProperty("Terrain",terrain);
-		m_terrestrial.add(region);
-		Asset asset=new Asset(m_point=region.getCenter());
+		terrestrial.add(region);
+		Asset asset=new Asset(point=region.getCenter());
 		asset.addAce(new Ace(new Archetype("Base"),1.0d));
 		asset.setProperty("Foo",new Number(0));
 		region.addAsset(asset);
@@ -57,7 +57,7 @@ class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator
 		terrain.setTemperature(23.0d,1.0d);
 		terrain.setWaterDepth(0.0d,1.0d);
 		region.setProperty("Terrain",terrain);
-		m_terrestrial.add(region);
+		terrestrial.add(region);
 		
 		// third region
 		region=new DiscreteRegion();
@@ -72,15 +72,15 @@ class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator
 		terrain.setTemperature(23.0d,1.0d);
 		terrain.setWaterDepth(0.0d,1.0d);
 		region.setProperty("Terrain",terrain);
-		m_otherPoint=region.getCenter();
-		m_terrestrial.add(region);
+		otherPoint=region.getCenter();
+		terrestrial.add(region);
 
-		m_scenario=new Scenario(m_terrestrial,"The Benchmark.");
-		m_scenario.getScheduler().setDefaultListener(this);
+		scenario=new Scenario(terrestrial,"The Benchmark.");
+		scenario.getScheduler().setDefaultListener(this);
 		Path path;
-		asset.setLocation(path=m_terrestrial.getPath(m_scenario,this,asset,m_point,m_otherPoint));
-		m_scenario.getScheduler().schedule(path.getTotalTime(),asset);
-		m_scenario.getScheduler().start();
+		asset.setLocation(path=terrestrial.getPath(scenario,this,asset,point,otherPoint));
+		scenario.getScheduler().schedule(path.getTotalTime(),asset);
+		scenario.getScheduler().start();
 		Interface superPanel=new Interface();
 		superPanel.add(panel);
 	}
@@ -88,11 +88,11 @@ class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator
 		((Number)asset.getProperty("Foo")).setValue(((Number)asset.getProperty("Foo")).getValue()+1);
 		Path path;
 		if(0==((Number)asset.getProperty("Foo")).getValue()%2){
-			asset.setLocation(path=m_terrestrial.getPath(m_scenario,this,asset,m_point,m_otherPoint));
+			asset.setLocation(path=terrestrial.getPath(scenario,this,asset,point,otherPoint));
 		}else{
-			asset.setLocation(path=m_terrestrial.getPath(m_scenario,this,asset,m_otherPoint,m_point));
+			asset.setLocation(path=terrestrial.getPath(scenario,this,asset,otherPoint,point));
 		}
-		m_scenario.getScheduler().schedule(path.getTotalTime(),asset);
+		scenario.getScheduler().schedule(path.getTotalTime(),asset);
 	}
 	public void paintPanel(Panel panel,List regions,List assets){
 		for(int i=0;i<regions.size();i++){

@@ -27,19 +27,19 @@ class KeyEvent_KeyUp extends RiffInterface_KeyEvent implements Nodeable {
 }
 
 class RiffInterface_KeyEvent implements Nodeable, RiffInterface_Event {
-	private int m_key;
+	private int key;
 
 	public RiffInterface_KeyEvent(int key) {
-		this.m_key = key;
+		this.key = key;
 	}
 
 	public int getKeyCode() {
-		return this.m_key;
+		return this.key;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.addNode("Key code: " + this.m_key);
+		assert Debugger.addNode("Key code: " + this.key);
 		return true;
 	}
 }

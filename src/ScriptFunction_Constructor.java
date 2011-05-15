@@ -1,11 +1,11 @@
 import java.util.List;
 
 public class ScriptFunction_Constructor extends ScriptFunction {
-	private ScriptEnvironment m_environment;
+	private ScriptEnvironment environment;
 
 	public ScriptFunction_Constructor(ScriptValueType returnType, List<ScriptValue_Abstract> paramList, ScriptKeywordType permission) {
 		super(returnType, paramList, permission, false, true);
-		this.m_environment = returnType.getEnvironment();
+		this.environment = returnType.getEnvironment();
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class ScriptFunction_Constructor extends ScriptFunction {
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	@Override

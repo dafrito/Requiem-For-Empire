@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String ASSETSTRING = "Asset";
-	private Asset m_asset;
+	private Asset asset;
 
 	public FauxTemplate_Asset(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, ASSETSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -11,13 +11,13 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 
 	public FauxTemplate_Asset(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.m_asset = new Asset(env);
+		this.asset = new Asset(env);
 	}
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return this.m_asset;
+		return this.asset;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -74,7 +74,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 	}
 
 	public Asset getAsset() {
-		return this.m_asset;
+		return this.asset;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
@@ -116,12 +116,12 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 	public boolean nodificate() {
 		assert Debugger.openNode("Asset Faux Script-Element");
 		assert super.nodificate();
-		assert Debugger.addNode(this.m_asset);
+		assert Debugger.addNode(this.asset);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setAsset(Asset asset) {
-		this.m_asset = asset;
+		this.asset = asset;
 	}
 }

@@ -3,21 +3,21 @@ import java.awt.Rectangle;
 import java.util.List;
 
 public class GraphicalElement_Line extends InterfaceElement implements ScriptConvertible, Nodeable {
-	private Point m_pointA, m_pointB;
-	private ScriptEnvironment m_environment;
+	private Point pointA, pointB;
+	private ScriptEnvironment environment;
 
 	public GraphicalElement_Line(ScriptEnvironment env, Point pointA, Point pointB) {
 		super(env, null, null);
-		this.m_pointA = pointA;
-		this.m_pointB = pointB;
+		this.pointA = pointA;
+		this.pointB = pointB;
 	}
 
 	// ScriptConvertible and Nodeable implementations
 	@Override
 	public Object convert() {
 		FauxTemplate_Line line = new FauxTemplate_Line(this.getEnvironment());
-		line.setPointA(this.m_pointA);
-		line.setPointB(this.m_pointB);
+		line.setPointA(this.pointA);
+		line.setPointB(this.pointB);
 		return line;
 	}
 
@@ -34,8 +34,8 @@ public class GraphicalElement_Line extends InterfaceElement implements ScriptCon
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Line Graphical Element");
-		assert Debugger.addNode("First point: " + this.m_pointA);
-		assert Debugger.addNode("Second point: " + this.m_pointB);
+		assert Debugger.addNode("First point: " + this.pointA);
+		assert Debugger.addNode("Second point: " + this.pointB);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -51,13 +51,13 @@ public class GraphicalElement_Line extends InterfaceElement implements ScriptCon
 			offset = new Point_Euclidean(this.getEnvironment(), this.getXAnchor(), this.getYAnchor(), 0.0d);
 		}
 		// Offset translation
-		assert this.m_pointA != null : "Point A is null in LineElement";
-		assert this.m_pointB != null : "Point B is null in LineElement";
+		assert this.pointA != null : "Point A is null in LineElement";
+		assert this.pointB != null : "Point B is null in LineElement";
 		assert offset != null : "Offset point is null in LineElement";
-		double ax = this.m_pointA.getX() - offset.getX();
-		double ay = this.m_pointA.getY() - offset.getY();
-		double bx = this.m_pointB.getX() - offset.getX();
-		double by = this.m_pointB.getY() - offset.getY();
+		double ax = this.pointA.getX() - offset.getX();
+		double ay = this.pointA.getY() - offset.getY();
+		double bx = this.pointB.getX() - offset.getX();
+		double by = this.pointB.getY() - offset.getY();
 		// Orthographic zoom
 		ax = ax * Math.pow(2, offset.getZ());
 		ay = ay * Math.pow(2, offset.getZ());
@@ -94,10 +94,10 @@ public class GraphicalElement_Line extends InterfaceElement implements ScriptCon
 	}
 
 	public void setPointA(Point point) {
-		this.m_pointA = point;
+		this.pointA = point;
 	}
 
 	public void setPointB(Point point) {
-		this.m_pointB = point;
+		this.pointB = point;
 	}
 }

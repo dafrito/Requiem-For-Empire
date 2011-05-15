@@ -23,11 +23,11 @@ public abstract class ScriptValue extends ScriptElement implements Nodeable, Scr
 		}
 	}
 
-	protected ScriptValueType m_type;
+	protected ScriptValueType type;
 
 	public ScriptValue(Referenced elem, ScriptValueType type) {
 		super(elem);
-		this.m_type = type;
+		this.type = type;
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public abstract class ScriptValue extends ScriptElement implements Nodeable, Scr
 
 	@Override
 	public ScriptValueType getType() {
-		return this.m_type;
+		return this.type;
 	}
 
 	@Override

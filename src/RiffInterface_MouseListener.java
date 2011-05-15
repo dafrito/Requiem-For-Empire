@@ -1,46 +1,46 @@
 class RiffInterface_ClickEvent extends RiffInterface_MouseEvent implements Nodeable {
-	private final int m_clicks;
+	private final int clicks;
 
 	public RiffInterface_ClickEvent(int x, int y, RiffInterface_MouseListener.MouseButton button, int clicks) {
 		super(x, y, button);
-		this.m_clicks = clicks;
+		this.clicks = clicks;
 	}
 
 	public int getClicks() {
-		return this.m_clicks;
+		return this.clicks;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Mouse-Click Events", "Click Event");
 		assert super.nodificate();
-		assert Debugger.addNode("Clicks: " + this.m_clicks);
+		assert Debugger.addNode("Clicks: " + this.clicks);
 		assert Debugger.closeNode();
 		return true;
 	}
 }
 
 class RiffInterface_DragEvent extends RiffInterface_MouseEvent implements Nodeable {
-	private final int m_xOffset, m_yOffset;
-	private final double m_distance;
+	private final int xOffset, yOffset;
+	private final double distance;
 
 	public RiffInterface_DragEvent(int x, int y, RiffInterface_MouseListener.MouseButton button, int xOffset, int yOffset, double distance) {
 		super(x, y, button);
-		this.m_xOffset = xOffset;
-		this.m_yOffset = yOffset;
-		this.m_distance = distance;
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+		this.distance = distance;
 	}
 
 	public double getDistance() {
-		return this.m_distance;
+		return this.distance;
 	}
 
 	public int getXOffset() {
-		return this.m_xOffset;
+		return this.xOffset;
 	}
 
 	public int getYOffset() {
-		return this.m_yOffset;
+		return this.yOffset;
 	}
 
 	@Override
@@ -69,25 +69,25 @@ class RiffInterface_MouseDownEvent extends RiffInterface_MouseEvent implements N
 }
 
 class RiffInterface_MouseEvent implements Nodeable, RiffInterface_Event {
-	final int m_x, m_y;
-	final RiffInterface_MouseListener.MouseButton m_button;
+	final int x, y;
+	final RiffInterface_MouseListener.MouseButton button;
 
 	public RiffInterface_MouseEvent(int x, int y, RiffInterface_MouseListener.MouseButton button) {
-		this.m_x = x;
-		this.m_y = y;
-		this.m_button = button;
+		this.x = x;
+		this.y = y;
+		this.button = button;
 	}
 
 	public RiffInterface_MouseListener.MouseButton getButton() {
-		return this.m_button;
+		return this.button;
 	}
 
 	public int getX() {
-		return this.m_x;
+		return this.x;
 	}
 
 	public int getY() {
-		return this.m_y;
+		return this.y;
 	}
 
 	@Override

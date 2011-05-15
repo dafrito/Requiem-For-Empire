@@ -1,11 +1,11 @@
 public class Terrain implements Krumflex, ScriptConvertible, Nodeable {
-	private ScriptEnvironment m_environment;
-	private double m_brushDensity, m_waterDepth, m_temperature, m_groundCohesion, m_elevation;
-	private double m_brushDensityWeight, m_elevationWeight, m_groundCohesionWeight,
-			m_temperatureWeight, m_waterDepthWeight;
+	private ScriptEnvironment environment;
+	private double brushDensity, waterDepth, temperature, groundCohesion, elevation;
+	private double brushDensityWeight, elevationWeight, groundCohesionWeight,
+			temperatureWeight, waterDepthWeight;
 
 	public Terrain(ScriptEnvironment env) {
-		this.m_environment = env;
+		this.environment = env;
 	}
 
 	@Override
@@ -16,44 +16,44 @@ public class Terrain implements Krumflex, ScriptConvertible, Nodeable {
 	}
 
 	public void duplicate(Terrain otherTerrain) {
-		this.m_brushDensity = otherTerrain.getBrushDensity();
-		this.m_brushDensityWeight = otherTerrain.getBrushDensityWeight();
-		this.m_elevation = otherTerrain.getElevation();
-		this.m_elevationWeight = otherTerrain.getElevationWeight();
-		this.m_temperature = otherTerrain.getTemperature();
-		this.m_temperatureWeight = otherTerrain.getTemperatureWeight();
-		this.m_waterDepth = otherTerrain.getWaterDepth();
-		this.m_waterDepthWeight = otherTerrain.getWaterDepthWeight();
-		this.m_groundCohesion = otherTerrain.getGroundCohesion();
-		this.m_groundCohesionWeight = otherTerrain.getGroundCohesionWeight();
+		this.brushDensity = otherTerrain.getBrushDensity();
+		this.brushDensityWeight = otherTerrain.getBrushDensityWeight();
+		this.elevation = otherTerrain.getElevation();
+		this.elevationWeight = otherTerrain.getElevationWeight();
+		this.temperature = otherTerrain.getTemperature();
+		this.temperatureWeight = otherTerrain.getTemperatureWeight();
+		this.waterDepth = otherTerrain.getWaterDepth();
+		this.waterDepthWeight = otherTerrain.getWaterDepthWeight();
+		this.groundCohesion = otherTerrain.getGroundCohesion();
+		this.groundCohesionWeight = otherTerrain.getGroundCohesionWeight();
 	}
 
 	public double getBrushDensity() {
-		return this.m_brushDensity;
+		return this.brushDensity;
 	}
 
 	public double getBrushDensityWeight() {
-		return this.m_brushDensityWeight;
+		return this.brushDensityWeight;
 	}
 
 	public double getElevation() {
-		return this.m_elevation;
+		return this.elevation;
 	}
 
 	public double getElevationWeight() {
-		return this.m_elevationWeight;
+		return this.elevationWeight;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	public double getGroundCohesion() {
-		return this.m_groundCohesion;
+		return this.groundCohesion;
 	}
 
 	public double getGroundCohesionWeight() {
-		return this.m_groundCohesionWeight;
+		return this.groundCohesionWeight;
 	}
 
 	@Override
@@ -72,19 +72,19 @@ public class Terrain implements Krumflex, ScriptConvertible, Nodeable {
 	}
 
 	public double getTemperature() {
-		return this.m_temperature;
+		return this.temperature;
 	}
 
 	public double getTemperatureWeight() {
-		return this.m_temperatureWeight;
+		return this.temperatureWeight;
 	}
 
 	public double getWaterDepth() {
-		return this.m_waterDepth;
+		return this.waterDepth;
 	}
 
 	public double getWaterDepthWeight() {
-		return this.m_waterDepthWeight;
+		return this.waterDepthWeight;
 	}
 
 	@Override
@@ -100,67 +100,67 @@ public class Terrain implements Krumflex, ScriptConvertible, Nodeable {
 	}
 
 	public void setBrushDensity(double brushDensity) {
-		this.m_brushDensity = brushDensity;
+		this.brushDensity = brushDensity;
 	}
 
 	public void setBrushDensity(double brushDensity, double weight) {
-		this.m_brushDensity = brushDensity;
-		this.m_brushDensityWeight = weight;
+		this.brushDensity = brushDensity;
+		this.brushDensityWeight = weight;
 	}
 
 	public void setBrushDensityWeight(double bdWeight) {
-		this.m_brushDensityWeight = bdWeight;
+		this.brushDensityWeight = bdWeight;
 	}
 
 	public void setElevation(double elevation) {
-		this.m_elevation = elevation;
+		this.elevation = elevation;
 	}
 
 	public void setElevation(double elevation, double weight) {
-		this.m_elevation = elevation;
-		this.m_elevationWeight = weight;
+		this.elevation = elevation;
+		this.elevationWeight = weight;
 	}
 
 	public void setElevationWeight(double elevationWeight) {
-		this.m_elevationWeight = elevationWeight;
+		this.elevationWeight = elevationWeight;
 	}
 
 	public void setGroundCohesion(double cohesion) {
-		this.m_groundCohesion = cohesion;
+		this.groundCohesion = cohesion;
 	}
 
 	public void setGroundCohesion(double cohesion, double weight) {
-		this.m_groundCohesion = cohesion;
-		this.m_groundCohesionWeight = weight;
+		this.groundCohesion = cohesion;
+		this.groundCohesionWeight = weight;
 	}
 
 	public void setGroundCohesionWeight(double gcWeight) {
-		this.m_groundCohesionWeight = gcWeight;
+		this.groundCohesionWeight = gcWeight;
 	}
 
 	public void setTemperature(double temp) {
-		this.m_temperature = temp;
+		this.temperature = temp;
 	}
 
 	public void setTemperature(double temp, double weight) {
-		this.m_temperature = temp;
-		this.m_temperatureWeight = weight;
+		this.temperature = temp;
+		this.temperatureWeight = weight;
 	}
 
 	public void setTemperatureWeight(double tempWeight) {
-		this.m_temperatureWeight = tempWeight;
+		this.temperatureWeight = tempWeight;
 	}
 
 	public void setWaterDepth(double waterDepth) {
-		this.m_waterDepth = waterDepth;
+		this.waterDepth = waterDepth;
 	}
 
 	public void setWaterDepth(double waterDepth, double weight) {
-		this.m_waterDepth = waterDepth;
-		this.m_waterDepthWeight = weight;
+		this.waterDepth = waterDepth;
+		this.waterDepthWeight = weight;
 	}
 
 	public void setWaterDepthWeight(double waterDepthWeight) {
-		this.m_waterDepthWeight = waterDepthWeight;
+		this.waterDepthWeight = waterDepthWeight;
 	}
 }

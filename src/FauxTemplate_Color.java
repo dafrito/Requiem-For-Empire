@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String COLORSTRING = "Color";
-	private java.awt.Color m_color;
+	private java.awt.Color color;
 
 	public FauxTemplate_Color(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, COLORSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -11,13 +11,13 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 
 	public FauxTemplate_Color(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.m_color = java.awt.Color.BLACK;
+		this.color = java.awt.Color.BLACK;
 	}
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return this.m_color;
+		return this.color;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -123,7 +123,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 	}
 
 	public java.awt.Color getColor() {
-		return this.m_color;
+		return this.color;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
@@ -179,16 +179,16 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 	public boolean nodificate() {
 		assert Debugger.openNode("Color Faux Template");
 		assert super.nodificate();
-		if (this.m_color == null) {
+		if (this.color == null) {
 			assert Debugger.addNode("Color: null");
 		} else {
-			assert Debugger.addNode("Color: " + RiffJavaToolbox.getColorName(this.m_color));
+			assert Debugger.addNode("Color: " + RiffJavaToolbox.getColorName(this.color));
 		}
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setColor(java.awt.Color color) {
-		this.m_color = color;
+		this.color = color;
 	}
 }

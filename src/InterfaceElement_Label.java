@@ -3,17 +3,17 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 public class InterfaceElement_Label extends InterfaceElement implements Nodeable {
-	private String m_string;
+	private String string;
 
 	public InterfaceElement_Label(ScriptEnvironment env, Stylesheet uniqueStyle, Stylesheet classStyle, String string) {
 		super(env, uniqueStyle, classStyle);
-		this.m_string = string;
+		this.string = string;
 	}
 
 	@Override
 	public Rectangle getDrawingBounds() {
 		Graphics2D g2d = this.getRoot().getGraphics();
-		Rectangle2D boundingRect = this.getCurrentFont().getStringBounds(this.m_string, g2d.getFontRenderContext());
+		Rectangle2D boundingRect = this.getCurrentFont().getStringBounds(this.string, g2d.getFontRenderContext());
 		return new Rectangle((int) boundingRect.getWidth(), (int) boundingRect.getHeight());
 	}
 
@@ -28,14 +28,14 @@ public class InterfaceElement_Label extends InterfaceElement implements Nodeable
 	}
 
 	public String getString() {
-		return this.m_string;
+		return this.string;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Label Interface Element");
 		assert super.nodificate();
-		assert Debugger.addNode("Label: " + this.m_string);
+		assert Debugger.addNode("Label: " + this.string);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -45,7 +45,7 @@ public class InterfaceElement_Label extends InterfaceElement implements Nodeable
 		assert Debugger.openNode("Label Painting Operations", "Painting Label");
 		assert Debugger.addNode(this);
 		super.paint(g2d);
-		g2d.drawString(this.m_string, this.getXAnchor(), this.getYAnchor() + this.getInternalHeight());
+		g2d.drawString(this.string, this.getXAnchor(), this.getYAnchor() + this.getInternalHeight());
 		assert Debugger.closeNode();
 	}
 
@@ -54,6 +54,6 @@ public class InterfaceElement_Label extends InterfaceElement implements Nodeable
 	}
 
 	public void setString(String string) {
-		this.m_string = string;
+		this.string = string;
 	}
 }

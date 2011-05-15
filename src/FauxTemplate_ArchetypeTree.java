@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String ARCHETYPETREESTRING = "ArchetypeTree";
-	private ArchetypeMapNode m_tree;
+	private ArchetypeMapNode tree;
 
 	public FauxTemplate_ArchetypeTree(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, ARCHETYPETREESTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -16,7 +16,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return this.m_tree;
+		return this.tree;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -52,7 +52,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 	}
 
 	public ArchetypeMapNode getTree() {
-		return this.m_tree;
+		return this.tree;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
@@ -81,12 +81,12 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 	public boolean nodificate() {
 		assert Debugger.openNode("Archetype Tree Faux Script-Element");
 		assert super.nodificate();
-		assert Debugger.addNode(this.m_tree);
+		assert Debugger.addNode(this.tree);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setTree(ArchetypeMapNode tree) {
-		this.m_tree = tree;
+		this.tree = tree;
 	}
 }

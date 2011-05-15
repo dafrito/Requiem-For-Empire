@@ -1,12 +1,12 @@
 public class Ace implements ScriptConvertible, Nodeable {
-	private Archetype m_archetype;
-	private double m_efficiency;
-	private ScriptEnvironment m_environment;
+	private Archetype archetype;
+	private double efficiency;
+	private ScriptEnvironment environment;
 
 	public Ace(ScriptEnvironment env, Archetype archetype, double efficiency) {
-		this.m_environment = env;
-		this.m_archetype = archetype;
-		this.m_efficiency = efficiency;
+		this.environment = env;
+		this.archetype = archetype;
+		this.efficiency = efficiency;
 	}
 
 	@Override
@@ -17,27 +17,27 @@ public class Ace implements ScriptConvertible, Nodeable {
 	}
 
 	public Archetype getArchetype() {
-		return this.m_archetype;
+		return this.archetype;
 	}
 
 	public double getEfficiency() {
-		return this.m_efficiency;
+		return this.efficiency;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Ace");
-		assert Debugger.addNode(this.m_archetype);
-		assert Debugger.addNode("Efficiency: " + this.m_efficiency);
+		assert Debugger.addNode(this.archetype);
+		assert Debugger.addNode("Efficiency: " + this.efficiency);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setEfficiency(double efficiency) {
-		this.m_efficiency = efficiency;
+		this.efficiency = efficiency;
 	}
 }

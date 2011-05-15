@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String ARCHETYPESTRING = "Archetype";
-	private Archetype m_archetype;
+	private Archetype archetype;
 
 	public FauxTemplate_Archetype(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, ARCHETYPESTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -16,7 +16,7 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return this.m_archetype;
+		return this.archetype;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -56,7 +56,7 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 	}
 
 	public Archetype getArchetype() {
-		return this.m_archetype;
+		return this.archetype;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
@@ -86,12 +86,12 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 	public boolean nodificate() {
 		assert Debugger.openNode("Archetype Faux Script-Element");
 		assert super.nodificate();
-		assert Debugger.addNode(this.m_archetype);
+		assert Debugger.addNode(this.archetype);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setArchetype(Archetype archetype) {
-		this.m_archetype = archetype;
+		this.archetype = archetype;
 	}
 }

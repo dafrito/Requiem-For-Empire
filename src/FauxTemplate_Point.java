@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String POINTSTRING = "Point";
-	public Point m_point;
+	public Point point;
 
 	public FauxTemplate_Point(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, POINTSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -11,7 +11,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 
 	public FauxTemplate_Point(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.m_point = new Point_Euclidean(env, 0, 0, 0);
+		this.point = new Point_Euclidean(env, 0, 0, 0);
 	}
 
 	public FauxTemplate_Point(ScriptEnvironment env, ScriptValueType type, ScriptValueType extended, List<ScriptValueType> implemented, boolean isAbstract) {
@@ -21,7 +21,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 	// ScriptConvertible and Nodeable implementations
 	@Override
 	public Object convert() {
-		return this.m_point;
+		return this.point;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -65,7 +65,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 	}
 
 	public Point getPoint() {
-		return this.m_point;
+		return this.point;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -102,12 +102,12 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 	public boolean nodificate() {
 		assert Debugger.openNode("Point Faux Template");
 		assert super.nodificate();
-		assert Debugger.addNode(this.m_point);
+		assert Debugger.addNode(this.point);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setPoint(Point point) {
-		this.m_point = point;
+		this.point = point;
 	}
 }

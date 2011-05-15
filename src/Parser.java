@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Vector;
 
 public class Parser {
-	private static List<StylesheetParams> m_stylesheetParams = new LinkedList<StylesheetParams>();
-	private static List<TemplateParams> m_classParams = new LinkedList<TemplateParams>();
+	private static List<StylesheetParams> stylesheetParams = new LinkedList<StylesheetParams>();
+	private static List<TemplateParams> classParams = new LinkedList<TemplateParams>();
 
 	public static void clearPreparseLists() {
-		m_stylesheetParams.clear();
-		m_classParams.clear();
+		stylesheetParams.clear();
+		classParams.clear();
 	}
 
 	public static Object convert(ScriptEnvironment env, boolean value) throws Exception_Nodeable {
@@ -538,13 +538,13 @@ public class Parser {
 		try {
 			assert Debugger.openNode("Element Parsing", "Parsing Elements");
 			List<ScriptTemplate_Abstract> queuedTemplates = new LinkedList<ScriptTemplate_Abstract>();
-			for (TemplateParams params : m_classParams) {
+			for (TemplateParams params : classParams) {
 				ScriptTemplate_Abstract template = preparseTemplate(params.getDebugReference(), env, params.getModifiers(), params.getBody(), params.getName());
 				queuedTemplates.add(template);
 				env.addTemplate(params.getDebugReference(), params.getName(), template);
 			}
 			for (int i = 0; i < queuedTemplates.size(); i++) {
-				queuedTemplates.get(i).initializeFunctions(m_classParams.get(i).getDebugReference());
+				queuedTemplates.get(i).initializeFunctions(classParams.get(i).getDebugReference());
 			}
 			assert Debugger.closeNode();
 		} catch (Exception_Nodeable ex) {
@@ -1493,7 +1493,7 @@ public class Parser {
 					}
 					List<Object> thisModifiers = new LinkedList<Object>();
 					thisModifiers.addAll(modifiers);
-					m_classParams.add(new TemplateParams(element, name, thisModifiers, body));
+					classParams.add(new TemplateParams(element, name, thisModifiers, body));
 					env.addType(element, name);
 					modifiers.clear();
 					continue;
@@ -1935,61 +1935,61 @@ public class Parser {
 // Comments-removed naked strings --> Curly Bracket Groupings
 // Curly Bracket Groupings --> Lists of line of code
 class StylesheetParams {
-	private Referenced m_reference;
-	private List<Object> m_modifiers;
-	private String m_name;
-	private ScriptGroup m_body;
+	private Referenced reference;
+	private List<Object> modifiers;
+	private String name;
+	private ScriptGroup body;
 
 	public StylesheetParams(Referenced ref, List<Object> modifiers, String name, ScriptGroup body) {
-		this.m_reference = ref;
-		this.m_modifiers = modifiers;
-		this.m_name = name;
-		this.m_body = body;
+		this.reference = ref;
+		this.modifiers = modifiers;
+		this.name = name;
+		this.body = body;
 	}
 
 	public ScriptGroup getBody() {
-		return this.m_body;
+		return this.body;
 	}
 
 	public Referenced getDebugReference() {
-		return this.m_reference;
+		return this.reference;
 	}
 
 	public List<Object> getModifiers() {
-		return this.m_modifiers;
+		return this.modifiers;
 	}
 
 	public String getName() {
-		return this.m_name;
+		return this.name;
 	}
 }
 
 class TemplateParams {
-	private Referenced m_reference;
-	private List<Object> m_modifiers;
-	private String m_name;
-	private ScriptGroup m_body;
+	private Referenced reference;
+	private List<Object> modifiers;
+	private String name;
+	private ScriptGroup body;
 
 	public TemplateParams(Referenced ref, String name, List<Object> modifiers, ScriptGroup body) {
-		this.m_reference = ref;
-		this.m_modifiers = modifiers;
-		this.m_name = name;
-		this.m_body = body;
+		this.reference = ref;
+		this.modifiers = modifiers;
+		this.name = name;
+		this.body = body;
 	}
 
 	public ScriptGroup getBody() {
-		return this.m_body;
+		return this.body;
 	}
 
 	public Referenced getDebugReference() {
-		return this.m_reference;
+		return this.reference;
 	}
 
 	public List<Object> getModifiers() {
-		return this.m_modifiers;
+		return this.modifiers;
 	}
 
 	public String getName() {
-		return this.m_name;
+		return this.name;
 	}
 }

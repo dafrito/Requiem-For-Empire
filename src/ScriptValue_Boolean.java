@@ -1,10 +1,10 @@
 public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstract, Nodeable {
-	private boolean m_value;
-	private final ScriptEnvironment m_environment;
+	private boolean value;
+	private final ScriptEnvironment environment;
 
 	public ScriptValue_Boolean(ScriptEnvironment env, boolean value) {
-		this.m_environment = env;
-		this.m_value = value;
+		this.environment = env;
+		this.value = value;
 	}
 
 	@Override
@@ -19,17 +19,17 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 	// Overloaded and miscellaneous functions
 	@Override
 	public Object convert() {
-		return new Boolean(this.m_value);
+		return new Boolean(this.value);
 	}
 
 	public boolean getBooleanValue() {
-		return this.m_value;
+		return this.value;
 	}
 
 	// Abstract-value implementation
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
 		assert Debugger.openNode("Value Assignments", "Setting Boolean Value");
 		assert Debugger.addSnapNode("Former value", this);
-		this.m_value = ((ScriptValue_Boolean) value.castToType(ref, this.getType())).getBooleanValue();
+		this.value = ((ScriptValue_Boolean) value.castToType(ref, this.getType())).getBooleanValue();
 		assert Debugger.closeNode("New value", this);
 		return this;
 	}

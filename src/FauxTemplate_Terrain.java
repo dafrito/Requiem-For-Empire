@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, ScriptConvertible {
 	public static final String TERRAINSTRING = "Terrain";
-	private Terrain m_terrain;
+	private Terrain terrain;
 
 	public FauxTemplate_Terrain(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, TERRAINSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -11,13 +11,13 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 
 	public FauxTemplate_Terrain(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.m_terrain = new Terrain(env);
+		this.terrain = new Terrain(env);
 	}
 
 	// Nodeable implementation
 	@Override
 	public Object convert() {
-		return this.m_terrain;
+		return this.terrain;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -138,7 +138,7 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 	}
 
 	public Terrain getTerrain() {
-		return this.m_terrain;
+		return this.terrain;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -192,12 +192,12 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 	public boolean nodificate() {
 		assert Debugger.openNode("Terrain Faux Template");
 		assert super.nodificate();
-		assert Debugger.addNode(this.m_terrain);
+		assert Debugger.addNode(this.terrain);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setTerrain(Terrain terrain) {
-		this.m_terrain = terrain;
+		this.terrain = terrain;
 	}
 }

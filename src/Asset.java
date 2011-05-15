@@ -4,17 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 public class Asset implements Nodeable, ScriptConvertible {
-	private ScriptEnvironment m_environment;
-	private Map<String, Object> m_properties = new HashMap<String, Object>();
-	private Point m_location;
-	private List<Ace> m_aces = new LinkedList<Ace>();
+	private ScriptEnvironment environment;
+	private Map<String, Object> properties = new HashMap<String, Object>();
+	private Point location;
+	private List<Ace> aces = new LinkedList<Ace>();
 
 	public Asset(ScriptEnvironment environment) {
-		this.m_environment = environment;
+		this.environment = environment;
 	}
 
 	public void addAce(Ace ace) {
-		this.m_aces.add(ace);
+		this.aces.add(ace);
 	}
 
 	// ScriptConvertible implementation
@@ -26,19 +26,19 @@ public class Asset implements Nodeable, ScriptConvertible {
 	}
 
 	public List<Ace> getAces() {
-		return this.m_aces;
+		return this.aces;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	public Point getLocation() {
-		return this.m_location;
+		return this.location;
 	}
 
 	public Object getProperty(String name) {
-		return this.m_properties.get(name);
+		return this.properties.get(name);
 	}
 
 	// Nodeable implementation
@@ -46,23 +46,23 @@ public class Asset implements Nodeable, ScriptConvertible {
 	public boolean nodificate() {
 		assert Debugger.openNode("Asset");
 		assert Debugger.addSnapNode("Location", this.getLocation());
-		if (this.m_aces != null && this.m_aces.size() > 0) {
-			assert Debugger.addSnapNode("Archetype Conversion Efficiencies (" + this.m_aces.size() + " ACE(s))", this.m_aces);
+		if (this.aces != null && this.aces.size() > 0) {
+			assert Debugger.addSnapNode("Archetype Conversion Efficiencies (" + this.aces.size() + " ACE(s))", this.aces);
 		}
-		if (this.m_properties.size() == 1) {
-			assert Debugger.addSnapNode("Properties (1 property)", this.m_properties);
+		if (this.properties.size() == 1) {
+			assert Debugger.addSnapNode("Properties (1 property)", this.properties);
 		} else {
-			assert Debugger.addSnapNode("Properties (" + this.m_properties.size() + " properties)", this.m_properties);
+			assert Debugger.addSnapNode("Properties (" + this.properties.size() + " properties)", this.properties);
 		}
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setLocation(Point location) {
-		this.m_location = location;
+		this.location = location;
 	}
 
 	public void setProperty(String name, Object prop) {
-		this.m_properties.put(name, prop);
+		this.properties.put(name, prop);
 	}
 }

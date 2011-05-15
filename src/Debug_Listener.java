@@ -21,99 +21,99 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	 */
 	private static final long serialVersionUID = -6965306788286409632L;
 	// Core stuff
-	private Debug_Environment m_debugger;
-	private int m_width;
+	private Debug_Environment debugger;
+	private int width;
 	// GUI stuff
-	private String m_name;
-	protected JButton m_createListener, m_sendToFilter, m_refresh, m_jump;
-	protected JCheckBox m_isSynchronized, m_isCapturing, m_defaultFilter;
-	private JSplitPane m_treeAndHotspotSplitPane;
+	private String name;
+	protected JButton createListener, sendToFilter, refresh, jump;
+	protected JCheckBox isSynchronized, isCapturing, defaultFilter;
+	private JSplitPane treeAndHotspotSplitPane;
 	// Debug components and filter-parents and children
-	private Debug_Tree m_treePanel;
-	private Debug_Hotspots m_hotspotPanel;
-	private Debug_Listener m_source;
-	private java.util.List<Debug_Listener> m_childOutputs = new LinkedList<Debug_Listener>();
-	protected boolean m_isListening = false;
+	private Debug_Tree treePanel;
+	private Debug_Hotspots hotspotPanel;
+	private Debug_Listener source;
+	private java.util.List<Debug_Listener> childOutputs = new LinkedList<Debug_Listener>();
+	protected boolean isListening = false;
 	// CONSTRUCTOR!!
-	private String m_threadName;
+	private String threadName;
 
 	public Debug_Listener(String threadName, Debug_Environment debugger, Debug_Listener source, String name) {
-		this.m_threadName = threadName;
-		this.m_treePanel = new Debug_Tree(new Debug_Filter(this));
-		this.m_debugger = debugger;
-		this.m_width = this.m_debugger.getWidth();
-		this.m_source = source;
-		this.m_name = name;
+		this.threadName = threadName;
+		this.treePanel = new Debug_Tree(new Debug_Filter(this));
+		this.debugger = debugger;
+		this.width = this.debugger.getWidth();
+		this.source = source;
+		this.name = name;
 		this.setLayout(new BorderLayout());
 		// Set up top-of-the-window buttons
 		JPanel buttons = new JPanel();
 		this.add(buttons, BorderLayout.NORTH);
 		buttons.setLayout(new FlowLayout(FlowLayout.LEFT));
-		buttons.add(this.m_createListener = new JButton("Create Listener"));
-		buttons.add(this.m_sendToFilter = new JButton("Send to Filter"));
-		buttons.add(this.m_refresh = new JButton("Refresh"));
-		buttons.add(this.m_isSynchronized = new JCheckBox("Synchronized"));
-		buttons.add(this.m_isCapturing = new JCheckBox("Capturing"));
-		buttons.add(this.m_defaultFilter = new JCheckBox("Default Filter"));
-		buttons.add(this.m_jump = new JButton("Jump to Parent"));
+		buttons.add(this.createListener = new JButton("Create Listener"));
+		buttons.add(this.sendToFilter = new JButton("Send to Filter"));
+		buttons.add(this.refresh = new JButton("Refresh"));
+		buttons.add(this.isSynchronized = new JCheckBox("Synchronized"));
+		buttons.add(this.isCapturing = new JCheckBox("Capturing"));
+		buttons.add(this.defaultFilter = new JCheckBox("Default Filter"));
+		buttons.add(this.jump = new JButton("Jump to Parent"));
 		// Set up split-pane
-		this.m_treeAndHotspotSplitPane = new JSplitPane();
-		this.add(this.m_treeAndHotspotSplitPane);
-		this.m_treeAndHotspotSplitPane.setLeftComponent(new JScrollPane(this.m_treePanel));
+		this.treeAndHotspotSplitPane = new JSplitPane();
+		this.add(this.treeAndHotspotSplitPane);
+		this.treeAndHotspotSplitPane.setLeftComponent(new JScrollPane(this.treePanel));
 		JTabbedPane hotspotAndFiltersPanel = new JTabbedPane();
-		this.m_treeAndHotspotSplitPane.setRightComponent(hotspotAndFiltersPanel);
+		this.treeAndHotspotSplitPane.setRightComponent(hotspotAndFiltersPanel);
 		// Set up hotspot-panel
-		hotspotAndFiltersPanel.add("Hotspots", this.m_hotspotPanel = new Debug_Hotspots(this.m_treePanel));
-		hotspotAndFiltersPanel.add("Filters", this.m_treePanel.getFilter());
+		hotspotAndFiltersPanel.add("Hotspots", this.hotspotPanel = new Debug_Hotspots(this.treePanel));
+		hotspotAndFiltersPanel.add("Filters", this.treePanel.getFilter());
 		if (this.isUnfiltered()) {
-			this.m_jump.setEnabled(false);
-			this.m_isSynchronized.setEnabled(false);
-			this.m_refresh.setEnabled(false);
-			this.m_isCapturing.setEnabled(false);
-			this.m_defaultFilter.setEnabled(false);
+			this.jump.setEnabled(false);
+			this.isSynchronized.setEnabled(false);
+			this.refresh.setEnabled(false);
+			this.isCapturing.setEnabled(false);
+			this.defaultFilter.setEnabled(false);
 			hotspotAndFiltersPanel.setEnabledAt(1, false);
 		}
 		// Listeners!
 		this.addComponentListener(this);
-		this.m_sendToFilter.addActionListener(this);
-		this.m_defaultFilter.addActionListener(this);
-		this.m_createListener.addActionListener(this);
-		this.m_refresh.addActionListener(this);
-		this.m_jump.addActionListener(this);
-		this.m_isSynchronized.addActionListener(this);
-		this.m_isCapturing.addActionListener(this);
+		this.sendToFilter.addActionListener(this);
+		this.defaultFilter.addActionListener(this);
+		this.createListener.addActionListener(this);
+		this.refresh.addActionListener(this);
+		this.jump.addActionListener(this);
+		this.isSynchronized.addActionListener(this);
+		this.isCapturing.addActionListener(this);
 		this.setVisible(true);
-		this.m_treeAndHotspotSplitPane.setDividerLocation((int) (this.m_width * .68));
+		this.treeAndHotspotSplitPane.setDividerLocation((int) (this.width * .68));
 	}
 
 	// ActionListener implementation
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		if (event.getSource().equals(this.m_defaultFilter)) {
-			this.setFiltering(this.m_defaultFilter.isSelected());
-		} else if (event.getSource().equals(this.m_isSynchronized)) {
-			this.setSynchronized(this.m_isSynchronized.isSelected());
-		} else if (event.getSource().equals(this.m_isCapturing)) {
-			this.setCapturing(this.m_isCapturing.isSelected());
-		} else if (event.getSource().equals(this.m_createListener)) {
+		if (event.getSource().equals(this.defaultFilter)) {
+			this.setFiltering(this.defaultFilter.isSelected());
+		} else if (event.getSource().equals(this.isSynchronized)) {
+			this.setSynchronized(this.isSynchronized.isSelected());
+		} else if (event.getSource().equals(this.isCapturing)) {
+			this.setCapturing(this.isCapturing.isSelected());
+		} else if (event.getSource().equals(this.createListener)) {
 			this.createListener();
-		} else if (event.getSource().equals(this.m_sendToFilter)) {
+		} else if (event.getSource().equals(this.sendToFilter)) {
 			this.sendToFilter();
-		} else if (event.getSource().equals(this.m_refresh)) {
+		} else if (event.getSource().equals(this.refresh)) {
 			this.getTreePanel().refresh();
-		} else if (event.getSource().equals(this.m_jump)) {
+		} else if (event.getSource().equals(this.jump)) {
 			this.jump();
 		}
 	}
 
 	public void addChildOutput(Debug_Listener output) {
-		this.m_childOutputs.add(output);
+		this.childOutputs.add(output);
 	}
 
 	// Command functions
 	public void clearTab() {
-		this.m_hotspotPanel.reset();
-		this.m_treePanel.reset();
+		this.hotspotPanel.reset();
+		this.treePanel.reset();
 		System.gc();
 	}
 
@@ -128,12 +128,12 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	// ComponentListener implementation
 	@Override
 	public void componentResized(ComponentEvent x) {
-		double location = ((double) this.m_treeAndHotspotSplitPane.getDividerLocation()) / (double) this.m_width;
+		double location = ((double) this.treeAndHotspotSplitPane.getDividerLocation()) / (double) this.width;
 		if (location > 1) {
 			location = 1;
 		}
-		this.m_treeAndHotspotSplitPane.setDividerLocation((int) (this.getWidth() * location));
-		this.m_width = this.getWidth();
+		this.treeAndHotspotSplitPane.setDividerLocation((int) (this.getWidth() * location));
+		this.width = this.getWidth();
 	}
 
 	@Override
@@ -141,72 +141,72 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	}
 
 	public Debug_Listener createListener() {
-		return this.m_debugger.addOutputListener(this, this.m_treePanel.getFirstAvailableFilter());
+		return this.debugger.addOutputListener(this, this.treePanel.getFirstAvailableFilter());
 	}
 
 	// Quick retrievals
 	public Debug_Environment getDebugger() {
-		return this.m_debugger;
+		return this.debugger;
 	}
 
 	public Debug_Hotspots getHotspotPanel() {
-		return this.m_hotspotPanel;
+		return this.hotspotPanel;
 	}
 
 	public Debug_Listener getSource() {
-		return this.m_source;
+		return this.source;
 	}
 
 	public String getThreadName() {
-		return this.m_threadName;
+		return this.threadName;
 	}
 
 	public Debug_Tree getTreePanel() {
-		return this.m_treePanel;
+		return this.treePanel;
 	}
 
 	public boolean isCapturing() {
-		return this.m_isCapturing.isSelected();
+		return this.isCapturing.isSelected();
 	}
 
 	public boolean isFiltering() {
-		return this.m_defaultFilter.isSelected();
+		return this.defaultFilter.isSelected();
 	}
 
 	public boolean isSynchronizing() {
-		return this.m_isSynchronized.isSelected();
+		return this.isSynchronized.isSelected();
 	}
 
 	public boolean isUnfiltered() {
-		return this.m_source == null;
+		return this.source == null;
 	}
 
 	public void jump() {
 		TreePath path = this.getTreePanel().getSelectedRelativeTreePath();
-		this.m_debugger.focusOnOutput(this.m_source);
-		this.m_source.getTreePanel().showTreePath(path);
+		this.debugger.focusOnOutput(this.source);
+		this.source.getTreePanel().showTreePath(path);
 	}
 
 	public Debug_Listener promptCreateListener() {
-		Object filter = this.m_treePanel.getFirstAvailableFilter();
-		if (this.m_treePanel.getSelectedNode() != null) {
+		Object filter = this.treePanel.getFirstAvailableFilter();
+		if (this.treePanel.getSelectedNode() != null) {
 			filter = JOptionPane.showInputDialog(this, "Insert Listener Name", "Listener Creation", JOptionPane.PLAIN_MESSAGE, null, null, filter);
 		}
-		return this.m_debugger.addOutputListener(this, filter);
+		return this.debugger.addOutputListener(this, filter);
 	}
 
 	public void removeTab() {
-		for (Debug_Listener output : this.m_childOutputs) {
-			output.setSource(this.m_source);
+		for (Debug_Listener output : this.childOutputs) {
+			output.setSource(this.source);
 			output.clearTab();
 		}
-		if (this.m_debugger.getFilteringOutput() != null && this.m_debugger.getFilteringOutput().equals(this)) {
-			this.m_debugger.setFilteringOutput(null);
+		if (this.debugger.getFilteringOutput() != null && this.debugger.getFilteringOutput().equals(this)) {
+			this.debugger.setFilteringOutput(null);
 		}
 	}
 
 	public void sendToFilter() {
-		if (this.m_debugger.getFilteringOutput() == null) {
+		if (this.debugger.getFilteringOutput() == null) {
 			Debug_Listener listener;
 			listener = this.createListener();
 			if (listener == null) {
@@ -228,66 +228,66 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 		}
 		Object obj = JOptionPane.showInputDialog(this, "Insert New Filter", "Adding Filter", JOptionPane.QUESTION_MESSAGE, null, array, value);
 		if (obj != null) {
-			this.m_debugger.getFilteringOutput().getTreePanel().getFilter().addFilter(obj);
+			this.debugger.getFilteringOutput().getTreePanel().getFilter().addFilter(obj);
 		}
 	}
 
 	public void setCapturing(boolean isCapturing) {
-		this.m_isCapturing.setSelected(isCapturing);
-		if (this.m_isCapturing.isSelected()) {
-			this.m_refresh.setEnabled(false);
-			this.m_isSynchronized.setEnabled(false);
-			this.m_jump.setEnabled(false);
+		this.isCapturing.setSelected(isCapturing);
+		if (this.isCapturing.isSelected()) {
+			this.refresh.setEnabled(false);
+			this.isSynchronized.setEnabled(false);
+			this.jump.setEnabled(false);
 		} else {
-			if (!this.m_defaultFilter.isSelected()) {
-				this.m_refresh.setEnabled(true);
-				this.m_isSynchronized.setEnabled(true);
+			if (!this.defaultFilter.isSelected()) {
+				this.refresh.setEnabled(true);
+				this.isSynchronized.setEnabled(true);
 			}
-			this.m_jump.setEnabled(true);
+			this.jump.setEnabled(true);
 		}
 	}
 
 	public void setFiltering(boolean isFiltering) {
-		this.m_defaultFilter.setSelected(isFiltering);
-		if (this.m_defaultFilter.isSelected()) {
-			if (this.m_debugger.getFilteringOutput() != null) {
-				this.m_debugger.getFilteringOutput().setFiltering(false);
+		this.defaultFilter.setSelected(isFiltering);
+		if (this.defaultFilter.isSelected()) {
+			if (this.debugger.getFilteringOutput() != null) {
+				this.debugger.getFilteringOutput().setFiltering(false);
 			}
-			this.m_isSynchronized.setSelected(true);
-			this.m_isSynchronized.setEnabled(false);
-			this.m_debugger.setFilteringOutput(this);
+			this.isSynchronized.setSelected(true);
+			this.isSynchronized.setEnabled(false);
+			this.debugger.setFilteringOutput(this);
 		} else {
-			this.m_debugger.setFilteringOutput(null);
-			if (!this.m_isCapturing.isSelected()) {
-				this.m_isSynchronized.setEnabled(true);
+			this.debugger.setFilteringOutput(null);
+			if (!this.isCapturing.isSelected()) {
+				this.isSynchronized.setEnabled(true);
 			}
 		}
 	}
 
 	public void setSource(Debug_Listener source) {
-		this.m_source = source;
+		this.source = source;
 	}
 
 	// Setters
 	public void setSynchronized(boolean isSynchronized) {
-		this.m_isSynchronized.setSelected(isSynchronized);
+		this.isSynchronized.setSelected(isSynchronized);
 	}
 }
 
 class TreePathStruct {
-	private boolean m_isExpanding;
-	private TreePath m_path;
+	private boolean isExpanding;
+	private TreePath path;
 
 	public TreePathStruct(TreePath path, boolean isExpanding) {
-		this.m_path = path;
-		this.m_isExpanding = isExpanding;
+		this.path = path;
+		this.isExpanding = isExpanding;
 	}
 
 	public TreePath getPath() {
-		return this.m_path;
+		return this.path;
 	}
 
 	public boolean isExpanding() {
-		return this.m_isExpanding;
+		return this.isExpanding;
 	}
 }

@@ -1,9 +1,9 @@
 public class Point_Spherical extends Point {
 	public static final double LATITUDEMAXIMUM = 180;
 	public static final double LONGITUDEMAXIMUM = 360;
-	private double m_latitude;
-	private double m_longitude;
-	private double m_magnitude;
+	private double latitude;
+	private double longitude;
+	private double magnitude;
 
 	public Point_Spherical(ScriptEnvironment env, double longitude, double latitude, double magnitude) {
 		this(env, null, longitude, latitude, magnitude);
@@ -11,9 +11,9 @@ public class Point_Spherical extends Point {
 
 	public Point_Spherical(ScriptEnvironment env, String name, double longitude, double latitude, double magnitude) {
 		super(env, name);
-		this.m_longitude = longitude % LONGITUDEMAXIMUM;
-		this.m_latitude = latitude % LATITUDEMAXIMUM;
-		this.m_magnitude = magnitude;
+		this.longitude = longitude % LONGITUDEMAXIMUM;
+		this.latitude = latitude % LATITUDEMAXIMUM;
+		this.magnitude = magnitude;
 	}
 
 	// Object overloading
@@ -33,21 +33,21 @@ public class Point_Spherical extends Point {
 	}
 
 	public double getLatitudeDegrees() {
-		return this.m_latitude;
+		return this.latitude;
 	}
 
 	public double getLatitudeRadians() {
-		return Math.toRadians(this.m_latitude);
+		return Math.toRadians(this.latitude);
 	}
 
 	// Degrees
 	public double getLongitudeDegrees() {
-		return this.m_longitude;
+		return this.longitude;
 	}
 
 	// Radians
 	public double getLongitudeRadians() {
-		return Math.toRadians(this.m_longitude);
+		return Math.toRadians(this.longitude);
 	}
 
 	@Override
@@ -68,24 +68,24 @@ public class Point_Spherical extends Point {
 
 	@Override
 	public double getZ() {
-		return this.m_magnitude;
+		return this.magnitude;
 	}
 
 	public void setLatitudeDegrees(double latitude) {
-		this.m_latitude = latitude % LATITUDEMAXIMUM;
+		this.latitude = latitude % LATITUDEMAXIMUM;
 	}
 
 	public void setLatitudeRadians(double latitude) {
-		this.m_latitude = Math.toDegrees(latitude);
+		this.latitude = Math.toDegrees(latitude);
 		;
 	}
 
 	public void setLongitudeDegrees(double longitude) {
-		this.m_longitude = longitude % LONGITUDEMAXIMUM;
+		this.longitude = longitude % LONGITUDEMAXIMUM;
 	}
 
 	public void setLongitudeRadians(double longitude) {
-		this.m_longitude = Math.toDegrees(longitude);
+		this.longitude = Math.toDegrees(longitude);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class Point_Spherical extends Point {
 
 	@Override
 	public void setZ(double z) {
-		this.m_magnitude = z;
+		this.magnitude = z;
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class Point_Spherical extends Point {
 		if (this.getName() != null) {
 			string += this.getName();
 		}
-		string += "(" + this.m_longitude + " degrees longitude, " + this.m_latitude + " degrees latitude, " + this.m_magnitude + ")";
+		string += "(" + this.longitude + " degrees longitude, " + this.latitude + " degrees latitude, " + this.magnitude + ")";
 		return string;
 	}
 }

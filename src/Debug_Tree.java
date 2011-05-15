@@ -21,35 +21,35 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 	 * 
 	 */
 	private static final long serialVersionUID = 8224462858092721477L;
-	private Debug_Filter m_filter;
-	private boolean m_isReloading = false;
-	private JTree m_tree;
-	private JPopupMenu m_popup;
-	private JMenuItem m_copySelectedNodeGroup, m_copySelectedNodeData;
-	private Debug_TreeNode m_currentNode, m_lastChild, m_root;
+	private Debug_Filter filter;
+	private boolean isReloading = false;
+	private JTree tree;
+	private JPopupMenu popup;
+	private JMenuItem copySelectedNodeGroup, copySelectedNodeData;
+	private Debug_TreeNode currentNode, lastChild, root;
 
 	// Constructor
 	public Debug_Tree(Debug_Filter filter) {
-		this.m_filter = filter;
+		this.filter = filter;
 		this.setLayout(new GridLayout(1, 0));
-		this.add(this.m_tree = new JTree(new DefaultTreeModel(this.m_root = this.m_currentNode = new Debug_TreeNode(DebugString.OUTPUTTREE))));
-		this.m_popup = new JPopupMenu();
-		this.m_popup.add(this.m_copySelectedNodeData = new JMenuItem("Copy Selected"));
-		this.m_popup.add(this.m_copySelectedNodeGroup = new JMenuItem("Copy Selected's Group"));
-		this.m_copySelectedNodeGroup.addActionListener(this);
-		this.m_copySelectedNodeData.addActionListener(this);
-		this.m_tree.addMouseListener(this);
+		this.add(this.tree = new JTree(new DefaultTreeModel(this.root = this.currentNode = new Debug_TreeNode(DebugString.OUTPUTTREE))));
+		this.popup = new JPopupMenu();
+		this.popup.add(this.copySelectedNodeData = new JMenuItem("Copy Selected"));
+		this.popup.add(this.copySelectedNodeGroup = new JMenuItem("Copy Selected's Group"));
+		this.copySelectedNodeGroup.addActionListener(this);
+		this.copySelectedNodeData.addActionListener(this);
+		this.tree.addMouseListener(this);
 	}
 
 	// ActionListener implementation
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(this.m_copySelectedNodeGroup)) {
+		if (e.getSource().equals(this.copySelectedNodeGroup)) {
 			if (this.getSelectedNode() != null && this.getSelectedNode().getGroup() != null) {
 				StringSelection ss = new StringSelection(this.getSelectedNode().getGroup().toString());
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
 			}
-		} else if (e.getSource().equals(this.m_copySelectedNodeData)) {
+		} else if (e.getSource().equals(this.copySelectedNodeData)) {
 			if (this.getSelectedNode() != null) {
 				StringSelection ss = new StringSelection(this.getSelectedNode().getData().toString());
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
@@ -59,17 +59,17 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 
 	// Node shiz
 	public void addNode(Debug_TreeNode node) {
-		this.m_currentNode.addChild(node);
-		this.m_lastChild = node;
+		this.currentNode.addChild(node);
+		this.lastChild = node;
 		int[] array = new int[1];
-		array[0] = this.m_currentNode.getChildCount() - 1;
-		((DefaultTreeModel) this.m_tree.getModel()).nodesWereInserted(this.m_currentNode, array);
+		array[0] = this.currentNode.getChildCount() - 1;
+		((DefaultTreeModel) this.tree.getModel()).nodesWereInserted(this.currentNode, array);
 	}
 
 	public void closeNode() {
-		this.m_currentNode = (Debug_TreeNode) this.m_currentNode.getPracticalParent();
-		assert this.m_currentNode != null : "CurrentNode is null after closeNode - potentially a redundant closenode has caused us to leave the tree.";
-		if (this.m_currentNode.isRoot()) {
+		this.currentNode = (Debug_TreeNode) this.currentNode.getPracticalParent();
+		assert this.currentNode != null : "CurrentNode is null after closeNode - potentially a redundant closenode has caused us to leave the tree.";
+		if (this.currentNode.isRoot()) {
 			this.getFilter().setListening(false);
 		}
 	}
@@ -85,16 +85,16 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 	}
 
 	public Debug_TreeNode getCurrentNode() {
-		return this.m_currentNode;
+		return this.currentNode;
 	}
 
 	public Debug_TreeNode getDataByFilter(DefaultListModel data) {
-		return this.m_currentNode.filterByData(data);
+		return this.currentNode.filterByData(data);
 	}
 
 	// Quick retrievals
 	public Debug_Filter getFilter() {
-		return this.m_filter;
+		return this.filter;
 	}
 
 	public Object getFirstAvailableFilter() {
@@ -108,12 +108,12 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 	}
 
 	public Debug_TreeNode getLastNodeAdded() {
-		return this.m_lastChild;
+		return this.lastChild;
 	}
 
 	public Debug_TreeNode getSelectedNode() {
-		if (this.m_tree.getSelectionPath() != null) {
-			return (Debug_TreeNode) this.m_tree.getSelectionPath().getLastPathComponent();
+		if (this.tree.getSelectionPath() != null) {
+			return (Debug_TreeNode) this.tree.getSelectionPath().getLastPathComponent();
 		}
 		return null;
 	}
@@ -123,7 +123,7 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 		if (this.getSelectedNode() == null) {
 			return null;
 		}
-		TreePath path = ((Debug_TreeNode) this.m_tree.getSelectionPath().getLastPathComponent()).getRelativeTreePath();
+		TreePath path = ((Debug_TreeNode) this.tree.getSelectionPath().getLastPathComponent()).getRelativeTreePath();
 		if (((Debug_TreeNode) path.getPath()[0]).getData().equals((this.getCurrentNode().getRoot().getData()))) {
 			JOptionPane.showMessageDialog(null, "This node, or one of its parents, was created during a capture operation and thus has no real parent.", "Invalid Jump", JOptionPane.ERROR_MESSAGE);
 			return null;
@@ -132,18 +132,18 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 	}
 
 	public TreePath getSelectionPath() {
-		return this.m_tree.getSelectionPath();
+		return this.tree.getSelectionPath();
 	}
 
 	public boolean isReloading() {
-		return this.m_isReloading;
+		return this.isReloading;
 	}
 
 	private void maybeShowPopup(MouseEvent e) {
 		if (!e.isPopupTrigger()) {
 			return;
 		}
-		this.m_popup.show(e.getComponent(), e.getX(), e.getY());
+		this.popup.show(e.getComponent(), e.getX(), e.getY());
 	}
 
 	@Override
@@ -161,9 +161,9 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 	// MouseListener implementation
 	@Override
 	public void mousePressed(MouseEvent e) {
-		TreePath path = this.m_tree.getPathForLocation(e.getX(), e.getY());
+		TreePath path = this.tree.getPathForLocation(e.getX(), e.getY());
 		if (path != null) {
-			this.m_tree.setSelectionPath(path);
+			this.tree.setSelectionPath(path);
 		}
 		this.maybeShowPopup(e);
 	}
@@ -174,20 +174,20 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 	}
 
 	public void refresh() {
-		((DefaultTreeModel) this.m_tree.getModel()).setRoot(this.m_currentNode = this.getFilter().getListener().getSource().getTreePanel().getDataByFilter(this.getFilter().getFilters()));
+		((DefaultTreeModel) this.tree.getModel()).setRoot(this.currentNode = this.getFilter().getListener().getSource().getTreePanel().getDataByFilter(this.getFilter().getFilters()));
 	}
 
 	public void reset() {
-		((DefaultTreeModel) this.m_tree.getModel()).setRoot(this.m_currentNode = new Debug_TreeNode(DebugString.OUTPUTTREE));
+		((DefaultTreeModel) this.tree.getModel()).setRoot(this.currentNode = new Debug_TreeNode(DebugString.OUTPUTTREE));
 	}
 
 	public void setAsCurrent(Debug_TreeNode node) {
-		this.m_currentNode = node;
-		assert this.m_currentNode != null;
+		this.currentNode = node;
+		assert this.currentNode != null;
 	}
 
 	public void setSelectionPath(TreePath path) {
-		this.m_tree.setSelectionPath(path);
+		this.tree.setSelectionPath(path);
 	}
 
 	public void showTreePath(TreePath path) {
@@ -195,7 +195,7 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 		for (int i = 0; i < path.getPath().length; i++) {
 			pathList.add((Debug_TreeNode) path.getPath()[i]);
 		}
-		Debug_TreeNode node = this.m_currentNode.getRoot();
+		Debug_TreeNode node = this.currentNode.getRoot();
 		if (!node.equals(pathList.get(0))) {
 			assert false : "Invalid path (Roots do not match) Root: " + node.getData() + " OtherRoot: " + pathList.get(0);
 		}
@@ -228,7 +228,7 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 		} else {
 			path = new TreePath(pathList.toArray());
 		}
-		this.m_tree.setSelectionPath(path);
-		this.m_tree.makeVisible(path);
+		this.tree.setSelectionPath(path);
+		this.tree.makeVisible(path);
 	}
 }

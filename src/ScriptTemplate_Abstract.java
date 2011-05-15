@@ -2,21 +2,21 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, Nodeable {
-	private final ScriptEnvironment m_environment;
-	private final ScriptValueType m_type;
-	private ScriptValueType m_extended;
-	private List<ScriptValueType> m_interfaces;
+	private final ScriptEnvironment environment;
+	private final ScriptValueType type;
+	private ScriptValueType extended;
+	private List<ScriptValueType> interfaces;
 
 	public ScriptTemplate_Abstract(ScriptEnvironment env, ScriptValueType type) {
-		this.m_environment = env;
-		this.m_type = type;
+		this.environment = env;
+		this.type = type;
 	}
 
 	public ScriptTemplate_Abstract(ScriptEnvironment env, ScriptValueType type, ScriptValueType extended, List<ScriptValueType> interfaces) {
-		this.m_environment = env;
-		this.m_type = type;
-		this.m_extended = extended;
-		this.m_interfaces = interfaces;
+		this.environment = env;
+		this.type = type;
+		this.extended = extended;
+		this.interfaces = interfaces;
 	}
 
 	public abstract void addFunction(Referenced ref, String name, ScriptFunction_Abstract function) throws Exception_Nodeable;
@@ -42,7 +42,7 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 	// Abstract-value implementation
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	public ScriptTemplate_Abstract getExtendedClass() {
@@ -50,11 +50,11 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
 			return this.getEnvironment().getTemplate(this.getType()).getExtendedClass();
 		}
-		if (this.m_extended == null) {
+		if (this.extended == null) {
 			return null;
 		}
-		assert this.getEnvironment().getTemplate(this.m_extended) != null : "Extended class is null!";
-		return this.getEnvironment().getTemplate(this.m_extended);
+		assert this.getEnvironment().getTemplate(this.extended) != null : "Extended class is null!";
+		return this.getEnvironment().getTemplate(this.extended);
 	}
 
 	public abstract ScriptFunction_Abstract getFunction(String name, List<ScriptValue_Abstract> params);
@@ -67,14 +67,14 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
 			return this.getEnvironment().getTemplate(this.getType()).getInterfaces();
 		}
-		return Collections.unmodifiableList(this.m_interfaces);
+		return Collections.unmodifiableList(this.interfaces);
 	}
 
 	public abstract ScriptValue_Variable getStaticReference() throws Exception_Nodeable;
 
 	@Override
 	public ScriptValueType getType() {
-		return this.m_type;
+		return this.type;
 	}
 
 	@Override

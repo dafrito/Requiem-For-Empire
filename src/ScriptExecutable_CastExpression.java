@@ -1,11 +1,11 @@
 public class ScriptExecutable_CastExpression extends ScriptElement implements ScriptExecutable, ScriptValue_Abstract, Nodeable {
-	private ScriptExecutable m_castExpression;
-	private ScriptValueType m_type;
+	private ScriptExecutable castExpression;
+	private ScriptValueType type;
 
 	public ScriptExecutable_CastExpression(Referenced ref, ScriptValueType type, ScriptExecutable exec) {
 		super(ref);
-		this.m_castExpression = exec;
-		this.m_type = type;
+		this.castExpression = exec;
+		this.type = type;
 	}
 
 	@Override
@@ -16,10 +16,10 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		ScriptValue_Abstract left = this.m_castExpression.execute().getValue();
+		ScriptValue_Abstract left = this.castExpression.execute().getValue();
 		assert Debugger.openNode("Cast Expression Executions", "Executing cast to " + this.getType());
 		assert Debugger.addSnapNode("Value", left);
-		ScriptValue_Abstract value = this.m_castExpression.execute().castToType(this, this.getType());
+		ScriptValue_Abstract value = this.castExpression.execute().castToType(this, this.getType());
 		assert Debugger.closeNode();
 		return value;
 	}
@@ -27,7 +27,7 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 	// Abstract-value implementation
 	@Override
 	public ScriptValueType getType() {
-		return this.m_type;
+		return this.type;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 	public boolean nodificate() {
 		assert Debugger.openNode("Script Cast Expression (To type: " + this.getType() + ")");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Cast Expression", this.m_castExpression);
+		assert Debugger.addSnapNode("Cast Expression", this.castExpression);
 		assert Debugger.closeNode();
 		return true;
 	}

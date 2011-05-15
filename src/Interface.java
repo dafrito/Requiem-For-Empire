@@ -28,43 +28,43 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	private static final long serialVersionUID = 8097618780874029519L;
 	private static final int HEIGHT = 600;
 	private static final int WIDTH = 800;
-	private ScriptEnvironment m_environment;
-	private InterfaceElement_Root m_rootElement;
-	private int m_lastX, m_lastY;
-	private java.util.List<RiffInterface_Event> m_queuedEvents = new LinkedList<RiffInterface_Event>();
-	private RiffInterface_MouseListener.MouseButton m_lastButton;
-	private boolean m_ignoreMemoryWarning;
-	private BufferedImage m_buffer, m_backBuffer;
-	private long m_secondBegin;
-	private int m_lastIteration;
-	private int m_iterations;
-	private boolean m_emergencyStop;
-	private JFrame m_frame;
-	private PainterThread m_painter;
+	private ScriptEnvironment environment;
+	private InterfaceElement_Root rootElement;
+	private int lastX, lastY;
+	private java.util.List<RiffInterface_Event> queuedEvents = new LinkedList<RiffInterface_Event>();
+	private RiffInterface_MouseListener.MouseButton lastButton;
+	private boolean ignoreMemoryWarning;
+	private BufferedImage buffer, backBuffer;
+	private long secondBegin;
+	private int lastIteration;
+	private int iterations;
+	private boolean emergencyStop;
+	private JFrame frame;
+	private PainterThread painter;
 
 	public Interface(ScriptEnvironment env) {
-		this.m_frame = new JFrame("Requiem for Empire");
-		this.m_frame.setSize(WIDTH, HEIGHT);
-		this.m_frame.setContentPane(this);
-		this.m_frame.addWindowListener(this);
-		this.m_frame.addComponentListener(this);
-		this.m_frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		this.m_frame.setVisible(true);
-		this.m_frame.addKeyListener(this);
-		this.m_environment = env;
-		this.m_rootElement = new InterfaceElement_Root(env, this);
+		this.frame = new JFrame("Requiem for Empire");
+		this.frame.setSize(WIDTH, HEIGHT);
+		this.frame.setContentPane(this);
+		this.frame.addWindowListener(this);
+		this.frame.addComponentListener(this);
+		this.frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		this.frame.setVisible(true);
+		this.frame.addKeyListener(this);
+		this.environment = env;
+		this.rootElement = new InterfaceElement_Root(env, this);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		this.m_buffer = (BufferedImage) this.createImage(this.m_frame.getContentPane().getWidth(), this.m_frame.getContentPane().getHeight());
-		this.m_backBuffer = (BufferedImage) this.createImage(this.m_frame.getContentPane().getWidth(), this.m_frame.getContentPane().getHeight());
+		this.buffer = (BufferedImage) this.createImage(this.frame.getContentPane().getWidth(), this.frame.getContentPane().getHeight());
+		this.backBuffer = (BufferedImage) this.createImage(this.frame.getContentPane().getWidth(), this.frame.getContentPane().getHeight());
 		boolean flag = false;
 		assert flag = true;
 		if (flag) {
-			this.m_painter = new PainterThread(this, 200);
+			this.painter = new PainterThread(this, 200);
 		} else {
-			this.m_painter = new PainterThread(this, 1000 / 60);
+			this.painter = new PainterThread(this, 1000 / 60);
 		}
-		this.m_painter.start();
+		this.painter.start();
 	}
 
 	protected void clear(Graphics g) {
@@ -81,9 +81,9 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		if (this.m_buffer.getWidth() != this.getWidth() || this.m_buffer.getHeight() != this.getHeight()) {
-			this.m_buffer = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
-			this.m_backBuffer = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
+		if (this.buffer.getWidth() != this.getWidth() || this.buffer.getHeight() != this.getHeight()) {
+			this.buffer = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
+			this.backBuffer = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
 		}
 	}
 
@@ -92,47 +92,47 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	}
 
 	public synchronized void flushQueue() {
-		assert Debugger.addNode("Flushing Event Queue (" + this.m_queuedEvents.size() + " event(s))");
+		assert Debugger.addNode("Flushing Event Queue (" + this.queuedEvents.size() + " event(s))");
 		List<RiffInterface_Event> flushQueue = new LinkedList<RiffInterface_Event>();
-		flushQueue.addAll(this.m_queuedEvents);
-		this.m_queuedEvents.removeAll(flushQueue);
+		flushQueue.addAll(this.queuedEvents);
+		this.queuedEvents.removeAll(flushQueue);
 		for (int i = 0; i < flushQueue.size(); i++) {
-			this.m_rootElement.dispatchEvent(flushQueue.get(i));
+			this.rootElement.dispatchEvent(flushQueue.get(i));
 		}
 	}
 
 	public BufferedImage getBackBuffer() {
-		return this.m_backBuffer;
+		return this.backBuffer;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	public JFrame getFrame() {
-		return this.m_frame;
+		return this.frame;
 	}
 
 	public BufferedImage getFrontBuffer() {
-		return this.m_buffer;
+		return this.buffer;
 	}
 
 	public InterfaceElement_Root getRoot() {
-		return this.m_rootElement;
+		return this.rootElement;
 	}
 
 	@Override
 	public synchronized void keyPressed(KeyEvent e) {
 		KeyEvent_KeyDown event = new KeyEvent_KeyDown(e.getKeyCode());
 		assert Debugger.addNode(event);
-		this.m_queuedEvents.add(event);
+		this.queuedEvents.add(event);
 	}
 
 	@Override
 	public synchronized void keyReleased(KeyEvent e) {
 		KeyEvent_KeyUp event = new KeyEvent_KeyUp(e.getKeyCode());
 		assert Debugger.addNode(event);
-		this.m_queuedEvents.add(event);
+		this.queuedEvents.add(event);
 	}
 
 	@Override
@@ -143,26 +143,26 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	public synchronized void mouseClicked(MouseEvent e) {
 		RiffInterface_ClickEvent event = new RiffInterface_ClickEvent(e.getX(), e.getY(), RiffJavaToolbox.getRiffButton(e.getButton()), e.getClickCount());
 		assert Debugger.addNode(event);
-		this.m_queuedEvents.add(event);
-		this.m_lastX = e.getX();
-		this.m_lastY = e.getY();
-		this.m_lastButton = RiffJavaToolbox.getRiffButton(e.getButton());
+		this.queuedEvents.add(event);
+		this.lastX = e.getX();
+		this.lastY = e.getY();
+		this.lastButton = RiffJavaToolbox.getRiffButton(e.getButton());
 	}
 
 	@Override
 	public synchronized void mouseDragged(MouseEvent e) {
-		double distance = RiffToolbox.getDistance(this.m_lastX, this.m_lastY, e.getX(), e.getY());
-		if (e.getX() - this.m_lastX < 0) {
+		double distance = RiffToolbox.getDistance(this.lastX, this.lastY, e.getX(), e.getY());
+		if (e.getX() - this.lastX < 0) {
 			distance *= -1;
 		}
-		if (e.getX() == this.m_lastX && e.getY() - this.m_lastY < 0 && distance > 0) {
+		if (e.getX() == this.lastX && e.getY() - this.lastY < 0 && distance > 0) {
 			distance *= -1;
 		}
-		RiffInterface_DragEvent event = new RiffInterface_DragEvent(e.getX(), e.getY(), this.m_lastButton, e.getX() - this.m_lastX, e.getY() - this.m_lastY, distance);
+		RiffInterface_DragEvent event = new RiffInterface_DragEvent(e.getX(), e.getY(), this.lastButton, e.getX() - this.lastX, e.getY() - this.lastY, distance);
 		assert Debugger.addNode(event);
-		this.m_queuedEvents.add(event);
-		this.m_lastX = e.getX();
-		this.m_lastY = e.getY();
+		this.queuedEvents.add(event);
+		this.lastX = e.getX();
+		this.lastY = e.getY();
 	}
 
 	@Override
@@ -181,24 +181,24 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	public synchronized void mousePressed(MouseEvent e) {
 		RiffInterface_MouseDownEvent event = new RiffInterface_MouseDownEvent(e.getX(), e.getY(), RiffJavaToolbox.getRiffButton(e.getButton()));
 		assert Debugger.addNode(event);
-		this.m_queuedEvents.add(event);
-		this.m_lastX = e.getX();
-		this.m_lastY = e.getY();
-		this.m_lastButton = RiffJavaToolbox.getRiffButton(e.getButton());
+		this.queuedEvents.add(event);
+		this.lastX = e.getX();
+		this.lastY = e.getY();
+		this.lastButton = RiffJavaToolbox.getRiffButton(e.getButton());
 	}
 
 	@Override
 	public synchronized void mouseReleased(MouseEvent e) {
 		RiffInterface_MouseUpEvent event = new RiffInterface_MouseUpEvent(e.getX(), e.getY(), RiffJavaToolbox.getRiffButton(e.getButton()));
 		assert Debugger.addNode(event);
-		this.m_queuedEvents.add(event);
-		this.m_lastX = -1;
-		this.m_lastY = -1;
+		this.queuedEvents.add(event);
+		this.lastX = -1;
+		this.lastY = -1;
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(this.m_buffer, 0, 0, null);
+		g.drawImage(this.buffer, 0, 0, null);
 		g.dispose();
 	}
 
@@ -208,22 +208,22 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	}
 
 	public synchronized void updateBufferedImage() {
-		if (this.m_emergencyStop) {
+		if (this.emergencyStop) {
 			return;
 		}
-		if (this.m_secondBegin == 0) {
-			this.m_secondBegin = System.currentTimeMillis();
+		if (this.secondBegin == 0) {
+			this.secondBegin = System.currentTimeMillis();
 		}
-		if (System.currentTimeMillis() > this.m_secondBegin + 1000) {
-			this.m_secondBegin = System.currentTimeMillis();
-			this.m_lastIteration = this.m_iterations;
-			this.m_iterations = 0;
+		if (System.currentTimeMillis() > this.secondBegin + 1000) {
+			this.secondBegin = System.currentTimeMillis();
+			this.lastIteration = this.iterations;
+			this.iterations = 0;
 		}
-		this.m_iterations++;
-		if (this.m_backBuffer == null) {
+		this.iterations++;
+		if (this.backBuffer == null) {
 			return;
 		}
-		Graphics g = this.m_backBuffer.getGraphics();
+		Graphics g = this.backBuffer.getGraphics();
 		try {
 			if (Debugger.isResetting()) {
 				return;
@@ -231,30 +231,30 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 			if (Debugger.atFullAllocation() && Debugger.getFreePercentage() > 50) {
 				Debugger.setExceptionsMode(true);
 			}
-			if (!this.m_ignoreMemoryWarning && Debugger.atFullAllocation() && Debugger.getFreePercentage() < 20) {
+			if (!this.ignoreMemoryWarning && Debugger.atFullAllocation() && Debugger.getFreePercentage() < 20) {
 				System.gc();
 				if (Debugger.getFreePercentage() > 20) {
 					return;
 				}
 				Debugger.report();
-				this.m_emergencyStop = true;
+				this.emergencyStop = true;
 				int option = JOptionPane.showConfirmDialog(null, "Memory usage exceeds 80% of full allocation. Reset debug tree?", "Memory Warning (" + Debugger.getFreePercentage() + "% free)", JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.YES_OPTION) {
 					Debugger.reset();
-					this.m_emergencyStop = false;
+					this.emergencyStop = false;
 				} else {
-					this.m_ignoreMemoryWarning = true;
-					this.m_emergencyStop = false;
+					this.ignoreMemoryWarning = true;
+					this.emergencyStop = false;
 				}
 			}
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			this.m_rootElement.paint(g2d);
+			this.rootElement.paint(g2d);
 			g2d.setColor(Color.WHITE);
-			g2d.drawString("" + this.m_lastIteration + " fps", this.getWidth() / 2, 20);
+			g2d.drawString("" + this.lastIteration + " fps", this.getWidth() / 2, 20);
 			g2d.dispose();
 		} catch (Exception ex) {
-			throw new Exception_InternalError(this.m_rootElement.getEnvironment(), ex);
+			throw new Exception_InternalError(this.rootElement.getEnvironment(), ex);
 		}
 	}
 
@@ -268,7 +268,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		this.m_painter.stopLoop();
+		this.painter.stopLoop();
 	}
 
 	@Override
@@ -289,31 +289,31 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 }
 
 class PainterThread extends Thread {
-	private Interface m_interface;
-	private static int m_threadNum = 0;
-	private volatile boolean m_shouldDraw = true;
-	private static int m_delay;
+	private Interface riffInterface;
+	private static int threadNum = 0;
+	private volatile boolean shouldDraw = true;
+	private static int delay;
 
 	public PainterThread(Interface riffInterface, int delay) {
-		super("Painter " + m_threadNum++);
-		this.m_interface = riffInterface;
-		m_delay = delay;
+		super("Painter " + threadNum++);
+		this.riffInterface = riffInterface;
+		PainterThread.delay = delay;
 	}
 
 	@Override
 	public void run() {
 		try {
-			while (this.m_shouldDraw) {
+			while (this.shouldDraw) {
 				//Debugger.hitStopWatch(Thread.currentThread().getName());
-				this.m_interface.getFrontBuffer().getGraphics().drawImage(this.m_interface.getBackBuffer(), 0, 0, null);
-				this.m_interface.flushQueue();
-				this.m_interface.updateBufferedImage();
-				this.m_interface.repaint();
-				Thread.sleep(m_delay);
+				this.riffInterface.getFrontBuffer().getGraphics().drawImage(this.riffInterface.getBackBuffer(), 0, 0, null);
+				this.riffInterface.flushQueue();
+				this.riffInterface.updateBufferedImage();
+				this.riffInterface.repaint();
+				Thread.sleep(delay);
 			}
 		} catch (RuntimeException ex) {
 			this.stopLoop();
-			this.m_interface.getFrame().dispose();
+			this.riffInterface.getFrame().dispose();
 			throw ex;
 		} catch (InterruptedException ex) {
 		} finally {
@@ -322,7 +322,7 @@ class PainterThread extends Thread {
 	}
 
 	public void stopLoop() {
-		this.m_shouldDraw = false;
-		this.m_interface.getEnvironment().stopExecution();
+		this.shouldDraw = false;
+		this.riffInterface.getEnvironment().stopExecution();
 	}
 }

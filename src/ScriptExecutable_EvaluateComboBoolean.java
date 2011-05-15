@@ -1,12 +1,12 @@
 public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement implements ScriptValue_Abstract, ScriptExecutable, Nodeable {
-	private ScriptValue_Abstract m_lhs, m_rhs;
-	private ScriptOperatorType m_operator;
+	private ScriptValue_Abstract lhs, rhs;
+	private ScriptOperatorType operator;
 
 	public ScriptExecutable_EvaluateComboBoolean(Referenced ref, ScriptValue_Abstract lhs, ScriptValue_Abstract rhs, ScriptOperatorType operator) {
 		super(ref);
-		this.m_lhs = lhs;
-		this.m_rhs = rhs;
-		this.m_operator = operator;
+		this.lhs = lhs;
+		this.rhs = rhs;
+		this.operator = operator;
 	}
 
 	@Override
@@ -17,17 +17,17 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		assert Debugger.openNode("Combo-Boolean Evaluations", "Evaluating Combo-Boolean Expression (" + ScriptOperator.getName(this.m_operator) + ")");
+		assert Debugger.openNode("Combo-Boolean Evaluations", "Evaluating Combo-Boolean Expression (" + ScriptOperator.getName(this.operator) + ")");
 		assert Debugger.addNode(this);
-		if (this.m_lhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
-			throw new Exception_Nodeable_ClassCast(this, this.m_lhs, ScriptValueType.BOOLEAN);
+		if (this.lhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
+			throw new Exception_Nodeable_ClassCast(this, this.lhs, ScriptValueType.BOOLEAN);
 		}
-		if (this.m_rhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
-			throw new Exception_Nodeable_ClassCast(this, this.m_rhs, ScriptValueType.BOOLEAN);
+		if (this.rhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
+			throw new Exception_Nodeable_ClassCast(this, this.rhs, ScriptValueType.BOOLEAN);
 		}
-		ScriptValue_Boolean lhs = (ScriptValue_Boolean) this.m_lhs.getValue();
-		ScriptValue_Boolean rhs = (ScriptValue_Boolean) this.m_rhs.getValue();
-		switch (this.m_operator) {
+		ScriptValue_Boolean lhs = (ScriptValue_Boolean) this.lhs.getValue();
+		ScriptValue_Boolean rhs = (ScriptValue_Boolean) this.rhs.getValue();
+		switch (this.operator) {
 		case AND:
 			return new ScriptValue_Boolean(this.getEnvironment(), (lhs.getBooleanValue() && rhs.getBooleanValue()));
 		case OR:
@@ -39,7 +39,7 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	// ScriptValue_Abstract implementation
 	@Override
 	public ScriptValueType getType() {
-		return this.m_lhs.getType();
+		return this.lhs.getType();
 	}
 
 	@Override
@@ -57,8 +57,8 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	public boolean nodificate() {
 		assert Debugger.openNode("Combo Boolean Expression");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Left side", this.m_lhs);
-		assert Debugger.addSnapNode("Right side", this.m_rhs);
+		assert Debugger.addSnapNode("Left side", this.lhs);
+		assert Debugger.addSnapNode("Right side", this.rhs);
 		assert Debugger.closeNode();
 		return true;
 	}

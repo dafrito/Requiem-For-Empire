@@ -1,10 +1,10 @@
 public class ScriptValue_String implements ScriptValue_Abstract, ScriptConvertible, Nodeable {
-	private String m_value;
-	private final ScriptEnvironment m_environment;
+	private String value;
+	private final ScriptEnvironment environment;
 
 	public ScriptValue_String(ScriptEnvironment env, String string) {
-		this.m_environment = env;
-		this.m_value = string;
+		this.environment = env;
+		this.value = string;
 	}
 
 	@Override
@@ -19,17 +19,17 @@ public class ScriptValue_String implements ScriptValue_Abstract, ScriptConvertib
 	// Interface implementations
 	@Override
 	public Object convert() {
-		return new String(this.m_value);
+		return new String(this.value);
 	}
 
 	// Abstract-value implementation
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	public String getStringValue() {
-		return this.m_value;
+		return this.value;
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class ScriptValue_String implements ScriptValue_Abstract, ScriptConvertib
 	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
 		assert Debugger.openNode("Value Assignments", "Setting String Value");
 		assert Debugger.addSnapNode("Former value", this);
-		this.m_value = ((ScriptValue_String) value.castToType(ref, this.getType())).getStringValue();
+		this.value = ((ScriptValue_String) value.castToType(ref, this.getType())).getStringValue();
 		assert Debugger.closeNode("New value", this);
 		return this;
 	}

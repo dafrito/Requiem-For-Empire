@@ -1,8 +1,8 @@
 public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
-	private ScriptValue_Abstract m_value;
-	private final ScriptKeywordType m_permission;
-	private final ScriptEnvironment m_environment;
-	private final ScriptValueType m_type;
+	private ScriptValue_Abstract value;
+	private final ScriptKeywordType permission;
+	private final ScriptEnvironment environment;
+	private final ScriptValueType type;
 
 	public ScriptValue_Variable(ScriptEnvironment env, ScriptValue_Abstract value, ScriptKeywordType permission) throws Exception_Nodeable {
 		this(env, value.getType(), value, permission);
@@ -13,13 +13,13 @@ public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
 	}
 
 	public ScriptValue_Variable(ScriptEnvironment env, ScriptValueType type, ScriptValue_Abstract value, ScriptKeywordType permission) throws Exception_Nodeable {
-		this.m_environment = env;
-		this.m_permission = permission;
-		this.m_type = type;
+		this.environment = env;
+		this.permission = permission;
+		this.type = type;
 		if (value == null) {
-			this.m_value = ScriptValue.createUninitializedObject(env, type);
+			this.value = ScriptValue.createUninitializedObject(env, type);
 		} else {
-			this.m_value = value;
+			this.value = value;
 		}
 	}
 
@@ -34,16 +34,16 @@ public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
 	// Abstract-value implementation
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	public ScriptKeywordType getPermission() throws Exception_Nodeable {
-		return this.m_permission;
+		return this.permission;
 	}
 
 	@Override
 	public ScriptValueType getType() {
-		return this.m_type;
+		return this.type;
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
 		assert Debugger.openNode("Variable Value Retrievals", "Retrieving Variable's Value");
 		assert Debugger.addNode(this);
 		ScriptValue_Abstract returning;
-		if (this.m_value != null) {
-			returning = this.m_value.getValue();
+		if (this.value != null) {
+			returning = this.value.getValue();
 		} else {
 			returning = null;
 		}
@@ -69,15 +69,15 @@ public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Script Variable (" + this.getType() + ")");
-		if (this.m_value != null) {
-			assert Debugger.addSnapNode("Referenced element (" + this.m_value.getType() + ")", this.m_value);
+		if (this.value != null) {
+			assert Debugger.addSnapNode("Referenced element (" + this.value.getType() + ")", this.value);
 		} else {
 			assert Debugger.addNode(DebugString.REFERENCEDELEMENTNULL);
 		}
-		if (this.m_permission == null) {
+		if (this.permission == null) {
 			Debugger.addNode(DebugString.PERMISSIONNULL);
 		} else {
-			switch (this.m_permission) {
+			switch (this.permission) {
 			case PRIVATE:
 				assert Debugger.addNode(DebugString.PERMISSIONPRIVATE);
 				break;
@@ -100,18 +100,18 @@ public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
 			value = value.getValue();
 			assert Debugger.closeNode("Value", value);
 			if (value == null) {
-				this.m_value = null;
+				this.value = null;
 			} else {
-				this.m_value = value.castToType(ref, this.getType());
+				this.value = value.castToType(ref, this.getType());
 			}
 			assert Debugger.closeNode("Reference assignment operation completed", this);
-			return this.m_value;
+			return this.value;
 		}
 		assert Debugger.openNode("Assigning value...");
-		this.m_value = this.m_value.setValue(ref, value.castToType(ref, this.getType()));
+		this.value = this.value.setValue(ref, value.castToType(ref, this.getType()));
 		assert Debugger.closeNode();
 		assert Debugger.closeNode("Value assignment operation completed", this);
-		return this.m_value;
+		return this.value;
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
 
 	@Override
 	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		if (this.m_value == null || this.m_value.getValue() == null || this.m_value.getValue() instanceof ScriptValue_Null) {
+		if (this.value == null || this.value.getValue() == null || this.value.getValue() instanceof ScriptValue_Null) {
 			return (rhs == null || rhs instanceof ScriptValue_Null);
 		}
 		return this.getValue().valuesEqual(ref, rhs);

@@ -18,35 +18,35 @@ public class Debug_Hotspots extends JPanel implements ActionListener, MouseListe
 	 * 
 	 */
 	private static final long serialVersionUID = -6430758815840883100L;
-	private Debug_Tree m_treePanel;
-	private DefaultListModel m_treePaths;
-	private JList m_hotspots;
-	private JButton m_createHotspot, m_showHotspot, m_removeHotspot;
+	private Debug_Tree treePanel;
+	private DefaultListModel treePaths;
+	private JList hotspots;
+	private JButton createHotspot, showHotspot, removeHotspot;
 
 	public Debug_Hotspots(Debug_Tree tree) {
-		this.m_treePanel = tree;
+		this.treePanel = tree;
 		this.setLayout(new BorderLayout());
-		this.add(new JScrollPane(this.m_hotspots = new JList(this.m_treePaths = new DefaultListModel())));
+		this.add(new JScrollPane(this.hotspots = new JList(this.treePaths = new DefaultListModel())));
 		// Set up hotspot-buttons
 		JPanel hotspotButtons = new JPanel();
 		this.add(hotspotButtons, BorderLayout.NORTH);
 		hotspotButtons.setLayout(new GridLayout(3, 0));
-		hotspotButtons.add(this.m_showHotspot = new JButton("Show Hotspot"));
-		hotspotButtons.add(this.m_createHotspot = new JButton("Create Hotspot"));
-		hotspotButtons.add(this.m_removeHotspot = new JButton("Remove Hotspot"));
-		this.m_hotspots.addMouseListener(this);
-		this.m_showHotspot.addActionListener(this);
-		this.m_createHotspot.addActionListener(this);
-		this.m_removeHotspot.addActionListener(this);
+		hotspotButtons.add(this.showHotspot = new JButton("Show Hotspot"));
+		hotspotButtons.add(this.createHotspot = new JButton("Create Hotspot"));
+		hotspotButtons.add(this.removeHotspot = new JButton("Remove Hotspot"));
+		this.hotspots.addMouseListener(this);
+		this.showHotspot.addActionListener(this);
+		this.createHotspot.addActionListener(this);
+		this.removeHotspot.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		if (event.getSource().equals(this.m_showHotspot)) {
-			if (this.m_hotspots.getSelectedValue() != null) {
-				this.getTreePanel().showTreePath((TreePath) this.m_hotspots.getSelectedValue());
+		if (event.getSource().equals(this.showHotspot)) {
+			if (this.hotspots.getSelectedValue() != null) {
+				this.getTreePanel().showTreePath((TreePath) this.hotspots.getSelectedValue());
 			}
-		} else if (event.getSource().equals(this.m_createHotspot)) {
+		} else if (event.getSource().equals(this.createHotspot)) {
 			String string;
 			if (this.getTreePanel().getSelectionPath() == null) {
 				return;
@@ -61,10 +61,10 @@ public class Debug_Hotspots extends JPanel implements ActionListener, MouseListe
 					string = null;
 				}
 			} while (string == null);
-			this.m_treePaths.addElement(new NamedTreePath(string, this.getTreePanel().getSelectionPath()));
-		} else if (event.getSource().equals(this.m_removeHotspot)) {
-			if (this.m_hotspots.getSelectedValue() != null) {
-				this.m_treePaths.remove(this.m_hotspots.getSelectedIndex());
+			this.treePaths.addElement(new NamedTreePath(string, this.getTreePanel().getSelectionPath()));
+		} else if (event.getSource().equals(this.removeHotspot)) {
+			if (this.hotspots.getSelectedValue() != null) {
+				this.treePaths.remove(this.hotspots.getSelectedIndex());
 			}
 		}
 	}
@@ -74,18 +74,18 @@ public class Debug_Hotspots extends JPanel implements ActionListener, MouseListe
 	}
 
 	public void createHotspot(TreePath path) {
-		this.m_treePaths.addElement(path);
+		this.treePaths.addElement(path);
 	}
 
 	public Debug_Tree getTreePanel() {
-		return this.m_treePanel;
+		return this.treePanel;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
-			if (this.m_hotspots.getSelectedValue() != null) {
-				this.getTreePanel().showTreePath((TreePath) this.m_hotspots.getSelectedValue());
+			if (this.hotspots.getSelectedValue() != null) {
+				this.getTreePanel().showTreePath((TreePath) this.hotspots.getSelectedValue());
 			}
 		}
 	}
@@ -107,6 +107,6 @@ public class Debug_Hotspots extends JPanel implements ActionListener, MouseListe
 	}
 
 	public void reset() {
-		this.m_treePaths.clear();
+		this.treePaths.clear();
 	}
 }

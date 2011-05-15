@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String TERRESTRIALSTRING = "Terrestrial";
-	private Terrestrial m_terrestrial;
+	private Terrestrial terrestrial;
 
 	public FauxTemplate_Terrestrial(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, TERRESTRIALSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -53,7 +53,7 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 	}
 
 	public Terrestrial getTerrestrial() {
-		return this.m_terrestrial;
+		return this.terrestrial;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -95,6 +95,6 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 	}
 
 	public void setTerrestrial(Terrestrial terrestrial) {
-		this.m_terrestrial = terrestrial;
+		this.terrestrial = terrestrial;
 	}
 }

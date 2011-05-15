@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, ScriptConvertible {
 	public static final String SCHEDULERSTRING = "Scheduler";
-	private Scheduler m_scheduler;
+	private Scheduler scheduler;
 
 	public FauxTemplate_Scheduler(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, SCHEDULERSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -16,7 +16,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 	// Nodeable implementation
 	@Override
 	public Object convert() {
-		return this.m_scheduler;
+		return this.scheduler;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -63,7 +63,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 	}
 
 	public Scheduler getScheduler() {
-		return this.m_scheduler;
+		return this.scheduler;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -104,12 +104,12 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 	public boolean nodificate() {
 		assert Debugger.openNode("Scheduler Faux Template");
 		assert super.nodificate();
-		assert Debugger.addNode(this.m_scheduler);
+		assert Debugger.addNode(this.scheduler);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setScheduler(Scheduler scheduler) {
-		this.m_scheduler = scheduler;
+		this.scheduler = scheduler;
 	}
 }

@@ -7,22 +7,22 @@ import java.util.List;
 import java.util.Set;
 
 public class InterfaceElement_Panel extends InterfaceElement implements Interface_Container, RiffInterface_MouseListener, Nodeable, ScriptConvertible {
-	private List<GraphicalElement> m_elements;
-	private Point_Euclidean m_offset;
-	private Terrestrial m_terrestrial;
-	private ScriptTemplate_Abstract m_dali;
-	private Graphics2D m_graphics;
+	private List<GraphicalElement> elements;
+	private Point_Euclidean offset;
+	private Terrestrial terrestrial;
+	private ScriptTemplate_Abstract dali;
+	private Graphics2D graphics;
 
 	public InterfaceElement_Panel(ScriptEnvironment env, Stylesheet uniqueStyle, Stylesheet classStyle) {
 		super(env, uniqueStyle, classStyle);
-		this.m_offset = new Point_Euclidean(env, 0, 0, 0);
-		this.m_elements = new LinkedList<GraphicalElement>();
-		this.m_dali = env.getTemplate(FauxTemplate_RiffDali.RIFFDALISTRING);
+		this.offset = new Point_Euclidean(env, 0, 0, 0);
+		this.elements = new LinkedList<GraphicalElement>();
+		this.dali = env.getTemplate(FauxTemplate_RiffDali.RIFFDALISTRING);
 	}
 
 	@Override
 	public void add(GraphicalElement element) {
-		this.m_elements.add(element);
+		this.elements.add(element);
 		element.setParent(this);
 		if (this.getRoot() != null) {
 			this.getRoot().repaint();
@@ -40,7 +40,7 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 
 	@Override
 	public void clear() {
-		this.m_elements.clear();
+		this.elements.clear();
 	}
 
 	// ScriptConvertible implementation
@@ -82,19 +82,19 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 
 	@Override
 	public List<GraphicalElement> getElements() {
-		return Collections.unmodifiableList(this.m_elements);
+		return Collections.unmodifiableList(this.elements);
 	}
 
 	public Graphics2D getGraphics() {
-		return this.m_graphics;
+		return this.graphics;
 	}
 
 	public Point getOffset() {
-		return this.m_offset;
+		return this.offset;
 	}
 
 	public Terrestrial getTerrestrial() {
-		return this.m_terrestrial;
+		return this.terrestrial;
 	}
 
 	@Override
@@ -107,8 +107,8 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 	public boolean nodificate() {
 		assert Debugger.openNode("Panel Interface Element");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Terrestrial", this.m_terrestrial);
-		assert Debugger.addSnapNode("Graphical Elements: (" + this.m_elements.size() + " element(s))", this.m_elements);
+		assert Debugger.addSnapNode("Terrestrial", this.terrestrial);
+		assert Debugger.addSnapNode("Graphical Elements: (" + this.elements.size() + " element(s))", this.elements);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -116,17 +116,17 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 	@Override
 	public void paint(Graphics2D g2d) {
 		Set<DiscreteRegion> regions;
-		this.m_graphics = g2d;
-		if (this.m_terrestrial.getTree() == null) {
+		this.graphics = g2d;
+		if (this.terrestrial.getTree() == null) {
 			regions = new HashSet<DiscreteRegion>();
 		} else {
-			regions = this.m_terrestrial.getTree().getRegionList();
+			regions = this.terrestrial.getTree().getRegionList();
 		}
-		assert Debugger.openNode("Painting Panel Elements (" + this.m_elements.size() + " element(s), " + regions.size() + " region(s))");
+		assert Debugger.openNode("Painting Panel Elements (" + this.elements.size() + " element(s), " + regions.size() + " region(s))");
 		super.paint(g2d);
-		assert Debugger.addNode("X-offset: " + this.m_offset.getX());
-		assert Debugger.addNode("Y-offset: " + this.m_offset.getY());
-		assert Debugger.addNode("Zoom factor: " + this.m_offset.getZ());
+		assert Debugger.addNode("X-offset: " + this.offset.getX());
+		assert Debugger.addNode("Y-offset: " + this.offset.getY());
+		assert Debugger.addNode("Zoom factor: " + this.offset.getZ());
 		try {
 			List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
 			params.add((ScriptValue_Abstract) this.convert());
@@ -142,13 +142,13 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 			}
 			params.add(Parser.getRiffList(this.getEnvironment(), regionList));
 			params.add(Parser.getRiffList(this.getEnvironment(), assetList));
-			if (this.m_dali != null) {
-				ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, this.m_dali, "paintPanel", params);
+			if (this.dali != null) {
+				ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, this.dali, "paintPanel", params);
 			}
 		} catch (Exception_Nodeable exception) {
 			throw new Exception_InternalError(this.getEnvironment(), exception);
 		}
-		for (GraphicalElement elem : this.m_elements) {
+		for (GraphicalElement elem : this.elements) {
 			elem.paint(g2d);
 		}
 		g2d.setColor(this.getBackgroundColor());
@@ -160,11 +160,11 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 	public void riffMouseEvent(RiffInterface_MouseEvent event) {
 		if (event instanceof RiffInterface_DragEvent) {
 			if (event.getButton() == RiffInterface_MouseListener.MouseButton.LEFT) {
-				this.m_offset.addX(-((RiffInterface_DragEvent) event).getXOffset() / Math.pow(2, this.m_offset.getZ()));
-				this.m_offset.addY(-((RiffInterface_DragEvent) event).getYOffset() / Math.pow(2, this.m_offset.getZ()));
+				this.offset.addX(-((RiffInterface_DragEvent) event).getXOffset() / Math.pow(2, this.offset.getZ()));
+				this.offset.addY(-((RiffInterface_DragEvent) event).getYOffset() / Math.pow(2, this.offset.getZ()));
 			}
 			if (event.getButton() == RiffInterface_MouseListener.MouseButton.RIGHT) {
-				this.m_offset.addZ(((RiffInterface_DragEvent) event).getDistance() / 50);
+				this.offset.addZ(((RiffInterface_DragEvent) event).getDistance() / 50);
 			}
 		}
 	}
@@ -174,14 +174,14 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 	}
 
 	public void setRiffDali(ScriptTemplate_Abstract dali) {
-		this.m_dali = dali;
+		this.dali = dali;
 	}
 
 	public void setTerrestrial(Terrestrial terrestrial) {
-		this.m_terrestrial = terrestrial;
+		this.terrestrial = terrestrial;
 	}
 
 	public int size() {
-		return this.m_elements.size();
+		return this.elements.size();
 	}
 }

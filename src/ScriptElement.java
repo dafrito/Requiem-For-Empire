@@ -1,15 +1,15 @@
 public class ScriptElement implements Nodeable, Referenced {
-	private final ScriptEnvironment m_environment;
-	private final int m_lineNumber, m_originalLineOffset, m_length;
-	private final String m_original, m_filename;
+	private final ScriptEnvironment environment;
+	private final int lineNumber, originalLineOffset, length;
+	private final String original, filename;
 
 	public ScriptElement() {
-		this.m_environment = null;
-		this.m_filename = "";
-		this.m_original = "";
-		this.m_lineNumber = -1;
-		this.m_length = -1;
-		this.m_originalLineOffset = 0;
+		this.environment = null;
+		this.filename = "";
+		this.original = "";
+		this.lineNumber = -1;
+		this.length = -1;
+		this.originalLineOffset = 0;
 	}
 
 	public ScriptElement(Referenced element) {
@@ -25,38 +25,38 @@ public class ScriptElement implements Nodeable, Referenced {
 	}
 
 	public ScriptElement(ScriptEnvironment env) {
-		this.m_environment = env;
-		this.m_filename = "";
-		this.m_original = "";
-		this.m_lineNumber = -1;
-		this.m_length = -1;
-		this.m_originalLineOffset = 0;
+		this.environment = env;
+		this.filename = "";
+		this.original = "";
+		this.lineNumber = -1;
+		this.length = -1;
+		this.originalLineOffset = 0;
 	}
 
 	public ScriptElement(ScriptEnvironment env, ScriptElement element, int oLO, int length) {
-		this.m_environment = env;
+		this.environment = env;
 		if (element != null) {
-			this.m_filename = element.getFilename();
-			this.m_lineNumber = element.getLineNumber();
-			this.m_originalLineOffset = element.getOffset() + oLO;
-			this.m_original = element.getOriginalString();
-			this.m_length = length;
+			this.filename = element.getFilename();
+			this.lineNumber = element.getLineNumber();
+			this.originalLineOffset = element.getOffset() + oLO;
+			this.original = element.getOriginalString();
+			this.length = length;
 		} else {
-			this.m_filename = "";
-			this.m_original = "";
-			this.m_lineNumber = -1;
-			this.m_originalLineOffset = 0;
-			this.m_length = -1;
+			this.filename = "";
+			this.original = "";
+			this.lineNumber = -1;
+			this.originalLineOffset = 0;
+			this.length = -1;
 		}
 	}
 
 	public ScriptElement(ScriptEnvironment env, String filename, int lineNumber, String original, int length) {
-		this.m_environment = env;
-		this.m_filename = filename;
-		this.m_lineNumber = lineNumber;
-		this.m_original = original;
-		this.m_originalLineOffset = 0;
-		this.m_length = length;
+		this.environment = env;
+		this.filename = filename;
+		this.lineNumber = lineNumber;
+		this.original = original;
+		this.originalLineOffset = 0;
+		this.length = length;
 	}
 
 	@Override
@@ -66,32 +66,32 @@ public class ScriptElement implements Nodeable, Referenced {
 
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		assert this.m_environment != null : "Environment is null." + this;
-		return this.m_environment;
+		assert this.environment != null : "Environment is null." + this;
+		return this.environment;
 	}
 
 	public String getFilename() {
-		return this.m_filename;
+		return this.filename;
 	}
 
 	public String getFragment() {
-		return this.m_original.substring(this.getOffset(), this.getLength());
+		return this.original.substring(this.getOffset(), this.getLength());
 	}
 
 	public int getLength() {
-		return this.m_length;
+		return this.length;
 	}
 
 	public int getLineNumber() {
-		return this.m_lineNumber;
+		return this.lineNumber;
 	}
 
 	public int getOffset() {
-		return this.m_originalLineOffset;
+		return this.originalLineOffset;
 	}
 
 	public String getOriginalString() {
-		return this.m_original;
+		return this.original;
 	}
 
 	@Override

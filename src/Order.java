@@ -1,9 +1,9 @@
 public abstract class Order {
-	protected double m_iterationTime;
-	protected int m_orderStatus;
+	protected double iterationTime;
+	protected int orderStatus;
 
 	public Order() {
-		this.m_orderStatus = OrderStatus.INCOMPLETE;
+		this.orderStatus = OrderStatus.INCOMPLETE;
 	}
 
 	public void execute(double iterationTime) throws OrderException {
@@ -11,22 +11,22 @@ public abstract class Order {
 	}
 
 	public double getIterationTime() {
-		return this.m_iterationTime;
+		return this.iterationTime;
 	}
 
 	public int getStatus() {
-		return this.m_orderStatus;
+		return this.orderStatus;
 	}
 
 	public void setIterationTime(double time) {
-		this.m_iterationTime = time;
+		this.iterationTime = time;
 	}
 
 	public void setStatus(int status) {
-		this.m_orderStatus = status;
+		this.orderStatus = status;
 	}
 
 	public void subtractTimeFromIterationTime(int time) {
-		this.m_iterationTime -= time;
+		this.iterationTime -= time;
 	}
 }

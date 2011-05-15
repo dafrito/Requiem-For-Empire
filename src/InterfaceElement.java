@@ -4,23 +4,23 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConvertible {
-	private Stylesheet m_classStylesheet, m_uniqueStylesheet;
-	private int m_xAnchor, m_yAnchor;
-	private Interface_Container m_parent;
-	private ScriptEnvironment m_environment;
+	private Stylesheet classStylesheet, uniqueStylesheet;
+	private int xAnchor, yAnchor;
+	private Interface_Container parent;
+	private ScriptEnvironment environment;
 
 	public InterfaceElement(ScriptEnvironment environment, Stylesheet uniqueStylesheet, Stylesheet classStylesheet) {
-		this.m_environment = environment;
-		this.m_uniqueStylesheet = uniqueStylesheet;
-		this.m_classStylesheet = classStylesheet;
+		this.environment = environment;
+		this.uniqueStylesheet = uniqueStylesheet;
+		this.classStylesheet = classStylesheet;
 	}
 
 	public void addXAnchor(int addingAmount) {
-		this.m_xAnchor += addingAmount;
+		this.xAnchor += addingAmount;
 	}
 
 	public void addYAnchor(int addingAmount) {
-		this.m_yAnchor += addingAmount;
+		this.yAnchor += addingAmount;
 	}
 
 	// ScriptConvertible implementation
@@ -52,7 +52,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public Stylesheet getClassStylesheet() {
-		return this.m_classStylesheet;
+		return this.classStylesheet;
 	}
 
 	public Font getCurrentFont() {
@@ -65,12 +65,12 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 
 	@Override
 	public Rectangle getDrawingBounds() {
-		return new Rectangle(this.m_xAnchor, this.m_yAnchor, this.getInternalWidth() - 1, this.getInternalHeight() - 1);
+		return new Rectangle(this.xAnchor, this.yAnchor, this.getInternalWidth() - 1, this.getInternalHeight() - 1);
 	}
 
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		return this.m_environment;
+		return this.environment;
 	}
 
 	public int getFullHeight() {
@@ -135,7 +135,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 
 	@Override
 	public Interface_Container getParent() {
-		return this.m_parent;
+		return this.parent;
 	}
 
 	public int getRightBorderMagnitude() {
@@ -195,7 +195,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public Stylesheet getUniqueStylesheet() {
-		return this.m_uniqueStylesheet;
+		return this.uniqueStylesheet;
 	}
 
 	public int getVerticalFluffMagnitude() {
@@ -203,11 +203,11 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getXAnchor() {
-		return this.m_xAnchor;
+		return this.xAnchor;
 	}
 
 	public int getYAnchor() {
-		return this.m_yAnchor;
+		return this.yAnchor;
 	}
 
 	@Override
@@ -219,8 +219,8 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Interface Element");
-		assert Debugger.addSnapNode("Unique Stylesheet", this.m_uniqueStylesheet);
-		assert Debugger.addSnapNode("Class Stylesheet", this.m_classStylesheet);
+		assert Debugger.addSnapNode("Unique Stylesheet", this.uniqueStylesheet);
+		assert Debugger.addSnapNode("Class Stylesheet", this.classStylesheet);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -268,12 +268,12 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public void setClassStylesheet(Stylesheet sheet) {
-		this.m_classStylesheet = sheet;
+		this.classStylesheet = sheet;
 	}
 
 	@Override
 	public void setParent(Interface_Container container) {
-		this.m_parent = container;
+		this.parent = container;
 	}
 
 	@Override
@@ -281,24 +281,24 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 		assert Debugger.openNode("Setting Preferred Width (" + width + ")");
 		assert Debugger.addSnapNode("Element", this);
 		if (null == this.getUniqueStylesheet()) {
-			this.m_uniqueStylesheet = new Stylesheet(this.m_environment);
-			this.m_uniqueStylesheet.setUnique(true);
+			this.uniqueStylesheet = new Stylesheet(this.environment);
+			this.uniqueStylesheet.setUnique(true);
 		}
 		this.getUniqueStylesheet().addElement(StylesheetElementType.WIDTH, new StylesheetAbsoluteWidthElement(width));
 		Debugger.closeNode();
 	}
 
 	public void setUniqueStylesheet(Stylesheet sheet) {
-		this.m_uniqueStylesheet = sheet;
+		this.uniqueStylesheet = sheet;
 	}
 
 	@Override
 	public void setXAnchor(int xAnchor) {
-		this.m_xAnchor = xAnchor;
+		this.xAnchor = xAnchor;
 	}
 
 	@Override
 	public void setYAnchor(int yAnchor) {
-		this.m_yAnchor = yAnchor;
+		this.yAnchor = yAnchor;
 	}
 }

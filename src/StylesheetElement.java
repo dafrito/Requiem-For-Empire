@@ -1,10 +1,10 @@
 import java.awt.Color;
 
 class StylesheetAbsoluteHeightElement extends StylesheetHeightElement implements Nodeable {
-	private Integer m_magnitude;
+	private Integer magnitude;
 
 	public StylesheetAbsoluteHeightElement(int magnitude) {
-		this.m_magnitude = new Integer(magnitude);
+		this.magnitude = new Integer(magnitude);
 	}
 
 	@Override
@@ -14,27 +14,27 @@ class StylesheetAbsoluteHeightElement extends StylesheetHeightElement implements
 
 	@Override
 	public Object getMagnitude() {
-		return this.m_magnitude;
+		return this.magnitude;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Absolute Height Stylesheet-Element");
-		assert Debugger.addNode("Magnitude: " + this.m_magnitude);
+		assert Debugger.addNode("Magnitude: " + this.magnitude);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setMagnitude(int magnitude) {
-		this.m_magnitude = new Integer(magnitude);
+		this.magnitude = new Integer(magnitude);
 	}
 }
 
 class StylesheetAbsoluteWidthElement extends StylesheetWidthElement implements Nodeable {
-	private Integer m_magnitude;
+	private Integer magnitude;
 
 	public StylesheetAbsoluteWidthElement(int magnitude) {
-		this.m_magnitude = new Integer(magnitude);
+		this.magnitude = new Integer(magnitude);
 	}
 
 	@Override
@@ -44,32 +44,32 @@ class StylesheetAbsoluteWidthElement extends StylesheetWidthElement implements N
 
 	@Override
 	public Object getMagnitude() {
-		return this.m_magnitude;
+		return this.magnitude;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Absolute Width Stylesheet-Element");
-		assert Debugger.addNode("Width: " + this.m_magnitude);
+		assert Debugger.addNode("Width: " + this.magnitude);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setMagnitude(int magnitude) {
-		this.m_magnitude = new Integer(magnitude);
+		this.magnitude = new Integer(magnitude);
 	}
 }
 
 // Color elements
 class StylesheetBackgroundColorElement extends StylesheetElement implements Nodeable {
-	private Color m_color;
+	private Color color;
 
 	public StylesheetBackgroundColorElement(Color backgroundColor) {
-		this.m_color = backgroundColor;
+		this.color = backgroundColor;
 	}
 
 	public Color getColor() {
-		return this.m_color;
+		return this.color;
 	}
 
 	@Override
@@ -80,25 +80,25 @@ class StylesheetBackgroundColorElement extends StylesheetElement implements Node
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Background Color Stylesheet-Element");
-		assert Debugger.addNode("Color: " + RiffJavaToolbox.getColorName(this.m_color));
+		assert Debugger.addNode("Color: " + RiffJavaToolbox.getColorName(this.color));
 		assert Debugger.closeNode();
 		return true;
 	}
 }
 
 class StylesheetBorderElement extends StylesheetElement implements Nodeable {
-	private int m_magnitude;
-	private ScriptKeywordType m_style;
-	private Color m_color;
+	private int magnitude;
+	private ScriptKeywordType style;
+	private Color color;
 
 	public StylesheetBorderElement(int mag, ScriptKeywordType style, Color color) {
-		this.m_magnitude = mag;
-		this.m_style = style;
-		this.m_color = color;
+		this.magnitude = mag;
+		this.style = style;
+		this.color = color;
 	}
 
 	public Color getColor() {
-		return this.m_color;
+		return this.color;
 	}
 
 	@Override
@@ -107,37 +107,37 @@ class StylesheetBorderElement extends StylesheetElement implements Nodeable {
 	}
 
 	public int getMagnitude() {
-		return this.m_magnitude;
+		return this.magnitude;
 	}
 
 	public ScriptKeywordType getStyle() {
-		return this.m_style;
+		return this.style;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Border Stylesheet-Element");
-		assert Debugger.addNode("Magnitude: " + this.m_magnitude);
-		assert Debugger.addNode("Style: " + this.m_style);
-		assert Debugger.addNode("Color: " + RiffJavaToolbox.getColorName(this.m_color));
+		assert Debugger.addNode("Magnitude: " + this.magnitude);
+		assert Debugger.addNode("Style: " + this.style);
+		assert Debugger.addNode("Color: " + RiffJavaToolbox.getColorName(this.color));
 		assert Debugger.closeNode();
 		return true;
 	}
 }
 
 class StylesheetColorElement extends StylesheetElement implements Nodeable {
-	private Color m_color;
+	private Color color;
 
 	public StylesheetColorElement(Color color) {
-		this.m_color = color;
+		this.color = color;
 	}
 
 	public StylesheetColorElement(String colorString) {
-		this.m_color = RiffJavaToolbox.getColor(colorString);
+		this.color = RiffJavaToolbox.getColor(colorString);
 	}
 
 	public Color getColor() {
-		return this.m_color;
+		return this.color;
 	}
 
 	@Override
@@ -147,7 +147,7 @@ class StylesheetColorElement extends StylesheetElement implements Nodeable {
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.addSnapNode("Color Stylesheet-Element", "Color: " + RiffJavaToolbox.getColorName(this.m_color));
+		assert Debugger.addSnapNode("Color Stylesheet-Element", "Color: " + RiffJavaToolbox.getColorName(this.color));
 		return true;
 	}
 }
@@ -212,10 +212,10 @@ enum StylesheetElementType {
 
 // Font elements
 class StylesheetFontElement extends StylesheetElement implements Nodeable {
-	private String m_fontName;
+	private String fontName;
 
 	public StylesheetFontElement(String fontName) {
-		this.m_fontName = fontName;
+		this.fontName = fontName;
 	}
 
 	@Override
@@ -224,21 +224,21 @@ class StylesheetFontElement extends StylesheetElement implements Nodeable {
 	}
 
 	public String getFontName() {
-		return this.m_fontName;
+		return this.fontName;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.addSnapNode("Font Stylesheet-Element", "Font Name: " + this.m_fontName);
+		assert Debugger.addSnapNode("Font Stylesheet-Element", "Font Name: " + this.fontName);
 		return true;
 	}
 }
 
 class StylesheetFontSizeElement extends StylesheetElement implements Nodeable {
-	private int m_fontSize;
+	private int fontSize;
 
 	public StylesheetFontSizeElement(int fontSize) {
-		this.m_fontSize = fontSize;
+		this.fontSize = fontSize;
 	}
 
 	@Override
@@ -247,21 +247,21 @@ class StylesheetFontSizeElement extends StylesheetElement implements Nodeable {
 	}
 
 	public int getFontSize() {
-		return this.m_fontSize;
+		return this.fontSize;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.addSnapNode("Font Size Stylesheet-Element", "Font size: " + this.m_fontSize);
+		assert Debugger.addSnapNode("Font Size Stylesheet-Element", "Font size: " + this.fontSize);
 		return true;
 	}
 }
 
 class StylesheetFontStyleElement extends StylesheetElement implements Nodeable {
-	private int m_style;
+	private int style;
 
 	public StylesheetFontStyleElement(int style) {
-		this.m_style = style;
+		this.style = style;
 	}
 
 	@Override
@@ -270,12 +270,12 @@ class StylesheetFontStyleElement extends StylesheetElement implements Nodeable {
 	}
 
 	public int getStyle() {
-		return this.m_style;
+		return this.style;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.addSnapNode("Font Style Stylesheet-Element", "Font-Size: " + RiffJavaToolbox.getFontStyleName(this.m_style));
+		assert Debugger.addSnapNode("Font Style Stylesheet-Element", "Font-Size: " + RiffJavaToolbox.getFontStyleName(this.style));
 		return true;
 	}
 }
@@ -287,10 +287,10 @@ abstract class StylesheetHeightElement extends StylesheetElement {
 
 // Box model elements
 class StylesheetMarginElement extends StylesheetElement implements Nodeable {
-	private int m_magnitude;
+	private int magnitude;
 
 	public StylesheetMarginElement(int magnitude) {
-		this.m_magnitude = magnitude;
+		this.magnitude = magnitude;
 	}
 
 	@Override
@@ -299,21 +299,21 @@ class StylesheetMarginElement extends StylesheetElement implements Nodeable {
 	}
 
 	public int getMagnitude() {
-		return this.m_magnitude;
+		return this.magnitude;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.addSnapNode("Margin Stylesheet-Element", "Magnitude: " + this.m_magnitude);
+		assert Debugger.addSnapNode("Margin Stylesheet-Element", "Magnitude: " + this.magnitude);
 		return true;
 	}
 }
 
 class StylesheetPaddingElement extends StylesheetElement implements Nodeable {
-	private int m_magnitude;
+	private int magnitude;
 
 	public StylesheetPaddingElement(int magnitude) {
-		this.m_magnitude = magnitude;
+		this.magnitude = magnitude;
 	}
 
 	@Override
@@ -322,21 +322,21 @@ class StylesheetPaddingElement extends StylesheetElement implements Nodeable {
 	}
 
 	public int getMagnitude() {
-		return this.m_magnitude;
+		return this.magnitude;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.addSnapNode("Padding Stylesheet-Element", "Magnitude: " + this.m_magnitude);
+		assert Debugger.addSnapNode("Padding Stylesheet-Element", "Magnitude: " + this.magnitude);
 		return true;
 	}
 }
 
 class StylesheetPercentageHeightElement extends StylesheetHeightElement implements Nodeable {
-	private Double m_magnitude;
+	private Double magnitude;
 
 	public StylesheetPercentageHeightElement(double magnitude) {
-		this.m_magnitude = new Double(magnitude);
+		this.magnitude = new Double(magnitude);
 	}
 
 	@Override
@@ -346,25 +346,25 @@ class StylesheetPercentageHeightElement extends StylesheetHeightElement implemen
 
 	@Override
 	public Object getMagnitude() {
-		return this.m_magnitude;
+		return this.magnitude;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.addSnapNode("Percentage Height Stylesheet-Element", "Percentage: " + this.m_magnitude);
+		assert Debugger.addSnapNode("Percentage Height Stylesheet-Element", "Percentage: " + this.magnitude);
 		return true;
 	}
 
 	public void setMagnitude(double magnitude) {
-		this.m_magnitude = new Double(magnitude);
+		this.magnitude = new Double(magnitude);
 	}
 }
 
 class StylesheetPercentageWidthElement extends StylesheetWidthElement implements Nodeable {
-	private Double m_magnitude;
+	private Double magnitude;
 
 	public StylesheetPercentageWidthElement(double magnitude) {
-		this.m_magnitude = new Double(magnitude);
+		this.magnitude = new Double(magnitude);
 	}
 
 	@Override
@@ -374,17 +374,17 @@ class StylesheetPercentageWidthElement extends StylesheetWidthElement implements
 
 	@Override
 	public Object getMagnitude() {
-		return this.m_magnitude;
+		return this.magnitude;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.addSnapNode("Percentage Width Stylesheet-Element", "Percentage: " + this.m_magnitude);
+		assert Debugger.addSnapNode("Percentage Width Stylesheet-Element", "Percentage: " + this.magnitude);
 		return true;
 	}
 
 	public void setMagnitude(double magnitude) {
-		this.m_magnitude = new Double(magnitude);
+		this.magnitude = new Double(magnitude);
 	}
 }
 

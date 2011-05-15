@@ -8,16 +8,16 @@ import java.util.LinkedList;
 import javax.swing.JPanel;
 
 public class InterfaceElement_Root extends InterfaceElement implements Interface_Container {
-	private JPanel m_drawingPanel;
-	private static int m_drawingIteration = 0;
-	private java.util.List<RiffInterface_MouseListener> m_mouseListeners;
-	private GraphicalElement m_focusedElement;
-	private java.util.List<GraphicalElement> m_elements = new LinkedList<GraphicalElement>();
+	private JPanel drawingPanel;
+	private static int drawingIteration = 0;
+	private java.util.List<RiffInterface_MouseListener> mouseListeners;
+	private GraphicalElement focusedElement;
+	private java.util.List<GraphicalElement> elements = new LinkedList<GraphicalElement>();
 
 	public InterfaceElement_Root(ScriptEnvironment environment, JPanel drawingPanel) {
 		super(environment, null, null);
-		this.m_mouseListeners = new LinkedList<RiffInterface_MouseListener>();
-		this.m_drawingPanel = drawingPanel;
+		this.mouseListeners = new LinkedList<RiffInterface_MouseListener>();
+		this.drawingPanel = drawingPanel;
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 		assert Debugger.openNode("Interface-Element Addition");
 		assert Debugger.addSnapNode("This Element", this);
 		assert Debugger.addSnapNode("Added Element", element);
-		this.m_elements.add(element);
+		this.elements.add(element);
 		element.setParent(this);
 		assert Debugger.closeNode();
 	}
@@ -34,40 +34,40 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 		if (element instanceof InterfaceElement) {
 			this.add((InterfaceElement) element);
 		}
-		this.m_mouseListeners.add(element);
+		this.mouseListeners.add(element);
 	}
 
 	@Override
 	public void clear() {
-		this.m_elements.clear();
+		this.elements.clear();
 	}
 
 	public void dispatchEvent(RiffInterface_Event rawEvent) {
 		if (rawEvent instanceof KeyEvent_KeyUp) {
 			KeyEvent_KeyUp event = (KeyEvent_KeyUp) rawEvent;
-			if (this.m_focusedElement == null) {
+			if (this.focusedElement == null) {
 				return;
 			}
-			if (this.m_focusedElement instanceof RiffInterface_KeyListener) {
-				((RiffInterface_KeyListener) this.m_focusedElement).riffKeyEvent(event);
+			if (this.focusedElement instanceof RiffInterface_KeyListener) {
+				((RiffInterface_KeyListener) this.focusedElement).riffKeyEvent(event);
 			}
 		} else if (rawEvent instanceof KeyEvent_KeyDown) {
 			KeyEvent_KeyDown event = (KeyEvent_KeyDown) rawEvent;
-			if (this.m_focusedElement == null) {
+			if (this.focusedElement == null) {
 				return;
 			}
-			if (this.m_focusedElement instanceof RiffInterface_KeyListener) {
-				((RiffInterface_KeyListener) this.m_focusedElement).riffKeyEvent(event);
+			if (this.focusedElement instanceof RiffInterface_KeyListener) {
+				((RiffInterface_KeyListener) this.focusedElement).riffKeyEvent(event);
 			}
 		} else if (rawEvent instanceof RiffInterface_MouseDownEvent) {
 			RiffInterface_MouseDownEvent event = (RiffInterface_MouseDownEvent) rawEvent;
 			GraphicalElement element = this.getElement(event.getX(), event.getY());
 			if (element == null) {
-				this.m_focusedElement = null;
+				this.focusedElement = null;
 				return;
 			}
 			if (element.isFocusable()) {
-				this.m_focusedElement = element;
+				this.focusedElement = element;
 			}
 			if (element instanceof RiffInterface_MouseListener) {
 				((RiffInterface_MouseListener) element).riffMouseEvent(event);
@@ -85,22 +85,22 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 			RiffInterface_ClickEvent event = (RiffInterface_ClickEvent) rawEvent;
 			GraphicalElement element = this.getElement(event.getX(), event.getY());
 			if (element == null) {
-				this.m_focusedElement = null;
+				this.focusedElement = null;
 				return;
 			}
 			if (element.isFocusable()) {
-				this.m_focusedElement = element;
+				this.focusedElement = element;
 			}
 			if (element instanceof RiffInterface_MouseListener) {
 				((RiffInterface_MouseListener) element).riffMouseEvent(event);
 			}
 		} else if (rawEvent instanceof RiffInterface_DragEvent) {
 			RiffInterface_DragEvent event = (RiffInterface_DragEvent) rawEvent;
-			if (this.m_focusedElement == null) {
+			if (this.focusedElement == null) {
 				return;
 			}
-			if (this.m_focusedElement instanceof RiffInterface_MouseListener) {
-				((RiffInterface_MouseListener) this.m_focusedElement).riffMouseEvent(event);
+			if (this.focusedElement instanceof RiffInterface_MouseListener) {
+				((RiffInterface_MouseListener) this.focusedElement).riffMouseEvent(event);
 			}
 		} else {
 			assert Debugger.addNode("No applicable listener found");
@@ -123,11 +123,11 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 
 	@Override
 	public java.util.List<GraphicalElement> getElements() {
-		return Collections.unmodifiableList(this.m_elements);
+		return Collections.unmodifiableList(this.elements);
 	}
 
 	public Graphics2D getGraphics() {
-		return (Graphics2D) this.m_drawingPanel.getGraphics();
+		return (Graphics2D) this.drawingPanel.getGraphics();
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 		if (element instanceof StylesheetAbsoluteHeightElement) {
 			return ((Integer) element.getMagnitude()).intValue();
 		} else {
-			return (int) (((Double) element.getMagnitude()).doubleValue() * this.m_drawingPanel.getHeight() - this.getVerticalFluffMagnitude());
+			return (int) (((Double) element.getMagnitude()).doubleValue() * this.drawingPanel.getHeight() - this.getVerticalFluffMagnitude());
 		}
 	}
 
@@ -146,7 +146,7 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 		if (element instanceof StylesheetAbsoluteWidthElement) {
 			return ((Integer) element.getMagnitude()).intValue();
 		} else {
-			return (int) (((Double) element.getMagnitude()).doubleValue() * this.m_drawingPanel.getWidth() - this.getHorizontalFluffMagnitude());
+			return (int) (((Double) element.getMagnitude()).doubleValue() * this.drawingPanel.getWidth() - this.getHorizontalFluffMagnitude());
 		}
 	}
 
@@ -247,7 +247,7 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 	public boolean nodificate() {
 		assert Debugger.openNode("Root Interface Element");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Elements: " + this.m_elements.size() + " element(s)", this.m_elements);
+		assert Debugger.addSnapNode("Elements: " + this.elements.size() + " element(s)", this.elements);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -255,7 +255,7 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 	@Override
 	public void paint(Graphics2D g2d) {
 		assert Debugger.openNode("Paint Operations", "Painting operation: " + this.getElements().size() + " element(s)");
-		m_drawingIteration++;
+		drawingIteration++;
 		this.setXAnchor(0);
 		this.setYAnchor(0);
 		super.paint(g2d);
@@ -286,6 +286,6 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 	}
 
 	public void repaint() {
-		this.m_drawingPanel.repaint();
+		this.drawingPanel.repaint();
 	}
 }

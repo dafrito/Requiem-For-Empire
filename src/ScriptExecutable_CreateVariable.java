@@ -1,13 +1,13 @@
 public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implements ScriptValue_Abstract, ScriptExecutable, Nodeable, Referenced {
-	private ScriptKeywordType m_permission;
-	private String m_name;
-	private ScriptElement m_reference;
+	private ScriptKeywordType permission;
+	private String name;
+	private ScriptElement reference;
 
 	public ScriptExecutable_CreateVariable(Referenced ref, ScriptValueType type, String name, ScriptKeywordType permission) throws Exception_Nodeable {
 		super(ref.getEnvironment(), type, null);
-		this.m_reference = ref.getDebugReference();
-		this.m_name = name;
-		this.m_permission = permission;
+		this.reference = ref.getDebugReference();
+		this.name = name;
+		this.permission = permission;
 	}
 
 	@Override
@@ -18,9 +18,9 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		assert Debugger.openNode("Creating Variable (" + this.m_name + ")");
+		assert Debugger.openNode("Creating Variable (" + this.name + ")");
 		ScriptValue_Variable value;
-		this.getEnvironment().getCurrentObject().addVariable(this, this.m_name, value = new ScriptValue_Variable(this.getEnvironment(), this.getType(), this.getPermission()));
+		this.getEnvironment().getCurrentObject().addVariable(this, this.name, value = new ScriptValue_Variable(this.getEnvironment(), this.getType(), this.getPermission()));
 		assert Debugger.addSnapNode("Variable Created", value);
 		assert Debugger.closeNode();
 		return value;
@@ -29,7 +29,7 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 	// Referenced implementation
 	@Override
 	public ScriptElement getDebugReference() {
-		return this.m_reference;
+		return this.reference;
 	}
 
 	// ScriptValue_Abstract implementation
@@ -39,13 +39,13 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 	}
 
 	public String getName() {
-		return this.m_name;
+		return this.name;
 	}
 
 	// Overloaded ScriptValue_Variable functions
 	@Override
 	public ScriptKeywordType getPermission() throws Exception_Nodeable {
-		return this.m_permission;
+		return this.permission;
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Variable-Creation Script-Element (" + this.m_name + ")");
+		assert Debugger.openNode("Variable-Creation Script-Element (" + this.name + ")");
 		assert super.nodificate();
 		assert Debugger.closeNode();
 		return true;

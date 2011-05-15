@@ -3,7 +3,7 @@ import java.util.List;
 
 public class FauxTemplate_Line extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String LINESTRING = "Line";
-	public Point m_pointA, m_pointB;
+	public Point pointA, pointB;
 
 	public FauxTemplate_Line(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, LINESTRING), ScriptValueType.createType(env, FauxTemplate_GraphicalElement.GRAPHICALELEMENTSTRING), new LinkedList<ScriptValueType>(), false);
@@ -11,8 +11,8 @@ public class FauxTemplate_Line extends FauxTemplate implements ScriptConvertible
 
 	public FauxTemplate_Line(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.m_pointA = new Point_Euclidean(this.getEnvironment(), 0, 0, 0);
-		this.m_pointB = new Point_Euclidean(this.getEnvironment(), 0, 0, 0);
+		this.pointA = new Point_Euclidean(this.getEnvironment(), 0, 0, 0);
+		this.pointB = new Point_Euclidean(this.getEnvironment(), 0, 0, 0);
 	}
 
 	// ScriptConvertible and Nodeable implementations
@@ -79,11 +79,11 @@ public class FauxTemplate_Line extends FauxTemplate implements ScriptConvertible
 	}
 
 	public Point getPointA() {
-		return this.m_pointA;
+		return this.pointA;
 	}
 
 	public Point getPointB() {
-		return this.m_pointB;
+		return this.pointB;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -142,10 +142,10 @@ public class FauxTemplate_Line extends FauxTemplate implements ScriptConvertible
 	}
 
 	public void setPointA(Point point) {
-		this.m_pointA = point;
+		this.pointA = point;
 	}
 
 	public void setPointB(Point point) {
-		this.m_pointB = point;
+		this.pointB = point;
 	}
 }

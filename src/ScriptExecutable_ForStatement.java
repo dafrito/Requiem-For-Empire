@@ -1,17 +1,17 @@
 import java.util.List;
 
 public class ScriptExecutable_ForStatement extends ScriptElement implements ScriptExecutable, Returnable, Nodeable {
-	private ScriptExecutable m_initializer, m_tester, m_repeater;
-	private boolean m_shouldReturn = false;
-	private ScriptValue_Abstract m_returnValue;
-	private List<ScriptExecutable> m_expressions;
+	private ScriptExecutable initializer, tester, repeater;
+	private boolean shouldReturn = false;
+	private ScriptValue_Abstract returnValue;
+	private List<ScriptExecutable> expressions;
 
 	public ScriptExecutable_ForStatement(ScriptExecutable initializer, ScriptExecutable tester, ScriptExecutable repeater, List<ScriptExecutable> expressions) {
 		super((Referenced) initializer);
-		this.m_initializer = initializer;
-		this.m_tester = tester;
-		this.m_repeater = repeater;
-		this.m_expressions = expressions;
+		this.initializer = initializer;
+		this.tester = tester;
+		this.repeater = repeater;
+		this.expressions = expressions;
 	}
 
 	// ScriptExecutable implementation
@@ -20,16 +20,16 @@ public class ScriptExecutable_ForStatement extends ScriptElement implements Scri
 		assert Debugger.openNode("For-Statement Executions", "Executing For-Statement");
 		this.getEnvironment().advanceNestedStack();
 		assert Debugger.openNode("Initializing");
-		this.m_initializer.execute();
+		this.initializer.execute();
 		assert Debugger.closeNode();
-		while (((ScriptValue_Boolean) this.m_tester.execute().getValue()).getBooleanValue()) {
+		while (((ScriptValue_Boolean) this.tester.execute().getValue()).getBooleanValue()) {
 			assert Debugger.openNode("Looping", "Looping iteration");
 			this.getEnvironment().advanceNestedStack();
-			for (ScriptExecutable exec : this.m_expressions) {
+			for (ScriptExecutable exec : this.expressions) {
 				exec.execute();
 				if (exec instanceof Returnable && ((Returnable) exec).shouldReturn()) {
-					this.m_returnValue = ((Returnable) exec).getReturnValue();
-					this.m_shouldReturn = true;
+					this.returnValue = ((Returnable) exec).getReturnValue();
+					this.shouldReturn = true;
 					assert Debugger.closeNode();
 					return null;
 				}
@@ -37,7 +37,7 @@ public class ScriptExecutable_ForStatement extends ScriptElement implements Scri
 			this.getEnvironment().retreatNestedStack();
 			assert Debugger.closeNode();
 			assert Debugger.openNode("Executing repeater");
-			this.m_repeater.execute();
+			this.repeater.execute();
 			assert Debugger.closeNode();
 		}
 		this.getEnvironment().retreatNestedStack();
@@ -47,20 +47,20 @@ public class ScriptExecutable_ForStatement extends ScriptElement implements Scri
 
 	@Override
 	public ScriptValue_Abstract getReturnValue() throws Exception_Nodeable {
-		if (this.m_returnValue != null) {
-			this.m_returnValue = this.m_returnValue.getValue();
+		if (this.returnValue != null) {
+			this.returnValue = this.returnValue.getValue();
 		}
-		return this.m_returnValue;
+		return this.returnValue;
 	}
 
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Script For-Statement");
-		assert Debugger.addSnapNode("Initializer", this.m_initializer);
-		assert Debugger.addSnapNode("Boolean expression", this.m_tester);
-		assert Debugger.addSnapNode("Repeating expression", this.m_repeater);
-		assert Debugger.addSnapNode("Expressions", this.m_expressions);
+		assert Debugger.addSnapNode("Initializer", this.initializer);
+		assert Debugger.addSnapNode("Boolean expression", this.tester);
+		assert Debugger.addSnapNode("Repeating expression", this.repeater);
+		assert Debugger.addSnapNode("Expressions", this.expressions);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -68,6 +68,6 @@ public class ScriptExecutable_ForStatement extends ScriptElement implements Scri
 	// Returnable implementation
 	@Override
 	public boolean shouldReturn() {
-		return this.m_shouldReturn;
+		return this.shouldReturn;
 	}
 }

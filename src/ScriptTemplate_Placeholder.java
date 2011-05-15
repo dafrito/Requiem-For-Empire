@@ -1,11 +1,11 @@
 import java.util.List;
 
 public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implements ScriptValue_Abstract, Nodeable {
-	private String m_name;
+	private String name;
 
 	public ScriptTemplate_Placeholder(ScriptEnvironment env, String name) {
 		super(env, null, null, null);
-		this.m_name = name;
+		this.name = name;
 	}
 
 	@Override
@@ -76,8 +76,8 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 
 	private ScriptTemplate_Abstract getTemplate() {
 		try {
-			ScriptTemplate_Abstract template = (ScriptTemplate_Abstract) this.getEnvironment().retrieveVariable(this.m_name).getValue();
-			assert template != null : "Template could not be retrieved (" + this.m_name + ")";
+			ScriptTemplate_Abstract template = (ScriptTemplate_Abstract) this.getEnvironment().retrieveVariable(this.name).getValue();
+			assert template != null : "Template could not be retrieved (" + this.name + ")";
 			return template;
 		} catch (Exception_Nodeable ex) {
 			throw new Exception_InternalError("Exception occurred while retrieving template: " + ex);
@@ -144,7 +144,7 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Template Placeholder (" + this.m_name + ")");
+		assert Debugger.openNode("Template Placeholder (" + this.name + ")");
 		assert Debugger.addSnapNode("Referenced Template", this.getTemplate());
 		assert Debugger.closeNode();
 		return true;

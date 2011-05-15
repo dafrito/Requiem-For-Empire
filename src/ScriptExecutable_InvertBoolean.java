@@ -1,9 +1,9 @@
 public class ScriptExecutable_InvertBoolean extends ScriptElement implements ScriptExecutable, ScriptValue_Abstract {
-	private ScriptExecutable m_value;
+	private ScriptExecutable value;
 
 	public ScriptExecutable_InvertBoolean(Referenced ref, ScriptExecutable value) {
 		super(ref);
-		this.m_value = value;
+		this.value = value;
 	}
 
 	@Override
@@ -14,7 +14,7 @@ public class ScriptExecutable_InvertBoolean extends ScriptElement implements Scr
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		return new ScriptValue_Boolean(this.getEnvironment(), !((ScriptValue_Boolean) this.m_value.execute()).getBooleanValue());
+		return new ScriptValue_Boolean(this.getEnvironment(), !((ScriptValue_Boolean) this.value.execute()).getBooleanValue());
 	}
 
 	// ScriptValue_Abstract implementation
@@ -38,7 +38,7 @@ public class ScriptExecutable_InvertBoolean extends ScriptElement implements Scr
 	public boolean nodificate() {
 		assert Debugger.openNode("Boolean Inverter");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Value", this.m_value);
+		assert Debugger.addSnapNode("Value", this.value);
 		assert Debugger.closeNode();
 		return true;
 	}
