@@ -5,41 +5,41 @@ public class Scenario {
 	private Terrestrial m_terrestrial;
 
 	public Scenario(ScriptEnvironment env, Terrestrial terrestrial, String name) {
-		m_environment = env;
-		m_name = name;
-		m_terrestrial = terrestrial;
-		m_scheduler = new Scheduler(env);
+		this.m_environment = env;
+		this.m_name = name;
+		this.m_terrestrial = terrestrial;
+		this.m_scheduler = new Scheduler(env);
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	public long getGameTime() {
-		return m_scheduler.getCurrentGameTime();
+		return this.m_scheduler.getCurrentGameTime();
 	}
 
 	public String getName() {
-		return m_name;
+		return this.m_name;
 	}
 
 	public Scheduler getScheduler() {
-		return m_scheduler;
+		return this.m_scheduler;
 	}
 
 	public Terrestrial getTerrestrial() {
-		return m_terrestrial;
+		return this.m_terrestrial;
 	}
 
 	public void setName(String name) {
-		m_name = name;
+		this.m_name = name;
 	}
 
 	public void setTerrestrial(Terrestrial terrestrial) {
-		m_terrestrial = terrestrial;
+		this.m_terrestrial = terrestrial;
 	}
 
 	public void start() {
-		m_scheduler.start();
+		this.m_scheduler.start();
 	}
 }

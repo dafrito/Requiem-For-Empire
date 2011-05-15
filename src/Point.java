@@ -18,16 +18,16 @@ public abstract class Point {
 	private ScriptEnvironment m_environment;
 
 	public Point(ScriptEnvironment env, String name) {
-		m_environment = env;
-		m_name = name;
+		this.m_environment = env;
+		this.m_name = name;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	public String getName() {
-		return m_name;
+		return this.m_name;
 	}
 
 	public abstract Point.System getSystem();
@@ -39,19 +39,19 @@ public abstract class Point {
 	public abstract double getZ();
 
 	public void setName(String name) {
-		m_name = name;
+		this.m_name = name;
 	}
 
 	public void setPosition(double x, double y, double z) {
-		setX(x);
-		setY(y);
-		setZ(z);
+		this.setX(x);
+		this.setY(y);
+		this.setZ(z);
 	}
 
 	public void setPosition(Point point) {
-		setX(point.getX());
-		setY(point.getY());
-		setZ(point.getZ());
+		this.setX(point.getX());
+		this.setY(point.getY());
+		this.setZ(point.getZ());
 	}
 
 	public abstract void setX(double x);
@@ -61,8 +61,8 @@ public abstract class Point {
 	public abstract void setZ(double z);
 
 	public void translate(double x, double y, double z) {
-		setX(getX() + x);
-		setY(getY() + y);
-		setZ(getZ() + z);
+		this.setX(this.getX() + x);
+		this.setY(this.getY() + y);
+		this.setZ(this.getZ() + z);
 	}
 }

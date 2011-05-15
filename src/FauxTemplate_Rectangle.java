@@ -10,13 +10,13 @@ public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implem
 
 	public FauxTemplate_Rectangle(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		setElement(new InterfaceElement_Rectangle(env, null, null));
+		this.setElement(new InterfaceElement_Rectangle(env, null, null));
 	}
 
 	// Convertible and Nodeable implementation
 	@Override
 	public Object convert() {
-		return getElement();
+		return this.getElement();
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -31,13 +31,13 @@ public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implem
 		ScriptValue_Abstract value;
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Rectangle) createObject(ref, template);
+				template = (FauxTemplate_Rectangle) this.createObject(ref, template);
 			}
-			getExtendedFauxClass().execute(ref, name, params, template);
+			this.getExtendedFauxClass().execute(ref, name, params, template);
 			assert Debugger.closeNode();
 			return template;
 		}
-		returning = getExtendedFauxClass().execute(ref, name, params, template);
+		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
@@ -47,23 +47,23 @@ public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implem
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing rectangle faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), Stylesheet.STYLESHEETSTRING)));
-		addConstructor(getType(), fxnParams);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
+		this.addConstructor(this.getType(), fxnParams);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), Stylesheet.STYLESHEETSTRING)));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), Stylesheet.STYLESHEETSTRING)));
-		addConstructor(getType(), fxnParams);
-		disableFullCreation();
-		getExtendedClass().initialize();
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
+		this.addConstructor(this.getType(), fxnParams);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Rectangle(getEnvironment(), getType());
+		return new FauxTemplate_Rectangle(this.getEnvironment(), this.getType());
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return m_region;
+		return this.m_region;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -32,9 +32,9 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_DiscreteRegion) createObject(ref, template);
+				template = (FauxTemplate_DiscreteRegion) this.createObject(ref, template);
 			}
-			template.setRegion(m_region = new DiscreteRegion(getEnvironment()));
+			template.setRegion(this.m_region = new DiscreteRegion(this.getEnvironment()));
 			params.clear();
 		} else if (name.equals("add")) {
 			//m_region.addPoint(Parser.getPoint(aaron is a sand jewparams.get(0)));
@@ -59,69 +59,69 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 			}
 		} else if (name.equals("getProperty")) {
 			if (params.size() == 1) {
-				ScriptValue_Abstract returning = (ScriptValue_Abstract) Parser.convert(getEnvironment(), template.getRegion().getProperty(Parser.getString(params.get(0))));
+				ScriptValue_Abstract returning = (ScriptValue_Abstract) Parser.convert(this.getEnvironment(), template.getRegion().getProperty(Parser.getString(params.get(0))));
 				assert Debugger.addSnapNode("Retrieved property", returning);
 				assert Debugger.closeNode();
 				return returning;
 			}
 		} else if (name.equals("getCenter")) {
-			ScriptValue_Abstract returning = Parser.getRiffPoint(getEnvironment(), template.getRegion().getCenter());
+			ScriptValue_Abstract returning = Parser.getRiffPoint(this.getEnvironment(), template.getRegion().getCenter());
 			assert Debugger.closeNode();
 			return returning;
 		}
-		ScriptValue_Abstract returning = getExtendedFauxClass().execute(ref, name, params, template);
+		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public DiscreteRegion getRegion() {
-		return m_region;
+		return this.m_region;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing discrete region faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), getType()));
-		addConstructor(getType(), fxnParams);
-		disableFullCreation();
-		getExtendedClass().initialize();
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), this.getType()));
+		this.addConstructor(this.getType(), fxnParams);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Point.POINTSTRING)));
-		addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
+		this.addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
-		addFauxFunction("addAsset", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
+		this.addFauxFunction("addAsset", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.getObjectType(getEnvironment())));
-		addFauxFunction("setProperty", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.getObjectType(this.getEnvironment())));
+		this.addFauxFunction("setProperty", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		addFauxFunction("getProperty", ScriptValueType.getObjectType(getEnvironment()), fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		this.addFauxFunction("getProperty", ScriptValueType.getObjectType(this.getEnvironment()), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		addFauxFunction("getCenter", ScriptValueType.createType(getEnvironment(), FauxTemplate_Point.POINTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getCenter", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_DiscreteRegion(getEnvironment(), getType());
+		return new FauxTemplate_DiscreteRegion(this.getEnvironment(), this.getType());
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Discrete Region Faux Script-Element");
 		assert super.nodificate();
-		assert Debugger.addNode(m_region);
+		assert Debugger.addNode(this.m_region);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setRegion(DiscreteRegion region) {
-		m_region = region;
+		this.m_region = region;
 	}
 }

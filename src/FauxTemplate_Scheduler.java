@@ -16,7 +16,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 	// Nodeable implementation
 	@Override
 	public Object convert() {
-		return m_scheduler;
+		return this.m_scheduler;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -31,7 +31,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 		ScriptValue_Abstract value;
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Scheduler) createObject(ref, template);
+				template = (FauxTemplate_Scheduler) this.createObject(ref, template);
 			}
 			switch (params.size()) {
 			case 1:
@@ -57,13 +57,13 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 			assert Debugger.closeNode();
 			return null;
 		}
-		returning = getExtendedFauxClass().execute(ref, name, params, template);
+		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public Scheduler getScheduler() {
-		return m_scheduler;
+		return this.m_scheduler;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -71,45 +71,45 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing scheduler faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
 		List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
-		params.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_SchedulerListener.SCHEDULERLISTENERSTRING)));
-		addConstructor(getType(), params);
-		disableFullCreation();
-		getExtendedClass().initialize();
+		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_SchedulerListener.SCHEDULERLISTENERSTRING)));
+		this.addConstructor(this.getType(), params);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		params = new LinkedList<ScriptValue_Abstract>();
-		params.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.LONG));
-		params.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
-		addFauxFunction("schedule", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, false, false);
+		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.LONG));
+		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
+		this.addFauxFunction("schedule", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, false, false);
 		params = new LinkedList<ScriptValue_Abstract>();
-		params.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.LONG));
-		params.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
-		params.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_SchedulerListener.SCHEDULERLISTENERSTRING)));
-		addFauxFunction("schedule", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, false, false);
+		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.LONG));
+		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
+		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_SchedulerListener.SCHEDULERLISTENERSTRING)));
+		this.addFauxFunction("schedule", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, false, false);
 		params = new LinkedList<ScriptValue_Abstract>();
-		params.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_SchedulerListener.SCHEDULERLISTENERSTRING)));
-		addFauxFunction("setDefaultListener", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, false, false);
+		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_SchedulerListener.SCHEDULERLISTENERSTRING)));
+		this.addFauxFunction("setDefaultListener", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, false, false);
 		params = new LinkedList<ScriptValue_Abstract>();
-		addFauxFunction("start", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("start", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Scheduler(getEnvironment(), getType());
+		return new FauxTemplate_Scheduler(this.getEnvironment(), this.getType());
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Scheduler Faux Template");
 		assert super.nodificate();
-		assert Debugger.addNode(m_scheduler);
+		assert Debugger.addNode(this.m_scheduler);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setScheduler(Scheduler scheduler) {
-		m_scheduler = scheduler;
+		this.m_scheduler = scheduler;
 	}
 }

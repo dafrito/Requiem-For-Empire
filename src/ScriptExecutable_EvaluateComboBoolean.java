@@ -4,34 +4,34 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 
 	public ScriptExecutable_EvaluateComboBoolean(Referenced ref, ScriptValue_Abstract lhs, ScriptValue_Abstract rhs, ScriptOperatorType operator) {
 		super(ref);
-		m_lhs = lhs;
-		m_rhs = rhs;
-		m_operator = operator;
+		this.m_lhs = lhs;
+		this.m_rhs = rhs;
+		this.m_operator = operator;
 	}
 
 	@Override
 	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
-		return getValue().castToType(ref, type);
+		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		assert Debugger.openNode("Combo-Boolean Evaluations", "Evaluating Combo-Boolean Expression (" + ScriptOperator.getName(m_operator) + ")");
+		assert Debugger.openNode("Combo-Boolean Evaluations", "Evaluating Combo-Boolean Expression (" + ScriptOperator.getName(this.m_operator) + ")");
 		assert Debugger.addNode(this);
-		if (m_lhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
-			throw new Exception_Nodeable_ClassCast(this, m_lhs, ScriptValueType.BOOLEAN);
+		if (this.m_lhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
+			throw new Exception_Nodeable_ClassCast(this, this.m_lhs, ScriptValueType.BOOLEAN);
 		}
-		if (m_rhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
-			throw new Exception_Nodeable_ClassCast(this, m_rhs, ScriptValueType.BOOLEAN);
+		if (this.m_rhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
+			throw new Exception_Nodeable_ClassCast(this, this.m_rhs, ScriptValueType.BOOLEAN);
 		}
-		ScriptValue_Boolean lhs = (ScriptValue_Boolean) m_lhs.getValue();
-		ScriptValue_Boolean rhs = (ScriptValue_Boolean) m_rhs.getValue();
-		switch (m_operator) {
+		ScriptValue_Boolean lhs = (ScriptValue_Boolean) this.m_lhs.getValue();
+		ScriptValue_Boolean rhs = (ScriptValue_Boolean) this.m_rhs.getValue();
+		switch (this.m_operator) {
 		case AND:
-			return new ScriptValue_Boolean(getEnvironment(), (lhs.getBooleanValue() && rhs.getBooleanValue()));
+			return new ScriptValue_Boolean(this.getEnvironment(), (lhs.getBooleanValue() && rhs.getBooleanValue()));
 		case OR:
-			return new ScriptValue_Boolean(getEnvironment(), (lhs.getBooleanValue() || rhs.getBooleanValue()));
+			return new ScriptValue_Boolean(this.getEnvironment(), (lhs.getBooleanValue() || rhs.getBooleanValue()));
 		}
 		throw new Exception_InternalError("Invalid default");
 	}
@@ -39,17 +39,17 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	// ScriptValue_Abstract implementation
 	@Override
 	public ScriptValueType getType() {
-		return m_lhs.getType();
+		return this.m_lhs.getType();
 	}
 
 	@Override
 	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
-		return execute();
+		return this.execute();
 	}
 
 	@Override
 	public boolean isConvertibleTo(ScriptValueType type) {
-		return ScriptValueType.isConvertibleTo(getEnvironment(), getType(), type);
+		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
 	// Nodeable implementation
@@ -57,24 +57,24 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	public boolean nodificate() {
 		assert Debugger.openNode("Combo Boolean Expression");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Left side", m_lhs);
-		assert Debugger.addSnapNode("Right side", m_rhs);
+		assert Debugger.addSnapNode("Left side", this.m_lhs);
+		assert Debugger.addSnapNode("Right side", this.m_rhs);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	@Override
 	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
-		return getValue().setValue(ref, value);
+		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return getValue().valuesCompare(ref, rhs);
+		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
 	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return getValue().valuesEqual(ref, rhs);
+		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

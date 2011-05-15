@@ -58,9 +58,9 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	}
 
 	public ScriptValue_Numeric(ScriptEnvironment env, Number value) {
-		m_environment = env;
-		m_type = ScriptValueType.getType(value);
-		m_number = value;
+		this.m_environment = env;
+		this.m_type = ScriptValueType.getType(value);
+		this.m_number = value;
 	}
 
 	public ScriptValue_Numeric(ScriptEnvironment env, short value) {
@@ -69,27 +69,27 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 
 	@Override
 	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
-		assert Debugger.openNode("Type Casting", "Casting (" + getType() + " to " + type + ")");
+		assert Debugger.openNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
 		ScriptValue_Abstract value;
-		ScriptEnvironment environment = getEnvironment();
+		ScriptEnvironment environment = this.getEnvironment();
 		if (ref != null) {
 			environment = ref.getEnvironment();
 		}
 		switch (type.getKeywordType()) {
 		case SHORT:
-			value = new ScriptValue_Numeric(environment, new Short(m_number.shortValue()));
+			value = new ScriptValue_Numeric(environment, new Short(this.m_number.shortValue()));
 			break;
 		case INT:
-			value = new ScriptValue_Numeric(environment, new Integer(m_number.intValue()));
+			value = new ScriptValue_Numeric(environment, new Integer(this.m_number.intValue()));
 			break;
 		case LONG:
-			value = new ScriptValue_Numeric(environment, new Long(m_number.longValue()));
+			value = new ScriptValue_Numeric(environment, new Long(this.m_number.longValue()));
 			break;
 		case FLOAT:
-			value = new ScriptValue_Numeric(environment, new Float(m_number.floatValue()));
+			value = new ScriptValue_Numeric(environment, new Float(this.m_number.floatValue()));
 			break;
 		case DOUBLE:
-			value = new ScriptValue_Numeric(environment, new Double(m_number.doubleValue()));
+			value = new ScriptValue_Numeric(environment, new Double(this.m_number.doubleValue()));
 			break;
 		default:
 			throw new Exception_Nodeable_ClassCast(ref, this, type);
@@ -101,32 +101,32 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	// Overloaded Functions
 	@Override
 	public Object convert() {
-		return m_number;
+		return this.m_number;
 	}
 
 	public Number decrement(Referenced ref) throws Exception_Nodeable {
-		return increment(ref, new ScriptValue_Numeric(getEnvironment(), 1.0d));
+		return this.increment(ref, new ScriptValue_Numeric(this.getEnvironment(), 1.0d));
 	}
 
 	public Number decrement(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
 		assert Debugger.openNode("Numeric Value Decrements", "Decrementing Numeric Value");
 		assert Debugger.addSnapNode("Number before decrement", value);
-		Number number = ((ScriptValue_Numeric) value.castToType(ref, getType())).getNumericValue();
-		switch (getType().getKeywordType()) {
+		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
+		switch (this.getType().getKeywordType()) {
 		case SHORT:
-			number = new Integer(getNumericValue().intValue() - number.intValue());
+			number = new Integer(this.getNumericValue().intValue() - number.intValue());
 			break;
 		case INT:
-			number = new Integer(getNumericValue().intValue() - number.intValue());
+			number = new Integer(this.getNumericValue().intValue() - number.intValue());
 			break;
 		case LONG:
-			number = new Long(getNumericValue().longValue() - number.longValue());
+			number = new Long(this.getNumericValue().longValue() - number.longValue());
 			break;
 		case FLOAT:
-			number = new Float(getNumericValue().floatValue() - number.floatValue());
+			number = new Float(this.getNumericValue().floatValue() - number.floatValue());
 			break;
 		case DOUBLE:
-			number = new Double(getNumericValue().doubleValue() - number.doubleValue());
+			number = new Double(this.getNumericValue().doubleValue() - number.doubleValue());
 			break;
 		default:
 			throw new Exception_Nodeable_ClassCast(ref, this, value);
@@ -138,25 +138,25 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	public Number divide(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
 		assert Debugger.openNode("Numeric Value Divisions", "Dividing Numeric Value");
 		assert Debugger.addSnapNode("Number before division", value);
-		Number number = ((ScriptValue_Numeric) value.castToType(ref, getType())).getNumericValue();
+		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
 		if (number.doubleValue() == 0) {
 			throw new Exception_Nodeable_DivisionByZero(ref);
 		}
-		switch (getType().getKeywordType()) {
+		switch (this.getType().getKeywordType()) {
 		case SHORT:
-			number = new Integer(getNumericValue().intValue() / number.intValue());
+			number = new Integer(this.getNumericValue().intValue() / number.intValue());
 			break;
 		case INT:
-			number = new Integer(getNumericValue().intValue() / number.intValue());
+			number = new Integer(this.getNumericValue().intValue() / number.intValue());
 			break;
 		case LONG:
-			number = new Long(getNumericValue().longValue() / number.longValue());
+			number = new Long(this.getNumericValue().longValue() / number.longValue());
 			break;
 		case FLOAT:
-			number = new Float(getNumericValue().floatValue() / number.floatValue());
+			number = new Float(this.getNumericValue().floatValue() / number.floatValue());
 			break;
 		case DOUBLE:
-			number = new Double(getNumericValue().doubleValue() / number.doubleValue());
+			number = new Double(this.getNumericValue().doubleValue() / number.doubleValue());
 			break;
 		default:
 			throw new Exception_Nodeable_ClassCast(ref, this, value);
@@ -167,26 +167,26 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 
 	// Extensions for number-stuff
 	public double doubleValue() {
-		return getNumericValue().doubleValue();
+		return this.getNumericValue().doubleValue();
 	}
 
 	public float floatValue() {
-		return getNumericValue().floatValue();
+		return this.getNumericValue().floatValue();
 	}
 
 	// Required ScriptValue_Abstract implementation
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	public Number getNumericValue() {
-		return m_number;
+		return this.m_number;
 	}
 
 	@Override
 	public ScriptValueType getType() {
-		return ScriptValueType.getType(m_number);
+		return ScriptValueType.getType(this.m_number);
 	}
 
 	@Override
@@ -195,28 +195,28 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	}
 
 	public Number increment(Referenced ref) throws Exception_Nodeable {
-		return increment(ref, new ScriptValue_Numeric(getEnvironment(), 1.0d));
+		return this.increment(ref, new ScriptValue_Numeric(this.getEnvironment(), 1.0d));
 	}
 
 	public Number increment(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
 		assert Debugger.openNode("Numeric Value Increments", "Incrementing Numeric Value");
 		assert Debugger.addSnapNode("Number before increment", value);
-		Number number = ((ScriptValue_Numeric) value.castToType(ref, getType())).getNumericValue();
-		switch (getType().getKeywordType()) {
+		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
+		switch (this.getType().getKeywordType()) {
 		case SHORT:
-			number = new Integer(getNumericValue().intValue() + number.intValue());
+			number = new Integer(this.getNumericValue().intValue() + number.intValue());
 			break;
 		case INT:
-			number = new Integer(getNumericValue().intValue() + number.intValue());
+			number = new Integer(this.getNumericValue().intValue() + number.intValue());
 			break;
 		case LONG:
-			number = new Long(getNumericValue().longValue() + number.longValue());
+			number = new Long(this.getNumericValue().longValue() + number.longValue());
 			break;
 		case FLOAT:
-			number = new Float(getNumericValue().floatValue() + number.floatValue());
+			number = new Float(this.getNumericValue().floatValue() + number.floatValue());
 			break;
 		case DOUBLE:
-			number = new Double(getNumericValue().doubleValue() + number.doubleValue());
+			number = new Double(this.getNumericValue().doubleValue() + number.doubleValue());
 			break;
 		default:
 			throw new Exception_Nodeable_ClassCast(ref, this, value);
@@ -226,40 +226,40 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	}
 
 	public int intValue() {
-		return getNumericValue().intValue();
+		return this.getNumericValue().intValue();
 	}
 
 	@Override
 	public boolean isConvertibleTo(ScriptValueType type) {
-		return ScriptValueType.isConvertibleTo(getEnvironment(), getType(), type);
+		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
 	public long longValue() {
-		return getNumericValue().longValue();
+		return this.getNumericValue().longValue();
 	}
 
 	public Number modulus(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
 		assert Debugger.openNode("Numeric Value Modulations", "Modulating Numeric Value");
 		assert Debugger.addSnapNode("Number before modulus", value);
-		Number number = ((ScriptValue_Numeric) value.castToType(ref, getType())).getNumericValue();
+		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
 		if (number.doubleValue() == 0) {
 			throw new Exception_Nodeable_DivisionByZero(ref);
 		}
-		switch (getType().getKeywordType()) {
+		switch (this.getType().getKeywordType()) {
 		case SHORT:
-			number = new Integer(getNumericValue().intValue() % number.intValue());
+			number = new Integer(this.getNumericValue().intValue() % number.intValue());
 			break;
 		case INT:
-			number = new Integer(getNumericValue().intValue() % number.intValue());
+			number = new Integer(this.getNumericValue().intValue() % number.intValue());
 			break;
 		case LONG:
-			number = new Long(getNumericValue().longValue() % number.longValue());
+			number = new Long(this.getNumericValue().longValue() % number.longValue());
 			break;
 		case FLOAT:
-			number = new Float(getNumericValue().floatValue() % number.floatValue());
+			number = new Float(this.getNumericValue().floatValue() % number.floatValue());
 			break;
 		case DOUBLE:
-			number = new Double(getNumericValue().doubleValue() % number.doubleValue());
+			number = new Double(this.getNumericValue().doubleValue() % number.doubleValue());
 			break;
 		default:
 			throw new Exception_Nodeable_ClassCast(ref, this, value);
@@ -271,22 +271,22 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	public Number multiply(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
 		assert Debugger.openNode("Numeric Value Multiplications", "Multiplying Numeric Value");
 		assert Debugger.addSnapNode("Number before multiplication", value);
-		Number number = ((ScriptValue_Numeric) value.castToType(ref, getType())).getNumericValue();
-		switch (getType().getKeywordType()) {
+		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
+		switch (this.getType().getKeywordType()) {
 		case SHORT:
-			number = new Integer(getNumericValue().intValue() * number.intValue());
+			number = new Integer(this.getNumericValue().intValue() * number.intValue());
 			break;
 		case INT:
-			number = new Integer(getNumericValue().intValue() * number.intValue());
+			number = new Integer(this.getNumericValue().intValue() * number.intValue());
 			break;
 		case LONG:
-			number = new Long(getNumericValue().longValue() * number.longValue());
+			number = new Long(this.getNumericValue().longValue() * number.longValue());
 			break;
 		case FLOAT:
-			number = new Float(getNumericValue().floatValue() * number.floatValue());
+			number = new Float(this.getNumericValue().floatValue() * number.floatValue());
 			break;
 		case DOUBLE:
-			number = new Double(getNumericValue().doubleValue() * number.doubleValue());
+			number = new Double(this.getNumericValue().doubleValue() * number.doubleValue());
 			break;
 		default:
 			throw new Exception_Nodeable_ClassCast(ref, this, value);
@@ -297,7 +297,7 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 
 	@Override
 	public boolean nodificate() {
-		switch (getType().getKeywordType()) {
+		switch (this.getType().getKeywordType()) {
 		case SHORT:
 			assert Debugger.openNode(DebugString.NUMERICSCRIPTVALUESHORT);
 			break;
@@ -316,10 +316,10 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 		default:
 			throw new Exception_InternalError("Invalid default");
 		}
-		if (m_number == null) {
+		if (this.m_number == null) {
 			assert Debugger.addNode("Numeric value: null");
 		} else {
-			assert Debugger.addNode("Numeric value: " + m_number.doubleValue());
+			assert Debugger.addNode("Numeric value: " + this.m_number.doubleValue());
 		}
 		assert Debugger.addNode("Reference: " + this);
 		assert Debugger.closeNode();
@@ -327,28 +327,28 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	}
 
 	public ScriptValue_Abstract setNumericValue(Number value) {
-		m_number = value;
+		this.m_number = value;
 		return this;
 	}
 
 	@Override
 	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
-		Number number = ((ScriptValue_Numeric) value.castToType(ref, getType())).getNumericValue();
-		switch (m_type.getKeywordType()) {
+		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
+		switch (this.m_type.getKeywordType()) {
 		case SHORT:
-			m_number = new Short(number.shortValue());
+			this.m_number = new Short(number.shortValue());
 			break;
 		case INT:
-			m_number = new Integer(number.intValue());
+			this.m_number = new Integer(number.intValue());
 			break;
 		case LONG:
-			m_number = new Long(number.longValue());
+			this.m_number = new Long(number.longValue());
 			break;
 		case FLOAT:
-			m_number = new Float(number.floatValue());
+			this.m_number = new Float(number.floatValue());
 			break;
 		case DOUBLE:
-			m_number = new Double(number.doubleValue());
+			this.m_number = new Double(number.doubleValue());
 			break;
 		default:
 			throw new Exception_Nodeable_ClassCast(ref, this, value);
@@ -357,16 +357,16 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	}
 
 	public short shortValue() {
-		return getNumericValue().shortValue();
+		return this.getNumericValue().shortValue();
 	}
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		ScriptValue_Numeric right = (ScriptValue_Numeric) rhs.castToType(ref, getType());
-		if (m_number.equals(right.getNumericValue())) {
+		ScriptValue_Numeric right = (ScriptValue_Numeric) rhs.castToType(ref, this.getType());
+		if (this.m_number.equals(right.getNumericValue())) {
 			return 0;
 		}
-		if (m_number.doubleValue() > right.getNumericValue().doubleValue()) {
+		if (this.m_number.doubleValue() > right.getNumericValue().doubleValue()) {
 			return 1;
 		}
 		return -1;
@@ -375,8 +375,8 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	@Override
 	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
 		if (!ScriptValueType.isNumericType(rhs.getType())) {
-			throw new Exception_Nodeable_ClassCast(ref, rhs, getType());
+			throw new Exception_Nodeable_ClassCast(ref, rhs, this.getType());
 		}
-		return ((ScriptValue_Numeric) getValue()).doubleValue() == ((ScriptValue_Numeric) rhs.getValue()).doubleValue();
+		return ((ScriptValue_Numeric) this.getValue()).doubleValue() == ((ScriptValue_Numeric) rhs.getValue()).doubleValue();
 	}
 }

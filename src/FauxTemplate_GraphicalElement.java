@@ -25,7 +25,7 @@ public class FauxTemplate_GraphicalElement extends FauxTemplate implements Nodea
 		ScriptValue_Abstract returning;
 		assert Debugger.addSnapNode("Template provided", template);
 		assert Debugger.addSnapNode("Parameters provided", params);
-		returning = getExtendedFauxClass().execute(ref, name, params, template);
+		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
@@ -34,16 +34,16 @@ public class FauxTemplate_GraphicalElement extends FauxTemplate implements Nodea
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing graphical element faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
-		disableFullCreation();
-		getExtendedClass().initialize();
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_GraphicalElement(getEnvironment(), getType());
+		return new FauxTemplate_GraphicalElement(this.getEnvironment(), this.getType());
 	}
 
 	// Nodeable implementation

@@ -11,7 +11,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 
 	public FauxTemplate_Point(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		m_point = new Point_Euclidean(env, 0, 0, 0);
+		this.m_point = new Point_Euclidean(env, 0, 0, 0);
 	}
 
 	public FauxTemplate_Point(ScriptEnvironment env, ScriptValueType type, ScriptValueType extended, List<ScriptValueType> implemented, boolean isAbstract) {
@@ -21,7 +21,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 	// ScriptConvertible and Nodeable implementations
 	@Override
 	public Object convert() {
-		return m_point;
+		return this.m_point;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -35,7 +35,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Point) createObject(ref, template);
+				template = (FauxTemplate_Point) this.createObject(ref, template);
 			}
 			if (params.size() == 3) {
 				template.getPoint().setX(Parser.getDouble(params.get(0)).doubleValue());
@@ -43,14 +43,14 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 				template.getPoint().setZ(Parser.getDouble(params.get(2)).doubleValue());
 			}
 			params.clear();
-			returning = getExtendedFauxClass().execute(ref, name, params, template);
+			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		}
 		if (name.equals("getX")) {
-			returning = Parser.getRiffDouble(getEnvironment(), (template).getPoint().getX());
+			returning = Parser.getRiffDouble(this.getEnvironment(), (template).getPoint().getX());
 		} else if (name.equals("getY")) {
-			returning = Parser.getRiffDouble(getEnvironment(), (template).getPoint().getY());
+			returning = Parser.getRiffDouble(this.getEnvironment(), (template).getPoint().getY());
 		} else if (name.equals("getZ")) {
-			returning = Parser.getRiffDouble(getEnvironment(), (template).getPoint().getZ());
+			returning = Parser.getRiffDouble(this.getEnvironment(), (template).getPoint().getZ());
 		} else if (name.equals("setX")) {
 			(template).getPoint().setX(Parser.getDouble(params.get(0)).doubleValue());
 		} else if (name.equals("setY")) {
@@ -58,14 +58,14 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 		} else if (name.equals("setZ")) {
 			(template).getPoint().setZ(Parser.getDouble(params.get(0)).doubleValue());
 		} else {
-			returning = getExtendedFauxClass().execute(ref, name, params, template);
+			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		}
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public Point getPoint() {
-		return m_point;
+		return this.m_point;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -73,41 +73,41 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing point faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.DOUBLE));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.DOUBLE));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.DOUBLE));
-		addConstructor(getType(), fxnParams);
-		disableFullCreation();
-		getExtendedClass().initialize();
-		addFauxFunction("getX", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getY", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getZ", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
+		this.addConstructor(this.getType(), fxnParams);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
+		this.addFauxFunction("getX", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getY", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getZ", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.DOUBLE));
-		addFauxFunction("setX", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setY", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setZ", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
+		this.addFauxFunction("setX", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setY", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setZ", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Point(getEnvironment(), getType());
+		return new FauxTemplate_Point(this.getEnvironment(), this.getType());
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Point Faux Template");
 		assert super.nodificate();
-		assert Debugger.addNode(m_point);
+		assert Debugger.addNode(this.m_point);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setPoint(Point point) {
-		m_point = point;
+		this.m_point = point;
 	}
 }

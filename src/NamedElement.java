@@ -5,32 +5,32 @@ public class NamedElement {
 	}
 
 	public NamedElement(String name, String formal, String adj) {
-		m_name = name;
-		m_formalName = formal;
-		m_adjective = adj;
+		this.m_name = name;
+		this.m_formalName = formal;
+		this.m_adjective = adj;
 	}
 
 	public String getAdjective() {
-		return m_adjective;
+		return this.m_adjective;
 	}
 
 	public String getFormalName() {
-		return m_formalName;
+		return this.m_formalName;
 	}
 
 	public String getName() {
-		return m_name;
+		return this.m_name;
 	}
 
 	public void setAdjective(String adjective) {
-		m_adjective = adjective;
+		this.m_adjective = adjective;
 	}
 
 	public void setFormalName(String name) {
-		m_formalName = name;
+		this.m_formalName = name;
 	}
 
 	public void setName(String name) {
-		m_name = name;
+		this.m_name = name;
 	}
 }

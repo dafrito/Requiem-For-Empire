@@ -33,43 +33,43 @@ class CompileThread extends Thread {
 
 	public CompileThread(Debug_Environment debugEnv, boolean shouldExecute) {
 		super(COMPILETHREADSTRING + " " + m_threadNum++);
-		m_debugEnvironment = debugEnv;
-		m_shouldExecute = shouldExecute;
+		this.m_debugEnvironment = debugEnv;
+		this.m_shouldExecute = shouldExecute;
 	}
 
 	public void run() {
 		Debugger.hitStopWatch(Thread.currentThread().getName());
-		m_debugEnvironment.getEnvironment().reset();
+		this.m_debugEnvironment.getEnvironment().reset();
 		Parser.clearPreparseLists();
 		boolean quickflag = true;
-		for (int i = 0; i < m_debugEnvironment.getScriptElements().size(); i++) {
-			Debug_ScriptElement element = m_debugEnvironment.getScriptElements().get(i);
+		for (int i = 0; i < this.m_debugEnvironment.getScriptElements().size(); i++) {
+			Debug_ScriptElement element = this.m_debugEnvironment.getScriptElements().get(i);
 			element.saveFile();
 			if (!element.compile()) {
 				quickflag = false;
-				m_debugEnvironment.setTitleAt(i + 1, element.getName());
+				this.m_debugEnvironment.setTitleAt(i + 1, element.getName());
 			}
 		}
 		if (!quickflag) {
-			m_debugEnvironment.setStatus("One or more files had errors during compilation.");
+			this.m_debugEnvironment.setStatus("One or more files had errors during compilation.");
 			return;
 		}
-		Vector<Exception> exceptions = Parser.parseElements(m_debugEnvironment.getEnvironment());
+		Vector<Exception> exceptions = Parser.parseElements(this.m_debugEnvironment.getEnvironment());
 		if (exceptions.size() == 0) {
-			m_debugEnvironment.canExecute(true);
-			m_debugEnvironment.setStatus("All files compiled successfully.");
+			this.m_debugEnvironment.canExecute(true);
+			this.m_debugEnvironment.setStatus("All files compiled successfully.");
 			Debugger.hitStopWatch(Thread.currentThread().getName());
-			assert Debugger.addSnapNode("Compile successful", m_debugEnvironment.getEnvironment());
-			if (m_shouldExecute) {
-				ExecutionThread thread = new ExecutionThread(m_debugEnvironment);
+			assert Debugger.addSnapNode("Compile successful", this.m_debugEnvironment.getEnvironment());
+			if (this.m_shouldExecute) {
+				ExecutionThread thread = new ExecutionThread(this.m_debugEnvironment);
 				thread.start();
 			}
 			//m_debugEnvironment.report();
 			return;
 		} else {
 			Debugger.hitStopWatch(Thread.currentThread().getName());
-			m_debugEnvironment.setStatus("One or more files had errors during compilation.");
-			m_debugEnvironment.addExceptions(exceptions);
+			this.m_debugEnvironment.setStatus("One or more files had errors during compilation.");
+			this.m_debugEnvironment.addExceptions(exceptions);
 		}
 	}
 }
@@ -132,117 +132,117 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 		super("RFE Debugger");
 		Debugger.setDebugger(this);
 		initialize();
-		m_scriptElements = new LinkedList<Debug_ScriptElement>();
-		m_exceptions = new LinkedList<String>();
-		m_ignores = new LinkedList<String>();
-		m_allThreads = new LinkedList<String>();
-		m_allThreads.add("AWT-EventQueue-0");
-		m_allThreads.add(CompileThread.COMPILETHREADSTRING);
-		m_allThreads.add(ExecutionThread.EXECUTIONTHREADSTRING);
-		m_allThreads.add(PolygonPipeline.POLYGONPIPELINESTRING);
-		m_allThreads.add(SplitterThread.SPLITTERTHREADSTRING);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(width, height);
+		this.m_scriptElements = new LinkedList<Debug_ScriptElement>();
+		this.m_exceptions = new LinkedList<String>();
+		this.m_ignores = new LinkedList<String>();
+		this.m_allThreads = new LinkedList<String>();
+		this.m_allThreads.add("AWT-EventQueue-0");
+		this.m_allThreads.add(CompileThread.COMPILETHREADSTRING);
+		this.m_allThreads.add(ExecutionThread.EXECUTIONTHREADSTRING);
+		this.m_allThreads.add(PolygonPipeline.POLYGONPIPELINESTRING);
+		this.m_allThreads.add(SplitterThread.SPLITTERTHREADSTRING);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(width, height);
 		// Menu bar
-		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add(m_status = new JLabel(" Ready"), BorderLayout.SOUTH);
-		getContentPane().add(m_tabbedPane = new JTabbedPane());
-		m_tabbedPane.addChangeListener(this);
-		m_menuBar = new JMenuBar();
-		setJMenuBar(m_menuBar);
+		this.getContentPane().setLayout(new BorderLayout());
+		this.getContentPane().add(this.m_status = new JLabel(" Ready"), BorderLayout.SOUTH);
+		this.getContentPane().add(this.m_tabbedPane = new JTabbedPane());
+		this.m_tabbedPane.addChangeListener(this);
+		this.m_menuBar = new JMenuBar();
+		this.setJMenuBar(this.m_menuBar);
 		JMenu fileMenu = new JMenu("File");
-		m_menuBar.add(fileMenu);
+		this.m_menuBar.add(fileMenu);
 		fileMenu.setMnemonic('F');
-		m_editMenu = new JMenu("Edit");
-		m_menuBar.add(m_editMenu);
-		m_editMenu.setMnemonic('E');
-		m_parserMenu = new JMenu("Parser");
-		m_parserMenu.setMnemonic('P');
-		m_menuBar.add(m_parserMenu);
-		fileMenu.add(m_newFile = new JMenuItem("New Script", 'N'));
-		fileMenu.add(m_openFile = new JMenuItem("Open Script...", 'O'));
-		fileMenu.add(m_closeFile = new JMenuItem("Close Script", 'C'));
-		fileMenu.add(m_saveFile = new JMenuItem("Save Script", 'S'));
-		fileMenu.add(m_saveFileAs = new JMenuItem("Save Script As...", 'A'));
-		fileMenu.add(m_report = new JMenuItem("Report", 'T'));
-		fileMenu.add(m_reset = new JMenuItem("Reset"));
-		fileMenu.add(m_exit = new JMenuItem("Exit", 'X'));
-		m_editMenu.add(m_undo = new JMenuItem("Undo", 'U'));
-		m_editMenu.add(m_redo = new JMenuItem("Redo", 'R'));
-		m_parserMenu.add(m_compile = new JMenuItem("Compile", 'C'));
-		m_parserMenu.add(m_execute = new JMenuItem("Execute", 'X'));
-		m_parserMenu.add(m_compileAndRun = new JMenuItem("Compile and Run", 'R'));
-		m_execute.setEnabled(false);
+		this.m_editMenu = new JMenu("Edit");
+		this.m_menuBar.add(this.m_editMenu);
+		this.m_editMenu.setMnemonic('E');
+		this.m_parserMenu = new JMenu("Parser");
+		this.m_parserMenu.setMnemonic('P');
+		this.m_menuBar.add(this.m_parserMenu);
+		fileMenu.add(this.m_newFile = new JMenuItem("New Script", 'N'));
+		fileMenu.add(this.m_openFile = new JMenuItem("Open Script...", 'O'));
+		fileMenu.add(this.m_closeFile = new JMenuItem("Close Script", 'C'));
+		fileMenu.add(this.m_saveFile = new JMenuItem("Save Script", 'S'));
+		fileMenu.add(this.m_saveFileAs = new JMenuItem("Save Script As...", 'A'));
+		fileMenu.add(this.m_report = new JMenuItem("Report", 'T'));
+		fileMenu.add(this.m_reset = new JMenuItem("Reset"));
+		fileMenu.add(this.m_exit = new JMenuItem("Exit", 'X'));
+		this.m_editMenu.add(this.m_undo = new JMenuItem("Undo", 'U'));
+		this.m_editMenu.add(this.m_redo = new JMenuItem("Redo", 'R'));
+		this.m_parserMenu.add(this.m_compile = new JMenuItem("Compile", 'C'));
+		this.m_parserMenu.add(this.m_execute = new JMenuItem("Execute", 'X'));
+		this.m_parserMenu.add(this.m_compileAndRun = new JMenuItem("Compile and Run", 'R'));
+		this.m_execute.setEnabled(false);
 		JMenu debugMenu = new JMenu("Debugger");
-		m_menuBar.add(debugMenu);
-		debugMenu.add(m_exceptionsMode = new JRadioButtonMenuItem("Lazy Filter Mode"));
-		debugMenu.add(m_ignoreMode = new JRadioButtonMenuItem("Greedy Filter Mode"));
+		this.m_menuBar.add(debugMenu);
+		debugMenu.add(this.m_exceptionsMode = new JRadioButtonMenuItem("Lazy Filter Mode"));
+		debugMenu.add(this.m_ignoreMode = new JRadioButtonMenuItem("Greedy Filter Mode"));
 		debugMenu.addSeparator();
-		debugMenu.add(m_addException = new JMenuItem("Add Exception"));
-		debugMenu.add(m_addExceptionFromList = new JMenuItem("Add Exception From List..."));
-		debugMenu.add(m_removeException = new JMenuItem("Remove Exception..."));
+		debugMenu.add(this.m_addException = new JMenuItem("Add Exception"));
+		debugMenu.add(this.m_addExceptionFromList = new JMenuItem("Add Exception From List..."));
+		debugMenu.add(this.m_removeException = new JMenuItem("Remove Exception..."));
 		debugMenu.addSeparator();
-		debugMenu.add(m_addIgnore = new JMenuItem("Add to Ignore List"));
-		debugMenu.add(m_addIgnoreFromList = new JMenuItem("Add Ignore From List..."));
-		debugMenu.add(m_removeIgnore = new JMenuItem("Remove Ignore..."));
+		debugMenu.add(this.m_addIgnore = new JMenuItem("Add to Ignore List"));
+		debugMenu.add(this.m_addIgnoreFromList = new JMenuItem("Add Ignore From List..."));
+		debugMenu.add(this.m_removeIgnore = new JMenuItem("Remove Ignore..."));
 		debugMenu.addSeparator();
-		debugMenu.add(m_addAssertionFailure = new JMenuItem("Add Assertion Failure"));
-		debugMenu.add(m_removeAssertionFailure = new JMenuItem("Remove Assertion Failure"));
-		m_listenerMenu = new JMenu("Listener");
-		m_menuBar.add(m_listenerMenu);
-		m_listenerMenu.setMnemonic('L');
-		m_listenerMenu.add(m_createListener = new JMenuItem("Create Listener...", 'C'));
-		m_listenerMenu.add(m_renameTab = new JMenuItem("Rename Tab...", 'N'));
-		m_listenerMenu.add(m_clearTab = new JMenuItem("Clear Tab", 'C'));
-		m_listenerMenu.add(m_removeTab = new JMenuItem("Remove Tab", 'R'));
+		debugMenu.add(this.m_addAssertionFailure = new JMenuItem("Add Assertion Failure"));
+		debugMenu.add(this.m_removeAssertionFailure = new JMenuItem("Remove Assertion Failure"));
+		this.m_listenerMenu = new JMenu("Listener");
+		this.m_menuBar.add(this.m_listenerMenu);
+		this.m_listenerMenu.setMnemonic('L');
+		this.m_listenerMenu.add(this.m_createListener = new JMenuItem("Create Listener...", 'C'));
+		this.m_listenerMenu.add(this.m_renameTab = new JMenuItem("Rename Tab...", 'N'));
+		this.m_listenerMenu.add(this.m_clearTab = new JMenuItem("Clear Tab", 'C'));
+		this.m_listenerMenu.add(this.m_removeTab = new JMenuItem("Remove Tab", 'R'));
 		ButtonGroup group = new ButtonGroup();
-		group.add(m_exceptionsMode);
-		group.add(m_ignoreMode);
-		m_exceptionsMode.setSelected(true);
+		group.add(this.m_exceptionsMode);
+		group.add(this.m_ignoreMode);
+		this.m_exceptionsMode.setSelected(true);
 		// Set up our debug spew and script tabs
-		m_tabbedPane.add("Debug Output", m_filteredPanes = new JTabbedPane());
+		this.m_tabbedPane.add("Debug Output", this.m_filteredPanes = new JTabbedPane());
 		// Accelerators
-		m_clearTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-		m_removeTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-		m_newFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-		m_openFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-		m_closeFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-		m_saveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-		m_saveFileAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-		m_exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-		m_undo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
-		m_redo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
-		m_compile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-		m_execute.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
-		m_report.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0));
-		m_compileAndRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, ActionEvent.CTRL_MASK));
+		this.m_clearTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+		this.m_removeTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		this.m_newFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+		this.m_openFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+		this.m_closeFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		this.m_saveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		this.m_saveFileAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+		this.m_exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+		this.m_undo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+		this.m_redo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
+		this.m_compile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+		this.m_execute.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
+		this.m_report.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0));
+		this.m_compileAndRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, ActionEvent.CTRL_MASK));
 		// Listeners
-		m_reset.addActionListener(this);
-		m_renameTab.addActionListener(this);
-		m_report.addActionListener(this);
-		m_filteredPanes.addChangeListener(this);
-		m_clearTab.addActionListener(this);
-		m_removeTab.addActionListener(this);
-		m_createListener.addActionListener(this);
-		m_newFile.addActionListener(this);
-		m_openFile.addActionListener(this);
-		m_closeFile.addActionListener(this);
-		m_saveFile.addActionListener(this);
-		m_saveFileAs.addActionListener(this);
-		m_exit.addActionListener(this);
-		m_undo.addActionListener(this);
-		m_redo.addActionListener(this);
-		m_compile.addActionListener(this);
-		m_execute.addActionListener(this);
-		m_compileAndRun.addActionListener(this);
-		m_addException.addActionListener(this);
-		m_addExceptionFromList.addActionListener(this);
-		m_addIgnoreFromList.addActionListener(this);
-		m_addIgnore.addActionListener(this);
-		m_removeException.addActionListener(this);
-		m_removeIgnore.addActionListener(this);
-		m_addAssertionFailure.addActionListener(this);
-		m_removeAssertionFailure.addActionListener(this);
+		this.m_reset.addActionListener(this);
+		this.m_renameTab.addActionListener(this);
+		this.m_report.addActionListener(this);
+		this.m_filteredPanes.addChangeListener(this);
+		this.m_clearTab.addActionListener(this);
+		this.m_removeTab.addActionListener(this);
+		this.m_createListener.addActionListener(this);
+		this.m_newFile.addActionListener(this);
+		this.m_openFile.addActionListener(this);
+		this.m_closeFile.addActionListener(this);
+		this.m_saveFile.addActionListener(this);
+		this.m_saveFileAs.addActionListener(this);
+		this.m_exit.addActionListener(this);
+		this.m_undo.addActionListener(this);
+		this.m_redo.addActionListener(this);
+		this.m_compile.addActionListener(this);
+		this.m_execute.addActionListener(this);
+		this.m_compileAndRun.addActionListener(this);
+		this.m_addException.addActionListener(this);
+		this.m_addExceptionFromList.addActionListener(this);
+		this.m_addIgnoreFromList.addActionListener(this);
+		this.m_addIgnore.addActionListener(this);
+		this.m_removeException.addActionListener(this);
+		this.m_removeIgnore.addActionListener(this);
+		this.m_addAssertionFailure.addActionListener(this);
+		this.m_removeAssertionFailure.addActionListener(this);
 		// Open all valid scripts in our working directory
 		File folder = new File(".");
 		ExtensionFilter filter = new ExtensionFilter();
@@ -250,140 +250,140 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 		File[] files = folder.listFiles(filter);
 		for (File file : files) {
 			if (file.isFile()) {
-				addReferenced(new Debug_ScriptElement(this, file));
+				this.addReferenced(new Debug_ScriptElement(this, file));
 			}
 		}
 		// Finally, show the window.
-		m_environment = new ScriptEnvironment();
-		setVisible(true);
+		this.m_environment = new ScriptEnvironment();
+		this.setVisible(true);
 	}
 
 	// Listeners
 	public void actionPerformed(ActionEvent event) {
 		if (event.getActionCommand().equals("Exit")) {
 			java.util.List<Debug_ScriptElement> removedElements = new LinkedList<Debug_ScriptElement>();
-			int index = m_tabbedPane.getSelectedIndex();
-			for (; m_scriptElements.size() > 0;) {
-				Debug_ScriptElement element = m_scriptElements.get(0);
+			int index = this.m_tabbedPane.getSelectedIndex();
+			for (; this.m_scriptElements.size() > 0;) {
+				Debug_ScriptElement element = this.m_scriptElements.get(0);
 				if (!element.closeFile()) {
 					for (Debug_ScriptElement added : removedElements) {
-						m_scriptElements.add(0, added);
-						m_tabbedPane.add(added, 1);
+						this.m_scriptElements.add(0, added);
+						this.m_tabbedPane.add(added, 1);
 					}
-					m_tabbedPane.setSelectedIndex(index);
+					this.m_tabbedPane.setSelectedIndex(index);
 					return;
 				}
-				m_tabbedPane.remove(1);
-				m_scriptElements.remove(0);
+				this.m_tabbedPane.remove(1);
+				this.m_scriptElements.remove(0);
 				removedElements.add(element);
 			}
 			System.exit(0);
-		} else if (event.getSource().equals(m_newFile)) {
-			addReferenced(new Debug_ScriptElement(this, (String) null));
-		} else if (event.getSource().equals(m_openFile)) {
+		} else if (event.getSource().equals(this.m_newFile)) {
+			this.addReferenced(new Debug_ScriptElement(this, (String) null));
+		} else if (event.getSource().equals(this.m_openFile)) {
 			Debug_ScriptElement element = new Debug_ScriptElement(this);
 			if (element.isValid()) {
-				addReferenced(element);
+				this.addReferenced(element);
 			}
-		} else if (event.getSource().equals(m_closeFile)) {
-			if (((Debug_ScriptElement) m_scriptElements.get(m_tabbedPane.getSelectedIndex() - 1)).closeFile()) {
-				int index = m_tabbedPane.getSelectedIndex();
-				m_tabbedPane.remove(index);
-				m_scriptElements.remove(index - 1);
+		} else if (event.getSource().equals(this.m_closeFile)) {
+			if (((Debug_ScriptElement) this.m_scriptElements.get(this.m_tabbedPane.getSelectedIndex() - 1)).closeFile()) {
+				int index = this.m_tabbedPane.getSelectedIndex();
+				this.m_tabbedPane.remove(index);
+				this.m_scriptElements.remove(index - 1);
 			}
-		} else if (event.getSource().equals(m_renameTab)) {
-			Object text = JOptionPane.showInputDialog(null, "Insert new output name", "Rename Output", JOptionPane.QUESTION_MESSAGE, null, null, m_filteredPanes.getTitleAt(m_filteredPanes.getSelectedIndex()));
+		} else if (event.getSource().equals(this.m_renameTab)) {
+			Object text = JOptionPane.showInputDialog(null, "Insert new output name", "Rename Output", JOptionPane.QUESTION_MESSAGE, null, null, this.m_filteredPanes.getTitleAt(this.m_filteredPanes.getSelectedIndex()));
 			if (text != null) {
-				m_filteredPanes.setTitleAt(m_filteredPanes.getSelectedIndex(), text.toString());
+				this.m_filteredPanes.setTitleAt(this.m_filteredPanes.getSelectedIndex(), text.toString());
 			}
-		} else if (event.getSource().equals(m_createListener)) {
-			((Debug_Listener) m_filteredPanes.getSelectedComponent()).promptCreateListener();
-		} else if (event.getSource().equals(m_saveFile)) {
-			m_scriptElements.get(m_tabbedPane.getSelectedIndex() - 1).saveFile();
-		} else if (event.getSource().equals(m_reset)) {
-			reset();
-		} else if (event.getSource().equals(m_clearTab)) {
-			((Debug_Listener) m_filteredPanes.getSelectedComponent()).clearTab();
-		} else if (event.getSource().equals(m_removeTab)) {
-			((Debug_Listener) m_filteredPanes.getSelectedComponent()).removeTab();
-			m_filteredOutputMap.get(((Debug_Listener) m_filteredPanes.getSelectedComponent()).getThreadName()).remove(m_filteredPanes.getSelectedComponent());
-			m_filteredPanes.remove(m_filteredPanes.getSelectedComponent());
-		} else if (event.getSource().equals(m_saveFileAs)) {
-			m_scriptElements.get(m_tabbedPane.getSelectedIndex() - 1).saveFileAs();
-		} else if (event.getSource().equals(m_undo)) {
-			m_scriptElements.get(m_tabbedPane.getSelectedIndex() - 1).undo();
-		} else if (event.getSource().equals(m_report)) {
-			report();
-		} else if (event.getSource().equals(m_addException)) {
+		} else if (event.getSource().equals(this.m_createListener)) {
+			((Debug_Listener) this.m_filteredPanes.getSelectedComponent()).promptCreateListener();
+		} else if (event.getSource().equals(this.m_saveFile)) {
+			this.m_scriptElements.get(this.m_tabbedPane.getSelectedIndex() - 1).saveFile();
+		} else if (event.getSource().equals(this.m_reset)) {
+			this.reset();
+		} else if (event.getSource().equals(this.m_clearTab)) {
+			((Debug_Listener) this.m_filteredPanes.getSelectedComponent()).clearTab();
+		} else if (event.getSource().equals(this.m_removeTab)) {
+			((Debug_Listener) this.m_filteredPanes.getSelectedComponent()).removeTab();
+			this.m_filteredOutputMap.get(((Debug_Listener) this.m_filteredPanes.getSelectedComponent()).getThreadName()).remove(this.m_filteredPanes.getSelectedComponent());
+			this.m_filteredPanes.remove(this.m_filteredPanes.getSelectedComponent());
+		} else if (event.getSource().equals(this.m_saveFileAs)) {
+			this.m_scriptElements.get(this.m_tabbedPane.getSelectedIndex() - 1).saveFileAs();
+		} else if (event.getSource().equals(this.m_undo)) {
+			this.m_scriptElements.get(this.m_tabbedPane.getSelectedIndex() - 1).undo();
+		} else if (event.getSource().equals(this.m_report)) {
+			this.report();
+		} else if (event.getSource().equals(this.m_addException)) {
 			Object string = null;
-			if (m_filteredPanes.getSelectedComponent() != null) {
-				string = ((Debug_Listener) m_filteredPanes.getSelectedComponent()).getThreadName();
+			if (this.m_filteredPanes.getSelectedComponent() != null) {
+				string = ((Debug_Listener) this.m_filteredPanes.getSelectedComponent()).getThreadName();
 			}
 			Object text = JOptionPane.showInputDialog(null, "Insert the thread name to add to the exceptions list", "Adding to Exceptions List", JOptionPane.PLAIN_MESSAGE, null, null, string);
 			if (text == null) {
 				return;
 			}
-			m_exceptions.add(text.toString());
-		} else if (event.getSource().equals(m_addExceptionFromList)) {
-			if (m_allThreads == null || m_allThreads.size() == 0) {
+			this.m_exceptions.add(text.toString());
+		} else if (event.getSource().equals(this.m_addExceptionFromList)) {
+			if (this.m_allThreads == null || this.m_allThreads.size() == 0) {
 				JOptionPane.showMessageDialog(null, "There are no threads in the selection list.", "Empty Thread List", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			Object text = JOptionPane.showInputDialog(null, "Select the thread name to add to the exceptions list", "Adding to Exceptions List", JOptionPane.PLAIN_MESSAGE, null, m_allThreads.toArray(), null);
+			Object text = JOptionPane.showInputDialog(null, "Select the thread name to add to the exceptions list", "Adding to Exceptions List", JOptionPane.PLAIN_MESSAGE, null, this.m_allThreads.toArray(), null);
 			if (text == null) {
 				return;
 			}
-			m_exceptions.add(text.toString());
-		} else if (event.getSource().equals(m_removeException)) {
-			if (m_exceptions == null || m_exceptions.size() == 0) {
+			this.m_exceptions.add(text.toString());
+		} else if (event.getSource().equals(this.m_removeException)) {
+			if (this.m_exceptions == null || this.m_exceptions.size() == 0) {
 				JOptionPane.showMessageDialog(null, "No threads to remove from exceptions list.", "Empty Exception List", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			Object text = JOptionPane.showInputDialog(null, "Select the thread name to remove from the exceptions list", "Removing Exception", JOptionPane.PLAIN_MESSAGE, null, m_exceptions.toArray(), null);
+			Object text = JOptionPane.showInputDialog(null, "Select the thread name to remove from the exceptions list", "Removing Exception", JOptionPane.PLAIN_MESSAGE, null, this.m_exceptions.toArray(), null);
 			if (text == null) {
 				return;
 			}
-			m_exceptions.remove(text.toString());
-		} else if (event.getSource().equals(m_addIgnore)) {
+			this.m_exceptions.remove(text.toString());
+		} else if (event.getSource().equals(this.m_addIgnore)) {
 			Object string = null;
-			if (m_filteredPanes.getSelectedComponent() != null) {
-				string = ((Debug_Listener) m_filteredPanes.getSelectedComponent()).getThreadName();
+			if (this.m_filteredPanes.getSelectedComponent() != null) {
+				string = ((Debug_Listener) this.m_filteredPanes.getSelectedComponent()).getThreadName();
 			}
 			Object text = JOptionPane.showInputDialog(null, "Insert the thread name to add to the ignore list", "Adding to Ignore List", JOptionPane.PLAIN_MESSAGE, null, null, string);
 			if (text == null) {
 				return;
 			}
-			m_ignores.add(text.toString());
-		} else if (event.getSource().equals(m_addIgnoreFromList)) {
-			if (m_allThreads == null || m_allThreads.size() == 0) {
+			this.m_ignores.add(text.toString());
+		} else if (event.getSource().equals(this.m_addIgnoreFromList)) {
+			if (this.m_allThreads == null || this.m_allThreads.size() == 0) {
 				JOptionPane.showMessageDialog(null, "There are no threads in the selection list.", "Empty Thread List", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			Object text = JOptionPane.showInputDialog(null, "Select the thread name to add to the ignore list", "Adding to Ignore List", JOptionPane.PLAIN_MESSAGE, null, m_allThreads.toArray(), null);
+			Object text = JOptionPane.showInputDialog(null, "Select the thread name to add to the ignore list", "Adding to Ignore List", JOptionPane.PLAIN_MESSAGE, null, this.m_allThreads.toArray(), null);
 			if (text == null) {
 				return;
 			}
-			m_ignores.add(text.toString());
-		} else if (event.getSource().equals(m_removeIgnore)) {
-			if (m_ignores == null || m_ignores.size() == 0) {
+			this.m_ignores.add(text.toString());
+		} else if (event.getSource().equals(this.m_removeIgnore)) {
+			if (this.m_ignores == null || this.m_ignores.size() == 0) {
 				JOptionPane.showMessageDialog(null, "No threads to remove from ignore list.", "Empty Ignore List", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			Object text = JOptionPane.showInputDialog(null, "Select the thread name to remove from the ignore list", "Removing Ignore", JOptionPane.PLAIN_MESSAGE, null, m_ignores.toArray(), null);
+			Object text = JOptionPane.showInputDialog(null, "Select the thread name to remove from the ignore list", "Removing Ignore", JOptionPane.PLAIN_MESSAGE, null, this.m_ignores.toArray(), null);
 			if (text == null) {
 				return;
 			}
-			m_ignores.remove(text.toString());
-		} else if (event.getSource().equals(m_addAssertionFailure)) {
+			this.m_ignores.remove(text.toString());
+		} else if (event.getSource().equals(this.m_addAssertionFailure)) {
 
-		} else if (event.getSource().equals(m_redo)) {
-			m_scriptElements.get(m_tabbedPane.getSelectedIndex() - 1).redo();
-		} else if (event.getSource().equals(m_compile) || event.getSource().equals(m_compileAndRun)) {
-			setStatus("Compiling...");
-			m_execute.setEnabled(false);
+		} else if (event.getSource().equals(this.m_redo)) {
+			this.m_scriptElements.get(this.m_tabbedPane.getSelectedIndex() - 1).redo();
+		} else if (event.getSource().equals(this.m_compile) || event.getSource().equals(this.m_compileAndRun)) {
+			this.setStatus("Compiling...");
+			this.m_execute.setEnabled(false);
 			CompileThread thread = new CompileThread(this, event.getActionCommand().equals("Compile and Run"));
 			thread.start();
-		} else if (event.getSource().equals(m_execute)) {
+		} else if (event.getSource().equals(this.m_execute)) {
 			ExecutionThread thread = new ExecutionThread(this);
 			thread.start();
 		}
@@ -393,42 +393,42 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 		for (Exception rawEx : exceptions) {
 			if (rawEx instanceof Exception_Nodeable && !((Exception_Nodeable) rawEx).isAnonymous()) {
 				Exception_Nodeable ex = (Exception_Nodeable) rawEx;
-				getReferenced(ex.getFilename()).addException(ex);
-				m_tabbedPane.setTitleAt(m_scriptElements.indexOf(getReferenced(ex.getFilename())) + 1, getReferenced(ex.getFilename()).getName());
+				this.getReferenced(ex.getFilename()).addException(ex);
+				this.m_tabbedPane.setTitleAt(this.m_scriptElements.indexOf(this.getReferenced(ex.getFilename())) + 1, this.getReferenced(ex.getFilename()).getName());
 			} else {
-				m_scriptElements.get(0).addException(rawEx);
+				this.m_scriptElements.get(0).addException(rawEx);
 			}
 		}
 	}
 
 	public void addNode(Debug_TreeNode node) {
-		addNode(node, false);
+		this.addNode(node, false);
 	}
 
 	public void addNode(Debug_TreeNode node, boolean setAsCurrent) {
-		if (isIgnoringThisThread()) {
+		if (this.isIgnoringThisThread()) {
 			return;
 		}
-		if (m_filteredOutputMap.get(Thread.currentThread().getName()) == null || m_filteredOutputMap.get(Thread.currentThread().getName()).size() == 0) {
-			m_filteredOutputMap.put(Thread.currentThread().getName(), new Vector<Debug_Listener>());
-			m_filteredOutputMap.get(Thread.currentThread().getName()).add(new Debug_Listener(Thread.currentThread().getName(), this, null, Thread.currentThread().getName()));
-			m_filteredPanes.add(Thread.currentThread().getName(), m_filteredOutputMap.get(Thread.currentThread().getName()).get(0));
+		if (this.m_filteredOutputMap.get(Thread.currentThread().getName()) == null || this.m_filteredOutputMap.get(Thread.currentThread().getName()).size() == 0) {
+			this.m_filteredOutputMap.put(Thread.currentThread().getName(), new Vector<Debug_Listener>());
+			this.m_filteredOutputMap.get(Thread.currentThread().getName()).add(new Debug_Listener(Thread.currentThread().getName(), this, null, Thread.currentThread().getName()));
+			this.m_filteredPanes.add(Thread.currentThread().getName(), this.m_filteredOutputMap.get(Thread.currentThread().getName()).get(0));
 		}
-		for (Debug_Listener listener : m_filteredOutputMap.get(Thread.currentThread().getName())) {
+		for (Debug_Listener listener : this.m_filteredOutputMap.get(Thread.currentThread().getName())) {
 			if (listener.isCapturing()) {
 				if (!listener.getTreePanel().getFilter().isListening()) {
 					listener.getTreePanel().getFilter().sniffNode(node);
 					if (listener.getTreePanel().getFilter().isListening()) {
-						addNodeToOutput(node, setAsCurrent, listener);
+						this.addNodeToOutput(node, setAsCurrent, listener);
 					}
 				} else {
-					addNodeToOutput(node, setAsCurrent, listener);
+					this.addNodeToOutput(node, setAsCurrent, listener);
 				}
 				return;
 			}
 		}
-		for (Debug_Listener listener : m_filteredOutputMap.get(Thread.currentThread().getName())) {
-			addNodeToOutput(node.duplicate(), setAsCurrent, listener);
+		for (Debug_Listener listener : this.m_filteredOutputMap.get(Thread.currentThread().getName())) {
+			this.addNodeToOutput(node.duplicate(), setAsCurrent, listener);
 		}
 	}
 
@@ -471,42 +471,42 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 		if (filter == null || "".equals(filter)) {
 			return null;
 		}
-		if (isFilterUsed(filter, source.getThreadName()) != null) {
+		if (this.isFilterUsed(filter, source.getThreadName()) != null) {
 			JOptionPane.showMessageDialog(this, "An output listener has an identical filter to the one provided.", "Listener Already Exists", JOptionPane.INFORMATION_MESSAGE);
-			focusOnOutput(isFilterUsed(filter, source.getThreadName()));
+			this.focusOnOutput(this.isFilterUsed(filter, source.getThreadName()));
 			return null;
 		}
 		Debug_Listener output = new Debug_Listener(source.getThreadName(), this, source, filter.toString());
 		output.getTreePanel().getFilter().addFilter(filter);
 		output.getTreePanel().refresh();
 		source.addChildOutput(output);
-		m_filteredPanes.add(filter.toString(), output);
-		m_filteredPanes.setSelectedIndex(m_filteredPanes.getComponentCount() - 1);
-		m_filteredOutputMap.get(source.getThreadName()).add(output);
+		this.m_filteredPanes.add(filter.toString(), output);
+		this.m_filteredPanes.setSelectedIndex(this.m_filteredPanes.getComponentCount() - 1);
+		this.m_filteredOutputMap.get(source.getThreadName()).add(output);
 		return output;
 	}
 
 	public void addReferenced(Debug_ScriptElement element) {
-		m_tabbedPane.add(element.getName(), element);
-		m_scriptElements.add(element);
-		m_tabbedPane.setSelectedIndex(m_tabbedPane.getComponents().length - 1);
+		this.m_tabbedPane.add(element.getName(), element);
+		this.m_scriptElements.add(element);
+		this.m_tabbedPane.setSelectedIndex(this.m_tabbedPane.getComponents().length - 1);
 	}
 
 	public void canExecute(boolean value) {
-		m_execute.setEnabled(value);
+		this.m_execute.setEnabled(value);
 	}
 
 	public void closeNode() {
-		if (isIgnoringThisThread()) {
+		if (this.isIgnoringThisThread()) {
 			return;
 		}
-		for (Debug_Listener listener : m_filteredOutputMap.get(Thread.currentThread().getName())) {
+		for (Debug_Listener listener : this.m_filteredOutputMap.get(Thread.currentThread().getName())) {
 			if (listener.isCapturing() && listener.getTreePanel().getFilter().isListening()) {
 				listener.getTreePanel().closeNode();
 				return;
 			}
 		}
-		for (Debug_Listener listener : m_filteredOutputMap.get(Thread.currentThread().getName())) {
+		for (Debug_Listener listener : this.m_filteredOutputMap.get(Thread.currentThread().getName())) {
 			if (listener.getTreePanel().getFilter().isListening()) {
 				listener.getTreePanel().closeNode();
 			}
@@ -514,10 +514,10 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 	}
 
 	public void closeNodeTo(Object string) {
-		if (isIgnoringThisThread()) {
+		if (this.isIgnoringThisThread()) {
 			return;
 		}
-		for (Debug_Listener listener : m_filteredOutputMap.get(Thread.currentThread().getName())) {
+		for (Debug_Listener listener : this.m_filteredOutputMap.get(Thread.currentThread().getName())) {
 			while (listener.getTreePanel().getFilter().isListening() && !listener.getTreePanel().getCurrentNode().getData().equals(string)) {
 				listener.getTreePanel().closeNode();
 			}
@@ -525,41 +525,41 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 	}
 
 	public boolean ensureCurrentNode(Object obj) {
-		if (!m_reset.isEnabled()) {
+		if (!this.m_reset.isEnabled()) {
 			return true;
 		}
-		if (isInExceptionsMode() && !m_exceptions.contains(Thread.currentThread().getName())) {
+		if (this.isInExceptionsMode() && !this.m_exceptions.contains(Thread.currentThread().getName())) {
 			return true;
 		}
-		if (m_ignores.contains(Thread.currentThread().getName())) {
+		if (this.m_ignores.contains(Thread.currentThread().getName())) {
 			return true;
 		}
-		return getUnfilteredCurrentNode().getData().equals(obj);
+		return this.getUnfilteredCurrentNode().getData().equals(obj);
 	}
 
 	public void focusOnOutput(Debug_Listener output) {
 		assert output != null;
-		m_filteredPanes.setSelectedIndex(m_filteredPanes.indexOfComponent(output));
+		this.m_filteredPanes.setSelectedIndex(this.m_filteredPanes.indexOfComponent(output));
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	public Debug_Listener getFilteringOutput() {
-		return m_filtering;
+		return this.m_filtering;
 	}
 
 	public Debug_TreeNode getLastNodeAdded() {
-		return getUnfilteredOutput().getTreePanel().getLastNodeAdded();
+		return this.getUnfilteredOutput().getTreePanel().getLastNodeAdded();
 	}
 
 	public String getPriorityExecutingClass() {
-		return m_priorityExecutingClass;
+		return this.m_priorityExecutingClass;
 	}
 
 	public Debug_ScriptElement getReferenced(String name) {
-		for (Debug_ScriptElement element : m_scriptElements) {
+		for (Debug_ScriptElement element : this.m_scriptElements) {
 			if (element.getFilename().equals(name)) {
 				return element;
 			}
@@ -568,19 +568,19 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 	}
 
 	public java.util.List<Debug_ScriptElement> getScriptElements() {
-		return m_scriptElements;
+		return this.m_scriptElements;
 	}
 
 	public Debug_TreeNode getUnfilteredCurrentNode() {
-		return getUnfilteredOutput().getTreePanel().getCurrentNode();
+		return this.getUnfilteredOutput().getTreePanel().getCurrentNode();
 	}
 
 	public Debug_Listener getUnfilteredOutput() {
-		return m_filteredOutputMap.get(Thread.currentThread().getName()).get(0);
+		return this.m_filteredOutputMap.get(Thread.currentThread().getName()).get(0);
 	}
 
 	public Debug_Listener isFilterUsed(Object filter, String threadName) {
-		for (Debug_Listener listener : m_filteredOutputMap.get(threadName)) {
+		for (Debug_Listener listener : this.m_filteredOutputMap.get(threadName)) {
 			if (!listener.isUnfiltered() && listener.getTreePanel().getFilter().isFilterUsed(filter)) {
 				return listener;
 			}
@@ -589,19 +589,19 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 	}
 
 	public boolean isIgnoringThisThread() {
-		if (!m_reset.isEnabled()) {
+		if (!this.m_reset.isEnabled()) {
 			return true;
 		}
 		String currentThread = Thread.currentThread().getName();
-		if (isInExceptionsMode()) {
-			for (String thread : m_exceptions) {
+		if (this.isInExceptionsMode()) {
+			for (String thread : this.m_exceptions) {
 				if (currentThread.contains(thread)) {
 					return false;
 				}
 			}
 			return true;
 		} else {
-			for (String thread : m_ignores) {
+			for (String thread : this.m_ignores) {
 				if (currentThread.contains(thread)) {
 					return true;
 				}
@@ -611,16 +611,16 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 	}
 
 	public boolean isInExceptionsMode() {
-		return m_exceptionsMode.isSelected();
+		return this.m_exceptionsMode.isSelected();
 	}
 
 	public boolean isResetting() {
-		return !m_reset.isEnabled();
+		return !this.m_reset.isEnabled();
 	}
 
 	// Node stuff
 	public void openNode(Debug_TreeNode node) {
-		addNode(node, true);
+		this.addNode(node, true);
 	}
 
 	// Deprecated, deprecated, deprecated...
@@ -629,8 +629,8 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 	}
 
 	public void removeListenerListener(Debug_Listener listener) {
-		m_filteredPanes.removeTabAt(m_filteredPanes.getSelectedIndex());
-		m_filteredOutputMap.get(listener.getThreadName()).remove(listener);
+		this.m_filteredPanes.removeTabAt(this.m_filteredPanes.getSelectedIndex());
+		this.m_filteredOutputMap.get(listener.getThreadName()).remove(listener);
 	}
 
 	//Template Preparsing
@@ -647,76 +647,76 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 	}
 
 	public void reset() {
-		m_reset.setEnabled(false);
-		m_filteredPanes.setSelectedIndex(0);
-		int children = m_filteredPanes.getComponentCount();
+		this.m_reset.setEnabled(false);
+		this.m_filteredPanes.setSelectedIndex(0);
+		int children = this.m_filteredPanes.getComponentCount();
 		for (int i = 0; i < children; i++) {
-			((Debug_Listener) m_filteredPanes.getComponent(i)).removeTab();
+			((Debug_Listener) this.m_filteredPanes.getComponent(i)).removeTab();
 		}
-		m_filteredPanes.removeAll();
-		m_filteredOutputMap.clear();
+		this.m_filteredPanes.removeAll();
+		this.m_filteredOutputMap.clear();
 		Debug_TreeNode.reset();
 		System.gc();
-		m_reset.setEnabled(true);
+		this.m_reset.setEnabled(true);
 	}
 
 	public void resetTitle(Debug_ScriptElement element) {
-		m_tabbedPane.setTitleAt(m_scriptElements.indexOf(element) + 1, element.getName());
+		this.m_tabbedPane.setTitleAt(this.m_scriptElements.indexOf(element) + 1, element.getName());
 	}
 
 	public void setCanRedo(boolean canRedo) {
-		m_redo.setEnabled(canRedo);
+		this.m_redo.setEnabled(canRedo);
 	}
 
 	public void setCanUndo(boolean canUndo) {
-		m_undo.setEnabled(canUndo);
+		this.m_undo.setEnabled(canUndo);
 	}
 
 	public void setChanged(boolean changed) {
-		m_saveFile.setEnabled(changed);
-		m_tabbedPane.setTitleAt(m_tabbedPane.getSelectedIndex(), m_scriptElements.get(m_tabbedPane.getSelectedIndex() - 1).getName());
+		this.m_saveFile.setEnabled(changed);
+		this.m_tabbedPane.setTitleAt(this.m_tabbedPane.getSelectedIndex(), this.m_scriptElements.get(this.m_tabbedPane.getSelectedIndex() - 1).getName());
 	}
 
 	public void setExceptionsMode(boolean value) {
-		m_exceptionsMode.setSelected(value);
-		m_ignoreMode.setSelected(!value);
+		this.m_exceptionsMode.setSelected(value);
+		this.m_ignoreMode.setSelected(!value);
 	}
 
 	public void setFilteringOutput(Debug_Listener output) {
-		m_filtering = output;
+		this.m_filtering = output;
 	}
 
 	public void setPriorityExecutingClass(String template) {
-		m_priorityExecutingClass = template;
+		this.m_priorityExecutingClass = template;
 	}
 
 	public void setStatus(String text) {
-		m_status.setText(" " + text);
+		this.m_status.setText(" " + text);
 	}
 
 	public void setTitleAt(int i, String title) {
-		m_tabbedPane.setTitleAt(i, title);
+		this.m_tabbedPane.setTitleAt(i, title);
 	}
 
 	public void showReferenced(Debug_ScriptElement element) {
-		m_tabbedPane.setSelectedIndex(m_scriptElements.indexOf(element) + 1);
+		this.m_tabbedPane.setSelectedIndex(this.m_scriptElements.indexOf(element) + 1);
 	}
 
 	public void stateChanged(ChangeEvent e) {
-		if (m_tabbedPane.getSelectedIndex() == 0) {
-			m_closeFile.setEnabled(false);
-			m_saveFile.setEnabled(false);
-			m_saveFileAs.setEnabled(false);
-			m_editMenu.setEnabled(false);
-			m_listenerMenu.setEnabled(true);
+		if (this.m_tabbedPane.getSelectedIndex() == 0) {
+			this.m_closeFile.setEnabled(false);
+			this.m_saveFile.setEnabled(false);
+			this.m_saveFileAs.setEnabled(false);
+			this.m_editMenu.setEnabled(false);
+			this.m_listenerMenu.setEnabled(true);
 		} else {
-			m_listenerMenu.setEnabled(false);
-			m_editMenu.setEnabled(true);
-			m_saveFileAs.setEnabled(true);
-			m_closeFile.setEnabled(true);
-			setChanged(m_scriptElements.get(m_tabbedPane.getSelectedIndex() - 1).hasChanged());
-			setCanUndo(m_scriptElements.get(m_tabbedPane.getSelectedIndex() - 1).canUndo());
-			setCanRedo(m_scriptElements.get(m_tabbedPane.getSelectedIndex() - 1).canRedo());
+			this.m_listenerMenu.setEnabled(false);
+			this.m_editMenu.setEnabled(true);
+			this.m_saveFileAs.setEnabled(true);
+			this.m_closeFile.setEnabled(true);
+			this.setChanged(this.m_scriptElements.get(this.m_tabbedPane.getSelectedIndex() - 1).hasChanged());
+			this.setCanUndo(this.m_scriptElements.get(this.m_tabbedPane.getSelectedIndex() - 1).canUndo());
+			this.setCanRedo(this.m_scriptElements.get(this.m_tabbedPane.getSelectedIndex() - 1).canRedo());
 		}
 	}
 }
@@ -975,12 +975,12 @@ class ExecutionThread extends Thread {
 
 	public ExecutionThread(Debug_Environment debugEnv) {
 		super(EXECUTIONTHREADSTRING + " " + m_threadNum++);
-		m_debugEnvironment = debugEnv;
+		this.m_debugEnvironment = debugEnv;
 	};
 
 	public void run() {
 		Debugger.hitStopWatch(Thread.currentThread().getName());
-		m_debugEnvironment.getEnvironment().execute();
+		this.m_debugEnvironment.getEnvironment().execute();
 		Debugger.hitStopWatch(Thread.currentThread().getName());
 	}
 }

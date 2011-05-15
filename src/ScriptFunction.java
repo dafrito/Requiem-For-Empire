@@ -57,53 +57,53 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 	private List<ScriptExecutable> m_expressions = new LinkedList<ScriptExecutable>();
 
 	public ScriptFunction(ScriptValueType returnType, List<ScriptValue_Abstract> params, ScriptKeywordType permission, boolean isAbstract, boolean isStatic) {
-		m_type = returnType;
-		m_params = params;
-		m_permission = permission;
-		m_isAbstract = isAbstract;
-		m_isStatic = isStatic;
+		this.m_type = returnType;
+		this.m_params = params;
+		this.m_permission = permission;
+		this.m_isAbstract = isAbstract;
+		this.m_isStatic = isStatic;
 	}
 
 	@Override
 	public void addExpression(ScriptExecutable exp) throws Exception_Nodeable {
 		assert exp != null;
-		m_expressions.add(exp);
+		this.m_expressions.add(exp);
 	}
 
 	@Override
 	public void addExpressions(Collection<ScriptExecutable> list) throws Exception_Nodeable {
 		for (ScriptExecutable exec : list) {
-			addExpression(exec);
+			this.addExpression(exec);
 		}
 	}
 
 	@Override
 	public boolean areParametersConvertible(List<ScriptValue_Abstract> list) {
-		return areParametersConvertible(getParameters(), list);
+		return areParametersConvertible(this.getParameters(), list);
 	}
 
 	@Override
 	public boolean areParametersEqual(List<ScriptValue_Abstract> list) {
-		return areParametersEqual(getParameters(), list);
+		return areParametersEqual(this.getParameters(), list);
 	}
 
 	@Override
 	public void execute(Referenced ref, List<ScriptValue_Abstract> valuesGiven) throws Exception_Nodeable {
-		String currNode = "Executing Function Expressions (" + m_expressions.size() + " expressions)";
+		String currNode = "Executing Function Expressions (" + this.m_expressions.size() + " expressions)";
 		assert Debugger.openNode("Function Expression Executions", currNode);
 		if (valuesGiven != null && valuesGiven.size() > 0) {
 			assert Debugger.openNode("Assigning Initial Parameters (" + valuesGiven.size() + " parameter(s))");
-			assert areParametersConvertible(valuesGiven) : "Parameters-convertible test failed in execute";
-			for (int i = 0; i < getParameters().size(); i++) {
-				getParameters().get(i).setValue(ref, valuesGiven.get(i));
+			assert this.areParametersConvertible(valuesGiven) : "Parameters-convertible test failed in execute";
+			for (int i = 0; i < this.getParameters().size(); i++) {
+				this.getParameters().get(i).setValue(ref, valuesGiven.get(i));
 			}
 			assert Debugger.closeNode();
 		}
-		for (ScriptExecutable exec : m_expressions) {
+		for (ScriptExecutable exec : this.m_expressions) {
 			exec.execute();
 			if (exec instanceof Returnable && ((Returnable) exec).shouldReturn()) {
-				setReturnValue(exec.getDebugReference(), ((Returnable) exec).getReturnValue());
-				assert Debugger.ensureCurrentNode("Executing Function Expressions (" + m_expressions.size() + " expressions)");
+				this.setReturnValue(exec.getDebugReference(), ((Returnable) exec).getReturnValue());
+				assert Debugger.ensureCurrentNode("Executing Function Expressions (" + this.m_expressions.size() + " expressions)");
 				assert Debugger.closeNode();
 				return;
 			}
@@ -114,47 +114,47 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 
 	@Override
 	public List<ScriptValue_Abstract> getParameters() {
-		return m_params;
+		return this.m_params;
 	}
 
 	@Override
 	public ScriptKeywordType getPermission() {
-		return m_permission;
+		return this.m_permission;
 	}
 
 	@Override
 	public ScriptValueType getReturnType() {
-		return m_type;
+		return this.m_type;
 	}
 
 	@Override
 	public ScriptValue_Abstract getReturnValue() {
-		return m_returnValue;
+		return this.m_returnValue;
 	}
 
 	@Override
 	public boolean isAbstract() {
-		return m_isAbstract;
+		return this.m_isAbstract;
 	}
 
 	@Override
 	public boolean isStatic() {
-		return m_isStatic;
+		return this.m_isStatic;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Script-Function (Returning " + m_type.getName() + ")");
-		if (m_params != null && m_params.size() > 0) {
-			assert Debugger.addSnapNode("Parameters: " + m_params.size() + " parameter(s)", m_params);
+		assert Debugger.openNode("Script-Function (Returning " + this.m_type.getName() + ")");
+		if (this.m_params != null && this.m_params.size() > 0) {
+			assert Debugger.addSnapNode("Parameters: " + this.m_params.size() + " parameter(s)", this.m_params);
 		}
-		if (m_expressions != null && m_expressions.size() > 0) {
-			assert Debugger.addSnapNode("Expressions: " + m_expressions.size() + " expression(s)", m_expressions);
+		if (this.m_expressions != null && this.m_expressions.size() > 0) {
+			assert Debugger.addSnapNode("Expressions: " + this.m_expressions.size() + " expression(s)", this.m_expressions);
 		}
-		if (m_permission == null) {
+		if (this.m_permission == null) {
 			Debugger.addNode(DebugString.PERMISSIONNULL);
 		} else {
-			switch (m_permission) {
+			switch (this.m_permission) {
 			case PRIVATE:
 				assert Debugger.addNode(DebugString.PERMISSIONPRIVATE);
 				break;
@@ -164,22 +164,22 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 				Debugger.addNode(DebugString.PERMISSIONPUBLIC);
 			}
 		}
-		assert Debugger.addNode("Abstract: " + m_isAbstract);
-		assert Debugger.addNode("Static: " + m_isStatic);
-		assert Debugger.addNode("Return Value Reference: " + m_returnValue);
+		assert Debugger.addNode("Abstract: " + this.m_isAbstract);
+		assert Debugger.addNode("Static: " + this.m_isStatic);
+		assert Debugger.addNode("Return Value Reference: " + this.m_returnValue);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	@Override
 	public void setReturnValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
-		if (value == null && getReturnType().equals(ScriptKeywordType.VOID)) {
+		if (value == null && this.getReturnType().equals(ScriptKeywordType.VOID)) {
 			return;
 		}
 		assert Debugger.openNode("Setting Return-Value");
 		assert Debugger.addSnapNode("Function", this);
 		assert Debugger.addSnapNode("Value", value);
-		m_returnValue = value.castToType(ref, getReturnType());
+		this.m_returnValue = value.castToType(ref, this.getReturnType());
 		assert Debugger.closeNode();
 	}
 }

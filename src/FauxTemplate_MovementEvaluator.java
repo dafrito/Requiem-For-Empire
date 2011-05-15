@@ -19,7 +19,7 @@ public class FauxTemplate_MovementEvaluator extends FauxTemplate implements Node
 		assert Debugger.openNode("Faux Template Executions", "Executing movement evaluator faux template function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		assert Debugger.addSnapNode("Template provided", rawTemplate);
 		assert Debugger.addSnapNode("Parameters provided", params);
-		ScriptValue_Abstract returning = getExtendedFauxClass().execute(ref, name, params, rawTemplate);
+		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, rawTemplate);
 		assert Debugger.closeNode();
 		return returning;
 	}
@@ -29,19 +29,19 @@ public class FauxTemplate_MovementEvaluator extends FauxTemplate implements Node
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing movement evaluator faux template");
-		disableFullCreation();
-		getExtendedClass().initialize();
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
-		params.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING)));
-		params.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
-		addFauxFunction("evaluateMovementCost", ScriptValueType.DOUBLE, params, ScriptKeywordType.PUBLIC, true, false);
+		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING)));
+		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
+		this.addFauxFunction("evaluateMovementCost", ScriptValueType.DOUBLE, params, ScriptKeywordType.PUBLIC, true, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_MovementEvaluator(getEnvironment(), getType());
+		return new FauxTemplate_MovementEvaluator(this.getEnvironment(), this.getType());
 	}
 
 	// Nodeable implementation

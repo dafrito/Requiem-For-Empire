@@ -79,64 +79,64 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 
 	public ScriptExecutable_CallFunction(Referenced ref, ScriptValue_Abstract object, String functionName, List<ScriptValue_Abstract> params) {
 		super(ref);
-		m_object = object;
-		m_functionName = functionName;
-		m_params = params;
+		this.m_object = object;
+		this.m_functionName = functionName;
+		this.m_params = params;
 	}
 
 	@Override
 	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
-		return getValue().castToType(ref, type);
+		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		return callFunction(getEnvironment(), this, m_object, m_functionName, m_params);
+		return callFunction(this.getEnvironment(), this, this.m_object, this.m_functionName, this.m_params);
 	}
 
 	// ScriptValue_Abstract implementation
 	@Override
 	public ScriptValueType getType() {
 		try {
-			return ((ScriptTemplate_Abstract) m_object.getValue()).getFunction(m_functionName, m_params).getReturnType();
+			return ((ScriptTemplate_Abstract) this.m_object.getValue()).getFunction(this.m_functionName, this.m_params).getReturnType();
 		} catch (Exception_Nodeable ex) {
-			throw new Exception_InternalError(getEnvironment(), ex.toString());
+			throw new Exception_InternalError(this.getEnvironment(), ex.toString());
 		}
 	}
 
 	@Override
 	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
-		return execute();
+		return this.execute();
 	}
 
 	@Override
 	public boolean isConvertibleTo(ScriptValueType type) {
-		return ScriptValueType.isConvertibleTo(getEnvironment(), getType(), type);
+		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Function Call (" + ScriptFunction.getDisplayableFunctionName(m_functionName) + ")");
+		assert Debugger.openNode("Function Call (" + ScriptFunction.getDisplayableFunctionName(this.m_functionName) + ")");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Parameters", m_params);
+		assert Debugger.addSnapNode("Parameters", this.m_params);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	@Override
 	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
-		return getValue().setValue(ref, value);
+		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return getValue().valuesCompare(ref, rhs);
+		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
 	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return getValue().valuesEqual(ref, rhs);
+		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

@@ -3,18 +3,18 @@ class RiffInterface_ClickEvent extends RiffInterface_MouseEvent implements Nodea
 
 	public RiffInterface_ClickEvent(int x, int y, RiffInterface_MouseListener.MouseButton button, int clicks) {
 		super(x, y, button);
-		m_clicks = clicks;
+		this.m_clicks = clicks;
 	}
 
 	public int getClicks() {
-		return m_clicks;
+		return this.m_clicks;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Mouse-Click Events", "Click Event");
 		assert super.nodificate();
-		assert Debugger.addNode("Clicks: " + m_clicks);
+		assert Debugger.addNode("Clicks: " + this.m_clicks);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -26,29 +26,29 @@ class RiffInterface_DragEvent extends RiffInterface_MouseEvent implements Nodeab
 
 	public RiffInterface_DragEvent(int x, int y, RiffInterface_MouseListener.MouseButton button, int xOffset, int yOffset, double distance) {
 		super(x, y, button);
-		m_xOffset = xOffset;
-		m_yOffset = yOffset;
-		m_distance = distance;
+		this.m_xOffset = xOffset;
+		this.m_yOffset = yOffset;
+		this.m_distance = distance;
 	}
 
 	public double getDistance() {
-		return m_distance;
+		return this.m_distance;
 	}
 
 	public int getXOffset() {
-		return m_xOffset;
+		return this.m_xOffset;
 	}
 
 	public int getYOffset() {
-		return m_yOffset;
+		return this.m_yOffset;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Mouse-Drag Events", "Mouse-Drag Event");
 		assert super.nodificate();
-		assert Debugger.addNode("X-Offset: " + getXOffset());
-		assert Debugger.addNode("Y-Offset: " + getYOffset());
+		assert Debugger.addNode("X-Offset: " + this.getXOffset());
+		assert Debugger.addNode("Y-Offset: " + this.getYOffset());
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -73,29 +73,29 @@ class RiffInterface_MouseEvent implements Nodeable, RiffInterface_Event {
 	final RiffInterface_MouseListener.MouseButton m_button;
 
 	public RiffInterface_MouseEvent(int x, int y, RiffInterface_MouseListener.MouseButton button) {
-		m_x = x;
-		m_y = y;
-		m_button = button;
+		this.m_x = x;
+		this.m_y = y;
+		this.m_button = button;
 	}
 
 	public RiffInterface_MouseListener.MouseButton getButton() {
-		return m_button;
+		return this.m_button;
 	}
 
 	public int getX() {
-		return m_x;
+		return this.m_x;
 	}
 
 	public int getY() {
-		return m_y;
+		return this.m_y;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Generic Mouse Event");
-		assert Debugger.addNode("X: " + getX());
-		assert Debugger.addNode("Y: " + getY());
-		assert Debugger.addNode("Button: " + getButton());
+		assert Debugger.addNode("X: " + this.getX());
+		assert Debugger.addNode("Y: " + this.getY());
+		assert Debugger.addNode("Button: " + this.getButton());
 		assert Debugger.closeNode();
 		return true;
 	}

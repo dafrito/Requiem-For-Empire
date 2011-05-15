@@ -19,7 +19,7 @@ public class InterfaceElement_Rectangle extends InterfaceElement implements Node
 		assert Debugger.openNode("Rectangle Painting Operations", "Painting Rectangle");
 		assert Debugger.addNode(this);
 		super.paint(g2d);
-		g2d.fill(new Rectangle(getXAnchor(), getYAnchor(), getInternalWidth(), getInternalHeight()));
+		g2d.fill(new Rectangle(this.getXAnchor(), this.getYAnchor(), this.getInternalWidth(), this.getInternalHeight()));
 		assert Debugger.closeNode();
 	}
 

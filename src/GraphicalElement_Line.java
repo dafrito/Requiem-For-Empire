@@ -8,22 +8,22 @@ public class GraphicalElement_Line extends InterfaceElement implements ScriptCon
 
 	public GraphicalElement_Line(ScriptEnvironment env, Point pointA, Point pointB) {
 		super(env, null, null);
-		m_pointA = pointA;
-		m_pointB = pointB;
+		this.m_pointA = pointA;
+		this.m_pointB = pointB;
 	}
 
 	// ScriptConvertible and Nodeable implementations
 	@Override
 	public Object convert() {
-		FauxTemplate_Line line = new FauxTemplate_Line(getEnvironment());
-		line.setPointA(m_pointA);
-		line.setPointB(m_pointB);
+		FauxTemplate_Line line = new FauxTemplate_Line(this.getEnvironment());
+		line.setPointA(this.m_pointA);
+		line.setPointB(this.m_pointB);
 		return line;
 	}
 
 	@Override
 	public Rectangle getDrawingBounds() {
-		return new Rectangle(getXAnchor() + getLeftMarginMagnitude() + getLeftBorderMagnitude(), getYAnchor() + getTopMarginMagnitude() + getTopBorderMagnitude(), getInternalWidth(), getInternalHeight());
+		return new Rectangle(this.getXAnchor() + this.getLeftMarginMagnitude() + this.getLeftBorderMagnitude(), this.getYAnchor() + this.getTopMarginMagnitude() + this.getTopBorderMagnitude(), this.getInternalWidth(), this.getInternalHeight());
 	}
 
 	@Override
@@ -34,8 +34,8 @@ public class GraphicalElement_Line extends InterfaceElement implements ScriptCon
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Line Graphical Element");
-		assert Debugger.addNode("First point: " + m_pointA);
-		assert Debugger.addNode("Second point: " + m_pointB);
+		assert Debugger.addNode("First point: " + this.m_pointA);
+		assert Debugger.addNode("Second point: " + this.m_pointB);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -45,34 +45,34 @@ public class GraphicalElement_Line extends InterfaceElement implements ScriptCon
 		assert Debugger.openNode("Line Painting Operations", "Painting Line Element");
 		assert Debugger.addNode(this);
 		Point offset;
-		if (getParent() instanceof InterfaceElement_Panel) {
-			offset = ((InterfaceElement_Panel) getParent()).getOffset();
+		if (this.getParent() instanceof InterfaceElement_Panel) {
+			offset = ((InterfaceElement_Panel) this.getParent()).getOffset();
 		} else {
-			offset = new Point_Euclidean(getEnvironment(), getXAnchor(), getYAnchor(), 0.0d);
+			offset = new Point_Euclidean(this.getEnvironment(), this.getXAnchor(), this.getYAnchor(), 0.0d);
 		}
 		// Offset translation
-		assert m_pointA != null : "Point A is null in LineElement";
-		assert m_pointB != null : "Point B is null in LineElement";
+		assert this.m_pointA != null : "Point A is null in LineElement";
+		assert this.m_pointB != null : "Point B is null in LineElement";
 		assert offset != null : "Offset point is null in LineElement";
-		double ax = m_pointA.getX() - offset.getX();
-		double ay = m_pointA.getY() - offset.getY();
-		double bx = m_pointB.getX() - offset.getX();
-		double by = m_pointB.getY() - offset.getY();
+		double ax = this.m_pointA.getX() - offset.getX();
+		double ay = this.m_pointA.getY() - offset.getY();
+		double bx = this.m_pointB.getX() - offset.getX();
+		double by = this.m_pointB.getY() - offset.getY();
 		// Orthographic zoom
 		ax = ax * Math.pow(2, offset.getZ());
 		ay = ay * Math.pow(2, offset.getZ());
 		bx = bx * Math.pow(2, offset.getZ());
 		by = by * Math.pow(2, offset.getZ());
 		// Converstion to screen coordinates
-		assert getParent() != null;
-		assert getParent().getContainerElement() != null;
-		assert getParent().getContainerElement().getDrawingBounds() != null;
-		double width = (getParent().getContainerElement().getDrawingBounds().getWidth() - getParent().getContainerElement().getDrawingBounds().getX()) / 2;
-		double height = (getParent().getContainerElement().getDrawingBounds().getHeight() - getParent().getContainerElement().getDrawingBounds().getY()) / 2;
+		assert this.getParent() != null;
+		assert this.getParent().getContainerElement() != null;
+		assert this.getParent().getContainerElement().getDrawingBounds() != null;
+		double width = (this.getParent().getContainerElement().getDrawingBounds().getWidth() - this.getParent().getContainerElement().getDrawingBounds().getX()) / 2;
+		double height = (this.getParent().getContainerElement().getDrawingBounds().getHeight() - this.getParent().getContainerElement().getDrawingBounds().getY()) / 2;
 		// Draw transformed line
-		Point translatedPointA = new Point_Euclidean(getEnvironment(), ax + getParent().getContainerElement().getDrawingBounds().getX() + width, ay + getParent().getContainerElement().getDrawingBounds().getY() + height, 0.0d);
-		Point translatedPointB = new Point_Euclidean(getEnvironment(), bx + getParent().getContainerElement().getDrawingBounds().getX() + width, by + getParent().getContainerElement().getDrawingBounds().getY() + height, 0.0d);
-		DiscreteRegion region = RiffJavaToolbox.convertToRegion(getEnvironment(), getParent().getContainerElement().getDrawingBounds());
+		Point translatedPointA = new Point_Euclidean(this.getEnvironment(), ax + this.getParent().getContainerElement().getDrawingBounds().getX() + width, ay + this.getParent().getContainerElement().getDrawingBounds().getY() + height, 0.0d);
+		Point translatedPointB = new Point_Euclidean(this.getEnvironment(), bx + this.getParent().getContainerElement().getDrawingBounds().getX() + width, by + this.getParent().getContainerElement().getDrawingBounds().getY() + height, 0.0d);
+		DiscreteRegion region = RiffJavaToolbox.convertToRegion(this.getEnvironment(), this.getParent().getContainerElement().getDrawingBounds());
 		List<RiffIntersectionPoint> intersections = RiffPolygonToolbox.getIntersections(translatedPointA, translatedPointB, region);
 		if (intersections.size() == 0 && !RiffPolygonToolbox.getBoundingRectIntersection(translatedPointA, translatedPointA, region) && !RiffPolygonToolbox.getBoundingRectIntersection(translatedPointB, translatedPointB, region)) {
 			return;
@@ -94,10 +94,10 @@ public class GraphicalElement_Line extends InterfaceElement implements ScriptCon
 	}
 
 	public void setPointA(Point point) {
-		m_pointA = point;
+		this.m_pointA = point;
 	}
 
 	public void setPointB(Point point) {
-		m_pointB = point;
+		this.m_pointB = point;
 	}
 }

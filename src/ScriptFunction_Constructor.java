@@ -5,22 +5,22 @@ public class ScriptFunction_Constructor extends ScriptFunction {
 
 	public ScriptFunction_Constructor(ScriptValueType returnType, List<ScriptValue_Abstract> paramList, ScriptKeywordType permission) {
 		super(returnType, paramList, permission, false, true);
-		m_environment = returnType.getEnvironment();
+		this.m_environment = returnType.getEnvironment();
 	}
 
 	@Override
 	public void execute(Referenced ref, List<ScriptValue_Abstract> valuesGiven) throws Exception_Nodeable {
 		assert Debugger.openNode("Constructor Iterations", "Constructor Expression Iteration");
-		ScriptTemplate_Abstract object = getEnvironment().getTemplate(getReturnType()).createObject(ref, null);
-		getEnvironment().advanceStack(object, this);
+		ScriptTemplate_Abstract object = this.getEnvironment().getTemplate(this.getReturnType()).createObject(ref, null);
+		this.getEnvironment().advanceStack(object, this);
 		super.execute(ref, valuesGiven);
-		setReturnValue(ref, object);
-		getEnvironment().retreatStack();
+		this.setReturnValue(ref, object);
+		this.getEnvironment().retreatStack();
 		assert Debugger.closeNode();
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	@Override

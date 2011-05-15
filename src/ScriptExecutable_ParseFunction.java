@@ -12,99 +12,99 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 
 	public ScriptExecutable_ParseFunction(Referenced ref, ScriptValueType returnType, ScriptValue_Abstract object, String name, List<ScriptValue_Abstract> paramList, ScriptKeywordType permission, boolean isStatic, boolean isAbstract, ScriptGroup body) {
 		super(ref);
-		m_name = name;
-		m_template = object;
-		m_returnType = returnType;
-		m_parameters = paramList;
-		m_permission = permission;
-		m_isStatic = isStatic;
-		m_isAbstract = isAbstract;
-		m_body = body;
+		this.m_name = name;
+		this.m_template = object;
+		this.m_returnType = returnType;
+		this.m_parameters = paramList;
+		this.m_permission = permission;
+		this.m_isStatic = isStatic;
+		this.m_isAbstract = isAbstract;
+		this.m_body = body;
 	}
 
 	@Override
 	public void addExpression(ScriptExecutable exp) throws Exception_Nodeable {
-		throw new Exception_InternalError(getEnvironment(), "Invalid call in unparsed function");
+		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
 	@Override
 	public void addExpressions(Collection<ScriptExecutable> list) throws Exception_Nodeable {
-		throw new Exception_InternalError(getEnvironment(), "Invalid call in unparsed function");
+		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
 	@Override
 	public boolean areParametersConvertible(List<ScriptValue_Abstract> list) {
-		return ScriptFunction.areParametersConvertible(getParameters(), list);
+		return ScriptFunction.areParametersConvertible(this.getParameters(), list);
 	}
 
 	@Override
 	public boolean areParametersEqual(List<ScriptValue_Abstract> list) {
-		return ScriptFunction.areParametersEqual(getParameters(), list);
+		return ScriptFunction.areParametersEqual(this.getParameters(), list);
 	}
 
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		throw new Exception_InternalError(getEnvironment(), "Invalid call in unparsed function");
+		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
 	@Override
 	public void execute(Referenced ref, List<ScriptValue_Abstract> valuesGiven) throws Exception_Nodeable {
-		throw new Exception_InternalError(getEnvironment(), "Invalid call in unparsed function");
+		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
 	public ScriptGroup getBody() {
-		return m_body;
+		return this.m_body;
 	}
 
 	public String getName() {
-		return m_name;
+		return this.m_name;
 	}
 
 	@Override
 	public List<ScriptValue_Abstract> getParameters() {
-		return m_parameters;
+		return this.m_parameters;
 	}
 
 	@Override
 	public ScriptKeywordType getPermission() {
-		return m_permission;
+		return this.m_permission;
 	}
 
 	@Override
 	public ScriptValueType getReturnType() {
-		return m_returnType;
+		return this.m_returnType;
 	}
 
 	@Override
 	public ScriptValue_Abstract getReturnValue() {
-		throw new Exception_InternalError(getEnvironment(), "Invalid call in unparsed function");
+		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
 	// ScriptFunction implementation
 	@Override
 	public boolean isAbstract() {
-		return m_isAbstract;
+		return this.m_isAbstract;
 	}
 
 	@Override
 	public boolean isStatic() {
-		return m_isStatic;
+		return this.m_isStatic;
 	}
 
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Unparsed Script-Function (" + ScriptFunction.getDisplayableFunctionName(m_name) + ")");
+		assert Debugger.openNode("Unparsed Script-Function (" + ScriptFunction.getDisplayableFunctionName(this.m_name) + ")");
 		assert super.nodificate();
-		assert Debugger.addNode("Static: " + m_isStatic);
-		assert Debugger.addSnapNode("Body", m_body);
+		assert Debugger.addNode("Static: " + this.m_isStatic);
+		assert Debugger.addSnapNode("Body", this.m_body);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	@Override
 	public void setReturnValue(Referenced element, ScriptValue_Abstract value) {
-		throw new Exception_InternalError(getEnvironment(), "Invalid call in unparsed function");
+		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 }

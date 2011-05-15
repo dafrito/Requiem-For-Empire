@@ -16,7 +16,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return m_tree;
+		return this.m_tree;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -29,7 +29,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_ArchetypeTree) createObject(ref, template);
+				template = (FauxTemplate_ArchetypeTree) this.createObject(ref, template);
 			}
 			template.setTree(new ArchetypeMapNode(Parser.getArchetype(params.get(0))));
 			params.clear();
@@ -40,19 +40,19 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 		} else if (name.equals("getAssetsOfType")) {
 			List<ScriptValue_Abstract> assets = new LinkedList<ScriptValue_Abstract>();
 			for (Asset asset : template.getTree().getAssetsOfType(Parser.getArchetype(params.get(0)))) {
-				assets.add(Parser.getRiffAsset(getEnvironment(), asset));
+				assets.add(Parser.getRiffAsset(this.getEnvironment(), asset));
 			}
-			ScriptValue_Abstract returning = Parser.getRiffList(getEnvironment(), assets);
+			ScriptValue_Abstract returning = Parser.getRiffList(this.getEnvironment(), assets);
 			assert Debugger.closeNode();
 			return returning;
 		}
-		ScriptValue_Abstract returning = getExtendedFauxClass().execute(ref, name, params, template);
+		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public ArchetypeMapNode getTree() {
-		return m_tree;
+		return this.m_tree;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
@@ -60,33 +60,33 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing archetype tree faux template");
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING)));
-		addConstructor(getType(), fxnParams);
-		disableFullCreation();
-		getExtendedClass().initialize();
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING)));
+		this.addConstructor(this.getType(), fxnParams);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
-		addFauxFunction("addAsset", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getAssetsOfType", ScriptValueType.createType(getEnvironment(), FauxTemplate_List.LISTSTRING), new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
+		this.addFauxFunction("addAsset", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getAssetsOfType", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_List.LISTSTRING), new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Archetype(getEnvironment(), getType());
+		return new FauxTemplate_Archetype(this.getEnvironment(), this.getType());
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Archetype Tree Faux Script-Element");
 		assert super.nodificate();
-		assert Debugger.addNode(m_tree);
+		assert Debugger.addNode(this.m_tree);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setTree(ArchetypeMapNode tree) {
-		m_tree = tree;
+		this.m_tree = tree;
 	}
 }

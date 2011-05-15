@@ -14,77 +14,77 @@ public class ScriptEnvironment implements Nodeable {
 	private Map<String, ThreadStack> m_threads = new HashMap<String, ThreadStack>();
 
 	public ScriptEnvironment() {
-		initialize();
+		this.initialize();
 	}
 
 	// Template functions
 	public void addTemplate(Referenced ref, String name, ScriptTemplate_Abstract template) throws Exception_Nodeable {
-		if (m_templates.get(name) != null) {
+		if (this.m_templates.get(name) != null) {
 			throw new Exception_Nodeable_TemplateAlreadyDefined(ref, name);
 		}
-		m_templates.put(name, template);
+		this.m_templates.put(name, template);
 	}
 
 	public void addTimer(javax.swing.Timer timer) {
-		m_timers.add(timer);
+		this.m_timers.add(timer);
 	}
 
 	// Variable-type functions
 	public void addType(Referenced ref, String name) throws Exception_Nodeable {
-		addType(ref, name, new ScriptValueType(this));
+		this.addType(ref, name, new ScriptValueType(this));
 	}
 
 	public void addType(Referenced ref, String name, ScriptTemplate_Abstract template) throws Exception_Nodeable {
-		addType(ref, name);
-		addTemplate(ref, name, template);
+		this.addType(ref, name);
+		this.addTemplate(ref, name, template);
 	}
 
 	public void addType(Referenced ref, String name, ScriptValueType keyword) throws Exception_Nodeable {
 		assert Debugger.addNode("Variable-Type Additions", "Adding variable type name to the variable-map (" + name + ")");
-		if (m_variableTypes.get(name) != null) {
+		if (this.m_variableTypes.get(name) != null) {
 			throw new Exception_Nodeable_VariableTypeAlreadyDefined(ref, name);
 		}
-		m_variableTypes.put(name, keyword);
+		this.m_variableTypes.put(name, keyword);
 	}
 
 	public void addVariableToStack(String name, ScriptValue_Variable var) throws Exception_Nodeable {
-		m_threads.get(Thread.currentThread().getName()).addVariable(name, var);
+		this.m_threads.get(Thread.currentThread().getName()).addVariable(name, var);
 	}
 
 	public void advanceNestedStack() {
-		m_threads.get(Thread.currentThread().getName()).advanceNestedStack();
+		this.m_threads.get(Thread.currentThread().getName()).advanceNestedStack();
 	}
 
 	// Stack functions
 	public void advanceStack(ScriptTemplate_Abstract template, ScriptFunction_Abstract fxn) throws Exception_Nodeable {
-		if (m_threads.get(Thread.currentThread().getName()) == null) {
-			m_threads.put(Thread.currentThread().getName(), new ThreadStack());
+		if (this.m_threads.get(Thread.currentThread().getName()) == null) {
+			this.m_threads.put(Thread.currentThread().getName(), new ThreadStack());
 		}
-		m_threads.get(Thread.currentThread().getName()).advanceStack(template, fxn);
+		this.m_threads.get(Thread.currentThread().getName()).advanceStack(template, fxn);
 	}
 
 	public void clearStacks() {
-		m_threads.put(Thread.currentThread().getName(), new ThreadStack());
+		this.m_threads.put(Thread.currentThread().getName(), new ThreadStack());
 	}
 
 	public void execute() {
 		try {
 			assert Debugger.openNode("Executing Script-Environment (Default Run)");
-			clearStacks();
-			Iterator iter = m_templates.values().iterator();
+			this.clearStacks();
+			Iterator iter = this.m_templates.values().iterator();
 			while (iter.hasNext()) {
 				((ScriptTemplate_Abstract) iter.next()).initialize();
 			}
 			List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
 			if (Debugger.getPriorityExecutingClass() != null) {
-				if (getTemplate(Debugger.getPriorityExecutingClass()) != null && getTemplate(Debugger.getPriorityExecutingClass()).getFunction("main", params) != null) {
-					ScriptExecutable_CallFunction.callFunction(this, null, getTemplate(Debugger.getPriorityExecutingClass()), "main", params);
+				if (this.getTemplate(Debugger.getPriorityExecutingClass()) != null && this.getTemplate(Debugger.getPriorityExecutingClass()).getFunction("main", params) != null) {
+					ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate(Debugger.getPriorityExecutingClass()), "main", params);
 					return;
 				}
 			}
 			ScriptFunction_Abstract function;
 			List<String> templateNames = new LinkedList<String>();
-			iter = m_templates.entrySet().iterator();
+			iter = this.m_templates.entrySet().iterator();
 			while (iter.hasNext()) {
 				Map.Entry entry = (Map.Entry) iter.next();
 				if ((function = ((ScriptTemplate_Abstract) entry.getValue()).getFunction("main", params)) != null) {
@@ -108,7 +108,7 @@ public class ScriptEnvironment implements Nodeable {
 			}
 			Debugger.setPriorityExecutingClass((String) selection);
 			assert Debugger.addNode(this);
-			ScriptExecutable_CallFunction.callFunction(this, null, getTemplate((String) selection), "main", params);
+			ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate((String) selection), "main", params);
 			assert Debugger.ensureCurrentNode("Executing Script-Environment (Default Run)");
 			assert Debugger.closeNode();
 		} catch (Exception_Nodeable ex) {
@@ -121,16 +121,16 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public ScriptFunction_Abstract getCurrentFunction() {
-		return m_threads.get(Thread.currentThread().getName()).getCurrentFunction();
+		return this.m_threads.get(Thread.currentThread().getName()).getCurrentFunction();
 	}
 
 	public ScriptTemplate_Abstract getCurrentObject() {
-		return m_threads.get(Thread.currentThread().getName()).getCurrentObject();
+		return this.m_threads.get(Thread.currentThread().getName()).getCurrentObject();
 	}
 
 	public String getName(ScriptValueType keyword) {
 		assert keyword != null;
-		Iterator iter = m_variableTypes.entrySet().iterator();
+		Iterator iter = this.m_variableTypes.entrySet().iterator();
 		while (iter.hasNext()) {
 			Map.Entry entry = (Map.Entry) iter.next();
 			if (keyword.equals(entry.getValue())) {
@@ -141,19 +141,19 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public ScriptTemplate_Abstract getTemplate(ScriptValueType code) {
-		return getTemplate(getName(code));
+		return this.getTemplate(this.getName(code));
 	}
 
 	public ScriptTemplate_Abstract getTemplate(String name) {
-		return m_templates.get(name);
+		return this.m_templates.get(name);
 	}
 
 	public ScriptValueType getType(String name) {
-		return m_variableTypes.get(name);
+		return this.m_variableTypes.get(name);
 	}
 
 	public ScriptValue_Variable getVariableFromStack(String name) {
-		return m_threads.get(Thread.currentThread().getName()).getVariableFromStack(name);
+		return this.m_threads.get(Thread.currentThread().getName()).getVariableFromStack(name);
 	}
 
 	public void initialize() {
@@ -163,55 +163,55 @@ public class ScriptEnvironment implements Nodeable {
 			ScriptValueType.initialize(this);
 			// Faux object templates
 			FauxTemplate template = new FauxTemplate_Object(this);
-			addType(null, FauxTemplate_Object.OBJECTSTRING, template);
+			this.addType(null, FauxTemplate_Object.OBJECTSTRING, template);
 			template = new FauxTemplate_List(this);
-			addType(null, FauxTemplate_List.LISTSTRING, template);
+			this.addType(null, FauxTemplate_List.LISTSTRING, template);
 			template = new Stylesheet(this);
-			addType(null, Stylesheet.STYLESHEETSTRING, template);
+			this.addType(null, Stylesheet.STYLESHEETSTRING, template);
 			template = new FauxTemplate_Interface(this);
-			addType(null, FauxTemplate_Interface.INTERFACESTRING, template);
+			this.addType(null, FauxTemplate_Interface.INTERFACESTRING, template);
 			template = new FauxTemplate_InterfaceElement(this);
-			addType(null, FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING, template);
+			this.addType(null, FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING, template);
 			template = new FauxTemplate_Label(this);
-			addType(null, FauxTemplate_Label.LABELSTRING, template);
+			this.addType(null, FauxTemplate_Label.LABELSTRING, template);
 			template = new FauxTemplate_Rectangle(this);
-			addType(null, FauxTemplate_Rectangle.RECTANGLESTRING, template);
+			this.addType(null, FauxTemplate_Rectangle.RECTANGLESTRING, template);
 			template = new FauxTemplate_GraphicalElement(this);
-			addType(null, FauxTemplate_GraphicalElement.GRAPHICALELEMENTSTRING, template);
+			this.addType(null, FauxTemplate_GraphicalElement.GRAPHICALELEMENTSTRING, template);
 			template = new FauxTemplate_Point(this);
-			addType(null, FauxTemplate_Point.POINTSTRING, template);
+			this.addType(null, FauxTemplate_Point.POINTSTRING, template);
 			template = new FauxTemplate_Line(this);
-			addType(null, FauxTemplate_Line.LINESTRING, template);
+			this.addType(null, FauxTemplate_Line.LINESTRING, template);
 			template = new FauxTemplate_Panel(this);
-			addType(null, FauxTemplate_Panel.PANELSTRING, template);
+			this.addType(null, FauxTemplate_Panel.PANELSTRING, template);
 			template = new FauxTemplate_DiscreteRegion(this);
-			addType(null, FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING, template);
+			this.addType(null, FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING, template);
 			template = new FauxTemplate_Color(this);
-			addType(null, FauxTemplate_Color.COLORSTRING, template);
+			this.addType(null, FauxTemplate_Color.COLORSTRING, template);
 			template = new FauxTemplate_Asset(this);
-			addType(null, FauxTemplate_Asset.ASSETSTRING, template);
+			this.addType(null, FauxTemplate_Asset.ASSETSTRING, template);
 			template = new FauxTemplate_RiffDali(this);
-			addType(null, FauxTemplate_RiffDali.RIFFDALISTRING, template);
+			this.addType(null, FauxTemplate_RiffDali.RIFFDALISTRING, template);
 			template = new FauxTemplate_Terrestrial(this);
-			addType(null, FauxTemplate_Terrestrial.TERRESTRIALSTRING, template);
+			this.addType(null, FauxTemplate_Terrestrial.TERRESTRIALSTRING, template);
 			template = new FauxTemplate_Scenario(this);
-			addType(null, FauxTemplate_Scenario.SCENARIOSTRING, template);
+			this.addType(null, FauxTemplate_Scenario.SCENARIOSTRING, template);
 			template = new FauxTemplate_Scheduler(this);
-			addType(null, FauxTemplate_Scheduler.SCHEDULERSTRING, template);
+			this.addType(null, FauxTemplate_Scheduler.SCHEDULERSTRING, template);
 			template = new FauxTemplate_SchedulerListener(this);
-			addType(null, FauxTemplate_SchedulerListener.SCHEDULERLISTENERSTRING, template);
+			this.addType(null, FauxTemplate_SchedulerListener.SCHEDULERLISTENERSTRING, template);
 			template = new FauxTemplate_MovementEvaluator(this);
-			addType(null, FauxTemplate_MovementEvaluator.MOVEMENTEVALUATORSTRING, template);
+			this.addType(null, FauxTemplate_MovementEvaluator.MOVEMENTEVALUATORSTRING, template);
 			template = new FauxTemplate_Path(this);
-			addType(null, FauxTemplate_Path.PATHSTRING, template);
+			this.addType(null, FauxTemplate_Path.PATHSTRING, template);
 			template = new FauxTemplate_Terrain(this);
-			addType(null, FauxTemplate_Terrain.TERRAINSTRING, template);
+			this.addType(null, FauxTemplate_Terrain.TERRAINSTRING, template);
 			template = new FauxTemplate_Archetype(this);
-			addType(null, FauxTemplate_Archetype.ARCHETYPESTRING, template);
+			this.addType(null, FauxTemplate_Archetype.ARCHETYPESTRING, template);
 			template = new FauxTemplate_Ace(this);
-			addType(null, FauxTemplate_Ace.ACESTRING, template);
+			this.addType(null, FauxTemplate_Ace.ACESTRING, template);
 			template = new FauxTemplate_ArchetypeTree(this);
-			addType(null, FauxTemplate_ArchetypeTree.ARCHETYPETREESTRING, template);
+			this.addType(null, FauxTemplate_ArchetypeTree.ARCHETYPETREESTRING, template);
 			assert Debugger.closeNode();
 		} catch (Exception_Nodeable ex) {
 			assert Debugger.closeNodeTo("Initializing Script Environment");
@@ -220,35 +220,35 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public boolean isTemplateDefined(String name) {
-		return m_templates.get(name) != null;
+		return this.m_templates.get(name) != null;
 	}
 
 	// Miscellaneous functions
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Script Environment");
-		assert Debugger.addSnapNode("Templates: " + m_templates.size() + " templates(s)", m_templates);
-		assert Debugger.addSnapNode("Thread Stacks", m_threads);
+		assert Debugger.addSnapNode("Templates: " + this.m_templates.size() + " templates(s)", this.m_templates);
+		assert Debugger.addSnapNode("Thread Stacks", this.m_threads);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void reset() {
 		assert Debugger.openNode("Resetting Environment");
-		m_variableTypes.clear();
-		m_templates.clear();
-		clearStacks();
+		this.m_variableTypes.clear();
+		this.m_templates.clear();
+		this.clearStacks();
 		System.gc();
-		initialize();
+		this.initialize();
 		assert Debugger.closeNode();
 	}
 
 	public void retreatNestedStack() {
-		m_threads.get(Thread.currentThread().getName()).retreatNestedStack();
+		this.m_threads.get(Thread.currentThread().getName()).retreatNestedStack();
 	}
 
 	public void retreatStack() {
-		m_threads.get(Thread.currentThread().getName()).retreatStack();
+		this.m_threads.get(Thread.currentThread().getName()).retreatStack();
 	}
 
 	// Variable functions
@@ -256,20 +256,20 @@ public class ScriptEnvironment implements Nodeable {
 		assert Debugger.openNode("Variable Retrievals", "Retrieving Variable (" + name + ")");
 		ScriptValue_Variable value = null;
 		if (value == null) {
-			assert Debugger.addSnapNode("Checking current variable stack", m_threads.get(Thread.currentThread().getName()));
-			value = getVariableFromStack(name);
+			assert Debugger.addSnapNode("Checking current variable stack", this.m_threads.get(Thread.currentThread().getName()));
+			value = this.getVariableFromStack(name);
 		}
 		if (value == null) {
 			assert Debugger.openNode("Checking current object for valid variable");
-			assert Debugger.addNode(getCurrentObject());
-			value = getCurrentObject().getVariable(name);
+			assert Debugger.addNode(this.getCurrentObject());
+			value = this.getCurrentObject().getVariable(name);
 			assert Debugger.closeNode();
 		}
 		if (value == null) {
 			assert Debugger.openNode("Checking static template stack");
-			assert Debugger.addNode(getTemplate(name));
-			if (getTemplate(name) != null) {
-				value = getTemplate(name).getStaticReference();
+			assert Debugger.addNode(this.getTemplate(name));
+			if (this.getTemplate(name) != null) {
+				value = this.getTemplate(name).getStaticReference();
 			}
 			assert Debugger.closeNode();
 		}
@@ -283,10 +283,10 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public void stopExecution() {
-		for (javax.swing.Timer timer : m_timers) {
+		for (javax.swing.Timer timer : this.m_timers) {
 			timer.stop();
 		}
-		m_timers.clear();
+		this.m_timers.clear();
 	}
 }
 
@@ -303,82 +303,82 @@ class ThreadStack implements Nodeable {
 			assert Debugger.addNode(variable);
 		}
 		assert Debugger.addNode(this);
-		m_variableTable.addVariable(name, variable);
+		this.m_variableTable.addVariable(name, variable);
 		assert Debugger.closeNode();
 	}
 
 	public synchronized void advanceNestedStack() {
-		m_variableTable.advanceNestedStack();
+		this.m_variableTable.advanceNestedStack();
 	}
 
 	public synchronized void advanceStack(ScriptTemplate_Abstract template, ScriptFunction_Abstract fxn) throws Exception_Nodeable {
-		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Stack (Stack size before advance: " + m_functionStack.size() + ")");
-		assert (m_functionStack.size() == m_objectStack.size()) && (m_objectStack.size() == m_variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + m_functionStack.size() + " Object-stack: " + m_objectStack.size() + " Variable-stack: " + m_variableTable.getStacks().size();
+		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Stack (Stack size before advance: " + this.m_functionStack.size() + ")");
+		assert (this.m_functionStack.size() == this.m_objectStack.size()) && (this.m_objectStack.size() == this.m_variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + this.m_functionStack.size() + " Object-stack: " + this.m_objectStack.size() + " Variable-stack: " + this.m_variableTable.getStacks().size();
 		if (template != null) {
 			assert Debugger.addSnapNode("Advancing object", template);
 		}
 		assert Debugger.addSnapNode("Advancing function", fxn);
 		if (template == null) {
-			template = getCurrentObject();
+			template = this.getCurrentObject();
 		}
 		if (template != null) {
-			m_objectStack.push((ScriptTemplate_Abstract) template.getValue());
+			this.m_objectStack.push((ScriptTemplate_Abstract) template.getValue());
 		} else {
-			m_objectStack.push(null);
+			this.m_objectStack.push(null);
 		}
-		m_functionStack.push(fxn);
-		m_variableTable.advanceStack();
+		this.m_functionStack.push(fxn);
+		this.m_variableTable.advanceStack();
 		assert Debugger.closeNode();
 	}
 
 	public synchronized ScriptFunction_Abstract getCurrentFunction() {
-		if (m_functionStack.size() == 0) {
+		if (this.m_functionStack.size() == 0) {
 			throw new Exception_InternalError("No call stack");
 		}
-		return m_functionStack.peek();
+		return this.m_functionStack.peek();
 	}
 
 	public synchronized ScriptTemplate_Abstract getCurrentObject() {
-		if (m_objectStack.size() == 0) {
+		if (this.m_objectStack.size() == 0) {
 			throw new Exception_InternalError("No call stack");
 		}
-		return m_objectStack.peek();
+		return this.m_objectStack.peek();
 	}
 
 	public ScriptValue_Variable getVariableFromStack(String name) {
-		return m_variableTable.getVariableFromStack(name);
+		return this.m_variableTable.getVariableFromStack(name);
 	}
 
 	@Override
 	public synchronized boolean nodificate() {
 		assert Debugger.openNode("Thread Stack");
-		assert Debugger.addNode(m_variableTable);
-		assert Debugger.addSnapNode("Object stack (" + m_objectStack.size() + ")", m_objectStack);
-		assert Debugger.addSnapNode("Function stack (" + m_functionStack.size() + ")", m_functionStack);
+		assert Debugger.addNode(this.m_variableTable);
+		assert Debugger.addSnapNode("Object stack (" + this.m_objectStack.size() + ")", this.m_objectStack);
+		assert Debugger.addSnapNode("Function stack (" + this.m_functionStack.size() + ")", this.m_functionStack);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public synchronized void retreatNestedStack() {
-		m_variableTable.retreatNestedStack();
+		this.m_variableTable.retreatNestedStack();
 	}
 
 	public synchronized void retreatStack() {
-		assert Debugger.openNode("Stack Advancements and Retreats", "Retreating Stack (Stack size before retreat: " + m_functionStack.size() + ")");
-		assert (m_functionStack.size() == m_objectStack.size()) && (m_objectStack.size() == m_variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + m_functionStack.size() + " Object-stack: " + m_objectStack.size() + " Variable-stack: " + m_variableTable.getStacks().size();
-		if (m_variableTable.getStacks().size() > 0) {
-			m_variableTable.retreatStack();
+		assert Debugger.openNode("Stack Advancements and Retreats", "Retreating Stack (Stack size before retreat: " + this.m_functionStack.size() + ")");
+		assert (this.m_functionStack.size() == this.m_objectStack.size()) && (this.m_objectStack.size() == this.m_variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + this.m_functionStack.size() + " Object-stack: " + this.m_objectStack.size() + " Variable-stack: " + this.m_variableTable.getStacks().size();
+		if (this.m_variableTable.getStacks().size() > 0) {
+			this.m_variableTable.retreatStack();
 		}
-		if (m_objectStack.size() > 0) {
-			m_objectStack.pop();
-			if (m_objectStack.size() > 0) {
-				assert Debugger.addSnapNode("New Current Object", m_objectStack.peek());
+		if (this.m_objectStack.size() > 0) {
+			this.m_objectStack.pop();
+			if (this.m_objectStack.size() > 0) {
+				assert Debugger.addSnapNode("New Current Object", this.m_objectStack.peek());
 			}
 		}
-		if (m_functionStack.size() > 0) {
-			m_functionStack.pop();
-			if (m_functionStack.size() > 0) {
-				assert Debugger.addSnapNode("New Current Function", m_functionStack.peek());
+		if (this.m_functionStack.size() > 0) {
+			this.m_functionStack.pop();
+			if (this.m_functionStack.size() > 0) {
+				assert Debugger.addSnapNode("New Current Function", this.m_functionStack.peek());
 			}
 		}
 		assert Debugger.closeNode();
@@ -389,22 +389,22 @@ class VariableStack implements Nodeable {
 	private Stack<Map<String, ScriptValue_Variable>> m_nestedStacks = new Stack<Map<String, ScriptValue_Variable>>();
 
 	public VariableStack() {
-		m_nestedStacks.push(new HashMap<String, ScriptValue_Variable>());
+		this.m_nestedStacks.push(new HashMap<String, ScriptValue_Variable>());
 	}
 
 	public synchronized void addVariable(String name, ScriptValue_Variable variable) {
-		m_nestedStacks.peek().put(name, variable);
+		this.m_nestedStacks.peek().put(name, variable);
 	}
 
 	public synchronized void advanceNestedStack() {
-		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Nested Stack (Nested stack size before advance: " + m_nestedStacks.size() + ")");
+		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Nested Stack (Nested stack size before advance: " + this.m_nestedStacks.size() + ")");
 		assert Debugger.addNode(this);
-		m_nestedStacks.push(new HashMap<String, ScriptValue_Variable>());
+		this.m_nestedStacks.push(new HashMap<String, ScriptValue_Variable>());
 		assert Debugger.closeNode();
 	}
 
 	public synchronized ScriptValue_Variable getVariableFromStack(String name) {
-		for (Map<String, ScriptValue_Variable> map : m_nestedStacks) {
+		for (Map<String, ScriptValue_Variable> map : this.m_nestedStacks) {
 			if (map.containsKey(name)) {
 				return map.get(name);
 			}
@@ -415,8 +415,8 @@ class VariableStack implements Nodeable {
 	@Override
 	public synchronized boolean nodificate() {
 		assert Debugger.openNode("Variable Stack");
-		assert Debugger.openNode("Nested Stacks (" + m_nestedStacks.size() + " stack(s))");
-		for (Map<String, ScriptValue_Variable> map : m_nestedStacks) {
+		assert Debugger.openNode("Nested Stacks (" + this.m_nestedStacks.size() + " stack(s))");
+		for (Map<String, ScriptValue_Variable> map : this.m_nestedStacks) {
 			assert Debugger.openNode("Stack (" + map.size() + " variable(s))");
 			assert Debugger.addNode(map);
 			assert Debugger.closeNode();
@@ -427,10 +427,10 @@ class VariableStack implements Nodeable {
 	}
 
 	public synchronized void retreatNestedStack() {
-		assert m_nestedStacks.size() > 0;
-		assert Debugger.openNode("Stack Advancements and Retreats", "Retreating Nested Stack (Nested stack size before retreat: " + m_nestedStacks.size() + ")");
+		assert this.m_nestedStacks.size() > 0;
+		assert Debugger.openNode("Stack Advancements and Retreats", "Retreating Nested Stack (Nested stack size before retreat: " + this.m_nestedStacks.size() + ")");
 		assert Debugger.addNode(this);
-		m_nestedStacks.pop();
+		this.m_nestedStacks.pop();
 		assert Debugger.closeNode();
 	}
 }
@@ -439,39 +439,39 @@ class VariableTable implements Nodeable {
 	Stack<VariableStack> m_stacks = new Stack<VariableStack>();
 
 	public synchronized void addVariable(String name, ScriptValue_Variable variable) {
-		m_stacks.peek().addVariable(name, variable);
+		this.m_stacks.peek().addVariable(name, variable);
 	}
 
 	public synchronized void advanceNestedStack() {
-		m_stacks.peek().advanceNestedStack();
+		this.m_stacks.peek().advanceNestedStack();
 	}
 
 	public synchronized void advanceStack() {
-		m_stacks.push(new VariableStack());
+		this.m_stacks.push(new VariableStack());
 	}
 
 	public Stack<VariableStack> getStacks() {
-		return m_stacks;
+		return this.m_stacks;
 	}
 
 	public ScriptValue_Variable getVariableFromStack(String name) {
-		ScriptValue_Variable variable = m_stacks.peek().getVariableFromStack(name);
+		ScriptValue_Variable variable = this.m_stacks.peek().getVariableFromStack(name);
 		return variable;
 	}
 
 	@Override
 	public synchronized boolean nodificate() {
 		assert Debugger.openNode("Variable Table");
-		assert Debugger.addSnapNode("Variable Stacks (" + m_stacks.size() + " stack(s))", m_stacks);
+		assert Debugger.addSnapNode("Variable Stacks (" + this.m_stacks.size() + " stack(s))", this.m_stacks);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public synchronized void retreatNestedStack() {
-		m_stacks.peek().retreatNestedStack();
+		this.m_stacks.peek().retreatNestedStack();
 	}
 
 	public synchronized void retreatStack() {
-		m_stacks.pop();
+		this.m_stacks.pop();
 	}
 }

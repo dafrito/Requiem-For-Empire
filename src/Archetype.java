@@ -7,17 +7,17 @@ public class Archetype implements ScriptConvertible, Nodeable {
 	private ScriptEnvironment m_environment;
 
 	public Archetype(ScriptEnvironment env, String name) {
-		m_environment = env;
-		m_name = name;
+		this.m_environment = env;
+		this.m_name = name;
 	}
 
 	public void addParent(Ace ace) {
-		m_parents.add(ace);
+		this.m_parents.add(ace);
 	}
 
 	@Override
 	public Object convert() {
-		FauxTemplate_Archetype archetype = new FauxTemplate_Archetype(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING));
+		FauxTemplate_Archetype archetype = new FauxTemplate_Archetype(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING));
 		archetype.setArchetype(this);
 		return archetype;
 	}
@@ -25,37 +25,37 @@ public class Archetype implements ScriptConvertible, Nodeable {
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof String) {
-			return m_name.equals(o);
+			return this.m_name.equals(o);
 		}
 		if (o instanceof Archetype) {
-			return m_name.equals(((Archetype) o).getName());
+			return this.m_name.equals(((Archetype) o).getName());
 		}
 		return false;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	public String getName() {
-		return m_name;
+		return this.m_name;
 	}
 
 	public List<Ace> getParents() {
-		return m_parents;
+		return this.m_parents;
 	}
 
 	public Archetype getRoot() {
-		if (m_parents == null || m_parents.size() == 0) {
+		if (this.m_parents == null || this.m_parents.size() == 0) {
 			return this;
 		}
-		return m_parents.get(0).getArchetype().getRoot();
+		return this.m_parents.get(0).getArchetype().getRoot();
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Archetype (" + m_name + ")");
-		assert Debugger.addSnapNode("Aces (" + m_parents.size() + " ace(s))", m_parents);
+		assert Debugger.openNode("Archetype (" + this.m_name + ")");
+		assert Debugger.addSnapNode("Aces (" + this.m_parents.size() + " ace(s))", this.m_parents);
 		assert Debugger.closeNode();
 		return true;
 	}

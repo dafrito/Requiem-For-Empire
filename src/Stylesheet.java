@@ -21,7 +21,7 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue_Ab
 		assert Debugger.openNode("Stylesheet Element Additions", "Adding a" + element.getElementName() + " element to this stylesheet");
 		assert Debugger.addNode(this);
 		assert Debugger.addNode(element);
-		m_styleElements.put(type, element);
+		this.m_styleElements.put(type, element);
 		assert Debugger.closeNode();
 	}
 
@@ -38,41 +38,41 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue_Ab
 	}
 
 	public StylesheetElement getElement(StylesheetElementType elementCode) {
-		return m_styleElements.get(elementCode);
+		return this.m_styleElements.get(elementCode);
 	}
 
 	public String getName() {
-		return m_name;
+		return this.m_name;
 	}
 
 	// FauxTemplate extensions
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new Stylesheet(getEnvironment(), true);
+		return new Stylesheet(this.getEnvironment(), true);
 	}
 
 	public boolean isUnique() {
-		return m_isUnique;
+		return this.m_isUnique;
 	}
 
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		if (m_name == null) {
-			assert Debugger.openNode("Anonymous stylesheet (" + m_styleElements.size() + " element(s))");
+		if (this.m_name == null) {
+			assert Debugger.openNode("Anonymous stylesheet (" + this.m_styleElements.size() + " element(s))");
 		} else {
-			assert Debugger.openNode("Stylesheet: " + m_name + " (" + m_styleElements.size() + " element(s))");
+			assert Debugger.openNode("Stylesheet: " + this.m_name + " (" + this.m_styleElements.size() + " element(s))");
 		}
-		assert Debugger.addNode(m_styleElements.values());
+		assert Debugger.addNode(this.m_styleElements.values());
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setName(String name) {
-		m_name = name;
+		this.m_name = name;
 	}
 
 	public void setUnique(boolean isUnique) {
-		m_isUnique = isUnique;
+		this.m_isUnique = isUnique;
 	}
 }

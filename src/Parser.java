@@ -1941,26 +1941,26 @@ class StylesheetParams {
 	private ScriptGroup m_body;
 
 	public StylesheetParams(Referenced ref, List<Object> modifiers, String name, ScriptGroup body) {
-		m_reference = ref;
-		m_modifiers = modifiers;
-		m_name = name;
-		m_body = body;
+		this.m_reference = ref;
+		this.m_modifiers = modifiers;
+		this.m_name = name;
+		this.m_body = body;
 	}
 
 	public ScriptGroup getBody() {
-		return m_body;
+		return this.m_body;
 	}
 
 	public Referenced getDebugReference() {
-		return m_reference;
+		return this.m_reference;
 	}
 
 	public List<Object> getModifiers() {
-		return m_modifiers;
+		return this.m_modifiers;
 	}
 
 	public String getName() {
-		return m_name;
+		return this.m_name;
 	}
 }
 
@@ -1971,25 +1971,25 @@ class TemplateParams {
 	private ScriptGroup m_body;
 
 	public TemplateParams(Referenced ref, String name, List<Object> modifiers, ScriptGroup body) {
-		m_reference = ref;
-		m_modifiers = modifiers;
-		m_name = name;
-		m_body = body;
+		this.m_reference = ref;
+		this.m_modifiers = modifiers;
+		this.m_name = name;
+		this.m_body = body;
 	}
 
 	public ScriptGroup getBody() {
-		return m_body;
+		return this.m_body;
 	}
 
 	public Referenced getDebugReference() {
-		return m_reference;
+		return this.m_reference;
 	}
 
 	public List<Object> getModifiers() {
-		return m_modifiers;
+		return this.m_modifiers;
 	}
 
 	public String getName() {
-		return m_name;
+		return this.m_name;
 	}
 }

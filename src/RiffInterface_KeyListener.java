@@ -30,16 +30,16 @@ class RiffInterface_KeyEvent implements Nodeable, RiffInterface_Event {
 	private int m_key;
 
 	public RiffInterface_KeyEvent(int key) {
-		m_key = key;
+		this.m_key = key;
 	}
 
 	public int getKeyCode() {
-		return m_key;
+		return this.m_key;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.addNode("Key code: " + m_key);
+		assert Debugger.addNode("Key code: " + this.m_key);
 		return true;
 	}
 }

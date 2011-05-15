@@ -153,31 +153,31 @@ public class ScriptOperator extends ScriptElement implements Nodeable {
 
 	public ScriptOperator(ScriptLine line, ScriptOperatorType type) {
 		super(line);
-		m_type = type;
+		this.m_type = type;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof ScriptOperatorType) {
-			return getType().equals(o);
+			return this.getType().equals(o);
 		}
 		if (!(o instanceof ScriptOperator)) {
 			return false;
 		}
-		return getType() == ((ScriptOperator) o).getType();
+		return this.getType() == ((ScriptOperator) o).getType();
 	}
 
 	public String getName() {
-		return getName(getType());
+		return getName(this.getType());
 	}
 
 	public ScriptOperatorType getType() {
-		return m_type;
+		return this.m_type;
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode(Debugger.getString(DebugString.SCRIPTOPERATOR) + getName());
+		assert Debugger.openNode(Debugger.getString(DebugString.SCRIPTOPERATOR) + this.getName());
 		assert super.nodificate();
 		assert Debugger.closeNode();
 		return true;
@@ -185,7 +185,7 @@ public class ScriptOperator extends ScriptElement implements Nodeable {
 
 	@Override
 	public String toString() {
-		return m_type.toString();
+		return this.m_type.toString();
 	}
 }
 

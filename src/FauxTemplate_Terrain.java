@@ -11,13 +11,13 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 
 	public FauxTemplate_Terrain(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		m_terrain = new Terrain(env);
+		this.m_terrain = new Terrain(env);
 	}
 
 	// Nodeable implementation
 	@Override
 	public Object convert() {
-		return m_terrain;
+		return this.m_terrain;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -32,7 +32,7 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 		ScriptValue_Abstract value;
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Terrain) createObject(ref, template);
+				template = (FauxTemplate_Terrain) this.createObject(ref, template);
 			}
 			assert Debugger.closeNode();
 			return template;
@@ -132,13 +132,13 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 			assert Debugger.closeNode();
 			return null;
 		}
-		returning = getExtendedFauxClass().execute(ref, name, params, template);
+		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public Terrain getTerrain() {
-		return m_terrain;
+		return this.m_terrain;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -146,58 +146,58 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing terrain faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
-		disableFullCreation();
-		getExtendedClass().initialize();
-		addFauxFunction("getBrushDensityWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getElevationWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getGroundCohesionWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getTemperatureWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getWaterDepthWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getBrushDensity", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getElevation", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getGroundCohesion", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getTemperature", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getWaterDepth", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
+		this.addFauxFunction("getBrushDensityWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getElevationWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getGroundCohesionWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getTemperatureWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getWaterDepthWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getBrushDensity", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getElevation", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getGroundCohesion", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getTemperature", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getWaterDepth", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.DOUBLE));
-		addFauxFunction("setBrushDensityWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setElevationWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setGroundCohesionWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setTemperatureWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setWaterDepthWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setBrushDensity", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setElevation", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setGroundCohesion", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setTemperature", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setWaterDepth", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
+		this.addFauxFunction("setBrushDensityWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setElevationWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setGroundCohesionWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setTemperatureWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setWaterDepthWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setBrushDensity", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setElevation", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setGroundCohesion", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setTemperature", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setWaterDepth", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.DOUBLE));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.DOUBLE));
-		addFauxFunction("setBrushDensity", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setElevation", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setGroundCohesion", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setTemperature", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setWaterDepth", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
+		this.addFauxFunction("setBrushDensity", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setElevation", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setGroundCohesion", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setTemperature", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setWaterDepth", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Terrain(getEnvironment(), getType());
+		return new FauxTemplate_Terrain(this.getEnvironment(), this.getType());
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Terrain Faux Template");
 		assert super.nodificate();
-		assert Debugger.addNode(m_terrain);
+		assert Debugger.addNode(this.m_terrain);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setTerrain(Terrain terrain) {
-		m_terrain = terrain;
+		this.m_terrain = terrain;
 	}
 }

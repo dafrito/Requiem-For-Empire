@@ -8,45 +8,45 @@ public class Gradient_Radial implements Gradient {
 	private Point m_focus;
 
 	public Gradient_Radial(Point focus, double radius, double exponent) {
-		m_focus = focus;
-		m_radius = radius;
-		m_exponent = exponent;
+		this.m_focus = focus;
+		this.m_radius = radius;
+		this.m_exponent = exponent;
 	}
 
 	@Override
 	public double getBottomExtreme() {
-		return getFocus().getY() - getRadius();
+		return this.getFocus().getY() - this.getRadius();
 	}
 
 	public double getExponent() {
-		return m_exponent;
+		return this.m_exponent;
 	}
 
 	public Point getFocus() {
-		return m_focus;
+		return this.m_focus;
 	}
 
 	@Override
 	public Krumflex getKrumflex() {
-		return m_krumflex;
+		return this.m_krumflex;
 	}
 
 	@Override
 	public Krumflex getKrumflexAt(Point point) {
-		double distance = RiffToolbox.getDistance(getFocus(), point);
-		if (Math.abs(distance) > getRadius() || getExponent() == 0) {
-			return getKrumflex().getKrumflexFromIntensity(0.0d);
+		double distance = RiffToolbox.getDistance(this.getFocus(), point);
+		if (Math.abs(distance) > this.getRadius() || this.getExponent() == 0) {
+			return this.getKrumflex().getKrumflexFromIntensity(0.0d);
 		}
-		return getKrumflex().getKrumflexFromIntensity(Math.abs(Math.pow(distance / getRadius(), getExponent()) - 1.0d));
+		return this.getKrumflex().getKrumflexFromIntensity(Math.abs(Math.pow(distance / this.getRadius(), this.getExponent()) - 1.0d));
 	}
 
 	@Override
 	public double getLeftExtreme() {
-		return getFocus().getX() - getRadius();
+		return this.getFocus().getX() - this.getRadius();
 	}
 
 	public double getRadius() {
-		return m_radius;
+		return this.m_radius;
 	}
 
 	@Override
@@ -56,14 +56,14 @@ public class Gradient_Radial implements Gradient {
 		DiscreteRegion lastRegion = null;
 		for (double i = 1.0d; i > 0.0d; i -= precision) {
 			assert Debugger.addNode("Entering sequence. i is at: " + i);
-			radius += precision * getRadius();
+			radius += precision * this.getRadius();
 			DiscreteRegion newRegion = new DiscreteRegion();
-			newRegion.setProperty(getKrumflex().getName(), getKrumflex().getKrumflexFromIntensity(i));
+			newRegion.setProperty(this.getKrumflex().getName(), this.getKrumflex().getKrumflexFromIntensity(i));
 			for (int j = 0; j < Gradient_Radial.m_polygonVertices; j++) {
 				double radianOffset = ((Math.PI * 2) / m_polygonVertices) * j;
 				double longOffset = Math.cos(radianOffset) * radius;
 				double latOffset = Math.sin(radianOffset) * radius;
-				newRegion.addPoint(Point.createPoint(getFocus(), getFocus().getX() + longOffset, getFocus().getY() + latOffset, 0.0d));
+				newRegion.addPoint(Point.createPoint(this.getFocus(), this.getFocus().getX() + longOffset, this.getFocus().getY() + latOffset, 0.0d));
 			}
 			if (lastRegion == null) {
 				list.add(newRegion);
@@ -85,17 +85,17 @@ public class Gradient_Radial implements Gradient {
 
 	@Override
 	public double getRightExtreme() {
-		return getFocus().getX() + getRadius();
+		return this.getFocus().getX() + this.getRadius();
 	}
 
 	@Override
 	public double getTopExtreme() {
-		return getFocus().getY() + getRadius();
+		return this.getFocus().getY() + this.getRadius();
 	}
 
 	// Gradient implementation
 	@Override
 	public void setKrumflex(Krumflex krumflex) {
-		m_krumflex = krumflex;
+		this.m_krumflex = krumflex;
 	}
 }

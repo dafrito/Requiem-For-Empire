@@ -5,54 +5,54 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 
 	public ScriptExecutable_RetrieveVariable(Referenced ref, ScriptValue_Abstract template, String name, ScriptValueType type) throws Exception_Nodeable {
 		super(ref.getEnvironment(), type, null);
-		m_reference = ref.getDebugReference();
-		m_name = name;
-		m_template = template;
+		this.m_reference = ref.getDebugReference();
+		this.m_name = name;
+		this.m_template = template;
 	}
 
 	@Override
 	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
-		return getVariable().castToType(ref, type);
+		return this.getVariable().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		return getValue();
+		return this.getValue();
 	}
 
 	// Referenced implementation
 	@Override
 	public ScriptElement getDebugReference() {
-		return m_reference;
+		return this.m_reference;
 	}
 
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		return getDebugReference().getEnvironment();
+		return this.getDebugReference().getEnvironment();
 	}
 
 	// Overloaded ScriptValue_Variable functions
 	@Override
 	public ScriptKeywordType getPermission() throws Exception_Nodeable {
-		return getVariable().getPermission();
+		return this.getVariable().getPermission();
 	}
 
 	@Override
 	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
-		return getVariable().getValue();
+		return this.getVariable().getValue();
 	}
 
 	public ScriptValue_Variable getVariable() throws Exception_Nodeable {
-		assert Debugger.openNode("Executing Variable Retrieval (" + m_name + ")");
+		assert Debugger.openNode("Executing Variable Retrieval (" + this.m_name + ")");
 		ScriptValue_Variable variable;
-		if (m_template != null) {
-			assert Debugger.addSnapNode("Template", m_template);
-			variable = ((ScriptTemplate_Abstract) m_template.getValue()).getVariable(m_name);
+		if (this.m_template != null) {
+			assert Debugger.addSnapNode("Template", this.m_template);
+			variable = ((ScriptTemplate_Abstract) this.m_template.getValue()).getVariable(this.m_name);
 		} else {
-			variable = getEnvironment().retrieveVariable(m_name);
+			variable = this.getEnvironment().retrieveVariable(this.m_name);
 		}
-		assert variable != null : "Variable not found (" + m_name + ")";
+		assert variable != null : "Variable not found (" + this.m_name + ")";
 		assert Debugger.closeNode();
 		return variable;
 	}
@@ -60,16 +60,16 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	// Abstract-value implementation
 	@Override
 	public boolean isConvertibleTo(ScriptValueType type) {
-		return ScriptValueType.isConvertibleTo(getEnvironment(), getType(), type);
+		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Variable-Placeholder (" + m_name + ")");
+		assert Debugger.openNode("Variable-Placeholder (" + this.m_name + ")");
 		assert super.nodificate();
-		if (m_template != null) {
-			assert Debugger.addSnapNode("Reference Template", m_template);
+		if (this.m_template != null) {
+			assert Debugger.addSnapNode("Reference Template", this.m_template);
 		}
 		assert Debugger.closeNode();
 		return true;
@@ -77,21 +77,21 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 
 	@Override
 	public ScriptValue_Abstract setReference(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
-		return getVariable().setReference(ref, value);
+		return this.getVariable().setReference(ref, value);
 	}
 
 	@Override
 	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
-		return getVariable().setValue(ref, value);
+		return this.getVariable().setValue(ref, value);
 	}
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return getValue().valuesCompare(ref, rhs);
+		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
 	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return getValue().valuesEqual(ref, rhs);
+		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

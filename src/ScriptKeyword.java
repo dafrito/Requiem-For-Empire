@@ -116,22 +116,22 @@ public class ScriptKeyword extends ScriptElement implements Nodeable {
 	// Constructors
 	public ScriptKeyword(Referenced ref, ScriptKeywordType type) throws Exception_Nodeable {
 		super(ref);
-		m_type = type;
+		this.m_type = type;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof ScriptValueType) {
-			return ((ScriptValueType) o) == getValueType();
+			return ((ScriptValueType) o) == this.getValueType();
 		} else if (o instanceof ScriptKeywordType) {
-			return ((ScriptKeywordType) o) == getType();
+			return ((ScriptKeywordType) o) == this.getType();
 		} else {
-			return ((ScriptKeyword) o).getType() == m_type;
+			return ((ScriptKeyword) o).getType() == this.m_type;
 		}
 	}
 
 	public ScriptKeywordType getType() {
-		return m_type;
+		return this.m_type;
 	}
 
 	public ScriptValueType getValueType() {
@@ -140,7 +140,7 @@ public class ScriptKeyword extends ScriptElement implements Nodeable {
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("ScriptKeyword (" + getType() + ")");
+		assert Debugger.openNode("ScriptKeyword (" + this.getType() + ")");
 		assert super.nodificate();
 		assert Debugger.closeNode();
 		return true;
@@ -148,7 +148,7 @@ public class ScriptKeyword extends ScriptElement implements Nodeable {
 
 	@Override
 	public String toString() {
-		return getType().toString();
+		return this.getType().toString();
 	}
 }
 

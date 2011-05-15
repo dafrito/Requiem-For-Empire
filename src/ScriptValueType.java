@@ -145,13 +145,13 @@ public class ScriptValueType {
 	private final ScriptEnvironment m_environment;
 
 	public ScriptValueType(ScriptEnvironment env) {
-		m_type = m_identifierSeed++;
-		m_environment = env;
+		this.m_type = m_identifierSeed++;
+		this.m_environment = env;
 	}
 
 	public ScriptValueType(ScriptEnvironment env, int type) {
-		m_type = type;
-		m_environment = env;
+		this.m_type = type;
+		this.m_environment = env;
 	}
 
 	// Overloaded functions
@@ -162,11 +162,11 @@ public class ScriptValueType {
 		}
 		try {
 			if (o instanceof ScriptKeywordType) {
-				return ScriptKeyword.getValueType((ScriptKeywordType) o).getType() == getType();
+				return ScriptKeyword.getValueType((ScriptKeywordType) o).getType() == this.getType();
 			} else if (o instanceof String) {
-				return toString().equals(o);
+				return this.toString().equals(o);
 			} else {
-				return ((ScriptValueType) o).getType() == getType();
+				return ((ScriptValueType) o).getType() == this.getType();
 			}
 		} catch (Exception_Nodeable ex) {
 			throw new Exception_InternalError("Failed value-type comparison", ex);
@@ -182,32 +182,32 @@ public class ScriptValueType {
 
 	// Miscellaneous functions
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	public ScriptKeywordType getKeywordType() {
-		if (equals(VOID)) {
+		if (this.equals(VOID)) {
 			return ScriptKeywordType.VOID;
 		}
-		if (equals(BOOLEAN)) {
+		if (this.equals(BOOLEAN)) {
 			return ScriptKeywordType.BOOLEAN;
 		}
-		if (equals(SHORT)) {
+		if (this.equals(SHORT)) {
 			return ScriptKeywordType.SHORT;
 		}
-		if (equals(INT)) {
+		if (this.equals(INT)) {
 			return ScriptKeywordType.INT;
 		}
-		if (equals(LONG)) {
+		if (this.equals(LONG)) {
 			return ScriptKeywordType.LONG;
 		}
-		if (equals(FLOAT)) {
+		if (this.equals(FLOAT)) {
 			return ScriptKeywordType.FLOAT;
 		}
-		if (equals(DOUBLE)) {
+		if (this.equals(DOUBLE)) {
 			return ScriptKeywordType.DOUBLE;
 		}
-		if (equals(STRING)) {
+		if (this.equals(STRING)) {
 			return ScriptKeywordType.STRING;
 		}
 		return null;
@@ -218,10 +218,10 @@ public class ScriptValueType {
 	}
 
 	public int getType() throws Exception_Nodeable {
-		if (getBaseType() == this) {
-			return m_type;
+		if (this.getBaseType() == this) {
+			return this.m_type;
 		} else {
-			return getBaseType().getType();
+			return this.getBaseType().getType();
 		}
 	}
 
@@ -231,6 +231,6 @@ public class ScriptValueType {
 
 	@Override
 	public String toString() {
-		return getName();
+		return this.getName();
 	}
 }

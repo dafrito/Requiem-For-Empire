@@ -3,30 +3,30 @@ public abstract class Order {
 	protected int m_orderStatus;
 
 	public Order() {
-		m_orderStatus = OrderStatus.INCOMPLETE;
+		this.m_orderStatus = OrderStatus.INCOMPLETE;
 	}
 
 	public void execute(double iterationTime) throws OrderException {
-		setIterationTime(iterationTime);
+		this.setIterationTime(iterationTime);
 	}
 
 	public double getIterationTime() {
-		return m_iterationTime;
+		return this.m_iterationTime;
 	}
 
 	public int getStatus() {
-		return m_orderStatus;
+		return this.m_orderStatus;
 	}
 
 	public void setIterationTime(double time) {
-		m_iterationTime = time;
+		this.m_iterationTime = time;
 	}
 
 	public void setStatus(int status) {
-		m_orderStatus = status;
+		this.m_orderStatus = status;
 	}
 
 	public void subtractTimeFromIterationTime(int time) {
-		m_iterationTime -= time;
+		this.m_iterationTime -= time;
 	}
 }

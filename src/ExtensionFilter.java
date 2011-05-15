@@ -10,7 +10,7 @@ public class ExtensionFilter extends javax.swing.filechooser.FileFilter implemen
 	}
 
 	public ExtensionFilter(String desc) {
-		m_description = desc;
+		this.m_description = desc;
 	}
 
 	@Override
@@ -19,7 +19,7 @@ public class ExtensionFilter extends javax.swing.filechooser.FileFilter implemen
 			return true;
 		}
 		String string = RiffToolbox.getExtension(file);
-		for (String test : m_extensions) {
+		for (String test : this.m_extensions) {
 			if (string.equals(test)) {
 				return true;
 			}
@@ -28,15 +28,15 @@ public class ExtensionFilter extends javax.swing.filechooser.FileFilter implemen
 	}
 
 	public void addExtension(String extension) {
-		m_extensions.add(extension.toLowerCase());
+		this.m_extensions.add(extension.toLowerCase());
 	}
 
 	@Override
 	public String getDescription() {
-		return m_description;
+		return this.m_description;
 	}
 
 	public void setDescription(String desc) {
-		m_description = desc;
+		this.m_description = desc;
 	}
 }

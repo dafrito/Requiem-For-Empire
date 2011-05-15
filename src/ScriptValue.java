@@ -27,12 +27,12 @@ public abstract class ScriptValue extends ScriptElement implements Nodeable, Scr
 
 	public ScriptValue(Referenced elem, ScriptValueType type) {
 		super(elem);
-		m_type = type;
+		this.m_type = type;
 	}
 
 	@Override
 	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
-		if (isConvertibleTo(type)) {
+		if (this.isConvertibleTo(type)) {
 			return this;
 		}
 		throw new Exception_Nodeable_ClassCast(ref, this, type);
@@ -40,7 +40,7 @@ public abstract class ScriptValue extends ScriptElement implements Nodeable, Scr
 
 	@Override
 	public ScriptValueType getType() {
-		return m_type;
+		return this.m_type;
 	}
 
 	@Override
@@ -48,13 +48,13 @@ public abstract class ScriptValue extends ScriptElement implements Nodeable, Scr
 
 	@Override
 	public boolean isConvertibleTo(ScriptValueType type) {
-		return ScriptValueType.isConvertibleTo(getEnvironment(), getType(), type);
+		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
 	// Overloaded
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Script-value (" + getType() + ")");
+		assert Debugger.openNode("Script-value (" + this.getType() + ")");
 		assert super.nodificate();
 		assert Debugger.addNode("Reference: " + this);
 		assert Debugger.closeNode();
@@ -62,7 +62,7 @@ public abstract class ScriptValue extends ScriptElement implements Nodeable, Scr
 	}
 
 	public boolean ofExactType(ScriptValueType type) {
-		return getType().equals(type);
+		return this.getType().equals(type);
 	}
 
 	@Override

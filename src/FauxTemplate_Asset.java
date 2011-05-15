@@ -11,13 +11,13 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 
 	public FauxTemplate_Asset(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		m_asset = new Asset(env);
+		this.m_asset = new Asset(env);
 	}
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return m_asset;
+		return this.m_asset;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -30,7 +30,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Asset) createObject(ref, template);
+				template = (FauxTemplate_Asset) this.createObject(ref, template);
 			}
 			template.getAsset().setLocation(Parser.getPoint(params.get(0)));
 			params.clear();
@@ -55,12 +55,12 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 			for (Ace ace : template.getAsset().getAces()) {
 				list.add(Parser.getRiffAce(ace));
 			}
-			ScriptValue_Abstract returning = Parser.getRiffList(getEnvironment(), list);
+			ScriptValue_Abstract returning = Parser.getRiffList(this.getEnvironment(), list);
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getLocation")) {
 			assert template.getAsset().getLocation() != null : "Asset location is null!";
-			ScriptValue_Abstract returning = Parser.getRiffPoint(getEnvironment(), template.getAsset().getLocation());
+			ScriptValue_Abstract returning = Parser.getRiffPoint(this.getEnvironment(), template.getAsset().getLocation());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setLocation")) {
@@ -68,13 +68,13 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 			assert Debugger.closeNode();
 			return null;
 		}
-		ScriptValue_Abstract returning = getExtendedFauxClass().execute(ref, name, params, template);
+		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public Asset getAsset() {
-		return m_asset;
+		return this.m_asset;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
@@ -82,46 +82,46 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing asset faux template");
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Point.POINTSTRING)));
-		addConstructor(getType(), fxnParams);
-		disableFullCreation();
-		getExtendedClass().initialize();
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
+		this.addConstructor(this.getType(), fxnParams);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.getObjectType(getEnvironment())));
-		addFauxFunction("setProperty", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.getObjectType(this.getEnvironment())));
+		this.addFauxFunction("setProperty", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		addFauxFunction("getProperty", ScriptValueType.getObjectType(getEnvironment()), fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		this.addFauxFunction("getProperty", ScriptValueType.getObjectType(this.getEnvironment()), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Ace.ACESTRING)));
-		addFauxFunction("addAce", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Ace.ACESTRING)));
+		this.addFauxFunction("addAce", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		addFauxFunction("getAces", ScriptValueType.createType(getEnvironment(), FauxTemplate_List.LISTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getAces", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_List.LISTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		addFauxFunction("getLocation", ScriptValueType.createType(getEnvironment(), FauxTemplate_Point.POINTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getLocation", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Point.POINTSTRING)));
-		addFauxFunction("setLocation", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
+		this.addFauxFunction("setLocation", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Asset(getEnvironment(), getType());
+		return new FauxTemplate_Asset(this.getEnvironment(), this.getType());
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Asset Faux Script-Element");
 		assert super.nodificate();
-		assert Debugger.addNode(m_asset);
+		assert Debugger.addNode(this.m_asset);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setAsset(Asset asset) {
-		m_asset = asset;
+		this.m_asset = asset;
 	}
 }

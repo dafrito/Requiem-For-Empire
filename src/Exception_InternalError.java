@@ -20,44 +20,44 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 	}
 
 	public Exception_InternalError(ScriptEnvironment env, Object element, String message) {
-		m_environment = env;
-		m_object = element;
-		m_filename = null;
-		m_line = null;
-		m_offset = 0;
-		m_lineNumber = -1;
-		m_length = -1;
-		m_message = message;
+		this.m_environment = env;
+		this.m_object = element;
+		this.m_filename = null;
+		this.m_line = null;
+		this.m_offset = 0;
+		this.m_lineNumber = -1;
+		this.m_length = -1;
+		this.m_message = message;
 	}
 
 	public Exception_InternalError(ScriptEnvironment env, ScriptElement element, String message) {
-		m_object = null;
-		m_environment = env;
-		m_message = message;
+		this.m_object = null;
+		this.m_environment = env;
+		this.m_message = message;
 		if (element != null) {
-			m_filename = element.getFilename();
-			m_lineNumber = element.getLineNumber();
-			m_line = element.getOriginalString();
-			m_offset = element.getOffset();
-			m_length = element.getLength();
+			this.m_filename = element.getFilename();
+			this.m_lineNumber = element.getLineNumber();
+			this.m_line = element.getOriginalString();
+			this.m_offset = element.getOffset();
+			this.m_length = element.getLength();
 		} else {
-			m_offset = 0;
-			m_line = null;
-			m_filename = null;
-			m_lineNumber = -1;
-			m_length = -1;
+			this.m_offset = 0;
+			this.m_line = null;
+			this.m_filename = null;
+			this.m_lineNumber = -1;
+			this.m_length = -1;
 		}
 	}
 
 	public Exception_InternalError(ScriptEnvironment env, String message) {
-		m_environment = env;
-		m_object = null;
-		m_filename = null;
-		m_line = null;
-		m_offset = 0;
-		m_lineNumber = 0;
-		m_length = -1;
-		m_message = message;
+		this.m_environment = env;
+		this.m_object = null;
+		this.m_filename = null;
+		this.m_line = null;
+		this.m_offset = 0;
+		this.m_lineNumber = 0;
+		this.m_length = -1;
+		this.m_message = message;
 	}
 
 	public Exception_InternalError(String message) {
@@ -69,44 +69,44 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	public String getFilename() {
-		return m_filename;
+		return this.m_filename;
 	}
 
 	public String getFragment() {
-		return getOriginalString().substring(getOffset(), getOffset() + getLength());
+		return this.getOriginalString().substring(this.getOffset(), this.getOffset() + this.getLength());
 	}
 
 	public int getLength() {
-		return m_length;
+		return this.m_length;
 	}
 
 	public int getLineNumber() {
-		return m_lineNumber;
+		return this.m_lineNumber;
 	}
 
 	@Override
 	public String getMessage() {
-		return "(Internal Error) " + getName();
+		return "(Internal Error) " + this.getName();
 	}
 
 	public String getName() {
-		return m_message;
+		return this.m_message;
 	}
 
 	public int getOffset() {
-		return m_offset;
+		return this.m_offset;
 	}
 
 	public String getOriginalString() {
-		return m_line;
+		return this.m_line;
 	}
 
 	public boolean isAnonymous() {
-		return m_filename == null;
+		return this.m_filename == null;
 	}
 
 	@Override
@@ -116,12 +116,12 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 		if (!debug) {
 			return true;
 		}
-		assert Debugger.openNode("Exceptions and Errors", getMessage());
-		if (m_object != null) {
-			assert Debugger.addNode(m_object);
+		assert Debugger.openNode("Exceptions and Errors", this.getMessage());
+		if (this.m_object != null) {
+			assert Debugger.addNode(this.m_object);
 		}
 		StringWriter writer;
-		printStackTrace(new PrintWriter(writer = new StringWriter()));
+		this.printStackTrace(new PrintWriter(writer = new StringWriter()));
 		String[] messages = writer.toString().split("\n");
 		boolean flag = false;
 		int added = 0;
@@ -152,28 +152,28 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 
 	@Override
 	public String toString() {
-		if (m_object != null) {
-			if (m_object instanceof Exception) {
+		if (this.m_object != null) {
+			if (this.m_object instanceof Exception) {
 				StringWriter writer;
-				((Exception) m_object).printStackTrace(new PrintWriter(writer = new StringWriter()));
-				return getMessage() + "\nObject given: " + m_object + "\n" + writer;
+				((Exception) this.m_object).printStackTrace(new PrintWriter(writer = new StringWriter()));
+				return this.getMessage() + "\nObject given: " + this.m_object + "\n" + writer;
 			} else {
-				return getMessage() + "\nObject given: " + m_object;
+				return this.getMessage() + "\nObject given: " + this.m_object;
 			}
 		}
-		if (m_filename == null) {
-			return getMessage();
+		if (this.m_filename == null) {
+			return this.getMessage();
 		}
-		while (m_line.indexOf("\t") == 0 || m_line.indexOf(" ") == 0) {
-			m_line = m_line.substring(1);
-			m_offset--;
-			if (m_offset < 0) {
-				m_offset = 0;
+		while (this.m_line.indexOf("\t") == 0 || this.m_line.indexOf(" ") == 0) {
+			this.m_line = this.m_line.substring(1);
+			this.m_offset--;
+			if (this.m_offset < 0) {
+				this.m_offset = 0;
 			}
 		}
-		String string = m_filename + ":" + m_lineNumber + ": " + getMessage() + "\n\t" + m_line;
+		String string = this.m_filename + ":" + this.m_lineNumber + ": " + this.getMessage() + "\n\t" + this.m_line;
 		string += "\n\t";
-		for (int i = 0; i < m_offset; i++) {
+		for (int i = 0; i < this.m_offset; i++) {
 			string += " ";
 		}
 		string += "^";

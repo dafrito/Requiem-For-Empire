@@ -14,41 +14,41 @@ public class SplitterThread extends Thread {
 
 	public SplitterThread(Terrestrial terrestrial, DiscreteRegionBSPNode root, Collection<DiscreteRegion> regions, boolean recurse) {
 		super(SPLITTERTHREADSTRING + " " + m_threadNum++);
-		m_regions = new HashSet<DiscreteRegion>(regions);
-		m_root = root;
-		m_recurse = recurse;
-		m_terrestrial = terrestrial;
+		this.m_regions = new HashSet<DiscreteRegion>(regions);
+		this.m_root = root;
+		this.m_recurse = recurse;
+		this.m_terrestrial = terrestrial;
 	}
 
 	public SplitterThread(Terrestrial terrestrial, DiscreteRegionBSPNode root, DiscreteRegion region, boolean recurse) {
 		super(SPLITTERTHREADSTRING + " " + m_threadNum++);
-		m_regions = new HashSet<DiscreteRegion>();
-		m_regions.add(region);
-		m_root = root;
-		m_recurse = recurse;
-		m_terrestrial = terrestrial;
+		this.m_regions = new HashSet<DiscreteRegion>();
+		this.m_regions.add(region);
+		this.m_root = root;
+		this.m_recurse = recurse;
+		this.m_terrestrial = terrestrial;
 	}
 
 	@Override
 	public void run() {
 		Debugger.hitStopWatch(Thread.currentThread().getName());
-		assert Debugger.openNode("Splitter Thread Executions", "Executing Splitter Thread (" + m_regions.size() + " region(s))");
-		assert Debugger.addSnapNode("Regions (" + m_regions.size() + " region(s))", m_regions);
-		Iterator iter = m_regions.iterator();
+		assert Debugger.openNode("Splitter Thread Executions", "Executing Splitter Thread (" + this.m_regions.size() + " region(s))");
+		assert Debugger.addSnapNode("Regions (" + this.m_regions.size() + " region(s))", this.m_regions);
+		Iterator iter = this.m_regions.iterator();
 		while (iter.hasNext()) {
 			DiscreteRegion region = (DiscreteRegion) iter.next();
 			List regionPoints = region.getPoints();
-			m_root = RiffPolygonToolbox.removeOverlappingPolygons(m_root, region, m_recurse);
-			if (!m_recurse) {
+			this.m_root = RiffPolygonToolbox.removeOverlappingPolygons(this.m_root, region, this.m_recurse);
+			if (!this.m_recurse) {
 				break;
 			}
 		}
-		if (m_recurse) {
-			Set<DiscreteRegion> polygons = m_root.getRegionList();
+		if (this.m_recurse) {
+			Set<DiscreteRegion> polygons = this.m_root.getRegionList();
 			Iterator polyIter = polygons.iterator();
 			Set<DiscreteRegion> neighbors = new HashSet<DiscreteRegion>();
-			m_root.clearTempList();
-			for (DiscreteRegion thisRegion : m_root.getRegionList()) {
+			this.m_root.clearTempList();
+			for (DiscreteRegion thisRegion : this.m_root.getRegionList()) {
 				thisRegion.resetNeighbors();
 				thisRegion.addRegionNeighbors(polygons);
 			}
@@ -61,11 +61,11 @@ public class SplitterThread extends Thread {
 				neighbors.removeAll(polygons);
 				assert Debugger.addSnapNode("Offending polygons", neighbors);
 				assert Debugger.closeNode();
-				m_root.addToTempList(neighbors);
+				this.m_root.addToTempList(neighbors);
 			}
 		}
-		m_terrestrial.decrementOpenThreads();
-		assert Debugger.closeNode(m_root);
+		this.m_terrestrial.decrementOpenThreads();
+		assert Debugger.closeNode(this.m_root);
 		Debugger.hitStopWatch(Thread.currentThread().getName());
 	}
 }

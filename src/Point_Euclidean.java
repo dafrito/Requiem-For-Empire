@@ -9,27 +9,27 @@ public class Point_Euclidean extends Point implements ScriptConvertible {
 	public Point_Euclidean(ScriptEnvironment env, String name, double x, double y, double z) {
 		super(env, name);
 		m_pointNum++;
-		m_x = x;
-		m_y = y;
-		m_z = z;
+		this.m_x = x;
+		this.m_y = y;
+		this.m_z = z;
 	}
 
 	public void addX(double x) {
-		m_x += x;
+		this.m_x += x;
 	}
 
 	public void addY(double y) {
-		m_y += y;
+		this.m_y += y;
 	}
 
 	public void addZ(double z) {
-		m_z += z;
+		this.m_z += z;
 	}
 
 	// ScriptConvertible implementation
 	@Override
 	public Object convert() {
-		FauxTemplate_Point point = new FauxTemplate_Point(getEnvironment());
+		FauxTemplate_Point point = new FauxTemplate_Point(this.getEnvironment());
 		point.setPoint(this);
 		return point;
 	}
@@ -41,7 +41,7 @@ public class Point_Euclidean extends Point implements ScriptConvertible {
 			return false;
 		}
 		Point_Euclidean testPoint = (Point_Euclidean) o;
-		return (RiffToolbox.areEqual(Point.System.EUCLIDEAN, m_x, testPoint.getX()) && RiffToolbox.areEqual(Point.System.EUCLIDEAN, m_y, testPoint.getY()) && RiffToolbox.areEqual(Point.System.EUCLIDEAN, m_z, testPoint.getZ()));
+		return (RiffToolbox.areEqual(Point.System.EUCLIDEAN, this.m_x, testPoint.getX()) && RiffToolbox.areEqual(Point.System.EUCLIDEAN, this.m_y, testPoint.getY()) && RiffToolbox.areEqual(Point.System.EUCLIDEAN, this.m_z, testPoint.getZ()));
 	}
 
 	@Override
@@ -52,40 +52,40 @@ public class Point_Euclidean extends Point implements ScriptConvertible {
 	// Point implementation
 	@Override
 	public double getX() {
-		return m_x;
+		return this.m_x;
 	}
 
 	@Override
 	public double getY() {
-		return m_y;
+		return this.m_y;
 	}
 
 	@Override
 	public double getZ() {
-		return m_z;
+		return this.m_z;
 	}
 
 	@Override
 	public void setX(double x) {
-		m_x = x;
+		this.m_x = x;
 	}
 
 	@Override
 	public void setY(double y) {
-		m_y = y;
+		this.m_y = y;
 	}
 
 	@Override
 	public void setZ(double z) {
-		m_z = z;
+		this.m_z = z;
 	}
 
 	@Override
 	public String toString() {
 		String string = new String();
-		string += "(" + m_x;
-		string += ", " + m_y;
-		string += ", " + m_z + ")";
+		string += "(" + this.m_x;
+		string += ", " + this.m_y;
+		string += ", " + this.m_z + ")";
 		return string;
 	}
 }

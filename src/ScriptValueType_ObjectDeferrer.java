@@ -5,8 +5,8 @@ public class ScriptValueType_ObjectDeferrer extends ScriptValueType {
 	public ScriptValueType_ObjectDeferrer(ScriptEnvironment env, ScriptValue_Abstract template, String name) {
 		super(env);
 		assert name != null;
-		m_template = template;
-		m_name = name;
+		this.m_template = template;
+		this.m_name = name;
 	}
 
 	public ScriptValueType_ObjectDeferrer(ScriptValue_Abstract template, String name) {
@@ -15,10 +15,10 @@ public class ScriptValueType_ObjectDeferrer extends ScriptValueType {
 
 	@Override
 	public ScriptValueType getBaseType() throws Exception_Nodeable {
-		if (m_template != null) {
-			return getEnvironment().getTemplate(m_template.getType()).getVariable(m_name).getType();
+		if (this.m_template != null) {
+			return this.getEnvironment().getTemplate(this.m_template.getType()).getVariable(this.m_name).getType();
 		} else {
-			return getEnvironment().retrieveVariable(m_name).getType();
+			return this.getEnvironment().retrieveVariable(this.m_name).getType();
 		}
 	}
 }

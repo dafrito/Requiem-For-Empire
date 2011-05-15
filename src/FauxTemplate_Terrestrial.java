@@ -11,13 +11,13 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 
 	public FauxTemplate_Terrestrial(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		setTerrestrial(new Terrestrial(env, 1));
+		this.setTerrestrial(new Terrestrial(env, 1));
 	}
 
 	// Nodeable and ScriptConvertible implementations
 	@Override
 	public Object convert() {
-		return getTerrestrial();
+		return this.getTerrestrial();
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -31,9 +31,9 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Terrestrial) createObject(ref, template);
+				template = (FauxTemplate_Terrestrial) this.createObject(ref, template);
 			}
-			template.setTerrestrial(new Terrestrial(getEnvironment(), Parser.getDouble(params.get(0))));
+			template.setTerrestrial(new Terrestrial(this.getEnvironment(), Parser.getDouble(params.get(0))));
 			assert Debugger.closeNode();
 			return template;
 		} else if (name.equals("add")) {
@@ -43,17 +43,17 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getPath")) {
-			returning = Parser.getRiffPath(getEnvironment(), template.getTerrestrial().getPath(getEnvironment(), Parser.getScenario(params.get(0)), Parser.getTemplate(params.get(1)), Parser.getAsset(params.get(2)), Parser.getPoint(params.get(3)), Parser.getPoint(params.get(4))));
+			returning = Parser.getRiffPath(this.getEnvironment(), template.getTerrestrial().getPath(this.getEnvironment(), Parser.getScenario(params.get(0)), Parser.getTemplate(params.get(1)), Parser.getAsset(params.get(2)), Parser.getPoint(params.get(3)), Parser.getPoint(params.get(4))));
 			assert Debugger.closeNode();
 			return returning;
 		}
-		returning = getExtendedFauxClass().execute(ref, name, params, template);
+		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public Terrestrial getTerrestrial() {
-		return m_terrestrial;
+		return this.m_terrestrial;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -61,29 +61,29 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing terrestrial faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.DOUBLE));
-		addConstructor(getType(), fxnParams);
-		disableFullCreation();
-		getExtendedClass().initialize();
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
+		this.addConstructor(this.getType(), fxnParams);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		fxnParams = ScriptValueType.createEmptyParamList();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING)));
-		addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING)));
+		this.addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = ScriptValueType.createEmptyParamList();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Scenario.SCENARIOSTRING)));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_MovementEvaluator.MOVEMENTEVALUATORSTRING)));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Point.POINTSTRING)));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Point.POINTSTRING)));
-		addFauxFunction("getPath", ScriptValueType.createType(getEnvironment(), FauxTemplate_Path.PATHSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scenario.SCENARIOSTRING)));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_MovementEvaluator.MOVEMENTEVALUATORSTRING)));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
+		this.addFauxFunction("getPath", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Path.PATHSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Terrestrial(getEnvironment(), getType());
+		return new FauxTemplate_Terrestrial(this.getEnvironment(), this.getType());
 	}
 
 	@Override
@@ -95,6 +95,6 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 	}
 
 	public void setTerrestrial(Terrestrial terrestrial) {
-		m_terrestrial = terrestrial;
+		this.m_terrestrial = terrestrial;
 	}
 }

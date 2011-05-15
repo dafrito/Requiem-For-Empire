@@ -16,12 +16,12 @@ public class Terrestrial implements Serializable {
 	private volatile int m_openThreads = 0;
 
 	public Terrestrial(ScriptEnvironment env, double radius) {
-		m_environment = env;
-		m_radius = radius;
+		this.m_environment = env;
+		this.m_radius = radius;
 	}
 
 	public void add(DiscreteRegion region) {
-		m_openThreads++;
+		this.m_openThreads++;
 		PolygonPipeline pipeline = new PolygonPipeline(this, region);
 		pipeline.start();
 	}
@@ -31,45 +31,45 @@ public class Terrestrial implements Serializable {
 			return;
 		}
 		assert Debugger.openNode("Validated Region Additions", "Adding Validated Regions (" + regions.size() + " region(s))");
-		if (getTree() == null) {
-			setTree(new DiscreteRegionBSPNode(regions.get(0)));
+		if (this.getTree() == null) {
+			this.setTree(new DiscreteRegionBSPNode(regions.get(0)));
 			if (regions.size() == 1) {
 				assert Debugger.closeNode();
-				decrementOpenThreads();
+				this.decrementOpenThreads();
 				return;
 			}
 		}
-		SplitterThread thread = new SplitterThread(this, getTree(), regions, true);
+		SplitterThread thread = new SplitterThread(this, this.getTree(), regions, true);
 		thread.start();
 		assert Debugger.closeNode();
 	}
 
 	public void decrementOpenThreads() {
-		m_openThreads--;
+		this.m_openThreads--;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	public Point_Path getPath(ScriptEnvironment env, Scenario scenario, ScriptTemplate_Abstract evaluator, Asset asset, Point currentPoint, Point destinationPoint) throws Exception_Nodeable {
-		while (m_openThreads != 0) {
+		while (this.m_openThreads != 0) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException ex) {
-				throw new Exception_InternalError(getEnvironment(), ex);
+				throw new Exception_InternalError(this.getEnvironment(), ex);
 			}
 		}
 		assert Debugger.openNode("Pathfinding", "Getting path (" + currentPoint + " to " + destinationPoint + ")");
 		Point_Path path = new Point_Path(env, scenario);
 		DiscreteRegion startingRegion;
-		assert getTree() != null : "BSP Tree is null!";
-		DiscreteRegion currentRegion = startingRegion = getTree().getRegion(currentPoint);
-		DiscreteRegion destination = getTree().getRegion(destinationPoint);
+		assert this.getTree() != null : "BSP Tree is null!";
+		DiscreteRegion currentRegion = startingRegion = this.getTree().getRegion(currentPoint);
+		DiscreteRegion destination = this.getTree().getRegion(destinationPoint);
 		List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
-		params.add(Parser.getRiffDiscreteRegion(getEnvironment(), currentRegion));
-		params.add(Parser.getRiffAsset(getEnvironment(), asset));
-		path.addPoint(currentPoint, Parser.getDouble(ScriptExecutable_CallFunction.callFunction(getEnvironment(), null, evaluator, "evaluateMovementCost", params)));
+		params.add(Parser.getRiffDiscreteRegion(this.getEnvironment(), currentRegion));
+		params.add(Parser.getRiffAsset(this.getEnvironment(), asset));
+		path.addPoint(currentPoint, Parser.getDouble(ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, evaluator, "evaluateMovementCost", params)));
 		int ticker = 0;
 		Stack<DiscreteRegion> regionPath = new Stack<DiscreteRegion>();
 		regionPath.push(currentRegion);
@@ -133,9 +133,9 @@ public class Terrestrial implements Serializable {
 			assert Debugger.openNode("Getting movement costs (" + availableNeighbors.size() + " neighbor(s))");
 			for (DiscreteRegion region : availableNeighbors) {
 				params.clear();
-				params.add(Parser.getRiffDiscreteRegion(getEnvironment(), region));
-				params.add(Parser.getRiffAsset(getEnvironment(), asset));
-				movementCosts.add(Parser.getDouble(ScriptExecutable_CallFunction.callFunction(getEnvironment(), null, evaluator, "evaluateMovementCost", params)));
+				params.add(Parser.getRiffDiscreteRegion(this.getEnvironment(), region));
+				params.add(Parser.getRiffAsset(this.getEnvironment(), asset));
+				movementCosts.add(Parser.getDouble(ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, evaluator, "evaluateMovementCost", params)));
 			}
 			assert Debugger.closeNode("Movement costs", movementCosts);
 			double minimumValue = Double.POSITIVE_INFINITY;
@@ -164,9 +164,9 @@ public class Terrestrial implements Serializable {
 		}
 		if (path != null) {
 			params.clear();
-			params.add(Parser.getRiffDiscreteRegion(getEnvironment(), destination));
-			params.add(Parser.getRiffAsset(getEnvironment(), asset));
-			path.addPoint(destinationPoint, Parser.getDouble(ScriptExecutable_CallFunction.callFunction(getEnvironment(), null, evaluator, "evaluateMovementCost", params)));
+			params.add(Parser.getRiffDiscreteRegion(this.getEnvironment(), destination));
+			params.add(Parser.getRiffAsset(this.getEnvironment(), asset));
+			path.addPoint(destinationPoint, Parser.getDouble(ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, evaluator, "evaluateMovementCost", params)));
 			assert Debugger.closeNode("Path", path);
 		} else {
 			throw new Exception_InternalError("No route available");
@@ -175,14 +175,14 @@ public class Terrestrial implements Serializable {
 	}
 
 	public double getRadius() {
-		return m_radius;
+		return this.m_radius;
 	}
 
 	public DiscreteRegionBSPNode getTree() {
-		return m_tree;
+		return this.m_tree;
 	}
 
 	public void setTree(DiscreteRegionBSPNode tree) {
-		m_tree = tree;
+		this.m_tree = tree;
 	}
 }

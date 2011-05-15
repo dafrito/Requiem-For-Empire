@@ -10,21 +10,21 @@ public class ScriptGroup extends ScriptElement implements Nodeable {
 
 	public ScriptGroup(Referenced ref, List<Object> elements, GroupType type) {
 		super(ref);
-		m_elements = elements;
-		m_type = type;
+		this.m_elements = elements;
+		this.m_type = type;
 	}
 
 	public List<Object> getElements() {
-		return m_elements;
+		return this.m_elements;
 	}
 
 	public GroupType getType() {
-		return m_type;
+		return this.m_type;
 	}
 
 	@Override
 	public boolean nodificate() {
-		switch (m_type) {
+		switch (this.m_type) {
 		case curly:
 			assert Debugger.openNode(DebugString.SCRIPTGROUPCURLY);
 			break;
@@ -34,12 +34,12 @@ public class ScriptGroup extends ScriptElement implements Nodeable {
 		default:
 			throw new Exception_InternalError("Invalid default");
 		}
-		assert Debugger.addSnapNode(DebugString.ELEMENTS, m_elements);
+		assert Debugger.addSnapNode(DebugString.ELEMENTS, this.m_elements);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setElements(List<Object> list) {
-		m_elements = list;
+		this.m_elements = list;
 	}
 }

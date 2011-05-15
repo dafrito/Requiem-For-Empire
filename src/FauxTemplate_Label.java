@@ -10,7 +10,7 @@ public class FauxTemplate_Label extends FauxTemplate_InterfaceElement implements
 
 	public FauxTemplate_Label(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		setElement(new InterfaceElement_Label(env, null, null, ""));
+		this.setElement(new InterfaceElement_Label(env, null, null, ""));
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -24,7 +24,7 @@ public class FauxTemplate_Label extends FauxTemplate_InterfaceElement implements
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Label) createObject(ref, template);
+				template = (FauxTemplate_Label) this.createObject(ref, template);
 			}
 			String label = "";
 			if (params.size() > 0) {
@@ -37,17 +37,17 @@ public class FauxTemplate_Label extends FauxTemplate_InterfaceElement implements
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getString")) {
-			returning = Parser.getRiffString(getEnvironment(), template.getLabel().getString());
+			returning = Parser.getRiffString(this.getEnvironment(), template.getLabel().getString());
 			assert Debugger.closeNode();
 			return returning;
 		}
-		returning = getExtendedFauxClass().execute(ref, name, params, template);
+		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public InterfaceElement_Label getLabel() {
-		return (InterfaceElement_Label) getElement();
+		return (InterfaceElement_Label) this.getElement();
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -55,40 +55,40 @@ public class FauxTemplate_Label extends FauxTemplate_InterfaceElement implements
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing label faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		addConstructor(getType(), fxnParams);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		this.addConstructor(this.getType(), fxnParams);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), Stylesheet.STYLESHEETSTRING)));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		addConstructor(getType(), fxnParams);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		this.addConstructor(this.getType(), fxnParams);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), Stylesheet.STYLESHEETSTRING)));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), Stylesheet.STYLESHEETSTRING)));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		addConstructor(getType(), fxnParams);
-		disableFullCreation();
-		getExtendedClass().initialize();
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		this.addConstructor(this.getType(), fxnParams);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		fxnParams = FauxTemplate.createEmptyParamList();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		addFauxFunction("setLabel", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		this.addFauxFunction("setLabel", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = FauxTemplate.createEmptyParamList();
-		addFauxFunction("getLabel", ScriptValueType.STRING, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getLabel", ScriptValueType.STRING, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Label(getEnvironment(), getType());
+		return new FauxTemplate_Label(this.getEnvironment(), this.getType());
 	}
 
 	// Nodeable and ScriptConvertible implementations
 	@Override
 	public boolean nodificate() {
-		if (getLabel() != null) {
-			assert Debugger.openNode("Label Faux Template (" + getLabel().getString() + ")");
+		if (this.getLabel() != null) {
+			assert Debugger.openNode("Label Faux Template (" + this.getLabel().getString() + ")");
 		} else {
 			assert Debugger.openNode("Label Faux Template");
 		}

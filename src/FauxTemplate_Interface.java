@@ -11,7 +11,7 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable, Sc
 
 	public FauxTemplate_Interface(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		m_interface = new Interface(env);
+		this.m_interface = new Interface(env);
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -25,7 +25,7 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable, Sc
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Interface) createObject(ref, template);
+				template = (FauxTemplate_Interface) this.createObject(ref, template);
 			}
 			assert Debugger.closeNode();
 			return template;
@@ -34,17 +34,17 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable, Sc
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getRoot")) {
-			returning = Parser.getRiffElement(getEnvironment(), template.getInterface().getRoot());
+			returning = Parser.getRiffElement(this.getEnvironment(), template.getInterface().getRoot());
 			assert Debugger.closeNode();
 			return returning;
 		}
-		returning = getExtendedFauxClass().execute(ref, name, params, template);
+		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public Interface getInterface() {
-		return m_interface;
+		return this.m_interface;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -52,28 +52,28 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable, Sc
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing interface faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
-		disableFullCreation();
-		getExtendedClass().initialize();
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		List<ScriptValue_Abstract> fxnParams = FauxTemplate.createEmptyParamList();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING)));
-		addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING)));
+		this.addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		addFauxFunction("getRoot", ScriptValueType.createType(getEnvironment(), FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getRoot", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Interface(getEnvironment(), getType());
+		return new FauxTemplate_Interface(this.getEnvironment(), this.getType());
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Interface Faux Template");
 		assert super.nodificate();
-		assert Debugger.addNode(m_interface);
+		assert Debugger.addNode(this.m_interface);
 		assert Debugger.closeNode();
 		return true;
 	}

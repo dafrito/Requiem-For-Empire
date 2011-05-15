@@ -7,35 +7,35 @@ public class InterfaceElement_Label extends InterfaceElement implements Nodeable
 
 	public InterfaceElement_Label(ScriptEnvironment env, Stylesheet uniqueStyle, Stylesheet classStyle, String string) {
 		super(env, uniqueStyle, classStyle);
-		m_string = string;
+		this.m_string = string;
 	}
 
 	@Override
 	public Rectangle getDrawingBounds() {
-		Graphics2D g2d = getRoot().getGraphics();
-		Rectangle2D boundingRect = getCurrentFont().getStringBounds(m_string, g2d.getFontRenderContext());
+		Graphics2D g2d = this.getRoot().getGraphics();
+		Rectangle2D boundingRect = this.getCurrentFont().getStringBounds(this.m_string, g2d.getFontRenderContext());
 		return new Rectangle((int) boundingRect.getWidth(), (int) boundingRect.getHeight());
 	}
 
 	@Override
 	public int getInternalHeight() {
-		return (int) getDrawingBounds().getHeight() / 2;
+		return (int) this.getDrawingBounds().getHeight() / 2;
 	}
 
 	@Override
 	public int getInternalWidth() {
-		return (int) getDrawingBounds().getWidth();
+		return (int) this.getDrawingBounds().getWidth();
 	}
 
 	public String getString() {
-		return m_string;
+		return this.m_string;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Label Interface Element");
 		assert super.nodificate();
-		assert Debugger.addNode("Label: " + m_string);
+		assert Debugger.addNode("Label: " + this.m_string);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -45,7 +45,7 @@ public class InterfaceElement_Label extends InterfaceElement implements Nodeable
 		assert Debugger.openNode("Label Painting Operations", "Painting Label");
 		assert Debugger.addNode(this);
 		super.paint(g2d);
-		g2d.drawString(m_string, getXAnchor(), getYAnchor() + getInternalHeight());
+		g2d.drawString(this.m_string, this.getXAnchor(), this.getYAnchor() + this.getInternalHeight());
 		assert Debugger.closeNode();
 	}
 
@@ -54,6 +54,6 @@ public class InterfaceElement_Label extends InterfaceElement implements Nodeable
 	}
 
 	public void setString(String string) {
-		m_string = string;
+		this.m_string = string;
 	}
 }

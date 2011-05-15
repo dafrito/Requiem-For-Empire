@@ -15,64 +15,64 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 
 	public InterfaceElement_Panel(ScriptEnvironment env, Stylesheet uniqueStyle, Stylesheet classStyle) {
 		super(env, uniqueStyle, classStyle);
-		m_offset = new Point_Euclidean(env, 0, 0, 0);
-		m_elements = new LinkedList<GraphicalElement>();
-		m_dali = env.getTemplate(FauxTemplate_RiffDali.RIFFDALISTRING);
+		this.m_offset = new Point_Euclidean(env, 0, 0, 0);
+		this.m_elements = new LinkedList<GraphicalElement>();
+		this.m_dali = env.getTemplate(FauxTemplate_RiffDali.RIFFDALISTRING);
 	}
 
 	@Override
 	public void add(GraphicalElement element) {
-		m_elements.add(element);
+		this.m_elements.add(element);
 		element.setParent(this);
-		if (getRoot() != null) {
-			getRoot().repaint();
+		if (this.getRoot() != null) {
+			this.getRoot().repaint();
 		}
 	}
 
 	public void addAll(List list) {
 		for (int i = 0; i < list.size(); i++) {
-			add((GraphicalElement) list.get(i));
+			this.add((GraphicalElement) list.get(i));
 		}
-		if (getRoot() != null) {
-			getRoot().repaint();
+		if (this.getRoot() != null) {
+			this.getRoot().repaint();
 		}
 	}
 
 	@Override
 	public void clear() {
-		m_elements.clear();
+		this.m_elements.clear();
 	}
 
 	// ScriptConvertible implementation
 	@Override
 	public Object convert() {
-		FauxTemplate_Panel panel = new FauxTemplate_Panel(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Panel.PANELSTRING));
+		FauxTemplate_Panel panel = new FauxTemplate_Panel(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Panel.PANELSTRING));
 		panel.setElement(this);
 		return panel;
 	}
 
 	public void drawRegion(DiscreteRegion region) {
-		DiscreteRegion.paint(getGraphics(), DiscreteRegion.transform(region, getOffset(), getDrawingBounds(), true), getDrawingBounds(), false);
+		DiscreteRegion.paint(this.getGraphics(), DiscreteRegion.transform(region, this.getOffset(), this.getDrawingBounds(), true), this.getDrawingBounds(), false);
 	}
 
 	public void drawString(String string, Color color, Point location) {
-		Color oldColor = getGraphics().getColor();
-		getGraphics().setColor(color);
-		Point point = DiscreteRegion.transformPoint(getEnvironment(), location, getOffset(), getDrawingBounds(), true);
-		getGraphics().drawString(string, (int) point.getX(), (int) point.getY());
-		getGraphics().setColor(oldColor);
+		Color oldColor = this.getGraphics().getColor();
+		this.getGraphics().setColor(color);
+		Point point = DiscreteRegion.transformPoint(this.getEnvironment(), location, this.getOffset(), this.getDrawingBounds(), true);
+		this.getGraphics().drawString(string, (int) point.getX(), (int) point.getY());
+		this.getGraphics().setColor(oldColor);
 	}
 
 	public void drawTransformedRegion(DiscreteRegion region) {
-		DiscreteRegion.paint(getGraphics(), DiscreteRegion.transform(region, getOffset(), getDrawingBounds(), false), getDrawingBounds(), false);
+		DiscreteRegion.paint(this.getGraphics(), DiscreteRegion.transform(region, this.getOffset(), this.getDrawingBounds(), false), this.getDrawingBounds(), false);
 	}
 
 	public void fillRegion(DiscreteRegion region) {
-		DiscreteRegion.paint(getGraphics(), DiscreteRegion.transform(region, getOffset(), getDrawingBounds(), true), getDrawingBounds(), true);
+		DiscreteRegion.paint(this.getGraphics(), DiscreteRegion.transform(region, this.getOffset(), this.getDrawingBounds(), true), this.getDrawingBounds(), true);
 	}
 
 	public void fillTransformedRegion(DiscreteRegion region) {
-		DiscreteRegion.paint(getGraphics(), DiscreteRegion.transform(region, getOffset(), getDrawingBounds(), false), getDrawingBounds(), true);
+		DiscreteRegion.paint(this.getGraphics(), DiscreteRegion.transform(region, this.getOffset(), this.getDrawingBounds(), false), this.getDrawingBounds(), true);
 	}
 
 	@Override
@@ -82,19 +82,19 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 
 	@Override
 	public List<GraphicalElement> getElements() {
-		return Collections.unmodifiableList(m_elements);
+		return Collections.unmodifiableList(this.m_elements);
 	}
 
 	public Graphics2D getGraphics() {
-		return m_graphics;
+		return this.m_graphics;
 	}
 
 	public Point getOffset() {
-		return m_offset;
+		return this.m_offset;
 	}
 
 	public Terrestrial getTerrestrial() {
-		return m_terrestrial;
+		return this.m_terrestrial;
 	}
 
 	@Override
@@ -107,8 +107,8 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 	public boolean nodificate() {
 		assert Debugger.openNode("Panel Interface Element");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Terrestrial", m_terrestrial);
-		assert Debugger.addSnapNode("Graphical Elements: (" + m_elements.size() + " element(s))", m_elements);
+		assert Debugger.addSnapNode("Terrestrial", this.m_terrestrial);
+		assert Debugger.addSnapNode("Graphical Elements: (" + this.m_elements.size() + " element(s))", this.m_elements);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -116,20 +116,20 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 	@Override
 	public void paint(Graphics2D g2d) {
 		Set<DiscreteRegion> regions;
-		m_graphics = g2d;
-		if (m_terrestrial.getTree() == null) {
+		this.m_graphics = g2d;
+		if (this.m_terrestrial.getTree() == null) {
 			regions = new HashSet<DiscreteRegion>();
 		} else {
-			regions = m_terrestrial.getTree().getRegionList();
+			regions = this.m_terrestrial.getTree().getRegionList();
 		}
-		assert Debugger.openNode("Painting Panel Elements (" + m_elements.size() + " element(s), " + regions.size() + " region(s))");
+		assert Debugger.openNode("Painting Panel Elements (" + this.m_elements.size() + " element(s), " + regions.size() + " region(s))");
 		super.paint(g2d);
-		assert Debugger.addNode("X-offset: " + m_offset.getX());
-		assert Debugger.addNode("Y-offset: " + m_offset.getY());
-		assert Debugger.addNode("Zoom factor: " + m_offset.getZ());
+		assert Debugger.addNode("X-offset: " + this.m_offset.getX());
+		assert Debugger.addNode("Y-offset: " + this.m_offset.getY());
+		assert Debugger.addNode("Zoom factor: " + this.m_offset.getZ());
 		try {
 			List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
-			params.add((ScriptValue_Abstract) convert());
+			params.add((ScriptValue_Abstract) this.convert());
 			List<ScriptValue_Abstract> regionList = new LinkedList<ScriptValue_Abstract>();
 			List<ScriptValue_Abstract> assetList = new LinkedList<ScriptValue_Abstract>();
 			for (DiscreteRegion region : regions) {
@@ -140,19 +140,19 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 					}
 				}
 			}
-			params.add(Parser.getRiffList(getEnvironment(), regionList));
-			params.add(Parser.getRiffList(getEnvironment(), assetList));
-			if (m_dali != null) {
-				ScriptExecutable_CallFunction.callFunction(getEnvironment(), null, m_dali, "paintPanel", params);
+			params.add(Parser.getRiffList(this.getEnvironment(), regionList));
+			params.add(Parser.getRiffList(this.getEnvironment(), assetList));
+			if (this.m_dali != null) {
+				ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, this.m_dali, "paintPanel", params);
 			}
 		} catch (Exception_Nodeable exception) {
-			throw new Exception_InternalError(getEnvironment(), exception);
+			throw new Exception_InternalError(this.getEnvironment(), exception);
 		}
-		for (GraphicalElement elem : m_elements) {
+		for (GraphicalElement elem : this.m_elements) {
 			elem.paint(g2d);
 		}
-		g2d.setColor(getBackgroundColor());
-		g2d.draw(getDrawingBounds());
+		g2d.setColor(this.getBackgroundColor());
+		g2d.draw(this.getDrawingBounds());
 		assert Debugger.closeNode();
 	}
 
@@ -160,11 +160,11 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 	public void riffMouseEvent(RiffInterface_MouseEvent event) {
 		if (event instanceof RiffInterface_DragEvent) {
 			if (event.getButton() == RiffInterface_MouseListener.MouseButton.LEFT) {
-				m_offset.addX(-((RiffInterface_DragEvent) event).getXOffset() / Math.pow(2, m_offset.getZ()));
-				m_offset.addY(-((RiffInterface_DragEvent) event).getYOffset() / Math.pow(2, m_offset.getZ()));
+				this.m_offset.addX(-((RiffInterface_DragEvent) event).getXOffset() / Math.pow(2, this.m_offset.getZ()));
+				this.m_offset.addY(-((RiffInterface_DragEvent) event).getYOffset() / Math.pow(2, this.m_offset.getZ()));
 			}
 			if (event.getButton() == RiffInterface_MouseListener.MouseButton.RIGHT) {
-				m_offset.addZ(((RiffInterface_DragEvent) event).getDistance() / 50);
+				this.m_offset.addZ(((RiffInterface_DragEvent) event).getDistance() / 50);
 			}
 		}
 	}
@@ -174,14 +174,14 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 	}
 
 	public void setRiffDali(ScriptTemplate_Abstract dali) {
-		m_dali = dali;
+		this.m_dali = dali;
 	}
 
 	public void setTerrestrial(Terrestrial terrestrial) {
-		m_terrestrial = terrestrial;
+		this.m_terrestrial = terrestrial;
 	}
 
 	public int size() {
-		return m_elements.size();
+		return this.m_elements.size();
 	}
 }

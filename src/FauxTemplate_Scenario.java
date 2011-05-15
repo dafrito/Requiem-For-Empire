@@ -11,13 +11,13 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 
 	public FauxTemplate_Scenario(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		m_scenario = new Scenario(env, new Terrestrial(env, 1), "Scenario");
+		this.m_scenario = new Scenario(env, new Terrestrial(env, 1), "Scenario");
 	}
 
 	// Nodeable implementation
 	@Override
 	public Object convert() {
-		return m_scenario;
+		return this.m_scenario;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -32,7 +32,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 		ScriptValue_Abstract value;
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Scenario) createObject(ref, template);
+				template = (FauxTemplate_Scenario) this.createObject(ref, template);
 			}
 			switch (params.size()) {
 			case 2:
@@ -59,17 +59,17 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getScheduler")) {
-			returning = Parser.getRiffScheduler(getEnvironment(), template.getScenario().getScheduler());
+			returning = Parser.getRiffScheduler(this.getEnvironment(), template.getScenario().getScheduler());
 			assert Debugger.closeNode();
 			return returning;
 		}
-		returning = getExtendedFauxClass().execute(ref, name, params, template);
+		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public Scenario getScenario() {
-		return m_scenario;
+		return this.m_scenario;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -77,41 +77,41 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing scenario faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING)));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		addConstructor(getType(), fxnParams);
-		disableFullCreation();
-		getExtendedClass().initialize();
-		addFauxFunction("getName", ScriptValueType.STRING, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING)));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		this.addConstructor(this.getType(), fxnParams);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
+		this.addFauxFunction("getName", ScriptValueType.STRING, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		addFauxFunction("setName", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getTerrestrial", ScriptValueType.createType(getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING), ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		this.addFauxFunction("setName", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getTerrestrial", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING), ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING)));
-		addFauxFunction("setTerrestrial", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getScheduler", ScriptValueType.createType(getEnvironment(), FauxTemplate_Scheduler.SCHEDULERSTRING), ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING)));
+		this.addFauxFunction("setTerrestrial", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getScheduler", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scheduler.SCHEDULERSTRING), ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Scenario(getEnvironment(), getType());
+		return new FauxTemplate_Scenario(this.getEnvironment(), this.getType());
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Scenario Faux Template");
 		assert super.nodificate();
-		assert Debugger.addNode(m_scenario);
+		assert Debugger.addNode(this.m_scenario);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setScenario(Scenario scenario) {
-		m_scenario = scenario;
+		this.m_scenario = scenario;
 	}
 }

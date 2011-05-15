@@ -15,7 +15,7 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return getPoint();
+		return this.getPoint();
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -28,18 +28,18 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Path) createObject(ref, template);
+				template = (FauxTemplate_Path) this.createObject(ref, template);
 			}
 			if (params.size() == 1) {
 				((Point_Path) template.getPoint()).setScenario(Parser.getScenario(params.get(0)));
 			}
 			params.clear();
 		} else if (name.equals("getTotalTime")) {
-			ScriptValue_Abstract returning = Parser.getRiffLong(getEnvironment(), ((Point_Path) template.getPoint()).getTotalTime());
+			ScriptValue_Abstract returning = Parser.getRiffLong(this.getEnvironment(), ((Point_Path) template.getPoint()).getTotalTime());
 			assert Debugger.closeNode();
 			return returning;
 		}
-		ScriptValue_Abstract returning = getExtendedFauxClass().execute(ref, name, params, template);
+		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
@@ -48,20 +48,20 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing path faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Scenario.SCENARIOSTRING)));
-		addConstructor(getType(), fxnParams);
-		disableFullCreation();
-		getExtendedClass().initialize();
-		addFauxFunction("getTotalTime", ScriptValueType.LONG, new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scenario.SCENARIOSTRING)));
+		this.addConstructor(this.getType(), fxnParams);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
+		this.addFauxFunction("getTotalTime", ScriptValueType.LONG, new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Path(getEnvironment(), getType());
+		return new FauxTemplate_Path(this.getEnvironment(), this.getType());
 	}
 
 	@Override

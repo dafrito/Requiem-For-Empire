@@ -4,22 +4,22 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 
 	public ScriptExecutable_CastExpression(Referenced ref, ScriptValueType type, ScriptExecutable exec) {
 		super(ref);
-		m_castExpression = exec;
-		m_type = type;
+		this.m_castExpression = exec;
+		this.m_type = type;
 	}
 
 	@Override
 	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
-		return getValue().castToType(ref, type);
+		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		ScriptValue_Abstract left = m_castExpression.execute().getValue();
-		assert Debugger.openNode("Cast Expression Executions", "Executing cast to " + getType());
+		ScriptValue_Abstract left = this.m_castExpression.execute().getValue();
+		assert Debugger.openNode("Cast Expression Executions", "Executing cast to " + this.getType());
 		assert Debugger.addSnapNode("Value", left);
-		ScriptValue_Abstract value = m_castExpression.execute().castToType(this, getType());
+		ScriptValue_Abstract value = this.m_castExpression.execute().castToType(this, this.getType());
 		assert Debugger.closeNode();
 		return value;
 	}
@@ -27,41 +27,41 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 	// Abstract-value implementation
 	@Override
 	public ScriptValueType getType() {
-		return m_type;
+		return this.m_type;
 	}
 
 	@Override
 	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
-		return execute();
+		return this.execute();
 	}
 
 	@Override
 	public boolean isConvertibleTo(ScriptValueType type) {
-		return ScriptValueType.isConvertibleTo(getEnvironment(), getType(), type);
+		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Script Cast Expression (To type: " + getType() + ")");
+		assert Debugger.openNode("Script Cast Expression (To type: " + this.getType() + ")");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Cast Expression", m_castExpression);
+		assert Debugger.addSnapNode("Cast Expression", this.m_castExpression);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	@Override
 	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
-		return getValue().setValue(ref, value);
+		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return getValue().valuesCompare(ref, rhs);
+		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
 	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return getValue().valuesEqual(ref, rhs);
+		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

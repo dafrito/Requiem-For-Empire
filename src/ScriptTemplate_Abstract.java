@@ -8,15 +8,15 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 	private List<ScriptValueType> m_interfaces;
 
 	public ScriptTemplate_Abstract(ScriptEnvironment env, ScriptValueType type) {
-		m_environment = env;
-		m_type = type;
+		this.m_environment = env;
+		this.m_type = type;
 	}
 
 	public ScriptTemplate_Abstract(ScriptEnvironment env, ScriptValueType type, ScriptValueType extended, List<ScriptValueType> interfaces) {
-		m_environment = env;
-		m_type = type;
-		m_extended = extended;
-		m_interfaces = interfaces;
+		this.m_environment = env;
+		this.m_type = type;
+		this.m_extended = extended;
+		this.m_interfaces = interfaces;
 	}
 
 	public abstract void addFunction(Referenced ref, String name, ScriptFunction_Abstract function) throws Exception_Nodeable;
@@ -29,7 +29,7 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 
 	@Override
 	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
-		if (isConvertibleTo(type)) {
+		if (this.isConvertibleTo(type)) {
 			return this;
 		}
 		throw new Exception_Nodeable_ClassCast(ref, this, type);
@@ -42,19 +42,19 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 	// Abstract-value implementation
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	public ScriptTemplate_Abstract getExtendedClass() {
-		assert getEnvironment() != null : "Environment is null: " + this;
-		if (getEnvironment().getTemplate(getType()) != null && getEnvironment().getTemplate(getType()) != this) {
-			return getEnvironment().getTemplate(getType()).getExtendedClass();
+		assert this.getEnvironment() != null : "Environment is null: " + this;
+		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
+			return this.getEnvironment().getTemplate(this.getType()).getExtendedClass();
 		}
-		if (m_extended == null) {
+		if (this.m_extended == null) {
 			return null;
 		}
-		assert getEnvironment().getTemplate(m_extended) != null : "Extended class is null!";
-		return getEnvironment().getTemplate(m_extended);
+		assert this.getEnvironment().getTemplate(this.m_extended) != null : "Extended class is null!";
+		return this.getEnvironment().getTemplate(this.m_extended);
 	}
 
 	public abstract ScriptFunction_Abstract getFunction(String name, List<ScriptValue_Abstract> params);
@@ -64,17 +64,17 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 	public abstract ScriptTemplate_Abstract getFunctionTemplate(ScriptFunction_Abstract fxn);
 
 	public List<ScriptValueType> getInterfaces() {
-		if (getEnvironment().getTemplate(getType()) != null && getEnvironment().getTemplate(getType()) != this) {
-			return getEnvironment().getTemplate(getType()).getInterfaces();
+		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
+			return this.getEnvironment().getTemplate(this.getType()).getInterfaces();
 		}
-		return Collections.unmodifiableList(m_interfaces);
+		return Collections.unmodifiableList(this.m_interfaces);
 	}
 
 	public abstract ScriptValue_Variable getStaticReference() throws Exception_Nodeable;
 
 	@Override
 	public ScriptValueType getType() {
-		return m_type;
+		return this.m_type;
 	}
 
 	@Override
@@ -96,25 +96,25 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 
 	@Override
 	public boolean isConvertibleTo(ScriptValueType type) {
-		if (getEnvironment().getTemplate(getType()) != null && getEnvironment().getTemplate(getType()) != this) {
-			return getEnvironment().getTemplate(getType()).isConvertibleTo(type);
+		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
+			return this.getEnvironment().getTemplate(this.getType()).isConvertibleTo(type);
 		}
-		assert Debugger.openNode("Value Type Match Test", "Checking for Type-Match (" + getType() + " to " + type + ")");
+		assert Debugger.openNode("Value Type Match Test", "Checking for Type-Match (" + this.getType() + " to " + type + ")");
 		assert Debugger.addNode(this);
-		if (getType().equals(type)) {
+		if (this.getType().equals(type)) {
 			assert Debugger.closeNode("Direct match.");
 			return true;
 		}
-		if (getInterfaces() != null) {
-			for (ScriptValueType scriptInterface : getInterfaces()) {
-				if (ScriptValueType.isConvertibleTo(getEnvironment(), scriptInterface, type)) {
+		if (this.getInterfaces() != null) {
+			for (ScriptValueType scriptInterface : this.getInterfaces()) {
+				if (ScriptValueType.isConvertibleTo(this.getEnvironment(), scriptInterface, type)) {
 					assert Debugger.closeNode("Interface type match.");
 					return true;
 				}
 			}
 		}
 		assert Debugger.openNode("No type match, checking extended classes for match.");
-		if (getExtendedClass() != null && getExtendedClass().isConvertibleTo(type)) {
+		if (this.getExtendedClass() != null && this.getExtendedClass().isConvertibleTo(type)) {
 			assert Debugger.closeNode();
 			assert Debugger.closeNode();
 			return true;

@@ -11,13 +11,13 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 
 	public FauxTemplate_Color(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		m_color = java.awt.Color.BLACK;
+		this.m_color = java.awt.Color.BLACK;
 	}
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
 	public Object convert() {
-		return m_color;
+		return this.m_color;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -31,7 +31,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_Color) createObject(ref, template);
+				template = (FauxTemplate_Color) this.createObject(ref, template);
 			}
 			if (params.size() == 1) {
 				template.setColor(RiffJavaToolbox.getColor(Parser.getString(params.get(0))));
@@ -71,15 +71,15 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			}
 			params.clear();
 		} else if (name.equals("getRed")) {
-			returning = Parser.getRiffInt(getEnvironment(), template.getColor().getRed());
+			returning = Parser.getRiffInt(this.getEnvironment(), template.getColor().getRed());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getGreen")) {
-			returning = Parser.getRiffInt(getEnvironment(), template.getColor().getGreen());
+			returning = Parser.getRiffInt(this.getEnvironment(), template.getColor().getGreen());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getBlue")) {
-			returning = Parser.getRiffInt(getEnvironment(), template.getColor().getBlue());
+			returning = Parser.getRiffInt(this.getEnvironment(), template.getColor().getBlue());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setRed")) {
@@ -117,78 +117,78 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			assert Debugger.closeNode();
 			return null;
 		}
-		returning = getExtendedFauxClass().execute(ref, name, params, template);
+		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public java.awt.Color getColor() {
-		return m_color;
+		return this.m_color;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing color faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
 		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		addConstructor(getType(), fxnParams);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		this.addConstructor(this.getType(), fxnParams);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.INT));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.INT));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.INT));
-		addConstructor(getType(), fxnParams);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.INT));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.INT));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.INT));
+		this.addConstructor(this.getType(), fxnParams);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.FLOAT));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.FLOAT));
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.FLOAT));
-		addConstructor(getType(), fxnParams);
-		disableFullCreation();
-		getExtendedClass().initialize();
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.FLOAT));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.FLOAT));
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.FLOAT));
+		this.addConstructor(this.getType(), fxnParams);
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		addFauxFunction("getRed", ScriptValueType.INT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getGreen", ScriptValueType.INT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getBlue", ScriptValueType.INT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getRedOpacity", ScriptValueType.FLOAT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getGreenOpacity", ScriptValueType.FLOAT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("getBlueOpacity", ScriptValueType.FLOAT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getRed", ScriptValueType.INT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getGreen", ScriptValueType.INT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getBlue", ScriptValueType.INT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getRedOpacity", ScriptValueType.FLOAT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getGreenOpacity", ScriptValueType.FLOAT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getBlueOpacity", ScriptValueType.FLOAT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.INT));
-		addFauxFunction("setRed", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setGreen", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setBlue", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.INT));
+		this.addFauxFunction("setRed", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setGreen", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setBlue", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.FLOAT));
-		addFauxFunction("setRed", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setGreen", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		addFauxFunction("setBlue", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.FLOAT));
+		this.addFauxFunction("setRed", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setGreen", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("setBlue", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.STRING));
-		addFauxFunction("setColor", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
+		this.addFauxFunction("setColor", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Color(getEnvironment(), getType());
+		return new FauxTemplate_Color(this.getEnvironment(), this.getType());
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Color Faux Template");
 		assert super.nodificate();
-		if (m_color == null) {
+		if (this.m_color == null) {
 			assert Debugger.addNode("Color: null");
 		} else {
-			assert Debugger.addNode("Color: " + RiffJavaToolbox.getColorName(m_color));
+			assert Debugger.addNode("Color: " + RiffJavaToolbox.getColorName(this.m_color));
 		}
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setColor(java.awt.Color color) {
-		m_color = color;
+		this.m_color = color;
 	}
 }

@@ -3,14 +3,14 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 	private final ScriptEnvironment m_environment;
 
 	public ScriptValue_Boolean(ScriptEnvironment env, boolean value) {
-		m_environment = env;
-		m_value = value;
+		this.m_environment = env;
+		this.m_value = value;
 	}
 
 	@Override
 	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
-		assert Debugger.addNode("Type Casting", "Casting (" + getType() + " to " + type + ")");
-		if (getType().equals(type)) {
+		assert Debugger.addNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
+		if (this.getType().equals(type)) {
 			return this;
 		}
 		throw new Exception_Nodeable_ClassCast(ref, this, type);
@@ -19,17 +19,17 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 	// Overloaded and miscellaneous functions
 	@Override
 	public Object convert() {
-		return new Boolean(m_value);
+		return new Boolean(this.m_value);
 	}
 
 	public boolean getBooleanValue() {
-		return m_value;
+		return this.m_value;
 	}
 
 	// Abstract-value implementation
 	@Override
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	@Override
@@ -44,12 +44,12 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 
 	@Override
 	public boolean isConvertibleTo(ScriptValueType type) {
-		return getType().equals(type);
+		return this.getType().equals(type);
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Boolean Script Value (" + getBooleanValue() + ")");
+		assert Debugger.openNode("Boolean Script Value (" + this.getBooleanValue() + ")");
 		assert Debugger.addNode("Reference: " + this);
 		assert Debugger.closeNode();
 		return true;
@@ -59,7 +59,7 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
 		assert Debugger.openNode("Value Assignments", "Setting Boolean Value");
 		assert Debugger.addSnapNode("Former value", this);
-		m_value = ((ScriptValue_Boolean) value.castToType(ref, getType())).getBooleanValue();
+		this.m_value = ((ScriptValue_Boolean) value.castToType(ref, this.getType())).getBooleanValue();
 		assert Debugger.closeNode("New value", this);
 		return this;
 	}
@@ -71,6 +71,6 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 
 	@Override
 	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return ((ScriptValue_Boolean) getValue()).getBooleanValue() == ((ScriptValue_Boolean) rhs.castToType(ref, getType())).getBooleanValue();
+		return ((ScriptValue_Boolean) this.getValue()).getBooleanValue() == ((ScriptValue_Boolean) rhs.castToType(ref, this.getType())).getBooleanValue();
 	}
 }

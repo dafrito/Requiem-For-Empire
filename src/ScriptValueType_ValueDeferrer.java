@@ -4,11 +4,11 @@ public class ScriptValueType_ValueDeferrer extends ScriptValueType {
 	public ScriptValueType_ValueDeferrer(ScriptValue_Abstract value) {
 		super(value.getEnvironment());
 		assert value != null;
-		m_value = value;
+		this.m_value = value;
 	}
 
 	@Override
 	public ScriptValueType getBaseType() throws Exception_Nodeable {
-		return m_value.getType();
+		return this.m_value.getType();
 	}
 }

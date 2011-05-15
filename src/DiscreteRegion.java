@@ -87,16 +87,16 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 
 	public DiscreteRegion(DiscreteRegion otherRegion) {
 		assert Debugger.openNode("Discrete Region Creation", "Creating discrete region (Duplicating otherRegion)");
-		m_environment = otherRegion.getEnvironment();
-		m_neighbors = new HashSet<DiscreteRegion>();
-		m_points = new Vector<Point>(otherRegion.getPoints());
-		m_leftExtreme = otherRegion.getLeftExtreme();
-		m_rightExtreme = otherRegion.getRightExtreme();
-		m_topExtreme = otherRegion.getTopExtreme();
-		m_bottomExtreme = otherRegion.getBottomExtreme();
-		m_isOptimized = otherRegion.isOptimized();
-		m_version = otherRegion.getVersion();
-		m_properties = otherRegion.getProperties();
+		this.m_environment = otherRegion.getEnvironment();
+		this.m_neighbors = new HashSet<DiscreteRegion>();
+		this.m_points = new Vector<Point>(otherRegion.getPoints());
+		this.m_leftExtreme = otherRegion.getLeftExtreme();
+		this.m_rightExtreme = otherRegion.getRightExtreme();
+		this.m_topExtreme = otherRegion.getTopExtreme();
+		this.m_bottomExtreme = otherRegion.getBottomExtreme();
+		this.m_isOptimized = otherRegion.isOptimized();
+		this.m_version = otherRegion.getVersion();
+		this.m_properties = otherRegion.getProperties();
 		assert Debugger.closeNode("Region created", this);
 	}
 
@@ -107,20 +107,20 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 		} else {
 			assert Debugger.addNode(env);
 		}
-		m_environment = env;
-		m_points = new Vector<Point>();
-		m_neighbors = new HashSet<DiscreteRegion>();
-		m_properties = new HashMap<String, Object>();
-		resetExtrema();
+		this.m_environment = env;
+		this.m_points = new Vector<Point>();
+		this.m_neighbors = new HashSet<DiscreteRegion>();
+		this.m_properties = new HashMap<String, Object>();
+		this.resetExtrema();
 		assert Debugger.closeNode("Region created", this);
 	}
 
 	public DiscreteRegion(ScriptEnvironment env, Map<String, Object> prop) {
 		assert Debugger.openNode("Discrete Region Creation", "Creating discrete region (Script environment and properties provided)");
-		m_environment = env;
-		m_points = new Vector<Point>();
-		m_neighbors = new HashSet<DiscreteRegion>();
-		m_properties = prop;
+		this.m_environment = env;
+		this.m_points = new Vector<Point>();
+		this.m_neighbors = new HashSet<DiscreteRegion>();
+		this.m_properties = prop;
 		assert Debugger.closeNode("Region created", this);
 	}
 
@@ -129,7 +129,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 			return;
 		}
 		assert Debugger.addSnapNode("Discrete Region Neighbor Additions", "Adding this region as a neighbor", region);
-		m_neighbors.add(region);
+		this.m_neighbors.add(region);
 	}
 
 	public void addPoint(Point point) {
@@ -137,18 +137,18 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 			return;
 		}
 		assert Debugger.openNode("Discrete Region Point Additions", "Adding point to discrete region (" + point + ")");
-		testExtrema(point);
-		m_points.add(point);
-		resetIntersectionMap();
+		this.testExtrema(point);
+		this.m_points.add(point);
+		this.resetIntersectionMap();
 		assert Debugger.closeNode(this);
 	}
 
 	public void addPointAt(int location, Point point) {
 		assert Debugger.openNode("Discrete Region Point Additions", "Adding point to discrete region (" + point + ") at index (" + location + ")");
-		testExtrema(point);
-		m_points.add(location, point);
-		assert Debugger.addSnapNode("New point list", m_points);
-		resetIntersectionMap();
+		this.testExtrema(point);
+		this.m_points.add(location, point);
+		assert Debugger.addSnapNode("New point list", this.m_points);
+		this.resetIntersectionMap();
 		assert Debugger.closeNode();
 	}
 
@@ -160,9 +160,9 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 		assert Debugger.addSnapNode("This region", this);
 		assert Debugger.addSnapNode("Potential neighbor", region);
 		List regionPoints = region.getPoints();
-		for (int i = 0; i < m_points.size(); i++) {
-			Point pointA = (Point) m_points.get(i);
-			Point pointB = (Point) m_points.get((i + 1) % m_points.size());
+		for (int i = 0; i < this.m_points.size(); i++) {
+			Point pointA = (Point) this.m_points.get(i);
+			Point pointB = (Point) this.m_points.get((i + 1) % this.m_points.size());
 			for (int j = 0; j < regionPoints.size(); j++) {
 				Point testPoint = (Point) regionPoints.get(j);
 				Point otherTestPoint = (Point) regionPoints.get((j + 1) % regionPoints.size());
@@ -173,7 +173,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 					continue;
 				}
 				region.addNeighbor(this);
-				m_neighbors.add(region);
+				this.m_neighbors.add(region);
 			}
 		}
 		assert Debugger.closeNode();
@@ -181,24 +181,24 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 
 	public void addRegionNeighbors(Collection<DiscreteRegion> regions) {
 		for (DiscreteRegion region : regions) {
-			addRegionNeighbor(region);
+			this.addRegionNeighbor(region);
 		}
 	}
 
 	public void addRegionToMap(DiscreteRegion region) {
 		assert Debugger.addSnapNode("Intersection Map Additions", "Adding this region to intersection map", region);
-		m_intersectionMap.put(region, region.getVersion());
+		this.m_intersectionMap.put(region, region.getVersion());
 	}
 
 	public boolean checkClearedRegionMap(DiscreteRegion region) {
 		assert Debugger.openNode("Checking cleared intersection map for region");
 		assert Debugger.addNode("If found, this means that the region does not intersect this region and all further testing can be omitted.");
 		assert Debugger.addSnapNode("Region to find", region);
-		if (m_intersectionMap.get(region) == null) {
+		if (this.m_intersectionMap.get(region) == null) {
 			assert Debugger.closeNode("Region not found");
 			return false;
 		}
-		if (m_intersectionMap.get(region) == region.getVersion()) {
+		if (this.m_intersectionMap.get(region) == region.getVersion()) {
 			assert Debugger.closeNode("Region found and version is identical.");
 			return true;
 		} else {
@@ -209,7 +209,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 
 	// ScriptConvertible implementation
 	public Object convert() {
-		FauxTemplate_DiscreteRegion region = new FauxTemplate_DiscreteRegion(getEnvironment(), getEnvironment().getTemplate(FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING).getType());
+		FauxTemplate_DiscreteRegion region = new FauxTemplate_DiscreteRegion(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING).getType());
 		region.setRegion(this);
 		return region;
 	}
@@ -217,95 +217,95 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 	public boolean equals(Object o) {
 		DiscreteRegion otherRegion = (DiscreteRegion) o;
 		List<Point> pointList = otherRegion.getPoints();
-		return (m_points.containsAll(pointList) && pointList.containsAll(m_points));
+		return (this.m_points.containsAll(pointList) && pointList.containsAll(this.m_points));
 	}
 
 	public double getBottomExtreme() {
-		return m_bottomExtreme;
+		return this.m_bottomExtreme;
 	}
 
 	public Point getCenter() {
-		if (m_midPoint == null) {
-			m_midPoint = Point.createPoint(m_points.get(0), getLeftExtreme() + ((getRightExtreme() - getLeftExtreme()) / 2), getBottomExtreme() + ((getTopExtreme() - getBottomExtreme()) / 2), 0.0d);
+		if (this.m_midPoint == null) {
+			this.m_midPoint = Point.createPoint(this.m_points.get(0), this.getLeftExtreme() + ((this.getRightExtreme() - this.getLeftExtreme()) / 2), this.getBottomExtreme() + ((this.getTopExtreme() - this.getBottomExtreme()) / 2), 0.0d);
 		}
-		return m_midPoint;
+		return this.m_midPoint;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	public Point getInteriorPoint() {
-		return getCenter();
+		return this.getCenter();
 		//RiffPolygonToolbox.getMidPointOfLine(RiffPolygonToolbox.getMidPointOfLine(m_points.get(0), m_points.get(1)), RiffPolygonToolbox.getMidPointOfLine(m_points.get(1), m_points.get(2)));
 		//return m_interiorPoint;
 	}
 
 	public double getLeftExtreme() {
-		return m_leftExtreme;
+		return this.m_leftExtreme;
 	}
 
 	public Set<DiscreteRegion> getNeighbors() {
-		return new HashSet<DiscreteRegion>(m_neighbors);
+		return new HashSet<DiscreteRegion>(this.m_neighbors);
 	}
 
 	public List<Point> getPoints() {
-		return new LinkedList<Point>(m_points);
+		return new LinkedList<Point>(this.m_points);
 	}
 
 	public Map<String, Object> getProperties() {
-		return m_properties;
+		return this.m_properties;
 	}
 
 	public Object getProperty(String name) {
-		return m_properties.get(name);
+		return this.m_properties.get(name);
 	}
 
 	public double getRightExtreme() {
-		return m_rightExtreme;
+		return this.m_rightExtreme;
 	}
 
 	public double getTopExtreme() {
-		return m_topExtreme;
+		return this.m_topExtreme;
 	}
 
 	public int getVersion() {
-		return m_version;
+		return this.m_version;
 	}
 
 	public int hashCode() {
-		return m_points.hashCode();
+		return this.m_points.hashCode();
 	}
 
 	public boolean isOptimized() {
-		return m_isOptimized;
+		return this.m_isOptimized;
 	}
 
 	// Nodeable implementation
 	public boolean nodificate() {
-		assert Debugger.openNode("Discrete Region (" + m_points.size() + " point(s))");
-		assert Debugger.addSnapNode("Points (" + m_points.size() + " point(s))", m_points);
-		if (m_properties.size() == 1) {
-			assert Debugger.addSnapNode("Property Map (1 property)", m_properties);
+		assert Debugger.openNode("Discrete Region (" + this.m_points.size() + " point(s))");
+		assert Debugger.addSnapNode("Points (" + this.m_points.size() + " point(s))", this.m_points);
+		if (this.m_properties.size() == 1) {
+			assert Debugger.addSnapNode("Property Map (1 property)", this.m_properties);
 		} else {
-			assert Debugger.addSnapNode("Property Map (" + m_properties.size() + " properties)", m_properties);
+			assert Debugger.addSnapNode("Property Map (" + this.m_properties.size() + " properties)", this.m_properties);
 		}
 		assert Debugger.openNode("Details");
-		assert Debugger.addNode("Script environment reference: " + m_environment);
+		assert Debugger.addNode("Script environment reference: " + this.m_environment);
 		assert Debugger.openNode("Bounds");
-		assert Debugger.addNode("Left bound: " + m_leftExtreme);
-		assert Debugger.addNode("Right bound: " + m_rightExtreme);
-		assert Debugger.addNode("Top bound: " + m_topExtreme);
-		assert Debugger.addNode("Bottom bound: " + m_bottomExtreme);
+		assert Debugger.addNode("Left bound: " + this.m_leftExtreme);
+		assert Debugger.addNode("Right bound: " + this.m_rightExtreme);
+		assert Debugger.addNode("Top bound: " + this.m_topExtreme);
+		assert Debugger.addNode("Bottom bound: " + this.m_bottomExtreme);
 		assert Debugger.closeNode();
-		assert Debugger.addNode("Version: " + m_version);
-		assert Debugger.addNode("Optimized: " + m_isOptimized);
-		if (m_neighbors != null && m_neighbors.size() > 0) {
-			assert Debugger.openNode("Neighbors (" + m_neighbors.size() + " neighbor(s))");
-			for (DiscreteRegion region : m_neighbors) {
+		assert Debugger.addNode("Version: " + this.m_version);
+		assert Debugger.addNode("Optimized: " + this.m_isOptimized);
+		if (this.m_neighbors != null && this.m_neighbors.size() > 0) {
+			assert Debugger.openNode("Neighbors (" + this.m_neighbors.size() + " neighbor(s))");
+			for (DiscreteRegion region : this.m_neighbors) {
 				assert Debugger.openNode("Discrete Region (" + region.getPoints().size() + " point(s))");
-				assert Debugger.addSnapNode("Points (" + region.getPoints().size() + " point(s))", m_points);
-				if (m_properties.size() == 1) {
+				assert Debugger.addSnapNode("Points (" + region.getPoints().size() + " point(s))", this.m_points);
+				if (this.m_properties.size() == 1) {
 					assert Debugger.addSnapNode("Property Map (1 property)", region.getProperties());
 				} else {
 					assert Debugger.addSnapNode("Property Map (" + region.getProperties().size() + " properties)", region.getProperties());
@@ -314,9 +314,9 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 			}
 			assert Debugger.closeNode();
 		}
-		assert Debugger.addSnapNode("Intersection Map", m_intersectionMap);
-		assert Debugger.addNode("Mid-point: " + m_midPoint);
-		assert Debugger.addNode("Interior point: " + m_interiorPoint);
+		assert Debugger.addSnapNode("Intersection Map", this.m_intersectionMap);
+		assert Debugger.addNode("Mid-point: " + this.m_midPoint);
+		assert Debugger.addNode("Interior point: " + this.m_interiorPoint);
 		assert Debugger.closeNode();
 		assert Debugger.closeNode();
 		return true;
@@ -324,106 +324,106 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 
 	private void recalculateExtrema() {
 		assert Debugger.openNode("Extrema Recalculations", "Recalculating extrema");
-		resetExtrema();
-		for (int i = 0; i < m_points.size(); i++) {
-			testExtrema((Point) m_points.get(i));
+		this.resetExtrema();
+		for (int i = 0; i < this.m_points.size(); i++) {
+			this.testExtrema((Point) this.m_points.get(i));
 		}
 		assert Debugger.closeNode();
 	}
 
 	public void recheckNeighbors() {
-		Set<DiscreteRegion> neighbors = new HashSet<DiscreteRegion>(m_neighbors);
-		m_neighbors.clear();
-		addRegionNeighbors(neighbors);
+		Set<DiscreteRegion> neighbors = new HashSet<DiscreteRegion>(this.m_neighbors);
+		this.m_neighbors.clear();
+		this.addRegionNeighbors(neighbors);
 	}
 
 	public void removePoint(int pointNum) {
-		Point point = (Point) m_points.get(pointNum);
-		removePoint(point);
+		Point point = (Point) this.m_points.get(pointNum);
+		this.removePoint(point);
 	}
 
 	public void removePoint(Point point) {
-		if (!m_points.contains(point)) {
+		if (!this.m_points.contains(point)) {
 			return;
 		}
 		assert Debugger.openNode("Discrete Region Point Removals", "Removing this point from discrete region (" + point + ")");
-		m_points.remove(point);
-		if (point.getX() == m_leftExtreme || point.getX() == m_rightExtreme || point.getY() == m_topExtreme || point.getY() == m_bottomExtreme) {
-			recalculateExtrema();
+		this.m_points.remove(point);
+		if (point.getX() == this.m_leftExtreme || point.getX() == this.m_rightExtreme || point.getY() == this.m_topExtreme || point.getY() == this.m_bottomExtreme) {
+			this.recalculateExtrema();
 		}
-		assert Debugger.addSnapNode("New point list", m_points);
-		resetIntersectionMap();
+		assert Debugger.addSnapNode("New point list", this.m_points);
+		this.resetIntersectionMap();
 		assert Debugger.closeNode();
 	}
 
 	public void removeRegionNeighbor(DiscreteRegion region) {
-		m_neighbors.remove(region);
+		this.m_neighbors.remove(region);
 	}
 
 	private void resetExtrema() {
 		assert Debugger.addNode("Extrema Settings", "Resetting extrema.");
-		m_leftExtreme = java.lang.Double.POSITIVE_INFINITY;
-		m_rightExtreme = java.lang.Double.NEGATIVE_INFINITY;
-		m_topExtreme = m_rightExtreme;
-		m_bottomExtreme = m_leftExtreme;
+		this.m_leftExtreme = java.lang.Double.POSITIVE_INFINITY;
+		this.m_rightExtreme = java.lang.Double.NEGATIVE_INFINITY;
+		this.m_topExtreme = this.m_rightExtreme;
+		this.m_bottomExtreme = this.m_leftExtreme;
 	}
 
 	public void resetIntersectionMap() {
 		assert Debugger.addNode("Resetting discrete region's intersection map");
-		m_intersectionMap.clear();
-		m_interiorPoint = m_midPoint = null;
-		m_version++;
-		m_isOptimized = false;
-		recheckNeighbors();
+		this.m_intersectionMap.clear();
+		this.m_interiorPoint = this.m_midPoint = null;
+		this.m_version++;
+		this.m_isOptimized = false;
+		this.recheckNeighbors();
 	}
 
 	public void resetNeighbors() {
-		m_neighbors.clear();
+		this.m_neighbors.clear();
 	}
 
 	public void reversePoints() {
 		assert Debugger.addNode("Reversing points");
-		Collections.reverse(m_points);
+		Collections.reverse(this.m_points);
 	}
 
 	public void setOptimized(boolean optimized) {
-		m_isOptimized = optimized;
+		this.m_isOptimized = optimized;
 	}
 
 	public void setPointList(List<Point> pointList) {
 		assert Debugger.openNode("Setting this discrete region's point list to a provided one");
-		assert Debugger.addSnapNode("Old point list", m_points);
-		m_points = pointList;
-		recalculateExtrema();
-		resetIntersectionMap();
-		assert Debugger.addSnapNode("New point list", m_points);
+		assert Debugger.addSnapNode("Old point list", this.m_points);
+		this.m_points = pointList;
+		this.recalculateExtrema();
+		this.resetIntersectionMap();
+		assert Debugger.addSnapNode("New point list", this.m_points);
 		assert Debugger.closeNode();
 	}
 
 	public void setProperties(Map<String, Object> prop) {
-		m_properties = prop;
+		this.m_properties = prop;
 	}
 
 	public void setProperty(String name, Object prop) {
-		m_properties.put(name, prop);
+		this.m_properties.put(name, prop);
 	}
 
 	private void testExtrema(Point point) {
-		if (point.getX() < m_leftExtreme) {
-			assert Debugger.addNode("Extrema Settings", "Setting left extrema to (" + point.getX() + ") from (" + m_leftExtreme + ")");
-			m_leftExtreme = point.getX();
+		if (point.getX() < this.m_leftExtreme) {
+			assert Debugger.addNode("Extrema Settings", "Setting left extrema to (" + point.getX() + ") from (" + this.m_leftExtreme + ")");
+			this.m_leftExtreme = point.getX();
 		}
-		if (point.getX() > m_rightExtreme) {
-			assert Debugger.addNode("Extrema Settings", "Setting right extrema to (" + point.getX() + ") from (" + m_rightExtreme + ")");
-			m_rightExtreme = point.getX();
+		if (point.getX() > this.m_rightExtreme) {
+			assert Debugger.addNode("Extrema Settings", "Setting right extrema to (" + point.getX() + ") from (" + this.m_rightExtreme + ")");
+			this.m_rightExtreme = point.getX();
 		}
-		if (point.getY() < m_bottomExtreme) {
-			assert Debugger.addNode("Extrema Settings", "Setting bottom extrema to (" + point.getY() + ") from (" + m_bottomExtreme + ")");
-			m_bottomExtreme = point.getY();
+		if (point.getY() < this.m_bottomExtreme) {
+			assert Debugger.addNode("Extrema Settings", "Setting bottom extrema to (" + point.getY() + ") from (" + this.m_bottomExtreme + ")");
+			this.m_bottomExtreme = point.getY();
 		}
-		if (point.getY() > m_topExtreme) {
-			assert Debugger.addNode("Extrema Settings", "Setting top extrema to (" + point.getY() + ") from (" + m_topExtreme + ")");
-			m_topExtreme = point.getY();
+		if (point.getY() > this.m_topExtreme) {
+			assert Debugger.addNode("Extrema Settings", "Setting top extrema to (" + point.getY() + ") from (" + this.m_topExtreme + ")");
+			this.m_topExtreme = point.getY();
 		}
 	}
 }

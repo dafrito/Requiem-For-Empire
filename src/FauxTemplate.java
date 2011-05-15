@@ -15,16 +15,16 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 	}
 
 	public void addConstructor(ScriptValueType returnType, List<ScriptValue_Abstract> params) throws Exception_Nodeable {
-		addFauxFunction("", returnType, params, ScriptKeywordType.PUBLIC, false, true);
+		this.addFauxFunction("", returnType, params, ScriptKeywordType.PUBLIC, false, true);
 	}
 
 	public void addFauxFunction(String name, ScriptValueType returnType, List<ScriptValue_Abstract> params, ScriptKeywordType permission, boolean isAbstract, boolean isStatic) throws Exception_Nodeable {
-		addFunction(null, name, new ScriptFunction_Faux(this, name, returnType, params, permission, isAbstract, isStatic));
+		this.addFunction(null, name, new ScriptFunction_Faux(this, name, returnType, params, permission, isAbstract, isStatic));
 	}
 
 	@Override
 	public void addTemplatePreconstructorExpression(ScriptExecutable exec) throws Exception_Nodeable {
-		throw new Exception_InternalError(getEnvironment(), "Invalid call in FauxTemplate");
+		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in FauxTemplate");
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -39,7 +39,7 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 	}
 
 	public FauxTemplate getExtendedFauxClass() {
-		return (FauxTemplate) getExtendedClass();
+		return (FauxTemplate) this.getExtendedClass();
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract,boolean isStatic)
@@ -66,11 +66,11 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 
 	@Override
 	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
-		throw new Exception_InternalError(getEnvironment(), "Invalid call in FauxTemplate");
+		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in FauxTemplate");
 	}
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		throw new Exception_InternalError(getEnvironment(), "Invalid call in FauxTemplate");
+		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in FauxTemplate");
 	}
 }

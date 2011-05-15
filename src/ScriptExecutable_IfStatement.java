@@ -9,29 +9,29 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 
 	public ScriptExecutable_IfStatement(Referenced ref, ScriptValue_Abstract test, List<ScriptExecutable> list) {
 		super(ref);
-		m_testingValue = test;
-		m_expressions = list;
+		this.m_testingValue = test;
+		this.m_expressions = list;
 	}
 
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue_Abstract execute() throws Exception_Nodeable {
 		assert Debugger.openNode("If-Statement Executions", "Executing If-Statements");
-		if (((ScriptValue_Boolean) m_testingValue.getValue()).getBooleanValue()) {
-			getEnvironment().advanceNestedStack();
-			for (ScriptExecutable exec : m_expressions) {
+		if (((ScriptValue_Boolean) this.m_testingValue.getValue()).getBooleanValue()) {
+			this.getEnvironment().advanceNestedStack();
+			for (ScriptExecutable exec : this.m_expressions) {
 				exec.execute();
 				if (exec instanceof Returnable && ((Returnable) exec).shouldReturn()) {
-					m_returnValue = ((Returnable) exec).getReturnValue();
-					m_shouldReturn = true;
+					this.m_returnValue = ((Returnable) exec).getReturnValue();
+					this.m_shouldReturn = true;
 					assert Debugger.closeNode();
 					return null;
 				}
 			}
-			getEnvironment().retreatNestedStack();
+			this.getEnvironment().retreatNestedStack();
 		} else {
-			if (m_elseStatement != null) {
-				m_elseStatement.execute();
+			if (this.m_elseStatement != null) {
+				this.m_elseStatement.execute();
 			}
 		}
 		assert Debugger.closeNode();
@@ -40,34 +40,34 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 
 	@Override
 	public ScriptValue_Abstract getReturnValue() throws Exception_Nodeable {
-		if (m_returnValue != null) {
-			m_returnValue = m_returnValue.getValue();
+		if (this.m_returnValue != null) {
+			this.m_returnValue = this.m_returnValue.getValue();
 		}
-		return m_returnValue;
+		return this.m_returnValue;
 	}
 
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Script If-Statement");
-		assert Debugger.addSnapNode("Testing Expression", m_testingValue);
-		assert Debugger.addSnapNode("Expressions", m_expressions);
-		assert Debugger.addSnapNode("Else statement", m_elseStatement);
+		assert Debugger.addSnapNode("Testing Expression", this.m_testingValue);
+		assert Debugger.addSnapNode("Expressions", this.m_expressions);
+		assert Debugger.addSnapNode("Else statement", this.m_elseStatement);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setElseStatement(ScriptExecutable_IfStatement statement) {
-		if (m_elseStatement != null) {
-			m_elseStatement.setElseStatement(statement);
+		if (this.m_elseStatement != null) {
+			this.m_elseStatement.setElseStatement(statement);
 		} else {
-			m_elseStatement = statement;
+			this.m_elseStatement = statement;
 		}
 	}
 
 	// Returnable implementation
 	@Override
 	public boolean shouldReturn() {
-		return m_shouldReturn;
+		return this.m_shouldReturn;
 	}
 }

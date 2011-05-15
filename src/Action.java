@@ -4,12 +4,12 @@ public abstract class Action implements Comparable {
 
 	@Override
 	public int compareTo(Object obj) {
-		return toString().compareTo(((Action) obj).toString());
+		return this.toString().compareTo(((Action) obj).toString());
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return toString().equals(((Action) obj).toString());
+		return this.toString().equals(((Action) obj).toString());
 	}
 
 	@Override

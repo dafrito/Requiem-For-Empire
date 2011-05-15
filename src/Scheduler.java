@@ -13,33 +13,33 @@ class ScheduledEvent implements Comparable, Nodeable {
 	private ScriptTemplate_Abstract m_listener;
 
 	public ScheduledEvent(long time, Asset asset, ScriptTemplate_Abstract listener) {
-		m_time = new Long(time);
-		m_asset = asset;
-		m_listener = listener;
+		this.m_time = new Long(time);
+		this.m_asset = asset;
+		this.m_listener = listener;
 	}
 
 	@Override
 	public int compareTo(Object o) {
-		return m_time.compareTo(((ScheduledEvent) o).getTime());
+		return this.m_time.compareTo(((ScheduledEvent) o).getTime());
 	}
 
 	public Asset getAsset() {
-		return m_asset;
+		return this.m_asset;
 	}
 
 	public ScriptTemplate_Abstract getListener() {
-		return m_listener;
+		return this.m_listener;
 	}
 
 	public long getTime() {
-		return m_time.longValue();
+		return this.m_time.longValue();
 	}
 
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Scheduled Event (" + m_time + ")");
-		assert Debugger.addNode(m_asset);
-		assert Debugger.addSnapNode("Listener", m_listener);
+		assert Debugger.openNode("Scheduled Event (" + this.m_time + ")");
+		assert Debugger.addNode(this.m_asset);
+		assert Debugger.addSnapNode("Listener", this.m_listener);
 		assert Debugger.closeNode();
 		return true;
 	}
@@ -57,59 +57,59 @@ public class Scheduler implements ActionListener, ScriptConvertible, Nodeable {
 	private boolean m_inProgress;
 
 	public Scheduler(ScriptEnvironment env) {
-		m_environment = env;
-		m_timer = new Timer(10, this);
-		m_compression = 1.0d;
-		env.addTimer(m_timer);
+		this.m_environment = env;
+		this.m_timer = new Timer(10, this);
+		this.m_compression = 1.0d;
+		env.addTimer(this.m_timer);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		long differential = (long) (((getCurrentTime() - m_lastIteration)) * m_compression);
-		m_lastIteration = getCurrentTime();
-		m_gameTime += differential;
+		long differential = (long) (((this.getCurrentTime() - this.m_lastIteration)) * this.m_compression);
+		this.m_lastIteration = this.getCurrentTime();
+		this.m_gameTime += differential;
 		List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
 		int i = 0;
 		try {
-			m_inProgress = true;
-			Iterator<ScheduledEvent> iter = m_events.iterator();
+			this.m_inProgress = true;
+			Iterator<ScheduledEvent> iter = this.m_events.iterator();
 			while (iter.hasNext()) {
 				ScheduledEvent event = iter.next();
-				if (event.getTime() <= m_gameTime) {
+				if (event.getTime() <= this.m_gameTime) {
 					assert Debugger.openNode("Event Iteration", "Iterating event");
 					assert Debugger.addNode(event);
 					i++;
 					ScriptTemplate_Abstract listener = event.getListener();
 					if (listener == null) {
-						listener = getDefaultListener();
+						listener = this.getDefaultListener();
 					}
 					params.clear();
-					params.add(Parser.getRiffLong(getEnvironment(), differential));
-					params.add(Parser.getRiffAsset(getEnvironment(), event.getAsset()));
-					ScriptExecutable_CallFunction.callFunction(getEnvironment(), null, listener, "iterate", params);
+					params.add(Parser.getRiffLong(this.getEnvironment(), differential));
+					params.add(Parser.getRiffAsset(this.getEnvironment(), event.getAsset()));
+					ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, listener, "iterate", params);
 					assert Debugger.closeNode();
 					iter.remove();
 				}
 			}
-			m_inProgress = false;
-			for (ScheduledEvent event : m_tempList) {
-				m_events.add(event);
+			this.m_inProgress = false;
+			for (ScheduledEvent event : this.m_tempList) {
+				this.m_events.add(event);
 			}
-			m_tempList.clear();
+			this.m_tempList.clear();
 		} catch (Exception_Nodeable exception) {
-			throw new Exception_InternalError(getEnvironment(), exception);
+			throw new Exception_InternalError(this.getEnvironment(), exception);
 		}
 	}
 
 	@Override
 	public Object convert() {
-		FauxTemplate_Scheduler scheduler = new FauxTemplate_Scheduler(getEnvironment(), ScriptValueType.createType(getEnvironment(), FauxTemplate_Scheduler.SCHEDULERSTRING));
+		FauxTemplate_Scheduler scheduler = new FauxTemplate_Scheduler(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scheduler.SCHEDULERSTRING));
 		scheduler.setScheduler(this);
 		return scheduler;
 	}
 
 	public long getCurrentGameTime() {
-		return m_gameTime;
+		return this.m_gameTime;
 	}
 
 	public long getCurrentTime() {
@@ -117,47 +117,47 @@ public class Scheduler implements ActionListener, ScriptConvertible, Nodeable {
 	}
 
 	public ScriptTemplate_Abstract getDefaultListener() {
-		return m_defaultListener;
+		return this.m_defaultListener;
 	}
 
 	public ScriptEnvironment getEnvironment() {
-		return m_environment;
+		return this.m_environment;
 	}
 
 	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Scheduler");
-		assert Debugger.addNode("Compression: " + m_compression);
-		assert Debugger.addNode("Game-Time (In seconds from start): " + m_gameTime);
-		assert Debugger.addNode("Last Iteration: " + m_lastIteration);
-		assert Debugger.addNode("Default listener: " + m_defaultListener);
-		assert Debugger.addSnapNode("Events (" + m_events.size() + " event(s))", m_events);
+		assert Debugger.addNode("Compression: " + this.m_compression);
+		assert Debugger.addNode("Game-Time (In seconds from start): " + this.m_gameTime);
+		assert Debugger.addNode("Last Iteration: " + this.m_lastIteration);
+		assert Debugger.addNode("Default listener: " + this.m_defaultListener);
+		assert Debugger.addSnapNode("Events (" + this.m_events.size() + " event(s))", this.m_events);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void schedule(long time, Asset asset, ScriptTemplate_Abstract listener) {
-		ScheduledEvent event = new ScheduledEvent(getCurrentGameTime() + time, asset, listener);
+		ScheduledEvent event = new ScheduledEvent(this.getCurrentGameTime() + time, asset, listener);
 		assert Debugger.addSnapNode("Scheduler Additions", "Adding event to scheduler", event);
-		if (m_inProgress) {
-			m_tempList.add(event);
+		if (this.m_inProgress) {
+			this.m_tempList.add(event);
 		} else {
-			m_events.add(event);
+			this.m_events.add(event);
 		}
 	}
 
 	public void setDefaultListener(ScriptTemplate_Abstract defaulter) {
-		m_defaultListener = defaulter;
+		this.m_defaultListener = defaulter;
 	}
 
 	public void start() {
-		m_timer.start();
-		m_lastIteration = getCurrentTime();
-		m_gameTime = 0;
+		this.m_timer.start();
+		this.m_lastIteration = this.getCurrentTime();
+		this.m_gameTime = 0;
 	}
 
 	public void stop() {
-		m_timer.stop();
+		this.m_timer.stop();
 	}
 
 }

@@ -32,7 +32,7 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 				throw new Exception_Nodeable_FunctionNotFound(ref, name, params);
 			}
 			if (rawTemplate == null) {
-				rawTemplate = createObject(ref, rawTemplate);
+				rawTemplate = this.createObject(ref, rawTemplate);
 			}
 			assert Debugger.closeNode();
 			return rawTemplate;
@@ -45,15 +45,15 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing object faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
-		disableFullCreation();
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.disableFullCreation();
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_Object(getEnvironment(), getType());
+		return new FauxTemplate_Object(this.getEnvironment(), this.getType());
 	}
 
 	@Override

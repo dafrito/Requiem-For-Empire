@@ -9,24 +9,24 @@ public class NamedTreePath extends TreePath {
 
 	public NamedTreePath(String name, Object[] array) {
 		super(array);
-		m_name = name;
+		this.m_name = name;
 	}
 
 	public NamedTreePath(String name, TreePath path) {
 		super(path.getPath());
-		m_name = name;
+		this.m_name = name;
 	}
 
 	public String getName() {
-		return m_name;
+		return this.m_name;
 	}
 
 	public void setName(String name) {
-		m_name = name;
+		this.m_name = name;
 	}
 
 	@Override
 	public String toString() {
-		return m_name;
+		return this.m_name;
 	}
 }

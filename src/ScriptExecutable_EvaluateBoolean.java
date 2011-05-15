@@ -4,15 +4,15 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 
 	public ScriptExecutable_EvaluateBoolean(Referenced ref, ScriptValue_Abstract lhs, ScriptValue_Abstract rhs, ScriptOperatorType comparison) {
 		super(ref);
-		m_lhs = lhs;
-		m_rhs = rhs;
-		m_comparison = comparison;
+		this.m_lhs = lhs;
+		this.m_rhs = rhs;
+		this.m_comparison = comparison;
 	}
 
 	@Override
 	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
-		assert Debugger.addNode("Type Casting", "Casting (" + getType() + " to " + type + ")");
-		if (getType().equals(type)) {
+		assert Debugger.addNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
+		if (this.getType().equals(type)) {
 			return this;
 		}
 		throw new Exception_Nodeable_ClassCast(ref, this, type);
@@ -25,33 +25,33 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 		assert Debugger.addNode(this);
 		ScriptValue_Abstract returning = null;
 		assert Debugger.openNode("Getting left value");
-		assert Debugger.addSnapNode("Left before resolution", m_lhs);
-		ScriptValue_Abstract lhs = m_lhs.getValue();
+		assert Debugger.addSnapNode("Left before resolution", this.m_lhs);
+		ScriptValue_Abstract lhs = this.m_lhs.getValue();
 		assert Debugger.addSnapNode("Left", lhs);
 		assert Debugger.closeNode();
 		assert Debugger.openNode("Getting right value");
-		assert Debugger.addSnapNode("Right before resolution", m_rhs);
-		ScriptValue_Abstract rhs = m_rhs.getValue();
+		assert Debugger.addSnapNode("Right before resolution", this.m_rhs);
+		ScriptValue_Abstract rhs = this.m_rhs.getValue();
 		assert Debugger.addSnapNode("Right", rhs);
 		assert Debugger.closeNode();
-		switch (m_comparison) {
+		switch (this.m_comparison) {
 		case NONEQUIVALENCY:
-			returning = new ScriptValue_Boolean(getEnvironment(), !lhs.valuesEqual(this, rhs));
+			returning = new ScriptValue_Boolean(this.getEnvironment(), !lhs.valuesEqual(this, rhs));
 			break;
 		case LESS:
-			returning = new ScriptValue_Boolean(getEnvironment(), (lhs.valuesCompare(this, rhs) < 0));
+			returning = new ScriptValue_Boolean(this.getEnvironment(), (lhs.valuesCompare(this, rhs) < 0));
 			break;
 		case LESSEQUALS:
-			returning = new ScriptValue_Boolean(getEnvironment(), (lhs.valuesCompare(this, rhs) <= 0));
+			returning = new ScriptValue_Boolean(this.getEnvironment(), (lhs.valuesCompare(this, rhs) <= 0));
 			break;
 		case EQUIVALENCY:
-			returning = new ScriptValue_Boolean(getEnvironment(), lhs.valuesEqual(this, rhs));
+			returning = new ScriptValue_Boolean(this.getEnvironment(), lhs.valuesEqual(this, rhs));
 			break;
 		case GREATEREQUALS:
-			returning = new ScriptValue_Boolean(getEnvironment(), (lhs.valuesCompare(this, rhs) >= 0));
+			returning = new ScriptValue_Boolean(this.getEnvironment(), (lhs.valuesCompare(this, rhs) >= 0));
 			break;
 		case GREATER:
-			returning = new ScriptValue_Boolean(getEnvironment(), (lhs.valuesCompare(this, rhs) > 0));
+			returning = new ScriptValue_Boolean(this.getEnvironment(), (lhs.valuesCompare(this, rhs) > 0));
 			break;
 		default:
 			throw new Exception_InternalError("Invalid default");
@@ -68,37 +68,37 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 
 	@Override
 	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
-		return execute();
+		return this.execute();
 	}
 
 	@Override
 	public boolean isConvertibleTo(ScriptValueType type) {
-		return getType().equals(type);
+		return this.getType().equals(type);
 	}
 
 	// Nodeable implementation
 	@Override
 	public boolean nodificate() {
-		assert Debugger.openNode("Boolean Expression (" + ScriptOperator.getName(m_comparison) + ")");
+		assert Debugger.openNode("Boolean Expression (" + ScriptOperator.getName(this.m_comparison) + ")");
 		assert super.nodificate();
-		assert Debugger.addSnapNode("Left hand", m_lhs);
-		assert Debugger.addSnapNode("Right hand", m_rhs);
+		assert Debugger.addSnapNode("Left hand", this.m_lhs);
+		assert Debugger.addSnapNode("Right hand", this.m_rhs);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	@Override
 	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
-		return getValue().setValue(ref, value);
+		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return getValue().valuesCompare(ref, rhs);
+		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
 	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
-		return getValue().valuesEqual(ref, rhs);
+		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

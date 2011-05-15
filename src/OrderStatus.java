@@ -7,10 +7,10 @@ public class OrderStatus {
 	protected final int m_statusCode;
 
 	public OrderStatus(int code) {
-		m_statusCode = code;
+		this.m_statusCode = code;
 	}
 
 	public int getOrderStatus() {
-		return m_statusCode;
+		return this.m_statusCode;
 	}
 }

@@ -49,91 +49,91 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	private String m_prefix = "";
 
 	public Debug_ScriptElement(Debug_Environment debugger) {
-		m_debugger = debugger;
-		if (selectFile(false)) {
-			m_isValid = openFile();
+		this.m_debugger = debugger;
+		if (this.selectFile(false)) {
+			this.m_isValid = this.openFile();
 		}
 	}
 
 	public Debug_ScriptElement(Debug_Environment debugger, File file) {
-		m_debugger = debugger;
-		m_isValid = openFile(file);
+		this.m_debugger = debugger;
+		this.m_isValid = this.openFile(file);
 	}
 
 	public Debug_ScriptElement(Debug_Environment debugger, String string) {
-		m_debugger = debugger;
+		this.m_debugger = debugger;
 		if (string != null) {
-			m_file = new File(string);
+			this.m_file = new File(string);
 		}
-		m_isValid = openFile();
+		this.m_isValid = this.openFile();
 	}
 
 	public void addException(Exception exception) {
-		m_exceptions.add(exception);
-		m_prefix = "X ";
-		m_errors.setListData(m_displayedExceptions);
-		m_errors.setBorder(BorderFactory.createTitledBorder(getFilename() + "(" + m_exceptions.size() + " error(s))"));
+		this.m_exceptions.add(exception);
+		this.m_prefix = "X ";
+		this.m_errors.setListData(this.m_displayedExceptions);
+		this.m_errors.setBorder(BorderFactory.createTitledBorder(this.getFilename() + "(" + this.m_exceptions.size() + " error(s))"));
 		if (exception instanceof Exception_Nodeable) {
-			m_displayedExceptions.add(((Exception_Nodeable) exception).getName());
+			this.m_displayedExceptions.add(((Exception_Nodeable) exception).getName());
 		} else {
-			m_displayedExceptions.add(exception.getMessage());
+			this.m_displayedExceptions.add(exception.getMessage());
 		}
 	}
 
 	public boolean canRedo() {
-		return m_undoneEdits.size() > 0;
+		return this.m_undoneEdits.size() > 0;
 	}
 
 	public boolean canUndo() {
-		return m_edits.size() > 0;
+		return this.m_edits.size() > 0;
 	}
 
 	public boolean closeFile() {
-		m_debugger.showReferenced(this);
-		if (!hasChanged()) {
+		this.m_debugger.showReferenced(this);
+		if (!this.hasChanged()) {
 			return true;
 		}
-		int option = JOptionPane.showConfirmDialog(m_debugger, "This file has unsaved changes. Save?", getName(), JOptionPane.YES_NO_CANCEL_OPTION);
+		int option = JOptionPane.showConfirmDialog(this.m_debugger, "This file has unsaved changes. Save?", this.getName(), JOptionPane.YES_NO_CANCEL_OPTION);
 		if (option == JOptionPane.NO_OPTION) {
 			return true;
 		}
 		if (option == JOptionPane.CANCEL_OPTION) {
 			return false;
 		}
-		return saveFile();
+		return this.saveFile();
 	}
 
 	public boolean compile() {
-		String text = m_textArea.getText();
+		String text = this.m_textArea.getText();
 		String[] stringArray = text.split("\n");
 		java.util.List<Object> strings = new LinkedList<Object>();
 		for (int i = 0; i < stringArray.length; i++) {
-			strings.add(new ScriptLine(m_debugger.getEnvironment(), getFilename(), i + 1, stringArray[i]));
+			strings.add(new ScriptLine(this.m_debugger.getEnvironment(), this.getFilename(), i + 1, stringArray[i]));
 		}
-		m_width = getWidth();
-		m_splitPane.setRightComponent(new JScrollPane(m_errors = new JList()));
-		m_splitPane.setDividerLocation(getWidth() - 200);
-		m_errors.addListSelectionListener(this);
-		m_errors.addMouseListener(this);
-		m_exceptions = Parser.preparseFile(m_debugger.getEnvironment(), getFilename(), strings);
-		m_displayedExceptions = new Vector<String>();
-		if (m_exceptions.size() == 0) {
-			m_errors.setBorder(BorderFactory.createTitledBorder("Compiled Successfully"));
-			m_prefix = "";
+		this.m_width = this.getWidth();
+		this.m_splitPane.setRightComponent(new JScrollPane(this.m_errors = new JList()));
+		this.m_splitPane.setDividerLocation(this.getWidth() - 200);
+		this.m_errors.addListSelectionListener(this);
+		this.m_errors.addMouseListener(this);
+		this.m_exceptions = Parser.preparseFile(this.m_debugger.getEnvironment(), this.getFilename(), strings);
+		this.m_displayedExceptions = new Vector<String>();
+		if (this.m_exceptions.size() == 0) {
+			this.m_errors.setBorder(BorderFactory.createTitledBorder("Compiled Successfully"));
+			this.m_prefix = "";
 			return true;
 		} else {
-			for (Exception ex : m_exceptions) {
+			for (Exception ex : this.m_exceptions) {
 				if (ex instanceof Exception_Nodeable) {
-					m_displayedExceptions.add(((Exception_Nodeable) ex).getName());
+					this.m_displayedExceptions.add(((Exception_Nodeable) ex).getName());
 				} else if (ex instanceof Exception_InternalError) {
-					m_displayedExceptions.add(((Exception_InternalError) ex).getName());
+					this.m_displayedExceptions.add(((Exception_InternalError) ex).getName());
 				} else {
-					m_displayedExceptions.add(ex.getMessage());
+					this.m_displayedExceptions.add(ex.getMessage());
 				}
 			}
-			m_errors.setListData(m_displayedExceptions);
-			m_errors.setBorder(BorderFactory.createTitledBorder(getName() + "(" + m_exceptions.size() + " error(s))"));
-			m_prefix = "X ";
+			this.m_errors.setListData(this.m_displayedExceptions);
+			this.m_errors.setBorder(BorderFactory.createTitledBorder(this.getName() + "(" + this.m_exceptions.size() + " error(s))"));
+			this.m_prefix = "X ";
 			return false;
 		}
 	}
@@ -148,12 +148,12 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 
 	@Override
 	public void componentResized(ComponentEvent x) {
-		double location = ((double) m_splitPane.getDividerLocation()) / (double) m_width;
+		double location = ((double) this.m_splitPane.getDividerLocation()) / (double) this.m_width;
 		if (location > 1) {
 			location = 1;
 		}
-		m_splitPane.setDividerLocation((int) (getWidth() * location));
-		m_width = getWidth();
+		this.m_splitPane.setDividerLocation((int) (this.getWidth() * location));
+		this.m_width = this.getWidth();
 	}
 
 	@Override
@@ -161,24 +161,24 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	}
 
 	public String getFilename() {
-		if (m_file != null) {
-			return m_file.getName();
+		if (this.m_file != null) {
+			return this.m_file.getName();
 		}
 		return "Untitled " + m_fileNumber++;
 	}
 
 	@Override
 	public String getName() {
-		return m_prefix + getFilename();
+		return this.m_prefix + this.getFilename();
 	}
 
 	public boolean hasChanged() {
-		return m_hasChanged;
+		return this.m_hasChanged;
 	}
 
 	@Override
 	public boolean isValid() {
-		return m_isValid;
+		return this.m_isValid;
 	}
 
 	@Override
@@ -186,38 +186,38 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 		if (e.getClickCount() != 2) {
 			return;
 		}
-		if (m_errors.getSelectedValue() == null) {
+		if (this.m_errors.getSelectedValue() == null) {
 			return;
 		}
-		Exception rawEx = m_exceptions.get(m_errors.getSelectedIndex());
+		Exception rawEx = this.m_exceptions.get(this.m_errors.getSelectedIndex());
 		if (!(rawEx instanceof Exception_Nodeable)) {
 			return;
 		}
 		Exception_Nodeable ex = (Exception_Nodeable) rawEx;
-		String[] array = m_textArea.getText().split("\n");
+		String[] array = this.m_textArea.getText().split("\n");
 		int offset = 0;
-		m_textArea.requestFocus();
+		this.m_textArea.requestFocus();
 		for (int i = 0; i < ex.getLineNumber(); i++) {
 			if (array.length - 1 == i) {
-				m_textArea.setCaretPosition(offset);
+				this.m_textArea.setCaretPosition(offset);
 				return;
 			}
 			offset += array[i].length() + 1;
 			if (i == ex.getLineNumber() - 1) {
 				i++;
 				if (array[i].length() < ex.getOffset()) {
-					m_textArea.setCaretPosition(offset + array[i].length());
+					this.m_textArea.setCaretPosition(offset + array[i].length());
 					return;
 				}
 				if (array[i].substring(ex.getOffset()).length() < (ex.getLength() - ex.getOffset())) {
-					m_textArea.setCaretPosition(offset + ex.getOffset());
-					m_textArea.select(offset + ex.getOffset(), offset + array[i].length() - ex.getOffset());
+					this.m_textArea.setCaretPosition(offset + ex.getOffset());
+					this.m_textArea.select(offset + ex.getOffset(), offset + array[i].length() - ex.getOffset());
 					return;
 				}
 				break;
 			}
 		}
-		m_textArea.select(offset + ex.getOffset() + 1, 1 + offset + ex.getOffset() + ex.getLength());
+		this.m_textArea.select(offset + ex.getOffset() + 1, 1 + offset + ex.getOffset() + ex.getLength());
 	}
 
 	@Override
@@ -237,24 +237,24 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	}
 
 	public boolean openFile() {
-		return openFile(m_file);
+		return this.openFile(this.m_file);
 	}
 
 	public boolean openFile(File file) {
-		setLayout(new GridLayout(0, 1));
-		m_splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		m_splitPane.add(new JScrollPane(m_textArea = new JTextArea()));
-		add(m_splitPane);
-		m_textArea.setFont(new Font("Courier", Font.PLAIN, 12));
+		this.setLayout(new GridLayout(0, 1));
+		this.m_splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		this.m_splitPane.add(new JScrollPane(this.m_textArea = new JTextArea()));
+		this.add(this.m_splitPane);
+		this.m_textArea.setFont(new Font("Courier", Font.PLAIN, 12));
 		if (file != null) {
-			m_file = file;
-			if (!readFile()) {
+			this.m_file = file;
+			if (!this.readFile()) {
 				return false;
 			}
 		}
-		m_textArea.getDocument().addUndoableEditListener(this);
-		addComponentListener(this);
-		setVisible(true);
+		this.m_textArea.getDocument().addUndoableEditListener(this);
+		this.addComponentListener(this);
+		this.setVisible(true);
 		return true;
 	}
 
@@ -264,7 +264,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	}
 
 	public boolean readFile() {
-		return readFile(m_file);
+		return this.readFile(this.m_file);
 	}
 
 	public boolean readFile(File file) {
@@ -272,7 +272,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
 			byte[] b = new byte[in.available()];
 			in.read(b, 0, b.length);
-			m_textArea.setText(new String(b, 0, b.length));
+			this.m_textArea.setText(new String(b, 0, b.length));
 			in.close();
 			return true;
 		} catch (IOException ex) {
@@ -282,37 +282,37 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	}
 
 	public void redo() {
-		setChanged(true);
-		if (m_undoneEdits.size() > 0) {
-			CompoundEdit edit = m_undoneEdits.pop();
+		this.setChanged(true);
+		if (this.m_undoneEdits.size() > 0) {
+			CompoundEdit edit = this.m_undoneEdits.pop();
 			edit.redo();
-			m_edits.push(edit);
-			if (m_undoneEdits.size() == 0) {
-				m_debugger.setCanRedo(false);
+			this.m_edits.push(edit);
+			if (this.m_undoneEdits.size() == 0) {
+				this.m_debugger.setCanRedo(false);
 			}
-			m_debugger.setCanUndo(true);
+			this.m_debugger.setCanUndo(true);
 		}
 	}
 
 	public boolean saveFile() {
-		if (!hasChanged()) {
+		if (!this.hasChanged()) {
 			return true;
 		}
-		if (m_file == null) {
-			return saveFileAs();
+		if (this.m_file == null) {
+			return this.saveFileAs();
 		}
-		return writeFile();
+		return this.writeFile();
 	}
 
 	public boolean saveFileAs() {
-		m_debugger.showReferenced(this);
-		if (!selectFile(true)) {
+		this.m_debugger.showReferenced(this);
+		if (!this.selectFile(true)) {
 			return false;
 		}
-		if (!writeFile()) {
+		if (!this.writeFile()) {
 			return false;
 		}
-		m_debugger.resetTitle(this);
+		this.m_debugger.resetTitle(this);
 		return true;
 	}
 
@@ -329,9 +329,9 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 		}
 		if (choice == JFileChooser.APPROVE_OPTION) {
 			if (fileChooser.getSelectedFile().getName().indexOf(".") == -1) {
-				m_file = new File(fileChooser.getSelectedFile().getName() + ".RiffScript");
+				this.m_file = new File(fileChooser.getSelectedFile().getName() + ".RiffScript");
 			} else {
-				m_file = fileChooser.getSelectedFile();
+				this.m_file = fileChooser.getSelectedFile();
 			}
 			return true;
 		}
@@ -339,54 +339,54 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	}
 
 	public void setChanged(boolean changed) {
-		m_hasChanged = changed;
+		this.m_hasChanged = changed;
 		if (changed) {
-			m_prefix = "* ";
+			this.m_prefix = "* ";
 		} else {
-			m_prefix = "";
+			this.m_prefix = "";
 		}
-		m_debugger.setChanged(changed);
+		this.m_debugger.setChanged(changed);
 	}
 
 	public void setPrefix(String prefix) {
-		m_prefix = prefix;
+		this.m_prefix = prefix;
 	}
 
 	public void undo() {
-		setChanged(true);
-		m_edits.peek().end();
-		if (m_edits.size() > 0) {
-			CompoundEdit edit = m_edits.pop();
+		this.setChanged(true);
+		this.m_edits.peek().end();
+		if (this.m_edits.size() > 0) {
+			CompoundEdit edit = this.m_edits.pop();
 			if (edit.canUndo()) {
 				edit.undo();
 			}
-			m_undoneEdits.push(edit);
-			if (m_edits.size() == 0) {
-				m_debugger.setCanUndo(false);
+			this.m_undoneEdits.push(edit);
+			if (this.m_edits.size() == 0) {
+				this.m_debugger.setCanUndo(false);
 			}
-			m_debugger.setCanRedo(true);
+			this.m_debugger.setCanRedo(true);
 		}
 	}
 
 	@Override
 	public void undoableEditHappened(UndoableEditEvent e) {
-		if (m_edits.size() > 0) {
-			if (System.currentTimeMillis() - m_lastEdit > 1000) {
-				m_edits.peek().end();
+		if (this.m_edits.size() > 0) {
+			if (System.currentTimeMillis() - this.m_lastEdit > 1000) {
+				this.m_edits.peek().end();
 			} else {
-				m_edits.peek().addEdit(e.getEdit());
+				this.m_edits.peek().addEdit(e.getEdit());
 				return;
 			}
 		}
 		if (e.getEdit().isSignificant()) {
-			setChanged(true);
-			m_debugger.setCanUndo(true);
+			this.setChanged(true);
+			this.m_debugger.setCanUndo(true);
 			CompoundEdit edit = new CompoundEdit();
 			edit.addEdit(e.getEdit());
-			m_edits.add(edit);
-			m_undoneEdits.clear();
+			this.m_edits.add(edit);
+			this.m_undoneEdits.clear();
 		}
-		m_lastEdit = System.currentTimeMillis();
+		this.m_lastEdit = System.currentTimeMillis();
 	}
 
 	@Override
@@ -395,15 +395,15 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	}
 
 	public boolean writeFile() {
-		return writeFile(m_file);
+		return this.writeFile(this.m_file);
 	}
 
 	public boolean writeFile(File file) {
 		try {
 			FileWriter writer = new FileWriter(file);
-			writer.write(m_textArea.getText(), 0, m_textArea.getText().length());
+			writer.write(this.m_textArea.getText(), 0, this.m_textArea.getText().length());
 			writer.close();
-			setChanged(false);
+			this.setChanged(false);
 			return true;
 		} catch (IOException ex) {
 			JOptionPane.showMessageDialog(this, "File failed to save: " + file.getName(), "IOException", JOptionPane.ERROR_MESSAGE);

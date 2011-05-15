@@ -16,7 +16,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 	// Convertible and Nodeable implementations
 	@Override
 	public Object convert() {
-		return m_list;
+		return this.m_list;
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -30,7 +30,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
-				template = (FauxTemplate_List) createObject(ref, template);
+				template = (FauxTemplate_List) this.createObject(ref, template);
 			}
 			params.clear();
 		} else if (name.equals("add")) {
@@ -46,15 +46,15 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 			return template.getList().get(Parser.getInteger(params.get(0)));
 		} else if (name.equals("size")) {
 			assert Debugger.closeNode();
-			return Parser.getRiffInt(getEnvironment(), template.getList().size());
+			return Parser.getRiffInt(this.getEnvironment(), template.getList().size());
 		}
-		returning = getExtendedFauxClass().execute(ref, name, params, template);
+		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
 
 	public List<ScriptValue_Abstract> getList() {
-		return m_list;
+		return this.m_list;
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
@@ -62,43 +62,43 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing list faux template");
-		addConstructor(getType(), ScriptValueType.createEmptyParamList());
-		disableFullCreation();
-		getExtendedClass().initialize();
+		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.disableFullCreation();
+		this.getExtendedClass().initialize();
 		List<ScriptValue_Abstract> fxnParams = FauxTemplate.createEmptyParamList();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.getObjectType(getEnvironment())));
-		addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.getObjectType(this.getEnvironment())));
+		this.addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = FauxTemplate.createEmptyParamList();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), getType()));
-		addFauxFunction("addAll", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), this.getType()));
+		this.addFauxFunction("addAll", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = FauxTemplate.createEmptyParamList();
-		fxnParams.add(new ScriptValue_Faux(getEnvironment(), ScriptValueType.INT));
-		addFauxFunction("get", ScriptValueType.getObjectType(getEnvironment()), fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.INT));
+		this.addFauxFunction("get", ScriptValueType.getObjectType(this.getEnvironment()), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = FauxTemplate.createEmptyParamList();
-		addFauxFunction("size", ScriptValueType.INT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("size", ScriptValueType.INT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 
 	// Define default constructor here
 	@Override
 	public ScriptTemplate instantiateTemplate() {
-		return new FauxTemplate_List(getEnvironment(), getType());
+		return new FauxTemplate_List(this.getEnvironment(), this.getType());
 	}
 
 	@Override
 	public boolean nodificate() {
-		if (m_list == null) {
+		if (this.m_list == null) {
 			assert Debugger.openNode("List Faux Template (0 element(s))");
 		} else {
-			assert Debugger.openNode("List Faux Template (" + m_list.size() + " element(s))");
+			assert Debugger.openNode("List Faux Template (" + this.m_list.size() + " element(s))");
 		}
 		assert super.nodificate();
-		assert Debugger.addSnapNode(DebugString.ELEMENTS, m_list);
+		assert Debugger.addSnapNode(DebugString.ELEMENTS, this.m_list);
 		assert Debugger.closeNode();
 		return true;
 	}
 
 	public void setList(List<ScriptValue_Abstract> list) {
-		m_list = list;
+		this.m_list = list;
 	}
 }
