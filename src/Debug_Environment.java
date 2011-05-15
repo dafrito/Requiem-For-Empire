@@ -37,6 +37,7 @@ class CompileThread extends Thread {
 		this.shouldExecute = shouldExecute;
 	}
 
+	@Override
 	public void run() {
 		Debugger.hitStopWatch(Thread.currentThread().getName());
 		this.debugEnvironment.getEnvironment().reset();
@@ -259,6 +260,7 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 	}
 
 	// Listeners
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getActionCommand().equals("Exit")) {
 			java.util.List<Debug_ScriptElement> removedElements = new LinkedList<Debug_ScriptElement>();
@@ -286,7 +288,7 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 				this.addReferenced(element);
 			}
 		} else if (event.getSource().equals(this.closeFile)) {
-			if (((Debug_ScriptElement) this.scriptElements.get(this.tabbedPane.getSelectedIndex() - 1)).closeFile()) {
+			if ((this.scriptElements.get(this.tabbedPane.getSelectedIndex() - 1)).closeFile()) {
 				int index = this.tabbedPane.getSelectedIndex();
 				this.tabbedPane.remove(index);
 				this.scriptElements.remove(index - 1);
@@ -702,6 +704,7 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 		this.tabbedPane.setSelectedIndex(this.scriptElements.indexOf(element) + 1);
 	}
 
+	@Override
 	public void stateChanged(ChangeEvent e) {
 		if (this.tabbedPane.getSelectedIndex() == 0) {
 			this.closeFile.setEnabled(false);
@@ -978,6 +981,7 @@ class ExecutionThread extends Thread {
 		this.debugEnvironment = debugEnv;
 	};
 
+	@Override
 	public void run() {
 		Debugger.hitStopWatch(Thread.currentThread().getName());
 		this.debugEnvironment.getEnvironment().execute();

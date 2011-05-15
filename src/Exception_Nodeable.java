@@ -656,10 +656,12 @@ class Exception_Nodeable_VariableAlreadyDefined extends Exception_Nodeable {
 		this.name = name;
 	}
 
+	@Override
 	public void getExtendedInformation() {
 		assert Debugger.addSnapNode("The variable, " + this.name + ", has already been defined in the corresponding template", this.template);
 	}
 
+	@Override
 	public String getName() {
 		return "Predefined Variable (" + this.name + ")";
 	}
@@ -677,10 +679,12 @@ class Exception_Nodeable_VariableNotFound extends Exception_Nodeable {
 		this.name = name;
 	}
 
+	@Override
 	public void getExtendedInformation() {
 		assert Debugger.addNode("The variable, " + this.name + ", was not found");
 	}
 
+	@Override
 	public String getName() {
 		return "Variable Not Found (" + this.name + ")";
 	}
@@ -699,10 +703,12 @@ class Exception_Nodeable_VariableTypeAlreadyDefined extends Exception_Nodeable {
 		this.type = type;
 	}
 
+	@Override
 	public void getExtendedInformation() {
 		assert Debugger.addNode("The variable type, " + this.type + ", has already been defined");
 	}
 
+	@Override
 	public String getName() {
 		return "Predefined Variable-Type (" + this.type + ")";
 	}
@@ -725,10 +731,12 @@ class Exception_Nodeable_VariableTypeNotFound extends Exception_Nodeable {
 		this.type = type;
 	}
 
+	@Override
 	public void getExtendedInformation() {
 		assert Debugger.addNode("The variable type, " + this.type + ", was not found");
 	}
 
+	@Override
 	public String getName() {
 		return "Undefined Variable-Type (" + this.type + ")";
 	}

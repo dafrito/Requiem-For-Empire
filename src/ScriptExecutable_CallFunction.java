@@ -36,13 +36,6 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 		if (functionTemplate.getType().equals(object.getType()) && !function.isStatic()) {
 			functionTemplate = (ScriptTemplate_Abstract) object;
 		}
-		if (function == null) {
-			if (ref == null) {
-				throw new Exception_Nodeable_FunctionNotFound(env, name, params);
-			} else {
-				throw new Exception_Nodeable_FunctionNotFound(ref, name, params);
-			}
-		}
 		assert Debugger.addSnapNode("Function", function);
 		assert Debugger.addSnapNode("Function's Template", functionTemplate);
 		if (!function.isStatic() && !(functionTemplate).isObject()) {
