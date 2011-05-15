@@ -1,4 +1,4 @@
-The Vanity Log.s
+The Vanity Log.
 05-11-2006 - Ascetic lifestyle begins.
 05-11-2006 - 5:07 AM - 6,999 lines in 118 files
 05-11-2006 - 9:20 AM - 7,099 lines in 120 files
@@ -60,4 +60,4 @@ The Vanity Log.s
 08-21-2006 - 4:20AM - 11,490 lines in 122 files (Removed all our old Asset shit, added RiffDali, Asset, Idea classes and matching faux template and began work on adding drawing functions to the script)
 08-26-2006 - 7:34AM - 12,233 lines in 125 files (Don't know how I got here. Though I did add the exception/ignore part to the debugger)
 08-29-2006 - 8:09AM - 12,713 lines in 126 files (Continued work.)
-09-05-2005 - 7:51AM - 12,965 lines in 128 files
+09-05-2006 - 7:51AM - 12,965 lines in 128 files
