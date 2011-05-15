@@ -1,7 +1,11 @@
-import java.util.*;
-public interface Interface_Container{
-	public void clear();
+import java.util.List;
+
+public interface Interface_Container {
 	public void add(GraphicalElement element);
-	public List<GraphicalElement> getElements();
+
+	public void clear();
+
 	public InterfaceElement getContainerElement();
+
+	public List<GraphicalElement> getElements();
 }

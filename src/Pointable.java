@@ -1,3 +1,3 @@
-public interface Pointable{
-	
+public interface Pointable {
+
 }

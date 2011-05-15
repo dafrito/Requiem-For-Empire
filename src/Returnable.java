@@ -1,5 +1,6 @@
-public interface Returnable{
+public interface Returnable {
+	public ScriptValue_Abstract getReturnValue() throws Exception_Nodeable;
+
 	// Returnable implementation
 	public boolean shouldReturn();
-	public ScriptValue_Abstract getReturnValue()throws Exception_Nodeable;
 }

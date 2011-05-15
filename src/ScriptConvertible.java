@@ -1,3 +1,3 @@
-public interface ScriptConvertible{
+public interface ScriptConvertible {
 	public Object convert();
 }

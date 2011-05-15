@@ -1,3 +1,3 @@
-public interface Nodeable{
+public interface Nodeable {
 	public boolean nodificate();
 }

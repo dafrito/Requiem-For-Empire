@@ -1,1 +1,2 @@
-public interface RiffInterface_Event{}
+public interface RiffInterface_Event {
+}
