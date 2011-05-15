@@ -1,0 +1,71 @@
+RiffScriptAssignmentExpression
+RiffScriptForStatement
+RiffScriptFunctionParamCreator
+RiffScriptIfStatement
+RiffScriptMathematicAssignmentExpression
+RiffScriptElement
+ - RiffScriptOperator
+ - RiffScriptLine
+ - RiffScriptKeyword
+   - RiffScriptKeywordPlaceholder
+   - RiffScriptObjectKeyword
+ - RiffScriptValue
+   - RiffScriptAutoMathematicator
+   - RiffScriptCastExpression
+   - RiffScriptStringValue
+   - RiffScriptVariable
+     - RiffScriptVariableCreationElement
+     - RiffScriptVariablePlaceholder
+   - RiffScriptFunctionCall
+    - RiffScriptMathematicExpression
+    - RiffScriptNumericValue
+    - RiffScriptBooleanValue
+      - RiffScriptBooleanExpression
+      - RiffScriptBooleanInverter
+      - RiffScriptCombinationBooleanExpression
+   - RiffScriptObjectTemplate
+     - RiffScriptObject
+     - RiffScriptTemplatePlaceholderElement
+     - RiffScriptFauxTemplate
+       - RiffScriptFauxTemplate_DiscreteRegion
+       - RiffScriptFauxTemplate_Interface
+       - RiffScriptFauxTemplate_Line
+       - RiffScriptFauxTemplate_List
+       - RiffScriptFauxTemplate_Object
+       - RiffScriptFauxTemplate_Point
+       - RiffScriptFauxTemplate_InterfaceElement
+         - RiffScriptFauxTemplate_Label
+	 - RiffScriptFauxTemplate_Panel
+	 - RiffScriptFauxTemplate_Rectangle
+RiffScriptFunction
+ - RiffScriptConstructorFunction
+ - RiffScriptFauxFunction
+RiffScriptGroup
+ - RiffScriptCurlyGroup
+ - RiffScriptParamGroup
+RiffScriptKeyword
+ - RiffScriptDynamicKeyword
+RiffScriptReturnValue
+
+---------------
+Stylesheets
+	Stylesheets are created like all core RiffScript elements by defining them as a stylesheet, giving them a name, and opening curly parenthesis enclosing all stylesheet instructions within. Stylesheet syntax mimicks CSS standards exactly and thus those specifics will not be further discussedh in this document.
+	Stylesheets only have one class-level parameter, which is 'unique.' This would be the same as putting #stylesheetName in an CSS document. Whether a stylesheet is truly unique in that it's only being used by one element, can only be verified at runtime since stylesheets themselves can be created at runtime.
+	All stylesheets created in a CSS-fashion (That is, not at runtime) generate a global-level variable referencing themselves.
+	While stylesheet in CSS are merely glorified structs, RiffScript implements a faux-interface to create and modify stylesheets at runtime. All stylesheets have a getElement function to access the status of any given CSS parameter, and, if undefined, returns null. Otherwise, it returns the string-value of the element queried as it would appear in a CSS-document. Setting a CSS parameter works in a similiar fashion, calling the setElement function with a string as the element-name, and another string as the value. In this way, all stylesheets behave as classes as though they were objects with their real functionality hidden from RiffScript's parser. 
+	The fact that Styleshets are objects mean that they can also be extended as long as they override the getElement and setElement functions and the single constructor.
+Class - Label
+	extends RiffInterfaceElement
+
+Functions
+
+	constructor()
+		creates a blank label.
+	constructor(String string)
+		creates a label with the string as the label.
+	constructor(String id, String string)
+		creates a label with id as the name of the element, and string as the label. The element will also try a unique stylesheet with the id as the name of that stylesheet and, if found, will make it its own styleshet.
+	constructor(Stylesheet id, String string)
+		creates a label with the stylesheet as the unique-stylesheet of the element, using its name as the element's name, and the string as the label.
+	constructor(String id, Stylesheet class, String string)
+		creates a label with the same characteristics as the previous constructors, but also sets the class-stylesheet to the provided variable class.

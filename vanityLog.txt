@@ -1,0 +1,63 @@
+The Vanity Log.s
+05-11-2006 - Ascetic lifestyle begins.
+05-11-2006 - 5:07 AM - 6,999 lines in 118 files
+05-11-2006 - 9:20 AM - 7,099 lines in 120 files
+05-12-2006 - A day of sleeping and rest.
+05-13-2006 - 12:39 AM - 7,302 lines in 126 files
+05-13-2006 - 12:41 AM - Taco Time
+05-13-2006 - 1:08 AM - The Weetabust was envisioned.
+05-13-2006 - 2:11 PM - 7,409 lines in 134 files
+05-13-2006 - RFE Fascist Banners envisioned.
+05-13-2006 - 3:31 PM - Sleep.
+05-14-2006 - 5:36 AM - 7,515 lines in 134 files (CSS Borders added)
+05-14-2006 - 5:48 AM - The Great Border Culling reduces numbers to: 7,420 lines in 131 files
+05-15-2006 - 12:28 PM - 7,675 lines in 135 files (Continued with borders, refining box model)
+05-23-2006 - 12:30 PM - 7,874 lines in 147 files (Working on function parsing)
+05-24-2006 - 6:42 PM - 7,864 lines in 142 files (Heavy cleanup,streamlining,robustification on parsing)
+05-25-2006 - 1:42 AM - 8,055 lines in 151 files (Further scripting)
+05-25-2006 - 1:54 AM - Burger time.
+05-26-2006 - 10:49 PM - 8,426 lines in 161 files (Scripting, scripting, scripting...)
+05-26-2006 - 3:09 AM - 8,488 lines in 162 (Scripting? Oh yes, scripting)
+05-27-2006 - 6:10 PM - Woke up to 8,505 lines in 159 files (Casting, which is scripting.)
+05-27-2006 - 10:00 PM - Wendy's.
+05-27-2006 - 11:03 PM - 8,924 lines in 170 files (Scriptatious scripting)
+05-29-2006 - 2:53 AM - Back to programming from WoW
+06-03-2006 - 8:45 PM - 9,551 lines in 179 files (Object-oriented scripting done)
+06-08-2006 - 12:21 PM - 10,003 lines in 191 files (First-half flow control done)
+06-14-2006 - 12:46 AM - 10,282 lines in 199 files (Continued scripting?)
+06-14-2006 - 07-04-2006 - World of Warcraft takes its toll.
+07-04-2006 - 1:32 PM - 10,251 lines in 193 files (Scripting (Right before mapping), removed lots and lots of redundancy in mathematics)
+07-08-2006 - 12:19PM - 10,396 lines in 199 files (Heavily revamped debugging system)
+07-08-2006 - 9:40PM - 10,611 lines in 203 files (Mapping work continued...)
+07-19-2006 - 4:43AM - 11,367 lines in 201 files (Core scripting done.)
+07-19-2006 - 5:31AM - DonutHole the Server.
+07-21-2006 - 9:50PM - 11,589 lines in 203 files (Mouse listeners added)
+08-02-2006 - 7:01AM - 11,785 lines in 204 files (Worked on panels, filtered-debugging, cleaned up polygon stuff(point-side test redundancy))
+08-04-2006 - 8:17AM - 12,057 lines in 205 files (Added a ridiculously robust spew)
+08-09-2006 - 5:10PM - 12,492 lines in 161 files ( _cleaned_ up the way we handle OO and fauxtemplates)
+08-11-2006 - 7:51AM - 12,418 lines in 164 files (Continued working converting scripting to our super-robust system (Yes, it's really super))
+	- also removed all remaining print-debug's in scriptingside
+	- forced all of our core scripting classes to implement interfaces instead of extend classes to ensure correctness (Function,Template,Value)
+	- condensed numericvalue templates
+	- corrected and standardized casting across all variable types
+	- corrected and streamlined fauxtemplate construction
+	- removed dual function lists(static vs regular) and streamlined function calls to the unified list
+	- converted remaining non-typesafe enums to proper enum's (variable types and keywords and operators)
+	- finally created a ScriptValueType class instead of the much dirtier RiffScriptKeyword
+	- removed all Riff's from scripting code and converted them to much simpler Script,Faux,etc.
+	- heavily streamlined which objects remember their debuginfo to conserve space
+	- our debug system now does not save redundant identical strings
+	- standardized function names for common function calls (getName,getType)
+	- revamped variable-typing system to be much easier to understand and is much cleaner (ofType, ofExactType --> isConvertibleTo, getType.equals)
+	- corrected some parameter-list-checking to be valid for faux and constructor functions by creating a static tester for them to call
+	- nodified all remaining script things that hadn't, and tried to standardize groups across variables for intelligent sorting in the debugger
+08-13-2006 - 2:47PM - 12,528 lines in 163 files (Continued bugfixing from the new system) (260 errors remaining)
+08-13-2006 - 4:44PM - 12,573 lines in 163 files (Bugfixing...) (198 errors remaining)
+08-13-2006 - 10:45PM - 12,602 lines in 163 files (Compile-time errors removed) (0 errors remaining)
+08-14-2006 - 4:32AM - 12,730 lines in 163 files (Worked out some runtime errors, added multifilter output listeners in debugging)
+08-16-2006 - 4:32AM - 13,072 lines in 166 files (No real progress made.)
+08-20-2006 - 4:15AM - 13,245 lines in 165 files (The Weetabuisnesscard was envisioned)
+08-21-2006 - 4:20AM - 11,490 lines in 122 files (Removed all our old Asset shit, added RiffDali, Asset, Idea classes and matching faux template and began work on adding drawing functions to the script)
+08-26-2006 - 7:34AM - 12,233 lines in 125 files (Don't know how I got here. Though I did add the exception/ignore part to the debugger)
+08-29-2006 - 8:09AM - 12,713 lines in 126 files (Continued work.)
+09-05-2005 - 7:51AM - 12,965 lines in 128 files

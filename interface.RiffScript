@@ -1,0 +1,122 @@
+class Number{
+	private double m_value;
+	public Number(double value){
+		m_value=value;
+	}
+	public double getValue(){return m_value;}
+	public void setValue(double value){m_value=value;}
+}
+class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator{
+	private Scenario m_scenario;
+	private Point m_point;
+	private Point m_otherPoint;
+	private Terrestrial m_terrestrial;
+	static Stylesheet m_sheet{
+		border:1px solid gray;
+		margin:5px;
+	}
+	public double evaluateMovementCost(DiscreteRegion region,Asset asset){
+		return 1.0d-((Terrain)region.getProperty("Terrain")).getBrushDensity();
+	}
+	public Scenario getScenario(){return m_scenario;}
+	public NubBaseOne(){
+		Panel panel=new Panel(m_sheet);
+		m_terrestrial=new Terrestrial(1000);
+		panel.setRiffDali(this);
+		panel.setTerrestrial(m_terrestrial);
+		
+		// first region
+		DiscreteRegion region=new DiscreteRegion();
+		region.add(new Point(0,0,0));
+		region.add(new Point(200,0,0));
+		region.add(new Point(200,50,0));
+		region.add(new Point(0,50,0));
+		Terrain terrain=new Terrain();
+		terrain.setBrushDensity(0.1d,1.0d);
+		terrain.setElevation(0.5d,1.0d);
+		terrain.setGroundCohesion(1.0d,1.0d);
+		terrain.setTemperature(25.0d,1.0d);
+		terrain.setWaterDepth(0.0d,1.0d);
+		region.setProperty("Terrain",terrain);
+		m_terrestrial.add(region);
+		Asset asset=new Asset(m_point=region.getCenter());
+		asset.addAce(new Ace(new Archetype("Base"),1.0d));
+		asset.setProperty("Foo",new Number(0));
+		region.addAsset(asset);
+				
+		// second region		
+		region=new DiscreteRegion();
+		region.add(new Point(25,0,0));
+		region.add(new Point(150,0,0));
+		region.add(new Point(150,-50,0));
+		region.add(new Point(25,-50,0));
+		terrain=new Terrain();
+		terrain.setBrushDensity(0.5d,1.0d);
+		terrain.setElevation(0.4d,1.0d);
+		terrain.setGroundCohesion(0.8d,1.0d);
+		terrain.setTemperature(23.0d,1.0d);
+		terrain.setWaterDepth(0.0d,1.0d);
+		region.setProperty("Terrain",terrain);
+		m_terrestrial.add(region);
+		
+		// third region
+		region=new DiscreteRegion();
+		region.add(new Point(150,-100,0));
+		region.add(new Point(200,-100,0));
+		region.add(new Point(200,0,0));
+		region.add(new Point(150,0,0));
+		terrain=new Terrain();
+		terrain.setBrushDensity(0.9d,1.0d);
+		terrain.setElevation(0.6d,1.0d);
+		terrain.setGroundCohesion(0.8d,1.0d);
+		terrain.setTemperature(23.0d,1.0d);
+		terrain.setWaterDepth(0.0d,1.0d);
+		region.setProperty("Terrain",terrain);
+		m_otherPoint=region.getCenter();
+		m_terrestrial.add(region);
+
+		m_scenario=new Scenario(m_terrestrial,"The Benchmark.");
+		m_scenario.getScheduler().setDefaultListener(this);
+		Path path;
+		asset.setLocation(path=m_terrestrial.getPath(m_scenario,this,asset,m_point,m_otherPoint));
+		m_scenario.getScheduler().schedule(path.getTotalTime(),asset);
+		m_scenario.getScheduler().start();
+		Interface superPanel=new Interface();
+		superPanel.add(panel);
+	}
+	public void iterate(long diff,Asset asset){
+		((Number)asset.getProperty("Foo")).setValue(((Number)asset.getProperty("Foo")).getValue()+1);
+		Path path;
+		if(0==((Number)asset.getProperty("Foo")).getValue()%2){
+			asset.setLocation(path=m_terrestrial.getPath(m_scenario,this,asset,m_point,m_otherPoint));
+		}else{
+			asset.setLocation(path=m_terrestrial.getPath(m_scenario,this,asset,m_otherPoint,m_point));
+		}
+		m_scenario.getScheduler().schedule(path.getTotalTime(),asset);
+	}
+	public void paintPanel(Panel panel,List regions,List assets){
+		for(int i=0;i<regions.size();i++){
+			DiscreteRegion region=(DiscreteRegion)regions.get(i);
+			Terrain terrain=region.getProperty("Terrain");
+			if(terrain!=null){
+				float brush=(float)terrain.getBrushDensity();
+				region.setProperty("Color",new Color(1.0f-brush,.5f+(.5f*brush),0.0f));
+			}else{
+				region.setProperty("Color",new Color(0.1f,1.0f-0.7f,0.2f));
+			}
+			panel.fillRegion(region);
+		}
+		for(int i=0;i<regions.size();i++){
+			DiscreteRegion region=(DiscreteRegion)regions.get(i);
+			region.setProperty("BorderColor",new Color(255,255,255));
+			panel.drawRegion(region);
+		}
+		for(int i=0;i<assets.size();i++){
+			Ace ace=(Ace)((Asset)assets.get(i)).getAces().get(0);
+			panel.drawString(ace.getArchetype().getName(),new Color("white"),((Asset)assets.get(i)).getLocation());
+		}
+	}
+	public static void main(){
+		new NubBaseOne();
+	}
+}
