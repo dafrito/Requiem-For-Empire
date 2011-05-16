@@ -29,8 +29,26 @@ public class Point_Euclidean extends Point implements ScriptConvertible {
 	}
 
 	@Override
+	public void setX(double value) {
+		this.point.setX(value);
+	}
+
+	public void addX(double offset) {
+		this.point.addX(offset);
+	}
+
+	@Override
 	public double getY() {
 		return this.point.getY();
+	}
+
+	@Override
+	public void setY(double value) {
+		this.point.setY(value);
+	}
+
+	public void addY(double offset) {
+		this.point.addY(offset);
 	}
 
 	@Override
@@ -39,26 +57,8 @@ public class Point_Euclidean extends Point implements ScriptConvertible {
 	}
 
 	@Override
-	public void setX(double value) {
-		this.point.setX(value);
-	}
-
-	@Override
-	public void setY(double value) {
-		this.point.setY(value);
-	}
-
-	@Override
 	public void setZ(double value) {
 		this.point.setZ(value);
-	}
-
-	public void addX(double offset) {
-		this.point.addX(offset);
-	}
-
-	public void addY(double offset) {
-		this.point.addY(offset);
 	}
 
 	public void addZ(double offset) {
