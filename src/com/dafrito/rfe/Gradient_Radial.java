@@ -2,7 +2,8 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.util.Points;
+import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.points.Points;
 
 
 public class Gradient_Radial implements Gradient {

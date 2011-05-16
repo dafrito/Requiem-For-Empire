@@ -4,6 +4,9 @@ import java.awt.Font;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
+import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.points.Point_Euclidean;
+
 public class RiffJavaToolbox {
 	public static Polygon convertToPolygon(DiscreteRegion region) {
 		Polygon polygon = new Polygon();

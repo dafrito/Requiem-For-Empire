@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.points.Point_Euclidean;
+
 public class InterfaceElement_Panel extends InterfaceElement implements Interface_Container, RiffInterface_MouseListener, Nodeable, ScriptConvertible {
 	private List<GraphicalElement> elements;
 	private Point_Euclidean offset;

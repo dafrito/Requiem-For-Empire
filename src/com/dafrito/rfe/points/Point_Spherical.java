@@ -1,6 +1,6 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.points;
 
-import com.dafrito.rfe.util.Points;
+import com.dafrito.rfe.ScriptEnvironment;
 
 public class Point_Spherical extends Point {
 	public static final double LATITUDEMAXIMUM = 180;

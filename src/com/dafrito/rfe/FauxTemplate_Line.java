@@ -2,6 +2,9 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.points.Point_Euclidean;
+
 
 public class FauxTemplate_Line extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String LINESTRING = "Line";

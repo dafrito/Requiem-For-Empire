@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.points.Point;
+
 public class IntersectionPoint implements Nodeable {
 	private Point point;
 	private boolean isTangent;

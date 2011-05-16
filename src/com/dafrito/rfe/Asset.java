@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.dafrito.rfe.points.Point;
+
 
 public class Asset implements Nodeable, ScriptConvertible {
 	private ScriptEnvironment environment;

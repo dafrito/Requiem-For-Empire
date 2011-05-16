@@ -6,7 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.dafrito.rfe.util.Points;
+import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.points.Point_Euclidean;
+import com.dafrito.rfe.points.Point_Spherical;
+import com.dafrito.rfe.points.Points;
 
 class PointSideStruct implements Nodeable {
 	private List<Point> left, right, indeterminates;

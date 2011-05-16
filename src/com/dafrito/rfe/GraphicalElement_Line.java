@@ -4,6 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.List;
 
+import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.points.Point_Euclidean;
+
 public class GraphicalElement_Line extends InterfaceElement implements ScriptConvertible, Nodeable {
 	private Point pointA, pointB;
 

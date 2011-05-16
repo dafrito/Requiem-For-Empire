@@ -1,4 +1,8 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.points;
+
+import com.dafrito.rfe.Exception_InternalError;
+import com.dafrito.rfe.ScriptEnvironment;
+
 public abstract class Point {
 	public enum System {
 		EUCLIDEAN, SPHERICAL

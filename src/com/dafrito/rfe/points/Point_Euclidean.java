@@ -1,6 +1,8 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.points;
 
-import com.dafrito.rfe.util.Points;
+import com.dafrito.rfe.FauxTemplate_Point;
+import com.dafrito.rfe.ScriptConvertible;
+import com.dafrito.rfe.ScriptEnvironment;
 
 public class Point_Euclidean extends Point implements ScriptConvertible {
 	private double x, y, z;

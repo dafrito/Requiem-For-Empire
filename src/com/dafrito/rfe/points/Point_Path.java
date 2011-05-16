@@ -1,8 +1,15 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.points;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.util.Points;
+import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.Exception_InternalError;
+import com.dafrito.rfe.FauxTemplate_Path;
+import com.dafrito.rfe.Nodeable;
+import com.dafrito.rfe.Scenario;
+import com.dafrito.rfe.ScriptConvertible;
+import com.dafrito.rfe.ScriptEnvironment;
+import com.dafrito.rfe.ScriptValueType;
 
 
 public class Point_Path extends Point implements ScriptConvertible, Nodeable {

@@ -1,10 +1,7 @@
-package com.dafrito.rfe.util;
+package com.dafrito.rfe.points;
 
 import java.util.Random;
 
-import com.dafrito.rfe.Point;
-import com.dafrito.rfe.Point_Euclidean;
-import com.dafrito.rfe.Point_Spherical;
 import com.dafrito.rfe.Terrestrial;
 
 /**

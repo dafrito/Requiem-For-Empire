@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
-import com.dafrito.rfe.util.Points;
+import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.points.Point_Path;
+import com.dafrito.rfe.points.Points;
 
 
 public class Terrestrial implements Serializable {

@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.points.Point_Euclidean;
+
 public class DiscreteRegion implements Nodeable, ScriptConvertible {
 	public static void paint(Graphics2D g2d, DiscreteRegion transformedRegion, Rectangle bounds, boolean fill) {
 		assert Debugger.openNode("Discrete-Region Painting", "Painting Discrete Region");

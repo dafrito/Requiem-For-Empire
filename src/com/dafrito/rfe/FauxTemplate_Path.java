@@ -2,6 +2,8 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.points.Point_Path;
+
 
 public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConvertible, Nodeable {
 	public static final String PATHSTRING = "Path";

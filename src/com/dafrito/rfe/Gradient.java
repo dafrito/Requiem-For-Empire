@@ -1,4 +1,7 @@
 package com.dafrito.rfe;
+
+import com.dafrito.rfe.points.Point;
+
 public interface Gradient {
 	public double getBottomExtreme();
 

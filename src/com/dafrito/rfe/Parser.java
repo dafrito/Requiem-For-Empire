@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.points.Point_Path;
 import com.dafrito.rfe.util.Strings;
 
 public class Parser {

@@ -7,7 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.dafrito.rfe.util.Points;
+import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.points.Points;
 
 public class DiscreteRegionBSPNode implements Nodeable {
 	private Point pointA, pointB;
