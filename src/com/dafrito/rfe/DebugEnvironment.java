@@ -25,8 +25,6 @@ import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.bluespot.swing.Components;
-
 public class DebugEnvironment extends JFrame implements ActionListener, ChangeListener {
 	private static final long serialVersionUID = -8190546125680224912L;
 
@@ -48,11 +46,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		Debug_TreeNode.addPrecached(DebugString.ORIGINALSTRING, "Original String: '");
 		Debug_TreeNode.addPrecached(DebugString.REFERENCEDELEMENTNULL, "Referenced Element: null");
 		Debug_TreeNode.addPrecached(DebugString.OUTPUTTREE, "Output Tree");
-	}
-
-	public static void main(String[] args) {
-		Components.LookAndFeel.NATIVE.activate();
-		new DebugEnvironment(800, 800);
 	}
 
 	private JSplitPane vertSplitPane;
@@ -204,9 +197,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 				this.addReferenced(new Debug_ScriptElement(this, file));
 			}
 		}
-		// Finally, show the window.
 		this.environment = new ScriptEnvironment();
-		this.setVisible(true);
 	}
 
 	// Listeners
