@@ -24,7 +24,7 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing Object Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		assert Debugger.addSnapNode("Template provided", rawTemplate);
 		assert Debugger.addSnapNode("Parameters provided", params);

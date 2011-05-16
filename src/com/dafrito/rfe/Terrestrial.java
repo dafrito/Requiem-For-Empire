@@ -72,7 +72,7 @@ public class Terrestrial implements Serializable {
 		assert this.getTree() != null : "BSP Tree is null!";
 		DiscreteRegion currentRegion = startingRegion = this.getTree().getRegion(currentPoint);
 		DiscreteRegion destination = this.getTree().getRegion(destinationPoint);
-		List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> params = new LinkedList<ScriptValue>();
 		params.add(Parser.getRiffDiscreteRegion(this.getEnvironment(), currentRegion));
 		params.add(Parser.getRiffAsset(this.getEnvironment(), asset));
 		path.addPoint(currentPoint, Parser.getDouble(ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, evaluator, "evaluateMovementCost", params)));

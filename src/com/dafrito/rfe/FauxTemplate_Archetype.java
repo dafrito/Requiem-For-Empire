@@ -24,7 +24,7 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing archetype faux template function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Archetype template = (FauxTemplate_Archetype) rawTemplate;
 		assert Debugger.addSnapNode("Template provided", template);
@@ -40,11 +40,11 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getName")) {
-			ScriptValue_Abstract returning = Parser.getRiffString(this.getEnvironment(), template.getArchetype().getName());
+			ScriptValue returning = Parser.getRiffString(this.getEnvironment(), template.getArchetype().getName());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getParents")) {
-			List<ScriptValue_Abstract> parents = new LinkedList<ScriptValue_Abstract>();
+			List<ScriptValue> parents = new LinkedList<ScriptValue>();
 			for (Ace parent : template.getArchetype().getParents()) {
 				parents.add(Parser.getRiffAce(parent));
 			}
@@ -54,7 +54,7 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 			assert Debugger.closeNode();
 			return null;
 		}
-		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, template);
+		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
@@ -67,16 +67,16 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing archetype faux template");
-		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
 		this.addConstructor(this.getType(), fxnParams);
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Ace.ACESTRING)));
 		this.addFauxFunction("addParent", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getName", ScriptValueType.STRING, new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getParents", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_List.LISTSTRING), new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getName", ScriptValueType.STRING, new LinkedList<ScriptValue>(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getParents", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_List.LISTSTRING), new LinkedList<ScriptValue>(), ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 

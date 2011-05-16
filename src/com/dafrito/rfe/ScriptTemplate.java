@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptValue_Abstract, Nodeable, ScriptConvertible {
+public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptValue, Nodeable, ScriptConvertible {
 	public static ScriptTemplate createTemplate(ScriptEnvironment env, ScriptValueType type, ScriptValueType extended, List<ScriptValueType> interfaces, boolean isAbstract) {
 		return new ScriptTemplate(env, type, extended, interfaces, isAbstract);
 	}
@@ -198,7 +198,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public ScriptFunction_Abstract getFunction(String name, List<ScriptValue_Abstract> params) {
+	public ScriptFunction_Abstract getFunction(String name, List<ScriptValue> params) {
 		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
 			return this.getEnvironment().getTemplate(this.getType()).getFunction(name, params);
 		}
@@ -349,7 +349,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 						assert Debugger.closeNode();
 					}
 					assert Debugger.openNode("Parameter Variable Additions");
-					for (ScriptValue_Abstract value : fxn.getParameters()) {
+					for (ScriptValue value : fxn.getParameters()) {
 						if (value instanceof ScriptExecutable_CreateVariable) {
 							this.getEnvironment().addVariableToStack(((ScriptExecutable_CreateVariable) value).getName(), (ScriptExecutable_CreateVariable) value);
 						}

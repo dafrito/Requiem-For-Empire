@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, Nodeable {
+public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 	private final ScriptEnvironment environment;
 	private final ScriptValueType type;
 	private ScriptValueType extended;
@@ -30,7 +30,7 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 	public abstract ScriptValue_Variable addVariable(Referenced ref, String name, ScriptValue_Variable value) throws Exception_Nodeable;
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		if (this.isConvertibleTo(type)) {
 			return this;
 		}
@@ -59,7 +59,7 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 		return this.getEnvironment().getTemplate(this.extended);
 	}
 
-	public abstract ScriptFunction_Abstract getFunction(String name, List<ScriptValue_Abstract> params);
+	public abstract ScriptFunction_Abstract getFunction(String name, List<ScriptValue> params);
 
 	public abstract List<ScriptFunction_Abstract> getFunctions();
 
@@ -80,7 +80,7 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this;
 	}
 
@@ -138,17 +138,17 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue_Abstract, N
 	public abstract void setConstructing(boolean constructing) throws Exception_Nodeable;
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		throw new Exception_InternalError("Templates have no inherent value, and thus their value cannot be set directly.");
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		throw new Exception_InternalError("Templates have no inherent value, and thus cannot be compared.");
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return (this == rhs);
 	}
 }

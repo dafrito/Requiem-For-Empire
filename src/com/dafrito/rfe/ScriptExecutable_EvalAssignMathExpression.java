@@ -1,10 +1,10 @@
 package com.dafrito.rfe;
 
 public class ScriptExecutable_EvalAssignMathExpression extends ScriptElement implements ScriptExecutable, Nodeable {
-	private ScriptValue_Abstract left, right;
+	private ScriptValue left, right;
 	private ScriptOperatorType operation;
 
-	public ScriptExecutable_EvalAssignMathExpression(Referenced ref, ScriptValue_Abstract lhs, ScriptValue_Abstract rhs, ScriptOperatorType operation) {
+	public ScriptExecutable_EvalAssignMathExpression(Referenced ref, ScriptValue lhs, ScriptValue rhs, ScriptOperatorType operation) {
 		super(ref);
 		this.left = lhs;
 		this.right = rhs;
@@ -13,7 +13,7 @@ public class ScriptExecutable_EvalAssignMathExpression extends ScriptElement imp
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		assert Debugger.openNode("'Evaluate and Assign' Executions", "Executing 'Evaluate and Assign' Expression");
 		assert Debugger.addNode(this);
 		ScriptValue_Numeric left = (ScriptValue_Numeric) this.left.getValue();
@@ -21,7 +21,7 @@ public class ScriptExecutable_EvalAssignMathExpression extends ScriptElement imp
 		if ((this.operation == ScriptOperatorType.DIVIDE || this.operation == ScriptOperatorType.MODULUS) && right.getNumericValue().doubleValue() == 0.0d) {
 			throw new Exception_Nodeable_DivisionByZero(this);
 		}
-		ScriptValue_Abstract returning = null;
+		ScriptValue returning = null;
 		switch (this.operation) {
 		case PLUSEQUALS:
 			returning = left.setNumericValue(left.increment(this, right));

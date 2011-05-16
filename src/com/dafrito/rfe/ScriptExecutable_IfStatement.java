@@ -3,13 +3,13 @@ import java.util.List;
 
 
 public class ScriptExecutable_IfStatement extends ScriptElement implements ScriptExecutable, Returnable {
-	private ScriptValue_Abstract testingValue;
+	private ScriptValue testingValue;
 	private List<ScriptExecutable> expressions;
 	private ScriptExecutable_IfStatement elseStatement;
 	private boolean shouldReturn = false;
-	private ScriptValue_Abstract returnValue;
+	private ScriptValue returnValue;
 
-	public ScriptExecutable_IfStatement(Referenced ref, ScriptValue_Abstract test, List<ScriptExecutable> list) {
+	public ScriptExecutable_IfStatement(Referenced ref, ScriptValue test, List<ScriptExecutable> list) {
 		super(ref);
 		this.testingValue = test;
 		this.expressions = list;
@@ -17,7 +17,7 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		assert Debugger.openNode("If-Statement Executions", "Executing If-Statements");
 		if (((ScriptValue_Boolean) this.testingValue.getValue()).getBooleanValue()) {
 			this.getEnvironment().advanceNestedStack();
@@ -41,7 +41,7 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 	}
 
 	@Override
-	public ScriptValue_Abstract getReturnValue() throws Exception_Nodeable {
+	public ScriptValue getReturnValue() throws Exception_Nodeable {
 		if (this.returnValue != null) {
 			this.returnValue = this.returnValue.getValue();
 		}

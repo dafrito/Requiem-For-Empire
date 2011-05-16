@@ -3,8 +3,8 @@ import java.util.List;
 import java.util.Vector;
 
 
-public class ScriptExecutable_CallFunction extends ScriptElement implements ScriptExecutable, ScriptValue_Abstract, Nodeable {
-	public static ScriptValue_Abstract callFunction(ScriptEnvironment env, Referenced ref, ScriptValue_Abstract object, String name, List<ScriptValue_Abstract> params) throws Exception_Nodeable {
+public class ScriptExecutable_CallFunction extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
+	public static ScriptValue callFunction(ScriptEnvironment env, Referenced ref, ScriptValue object, String name, List<ScriptValue> params) throws Exception_Nodeable {
 		assert Debugger.openNode("Function Calls", "Calling Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		assert Debugger.openNode("Function Call Details");
 		// Get our object
@@ -17,7 +17,7 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 			assert Debugger.closeNode("Core value", object);
 		}
 		// Convert our values of questionable nestingness down to pure values
-		Vector<ScriptValue_Abstract> baseList = new Vector<ScriptValue_Abstract>();
+		Vector<ScriptValue> baseList = new Vector<ScriptValue>();
 		if (params != null && params.size() > 0) {
 			assert Debugger.openNode("Getting parameters' core values");
 			for (int i = 0; i < params.size(); i++) {
@@ -54,7 +54,7 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 		assert Debugger.closeNode();
 		env.advanceStack((ScriptTemplate_Abstract) object, function);
 		env.getCurrentFunction().execute(ref, baseList);
-		ScriptValue_Abstract returning = env.getCurrentFunction().getReturnValue();
+		ScriptValue returning = env.getCurrentFunction().getReturnValue();
 		if (returning == null && !env.getCurrentFunction().getReturnType().equals(ScriptValueType.VOID)) {
 			if (ref == null) {
 				throw new Exception_Nodeable_IllegalNullReturnValue(env, env.getCurrentFunction());
@@ -68,11 +68,11 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 	}
 
 	private String functionName;
-	private List<ScriptValue_Abstract> params;
+	private List<ScriptValue> params;
 
-	private ScriptValue_Abstract object;
+	private ScriptValue object;
 
-	public ScriptExecutable_CallFunction(Referenced ref, ScriptValue_Abstract object, String functionName, List<ScriptValue_Abstract> params) {
+	public ScriptExecutable_CallFunction(Referenced ref, ScriptValue object, String functionName, List<ScriptValue> params) {
 		super(ref);
 		this.object = object;
 		this.functionName = functionName;
@@ -80,13 +80,13 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		return callFunction(this.getEnvironment(), this, this.object, this.functionName, this.params);
 	}
 
@@ -101,7 +101,7 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this.execute();
 	}
 
@@ -121,17 +121,17 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

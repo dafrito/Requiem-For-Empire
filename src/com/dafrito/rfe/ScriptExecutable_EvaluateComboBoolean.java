@@ -1,10 +1,10 @@
 package com.dafrito.rfe;
 
-public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement implements ScriptValue_Abstract, ScriptExecutable, Nodeable {
-	private ScriptValue_Abstract lhs, rhs;
+public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement implements ScriptValue, ScriptExecutable, Nodeable {
+	private ScriptValue lhs, rhs;
 	private ScriptOperatorType operator;
 
-	public ScriptExecutable_EvaluateComboBoolean(Referenced ref, ScriptValue_Abstract lhs, ScriptValue_Abstract rhs, ScriptOperatorType operator) {
+	public ScriptExecutable_EvaluateComboBoolean(Referenced ref, ScriptValue lhs, ScriptValue rhs, ScriptOperatorType operator) {
 		super(ref);
 		this.lhs = lhs;
 		this.rhs = rhs;
@@ -12,13 +12,13 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		assert Debugger.openNode("Combo-Boolean Evaluations", "Evaluating Combo-Boolean Expression (" + ScriptOperator.getName(this.operator) + ")");
 		assert Debugger.addNode(this);
 		if (this.lhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
@@ -45,7 +45,7 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this.execute();
 	}
 
@@ -66,17 +66,17 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

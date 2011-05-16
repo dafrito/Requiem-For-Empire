@@ -8,10 +8,10 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	private ScriptGroup body;
 	private String name;
 	private ScriptValueType returnType;
-	private List<ScriptValue_Abstract> parameters;
+	private List<ScriptValue> parameters;
 	private ScriptKeywordType permission;
 
-	public ScriptExecutable_ParseFunction(Referenced ref, ScriptValueType returnType, ScriptValue_Abstract object, String name, List<ScriptValue_Abstract> paramList, ScriptKeywordType permission, boolean isStatic, boolean isAbstract, ScriptGroup body) {
+	public ScriptExecutable_ParseFunction(Referenced ref, ScriptValueType returnType, ScriptValue object, String name, List<ScriptValue> paramList, ScriptKeywordType permission, boolean isStatic, boolean isAbstract, ScriptGroup body) {
 		super(ref);
 		this.name = name;
 		this.returnType = returnType;
@@ -33,23 +33,23 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	}
 
 	@Override
-	public boolean areParametersConvertible(List<ScriptValue_Abstract> list) {
+	public boolean areParametersConvertible(List<ScriptValue> list) {
 		return ScriptFunction.areParametersConvertible(this.getParameters(), list);
 	}
 
 	@Override
-	public boolean areParametersEqual(List<ScriptValue_Abstract> list) {
+	public boolean areParametersEqual(List<ScriptValue> list) {
 		return ScriptFunction.areParametersEqual(this.getParameters(), list);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
 	@Override
-	public void execute(Referenced ref, List<ScriptValue_Abstract> valuesGiven) throws Exception_Nodeable {
+	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws Exception_Nodeable {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
@@ -62,7 +62,7 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	}
 
 	@Override
-	public List<ScriptValue_Abstract> getParameters() {
+	public List<ScriptValue> getParameters() {
 		return this.parameters;
 	}
 
@@ -77,7 +77,7 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	}
 
 	@Override
-	public ScriptValue_Abstract getReturnValue() {
+	public ScriptValue getReturnValue() {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
@@ -104,7 +104,7 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	}
 
 	@Override
-	public void setReturnValue(Referenced element, ScriptValue_Abstract value) {
+	public void setReturnValue(Referenced element, ScriptValue value) {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 }

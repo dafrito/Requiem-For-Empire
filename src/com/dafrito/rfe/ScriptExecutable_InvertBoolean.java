@@ -1,6 +1,6 @@
 package com.dafrito.rfe;
 
-public class ScriptExecutable_InvertBoolean extends ScriptElement implements ScriptExecutable, ScriptValue_Abstract {
+public class ScriptExecutable_InvertBoolean extends ScriptElement implements ScriptExecutable, ScriptValue {
 	private ScriptExecutable value;
 
 	public ScriptExecutable_InvertBoolean(Referenced ref, ScriptExecutable value) {
@@ -9,13 +9,13 @@ public class ScriptExecutable_InvertBoolean extends ScriptElement implements Scr
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		return new ScriptValue_Boolean(this.getEnvironment(), !((ScriptValue_Boolean) this.value.execute()).getBooleanValue());
 	}
 
@@ -26,7 +26,7 @@ public class ScriptExecutable_InvertBoolean extends ScriptElement implements Scr
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this.execute();
 	}
 
@@ -46,17 +46,17 @@ public class ScriptExecutable_InvertBoolean extends ScriptElement implements Scr
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

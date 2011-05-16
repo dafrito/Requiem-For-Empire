@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
-	public static boolean areParametersConvertible(List<ScriptValue_Abstract> source, List<ScriptValue_Abstract> list) {
+	public static boolean areParametersConvertible(List<ScriptValue> source, List<ScriptValue> list) {
 		assert Debugger.openNode("Parameter-Convertibility Tests", "Parameter-Convertibility Test");
 		assert Debugger.addNode("Keys must be convertible to their function-param socket counterpart.");
 		assert Debugger.addSnapNode("Function-Parameter Sockets", source);
@@ -24,7 +24,7 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 		return true;
 	}
 
-	public static boolean areParametersEqual(List<ScriptValue_Abstract> source, List<ScriptValue_Abstract> list) {
+	public static boolean areParametersEqual(List<ScriptValue> source, List<ScriptValue> list) {
 		assert Debugger.openNode("Parameter-Equality Tests", "Parameter-Equality Test");
 		assert Debugger.addSnapNode("Function-Parameter Sockets", source);
 		assert Debugger.addSnapNode("Parameter Keys", list);
@@ -50,15 +50,15 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 	}
 
 	private ScriptValueType type;
-	private List<ScriptValue_Abstract> params;
+	private List<ScriptValue> params;
 	private ScriptKeywordType permission;
-	private ScriptValue_Abstract returnValue;
+	private ScriptValue returnValue;
 
 	private boolean isAbstract, isStatic;
 
 	private List<ScriptExecutable> expressions = new LinkedList<ScriptExecutable>();
 
-	public ScriptFunction(ScriptValueType returnType, List<ScriptValue_Abstract> params, ScriptKeywordType permission, boolean isAbstract, boolean isStatic) {
+	public ScriptFunction(ScriptValueType returnType, List<ScriptValue> params, ScriptKeywordType permission, boolean isAbstract, boolean isStatic) {
 		this.type = returnType;
 		this.params = params;
 		this.permission = permission;
@@ -80,17 +80,17 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 	}
 
 	@Override
-	public boolean areParametersConvertible(List<ScriptValue_Abstract> list) {
+	public boolean areParametersConvertible(List<ScriptValue> list) {
 		return areParametersConvertible(this.getParameters(), list);
 	}
 
 	@Override
-	public boolean areParametersEqual(List<ScriptValue_Abstract> list) {
+	public boolean areParametersEqual(List<ScriptValue> list) {
 		return areParametersEqual(this.getParameters(), list);
 	}
 
 	@Override
-	public void execute(Referenced ref, List<ScriptValue_Abstract> valuesGiven) throws Exception_Nodeable {
+	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws Exception_Nodeable {
 		String currNode = "Executing Function Expressions (" + this.expressions.size() + " expressions)";
 		assert Debugger.openNode("Function Expression Executions", currNode);
 		if (valuesGiven != null && valuesGiven.size() > 0) {
@@ -115,7 +115,7 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 	}
 
 	@Override
-	public List<ScriptValue_Abstract> getParameters() {
+	public List<ScriptValue> getParameters() {
 		return this.params;
 	}
 
@@ -130,7 +130,7 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 	}
 
 	@Override
-	public ScriptValue_Abstract getReturnValue() {
+	public ScriptValue getReturnValue() {
 		return this.returnValue;
 	}
 
@@ -174,7 +174,7 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 	}
 
 	@Override
-	public void setReturnValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public void setReturnValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		if (value == null && this.getReturnType().equals(ScriptKeywordType.VOID)) {
 			return;
 		}

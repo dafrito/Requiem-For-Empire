@@ -32,10 +32,10 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing Point Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Point template = (FauxTemplate_Point) rawTemplate;
-		ScriptValue_Abstract returning = null;
+		ScriptValue returning = null;
 		assert Debugger.addSnapNode("Template provided", template);
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
@@ -79,7 +79,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing point faux template");
 		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
-		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
@@ -89,7 +89,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 		this.addFauxFunction("getX", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("getY", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("getZ", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		this.addFauxFunction("setX", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("setY", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);

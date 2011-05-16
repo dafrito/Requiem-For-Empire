@@ -25,7 +25,7 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing Path Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Path template = (FauxTemplate_Path) rawTemplate;
 		assert Debugger.addSnapNode("Template provided", template);
@@ -39,11 +39,11 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 			}
 			params.clear();
 		} else if (name.equals("getTotalTime")) {
-			ScriptValue_Abstract returning = Parser.getRiffLong(this.getEnvironment(), ((Point_Path) template.getPoint()).getTotalTime());
+			ScriptValue returning = Parser.getRiffLong(this.getEnvironment(), ((Point_Path) template.getPoint()).getTotalTime());
 			assert Debugger.closeNode();
 			return returning;
 		}
-		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, template);
+		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
@@ -53,12 +53,12 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing path faux template");
 		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
-		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scenario.SCENARIOSTRING)));
 		this.addConstructor(this.getType(), fxnParams);
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		this.addFauxFunction("getTotalTime", ScriptValueType.LONG, new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getTotalTime", ScriptValueType.LONG, new LinkedList<ScriptValue>(), ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 

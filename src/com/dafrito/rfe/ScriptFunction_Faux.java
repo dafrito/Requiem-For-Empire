@@ -8,7 +8,7 @@ public class ScriptFunction_Faux extends ScriptFunction implements ScriptFunctio
 	private ScriptTemplate_Abstract object;
 	private String name;
 
-	public ScriptFunction_Faux(FauxTemplate template, String name, ScriptValueType type, List<ScriptValue_Abstract> params, ScriptKeywordType permission, boolean isAbstract, boolean isStatic) {
+	public ScriptFunction_Faux(FauxTemplate template, String name, ScriptValueType type, List<ScriptValue> params, ScriptKeywordType permission, boolean isAbstract, boolean isStatic) {
 		super(type, params, permission, isAbstract, isStatic);
 		this.fauxTemplate = template;
 		this.name = name;
@@ -25,7 +25,7 @@ public class ScriptFunction_Faux extends ScriptFunction implements ScriptFunctio
 	}
 
 	@Override
-	public void execute(Referenced ref, List<ScriptValue_Abstract> params) throws Exception_Nodeable {
+	public void execute(Referenced ref, List<ScriptValue> params) throws Exception_Nodeable {
 		if (this.name.equals("")) {
 			this.setReturnValue(ref, this.fauxTemplate.execute(ref, this.name, params, null));
 		} else {

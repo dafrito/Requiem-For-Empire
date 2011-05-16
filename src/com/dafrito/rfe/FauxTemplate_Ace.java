@@ -24,7 +24,7 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible,
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing ace faux template function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Ace template = (FauxTemplate_Ace) rawTemplate;
 		assert Debugger.addSnapNode("Template provided", template);
@@ -40,15 +40,15 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible,
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getEfficiency")) {
-			ScriptValue_Abstract returning = Parser.getRiffDouble(this.getEnvironment(), template.getAce().getEfficiency());
+			ScriptValue returning = Parser.getRiffDouble(this.getEnvironment(), template.getAce().getEfficiency());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getArchetype")) {
-			ScriptValue_Abstract returning = Parser.getRiffArchetype(template.getAce().getArchetype());
+			ScriptValue returning = Parser.getRiffArchetype(template.getAce().getArchetype());
 			assert Debugger.closeNode();
 			return returning;
 		}
-		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, template);
+		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
@@ -61,17 +61,17 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible,
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing ace faux template");
-		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING)));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		this.addConstructor(this.getType(), fxnParams);
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		this.addFauxFunction("setEfficiency", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		this.addFauxFunction("getEfficiency", ScriptValueType.DOUBLE, new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
+		fxnParams = new LinkedList<ScriptValue>();
+		this.addFauxFunction("getEfficiency", ScriptValueType.DOUBLE, new LinkedList<ScriptValue>(), ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("getArchetype", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}

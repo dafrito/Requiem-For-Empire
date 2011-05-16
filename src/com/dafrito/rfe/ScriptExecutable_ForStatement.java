@@ -5,7 +5,7 @@ import java.util.List;
 public class ScriptExecutable_ForStatement extends ScriptElement implements ScriptExecutable, Returnable, Nodeable {
 	private ScriptExecutable initializer, tester, repeater;
 	private boolean shouldReturn = false;
-	private ScriptValue_Abstract returnValue;
+	private ScriptValue returnValue;
 	private List<ScriptExecutable> expressions;
 
 	public ScriptExecutable_ForStatement(ScriptExecutable initializer, ScriptExecutable tester, ScriptExecutable repeater, List<ScriptExecutable> expressions) {
@@ -18,7 +18,7 @@ public class ScriptExecutable_ForStatement extends ScriptElement implements Scri
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		assert Debugger.openNode("For-Statement Executions", "Executing For-Statement");
 		this.getEnvironment().advanceNestedStack();
 		assert Debugger.openNode("Initializing");
@@ -48,7 +48,7 @@ public class ScriptExecutable_ForStatement extends ScriptElement implements Scri
 	}
 
 	@Override
-	public ScriptValue_Abstract getReturnValue() throws Exception_Nodeable {
+	public ScriptValue getReturnValue() throws Exception_Nodeable {
 		if (this.returnValue != null) {
 			this.returnValue = this.returnValue.getValue();
 		}

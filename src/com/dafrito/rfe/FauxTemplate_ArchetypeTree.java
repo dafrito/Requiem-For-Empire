@@ -24,7 +24,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing archetype tree faux template function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_ArchetypeTree template = (FauxTemplate_ArchetypeTree) rawTemplate;
 		assert Debugger.addSnapNode("Template provided", template);
@@ -40,15 +40,15 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getAssetsOfType")) {
-			List<ScriptValue_Abstract> assets = new LinkedList<ScriptValue_Abstract>();
+			List<ScriptValue> assets = new LinkedList<ScriptValue>();
 			for (Asset asset : template.getTree().getAssetsOfType(Parser.getArchetype(params.get(0)))) {
 				assets.add(Parser.getRiffAsset(this.getEnvironment(), asset));
 			}
-			ScriptValue_Abstract returning = Parser.getRiffList(this.getEnvironment(), assets);
+			ScriptValue returning = Parser.getRiffList(this.getEnvironment(), assets);
 			assert Debugger.closeNode();
 			return returning;
 		}
-		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, template);
+		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
@@ -61,15 +61,15 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing archetype tree faux template");
-		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING)));
 		this.addConstructor(this.getType(), fxnParams);
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
 		this.addFauxFunction("addAsset", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getAssetsOfType", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_List.LISTSTRING), new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getAssetsOfType", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_List.LISTSTRING), new LinkedList<ScriptValue>(), ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 

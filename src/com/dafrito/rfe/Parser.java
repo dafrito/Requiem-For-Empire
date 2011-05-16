@@ -42,7 +42,7 @@ public class Parser {
 		return new ScriptValue_Numeric(env, new Integer(num));
 	}
 
-	public static Object convert(ScriptEnvironment env, List<ScriptValue_Abstract> elements) throws Exception_Nodeable {
+	public static Object convert(ScriptEnvironment env, List<ScriptValue> elements) throws Exception_Nodeable {
 		FauxTemplate_List list = new FauxTemplate_List(env, ScriptValueType.createType(env, FauxTemplate_List.LISTSTRING));
 		list.setList(elements);
 		return list;
@@ -61,7 +61,7 @@ public class Parser {
 		if (object instanceof ScriptConvertible) {
 			return convert(env, (ScriptConvertible) object);
 		}
-		return convert(env, (ScriptConvertible) ((ScriptValue_Abstract) object).getValue());
+		return convert(env, (ScriptConvertible) ((ScriptValue) object).getValue());
 	}
 
 	public static Object convert(ScriptEnvironment env, ScriptConvertible object) throws Exception_Nodeable {
@@ -201,12 +201,12 @@ public class Parser {
 	}
 
 	// Initial parsing functions
-	public static List<ScriptValueType> createTypeList(List<ScriptValue_Abstract> values) {
+	public static List<ScriptValueType> createTypeList(List<ScriptValue> values) {
 		List<ScriptValueType> keywords = new LinkedList<ScriptValueType>();
 		if (values == null) {
 			return keywords;
 		}
-		for (ScriptValue_Abstract value : values) {
+		for (ScriptValue value : values) {
 			keywords.add(value.getType());
 		}
 		return keywords;
@@ -346,8 +346,8 @@ public class Parser {
 	}
 
 	// Conversion assistance functions
-	public static ScriptValue_Abstract getCoreValue(Object obj) throws Exception_Nodeable {
-		return ((ScriptValue_Abstract) obj).getValue();
+	public static ScriptValue getCoreValue(Object obj) throws Exception_Nodeable {
+		return ((ScriptValue) obj).getValue();
 	}
 
 	public static DiscreteRegion getDiscreteRegion(Object obj) throws Exception_Nodeable {
@@ -355,7 +355,7 @@ public class Parser {
 	}
 
 	public static Double getDouble(Object obj) throws Exception_Nodeable {
-		return (Double) convert(null, ((ScriptValue_Abstract) obj).castToType(null, ScriptValueType.DOUBLE));
+		return (Double) convert(null, ((ScriptValue) obj).castToType(null, ScriptValueType.DOUBLE));
 	}
 
 	public static InterfaceElement getElement(Object obj) throws Exception_Nodeable {
@@ -363,7 +363,7 @@ public class Parser {
 	}
 
 	public static Float getFloat(Object obj) throws Exception_Nodeable {
-		return (Float) convert(null, ((ScriptValue_Abstract) obj).castToType(null, ScriptValueType.FLOAT));
+		return (Float) convert(null, ((ScriptValue) obj).castToType(null, ScriptValueType.FLOAT));
 	}
 
 	public static GraphicalElement getGraphicalElement(Object obj) throws Exception_Nodeable {
@@ -371,15 +371,15 @@ public class Parser {
 	}
 
 	public static Integer getInteger(Object obj) throws Exception_Nodeable {
-		return (Integer) convert(null, ((ScriptValue_Abstract) obj).castToType(null, ScriptValueType.INT));
+		return (Integer) convert(null, ((ScriptValue) obj).castToType(null, ScriptValueType.INT));
 	}
 
-	public static List<ScriptValue_Abstract> getList(Object obj) throws Exception_Nodeable {
+	public static List<ScriptValue> getList(Object obj) throws Exception_Nodeable {
 		return ((FauxTemplate_List) getCoreValue(obj)).getList();
 	}
 
 	public static Long getLong(Object obj) throws Exception_Nodeable {
-		return (Long) convert(null, ((ScriptValue_Abstract) obj).castToType(null, ScriptValueType.LONG));
+		return (Long) convert(null, ((ScriptValue) obj).castToType(null, ScriptValueType.LONG));
 	}
 
 	public static Number getNumber(Object obj) throws Exception_Nodeable {
@@ -439,7 +439,7 @@ public class Parser {
 		return (ScriptValue_Numeric) convert(env, value);
 	}
 
-	public static FauxTemplate_List getRiffList(ScriptEnvironment env, List<ScriptValue_Abstract> list) throws Exception_Nodeable {
+	public static FauxTemplate_List getRiffList(ScriptEnvironment env, List<ScriptValue> list) throws Exception_Nodeable {
 		return (FauxTemplate_List) convert(env, list);
 	}
 
@@ -492,7 +492,7 @@ public class Parser {
 	}
 
 	public static Short getShort(Object obj) throws Exception_Nodeable {
-		return (Short) convert(null, ((ScriptValue_Abstract) obj).castToType(null, ScriptValueType.SHORT));
+		return (Short) convert(null, ((ScriptValue) obj).castToType(null, ScriptValueType.SHORT));
 	}
 
 	// Script->Engine conversion functions
@@ -505,7 +505,7 @@ public class Parser {
 	}
 
 	public static ScriptTemplate_Abstract getTemplate(Object obj) throws Exception_Nodeable {
-		return (ScriptTemplate_Abstract) ((ScriptValue_Abstract) obj).getValue();
+		return (ScriptTemplate_Abstract) ((ScriptValue) obj).getValue();
 	}
 
 	public static Terrestrial getTerrestrial(Object obj) throws Exception_Nodeable {
@@ -599,10 +599,10 @@ public class Parser {
 				Referenced ref = (Referenced) list.get(i);
 				list.remove(i);
 				ScriptExecutable_ReturnValue returnValue;
-				if (list.size() == 1 && list.get(0) instanceof ScriptValue_Abstract) {
-					returnValue = new ScriptExecutable_ReturnValue(ref, (ScriptValue_Abstract) list.get(0));
+				if (list.size() == 1 && list.get(0) instanceof ScriptValue) {
+					returnValue = new ScriptExecutable_ReturnValue(ref, (ScriptValue) list.get(0));
 				} else {
-					returnValue = new ScriptExecutable_ReturnValue(ref, (ScriptValue_Abstract) parseExpression(env, list, automaticallyAddToStack, type));
+					returnValue = new ScriptExecutable_ReturnValue(ref, (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type));
 				}
 				assert Debugger.addSnapNode("Expression Parsing", "Return value parsed", returnValue);
 				return returnValue;
@@ -670,7 +670,7 @@ public class Parser {
 					ScriptExecutable exec = (ScriptExecutable) creator;
 					if (((ScriptKeyword) obj).equals(ScriptKeywordType.STYLESHEET)) {
 						if (list.size() > i + 2 && list.get(i + 2) instanceof ScriptGroup) {
-							exec = new ScriptExecutable_AssignValue((Referenced) list.get(i + 1), (ScriptValue_Abstract) exec, parseStylesheet((Referenced) list.get(i + 1), env, isUnique, name, (ScriptGroup) list.get(i + 2)));
+							exec = new ScriptExecutable_AssignValue((Referenced) list.get(i + 1), (ScriptValue) exec, parseStylesheet((Referenced) list.get(i + 1), env, isUnique, name, (ScriptGroup) list.get(i + 2)));
 						}
 						list.remove(i + 2);
 					}
@@ -715,7 +715,7 @@ public class Parser {
 			// Operators!
 			if (obj instanceof ScriptOperator) {
 				ScriptValue_Variable lhs;
-				ScriptValue_Abstract left;
+				ScriptValue left;
 				ScriptExecutable returnValue;
 				switch (((ScriptOperator) obj).getType()) {
 				case GREATER:
@@ -724,28 +724,28 @@ public class Parser {
 				case LESSEQUALS:
 				case EQUIVALENCY:
 				case NONEQUIVALENCY:
-					if (i < 1 || !(list.get(i - 1) instanceof ScriptValue_Abstract)) {
+					if (i < 1 || !(list.get(i - 1) instanceof ScriptValue)) {
 						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(i), "Variable");
 					}
 					i--;
-					left = (ScriptValue_Abstract) list.get(i);
+					left = (ScriptValue) list.get(i);
 					list.remove(i);
 					list.remove(i);
-					if (list.size() == 1 && list.get(0) instanceof ScriptValue_Abstract) {
-						returnValue = new ScriptExecutable_EvaluateBoolean((Referenced) obj, left, (ScriptValue_Abstract) list.get(i), ((ScriptOperator) obj).getType());
+					if (list.size() == 1 && list.get(0) instanceof ScriptValue) {
+						returnValue = new ScriptExecutable_EvaluateBoolean((Referenced) obj, left, (ScriptValue) list.get(i), ((ScriptOperator) obj).getType());
 						list.remove(i);
 						assert Debugger.addSnapNode("Expression Parsing", "Boolean expression parsed", returnValue);
 						return returnValue;
 					}
-					returnValue = new ScriptExecutable_EvaluateBoolean((Referenced) obj, left, (ScriptValue_Abstract) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType());
+					returnValue = new ScriptExecutable_EvaluateBoolean((Referenced) obj, left, (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType());
 					assert Debugger.addSnapNode("Expression Parsing", "Boolean expression parsed", returnValue);
 					return returnValue;
 				case PERIOD:
-					if (i < 1 || !(list.get(i - 1) instanceof ScriptValue_Abstract)) {
+					if (i < 1 || !(list.get(i - 1) instanceof ScriptValue)) {
 						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(i - 1), "Variable");
 					}
 					i--;
-					left = (ScriptValue_Abstract) list.get(i);
+					left = (ScriptValue) list.get(i);
 					list.remove(i);
 					list.remove(i);
 					if (!(list.get(i) instanceof ScriptLine)) {
@@ -772,10 +772,10 @@ public class Parser {
 					lhs = (ScriptValue_Variable) list.get(i);
 					list.remove(i);
 					list.remove(i);
-					if (list.size() == 1 && list.get(i) instanceof ScriptValue_Abstract) {
-						returnValue = new ScriptExecutable_AssignValue((Referenced) lhs, lhs, (ScriptValue_Abstract) list.get(i));
+					if (list.size() == 1 && list.get(i) instanceof ScriptValue) {
+						returnValue = new ScriptExecutable_AssignValue((Referenced) lhs, lhs, (ScriptValue) list.get(i));
 					} else {
-						returnValue = new ScriptExecutable_AssignValue((Referenced) lhs, lhs, (ScriptValue_Abstract) parseExpression(env, list, automaticallyAddToStack, type));
+						returnValue = new ScriptExecutable_AssignValue((Referenced) lhs, lhs, (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type));
 					}
 					assert Debugger.addSnapNode("Expression Parsing", "Variable assignment expression parsed", returnValue);
 					return returnValue;
@@ -784,17 +784,17 @@ public class Parser {
 				case MULTIPLY:
 				case DIVIDE:
 				case MODULUS:
-					if (i == 0 || !(list.get(0) instanceof ScriptValue_Abstract)) {
+					if (i == 0 || !(list.get(0) instanceof ScriptValue)) {
 						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(0), "Variable");
 					}
-					left = (ScriptValue_Abstract) list.get(0);
+					left = (ScriptValue) list.get(0);
 					list.remove(0);
 					list.remove(0);
 					//public ScriptExecutable_EvaluateMathExpression(Referenced ref, ScriptValue_Abstract lhs, ScriptValue_Abstract rhs,ScriptOperatorType expressionType)
-					if (list.size() == 1 && list.get(0) instanceof ScriptValue_Abstract) {
-						returnValue = new ScriptExecutable_EvaluateMathExpression((Referenced) obj, left, (ScriptValue_Abstract) list.get(0), ((ScriptOperator) obj).getType());
+					if (list.size() == 1 && list.get(0) instanceof ScriptValue) {
+						returnValue = new ScriptExecutable_EvaluateMathExpression((Referenced) obj, left, (ScriptValue) list.get(0), ((ScriptOperator) obj).getType());
 					} else {
-						returnValue = new ScriptExecutable_EvaluateMathExpression((Referenced) obj, left, (ScriptValue_Abstract) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType());
+						returnValue = new ScriptExecutable_EvaluateMathExpression((Referenced) obj, left, (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType());
 					}
 					assert Debugger.addSnapNode("Expression Parsing", "Mathematical expression parsed", returnValue);
 					return returnValue;
@@ -809,21 +809,21 @@ public class Parser {
 					lhs = (ScriptValue_Variable) list.get(0);
 					list.remove(0);
 					list.remove(0);
-					if (list.size() == 1 && list.get(0) instanceof ScriptValue_Abstract) {
+					if (list.size() == 1 && list.get(0) instanceof ScriptValue) {
 						//public ScriptExecutable_EvalAssignMathExpression(Referenced ref, ScriptValue lhs, ScriptValue rhs,ScriptOperatorType operation){
-						returnValue = new ScriptExecutable_EvalAssignMathExpression((Referenced) lhs, lhs, (ScriptValue_Abstract) list.get(0), ((ScriptOperator) obj).getType());
+						returnValue = new ScriptExecutable_EvalAssignMathExpression((Referenced) lhs, lhs, (ScriptValue) list.get(0), ((ScriptOperator) obj).getType());
 					} else {
-						returnValue = new ScriptExecutable_EvalAssignMathExpression((Referenced) lhs, lhs, (ScriptValue_Abstract) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType());
+						returnValue = new ScriptExecutable_EvalAssignMathExpression((Referenced) lhs, lhs, (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType());
 					}
 					assert Debugger.addSnapNode("Expression Parsing", "Mathematical assignment expression parsed", returnValue);
 					return returnValue;
 				case INCREMENT:
 				case DECREMENT:
 					//public ScriptExecutable_AutoMathematicator(Referenced ref,ScriptValue_Abstract value,ScriptOperatorType operator,boolean isPost)
-					if (i > 0 && list.get(i - 1) instanceof ScriptValue_Abstract) {
+					if (i > 0 && list.get(i - 1) instanceof ScriptValue) {
 						// Post-increment
 						i--;
-						returnValue = new ScriptExecutable_AutoMathematicator((Referenced) list.get(i + 1), (ScriptValue_Abstract) list.get(i), ((ScriptOperator) obj).getType(), true);
+						returnValue = new ScriptExecutable_AutoMathematicator((Referenced) list.get(i + 1), (ScriptValue) list.get(i), ((ScriptOperator) obj).getType(), true);
 						assert Debugger.addSnapNode("Expression Parsing", "Auto-mathematicator parsed", returnValue);
 						list.remove(i);
 						list.remove(i);
@@ -831,7 +831,7 @@ public class Parser {
 					} else {
 						// Pre-increment
 						list.remove(i);
-						returnValue = new ScriptExecutable_AutoMathematicator((Referenced) list.get(i), (ScriptValue_Abstract) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType(), false);
+						returnValue = new ScriptExecutable_AutoMathematicator((Referenced) list.get(i), (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType(), false);
 						assert Debugger.addSnapNode("Expression Parsing", "Auto-mathematicator parsed", returnValue);
 						return returnValue;
 					}
@@ -1021,7 +1021,7 @@ public class Parser {
 		return fxn;
 	}
 
-	public static ScriptExecutable_IfStatement parseIfStatement(Referenced ref, List<Object> list, ScriptValue_Abstract value, int i, ScriptValueType type) throws Exception_Nodeable {
+	public static ScriptExecutable_IfStatement parseIfStatement(Referenced ref, List<Object> list, ScriptValue value, int i, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.openNode("If-Statement Parsing", "Parsing 'if' Statement (" + list.size() + " element(s))");
 		assert Debugger.addSnapNode("Boolean-Testing-Value", value);
 		assert Debugger.addSnapNode("Body Elements", list);
@@ -1029,7 +1029,7 @@ public class Parser {
 			if (!(list.get(i) instanceof ScriptGroup)) {
 				throw new Exception_Nodeable_UnexpectedType(ref, list.get(i), "Param group");
 			}
-			value = (ScriptValue_Abstract) parseExpression(ref.getEnvironment(), ((ScriptGroup) list.get(i)).getElements(), false, type);
+			value = (ScriptValue) parseExpression(ref.getEnvironment(), ((ScriptGroup) list.get(i)).getElements(), false, type);
 			list.remove(i);
 		}
 		if (!(list.get(i) instanceof ScriptGroup)) {
@@ -1198,20 +1198,20 @@ public class Parser {
 		return list;
 	}
 
-	public static List<ScriptValue_Abstract> parseParamGroup(ScriptEnvironment env, List<Object> elementsList, ScriptValueType type) throws Exception_Nodeable {
+	public static List<ScriptValue> parseParamGroup(ScriptEnvironment env, List<Object> elementsList, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.openNode("Parameter-Group Parsing", "Parsing Parameter-Group (" + elementsList.size() + " element(s) in group)");
 		assert Debugger.addSnapNode(DebugString.ELEMENTS, elementsList);
 		Iterator<Object> iter = elementsList.iterator();
-		List<ScriptValue_Abstract> groupList = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> groupList = new LinkedList<ScriptValue>();
 		List<Object> currentParamList = new LinkedList<Object>();
 		env.advanceNestedStack();
 		while (iter.hasNext()) {
 			Object obj = iter.next();
 			if (obj instanceof ScriptOperator && ((ScriptOperator) obj).getType() == ScriptOperatorType.COMMA) {
-				if (currentParamList.size() == 1 && currentParamList.get(0) instanceof ScriptValue_Abstract) {
-					groupList.add((ScriptValue_Abstract) currentParamList.get(0));
+				if (currentParamList.size() == 1 && currentParamList.get(0) instanceof ScriptValue) {
+					groupList.add((ScriptValue) currentParamList.get(0));
 				} else {
-					groupList.add((ScriptValue_Abstract) parseExpression(env, currentParamList, false, type));
+					groupList.add((ScriptValue) parseExpression(env, currentParamList, false, type));
 				}
 				currentParamList.clear();
 				continue;
@@ -1219,10 +1219,10 @@ public class Parser {
 			currentParamList.add(obj);
 		}
 		if (currentParamList.size() > 0) {
-			if (currentParamList.size() == 1 && currentParamList.get(0) instanceof ScriptValue_Abstract) {
-				groupList.add((ScriptValue_Abstract) currentParamList.get(0));
+			if (currentParamList.size() == 1 && currentParamList.get(0) instanceof ScriptValue) {
+				groupList.add((ScriptValue) currentParamList.get(0));
 			} else {
-				groupList.add((ScriptValue_Abstract) parseExpression(env, currentParamList, false, type));
+				groupList.add((ScriptValue) parseExpression(env, currentParamList, false, type));
 			}
 		}
 		env.retreatNestedStack();
@@ -1230,7 +1230,7 @@ public class Parser {
 		return groupList;
 	}
 
-	public static List<ScriptValue_Abstract> parseParamGroup(ScriptEnvironment env, ScriptGroup group, ScriptValueType type) throws Exception_Nodeable {
+	public static List<ScriptValue> parseParamGroup(ScriptEnvironment env, ScriptGroup group, ScriptValueType type) throws Exception_Nodeable {
 		return parseParamGroup(env, group.getElements(), type);
 	}
 

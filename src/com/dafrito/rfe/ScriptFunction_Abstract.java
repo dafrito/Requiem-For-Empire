@@ -7,19 +7,19 @@ public interface ScriptFunction_Abstract {
 
 	public void addExpressions(Collection<ScriptExecutable> list) throws Exception_Nodeable;
 
-	public boolean areParametersConvertible(List<ScriptValue_Abstract> list);
+	public boolean areParametersConvertible(List<ScriptValue> list);
 
-	public boolean areParametersEqual(List<ScriptValue_Abstract> list);
+	public boolean areParametersEqual(List<ScriptValue> list);
 
-	public void execute(Referenced ref, List<ScriptValue_Abstract> valuesGiven) throws Exception_Nodeable;
+	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws Exception_Nodeable;
 
-	public List<ScriptValue_Abstract> getParameters();
+	public List<ScriptValue> getParameters();
 
 	public ScriptKeywordType getPermission();
 
 	public ScriptValueType getReturnType();
 
-	public ScriptValue_Abstract getReturnValue();
+	public ScriptValue getReturnValue();
 
 	// ScriptFunction implementation
 	public boolean isAbstract();
@@ -28,5 +28,5 @@ public interface ScriptFunction_Abstract {
 
 	public boolean nodificate();
 
-	public void setReturnValue(Referenced element, ScriptValue_Abstract value) throws Exception_Nodeable;
+	public void setReturnValue(Referenced element, ScriptValue value) throws Exception_Nodeable;
 }

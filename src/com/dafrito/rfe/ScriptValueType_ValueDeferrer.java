@@ -1,8 +1,8 @@
 package com.dafrito.rfe;
 public class ScriptValueType_ValueDeferrer extends ScriptValueType {
-	private ScriptValue_Abstract value;
+	private ScriptValue value;
 
-	public ScriptValueType_ValueDeferrer(ScriptValue_Abstract value) {
+	public ScriptValueType_ValueDeferrer(ScriptValue value) {
 		super(value.getEnvironment());
 		assert value != null;
 		this.value = value;

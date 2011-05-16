@@ -1,6 +1,6 @@
 package com.dafrito.rfe;
 
-public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConvertible, Nodeable {
+public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible, Nodeable {
 	// Static functions
 	public static boolean testNumericValueConversion(ScriptValueType base, ScriptValueType cast) {
 		// If type is a short or integer, all numeric types are valid (We implement all shorts as integers)
@@ -70,9 +70,9 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.openNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
-		ScriptValue_Abstract value;
+		ScriptValue value;
 		ScriptEnvironment environment = this.getEnvironment();
 		if (ref != null) {
 			environment = ref.getEnvironment();
@@ -110,7 +110,7 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 		return this.increment(ref, new ScriptValue_Numeric(this.getEnvironment(), 1.0d));
 	}
 
-	public Number decrement(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public Number decrement(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		assert Debugger.openNode("Numeric Value Decrements", "Decrementing Numeric Value");
 		assert Debugger.addSnapNode("Number before decrement", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
@@ -137,7 +137,7 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 		return number;
 	}
 
-	public Number divide(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public Number divide(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		assert Debugger.openNode("Numeric Value Divisions", "Dividing Numeric Value");
 		assert Debugger.addSnapNode("Number before division", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
@@ -192,7 +192,7 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this;
 	}
 
@@ -200,7 +200,7 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 		return this.increment(ref, new ScriptValue_Numeric(this.getEnvironment(), 1.0d));
 	}
 
-	public Number increment(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public Number increment(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		assert Debugger.openNode("Numeric Value Increments", "Incrementing Numeric Value");
 		assert Debugger.addSnapNode("Number before increment", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
@@ -240,7 +240,7 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 		return this.getNumericValue().longValue();
 	}
 
-	public Number modulus(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public Number modulus(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		assert Debugger.openNode("Numeric Value Modulations", "Modulating Numeric Value");
 		assert Debugger.addSnapNode("Number before modulus", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
@@ -270,7 +270,7 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 		return number;
 	}
 
-	public Number multiply(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public Number multiply(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		assert Debugger.openNode("Numeric Value Multiplications", "Multiplying Numeric Value");
 		assert Debugger.addSnapNode("Number before multiplication", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
@@ -328,13 +328,13 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 		return true;
 	}
 
-	public ScriptValue_Abstract setNumericValue(Number value) {
+	public ScriptValue setNumericValue(Number value) {
 		this.number = value;
 		return this;
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
 		switch (this.type.getKeywordType()) {
 		case SHORT:
@@ -363,7 +363,7 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		ScriptValue_Numeric right = (ScriptValue_Numeric) rhs.castToType(ref, this.getType());
 		if (this.number.equals(right.getNumericValue())) {
 			return 0;
@@ -375,7 +375,7 @@ public class ScriptValue_Numeric implements ScriptValue_Abstract, ScriptConverti
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		if (!ScriptValueType.isNumericType(rhs.getType())) {
 			throw new Exception_Nodeable_ClassCast(ref, rhs, this.getType());
 		}

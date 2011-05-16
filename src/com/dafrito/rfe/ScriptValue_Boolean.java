@@ -1,6 +1,6 @@
 package com.dafrito.rfe;
 
-public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstract, Nodeable {
+public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue, Nodeable {
 	private boolean value;
 	private final ScriptEnvironment environment;
 
@@ -10,7 +10,7 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.addNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
 		if (this.getType().equals(type)) {
 			return this;
@@ -40,7 +40,7 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this;
 	}
 
@@ -58,7 +58,7 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		assert Debugger.openNode("Value Assignments", "Setting Boolean Value");
 		assert Debugger.addSnapNode("Former value", this);
 		this.value = ((ScriptValue_Boolean) value.castToType(ref, this.getType())).getBooleanValue();
@@ -67,12 +67,12 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue_Abstr
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		throw new Exception_Nodeable_IncomparableObjects(ref, this, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return ((ScriptValue_Boolean) this.getValue()).getBooleanValue() == ((ScriptValue_Boolean) rhs.castToType(ref, this.getType())).getBooleanValue();
 	}
 }

@@ -75,7 +75,7 @@ public class ScriptEnvironment implements Nodeable {
 			for (ScriptTemplate_Abstract template : this.templates.values()) {
 				template.initialize();
 			}
-			List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
+			List<ScriptValue> params = new LinkedList<ScriptValue>();
 			if (Debugger.getPriorityExecutingClass() != null) {
 				if (this.getTemplate(Debugger.getPriorityExecutingClass()) != null && this.getTemplate(Debugger.getPriorityExecutingClass()).getFunction("main", params) != null) {
 					ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate(Debugger.getPriorityExecutingClass()), "main", params);

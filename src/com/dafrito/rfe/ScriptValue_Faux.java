@@ -1,6 +1,6 @@
 package com.dafrito.rfe;
 
-public class ScriptValue_Faux implements Nodeable, ScriptValue_Abstract {
+public class ScriptValue_Faux implements Nodeable, ScriptValue {
 	private final ScriptEnvironment environment;
 	private final ScriptValueType type;
 
@@ -10,7 +10,7 @@ public class ScriptValue_Faux implements Nodeable, ScriptValue_Abstract {
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 
@@ -25,7 +25,7 @@ public class ScriptValue_Faux implements Nodeable, ScriptValue_Abstract {
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 
@@ -45,17 +45,17 @@ public class ScriptValue_Faux implements Nodeable, ScriptValue_Abstract {
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 }

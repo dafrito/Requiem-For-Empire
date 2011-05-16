@@ -70,7 +70,7 @@ public class Scheduler implements ActionListener, ScriptConvertible, Nodeable {
 		long differential = (long) (((this.getCurrentTime() - this.lastIteration)) * this.compression);
 		this.lastIteration = this.getCurrentTime();
 		this.gameTime += differential;
-		List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> params = new LinkedList<ScriptValue>();
 		int i = 0;
 		try {
 			this.inProgress = true;

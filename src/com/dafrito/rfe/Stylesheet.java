@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue_Abstract, ScriptConvertible {
+public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, ScriptConvertible {
 	private Map<StylesheetElementType, StylesheetElement> styleElements = new HashMap<StylesheetElementType, StylesheetElement>(); // element code, element
 	private String name;
 	private boolean isUnique;
@@ -35,7 +35,7 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue_Ab
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract template) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract template) throws Exception_Nodeable {
 		return null;
 	}
 

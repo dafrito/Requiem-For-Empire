@@ -133,15 +133,15 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 		assert Debugger.addNode("Y-offset: " + this.offset.getY());
 		assert Debugger.addNode("Zoom factor: " + this.offset.getZ());
 		try {
-			List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
-			params.add((ScriptValue_Abstract) this.convert());
-			List<ScriptValue_Abstract> regionList = new LinkedList<ScriptValue_Abstract>();
-			List<ScriptValue_Abstract> assetList = new LinkedList<ScriptValue_Abstract>();
+			List<ScriptValue> params = new LinkedList<ScriptValue>();
+			params.add((ScriptValue) this.convert());
+			List<ScriptValue> regionList = new LinkedList<ScriptValue>();
+			List<ScriptValue> assetList = new LinkedList<ScriptValue>();
 			for (DiscreteRegion region : regions) {
-				regionList.add((ScriptValue_Abstract) region.convert());
+				regionList.add((ScriptValue) region.convert());
 				if (region.getProperty("Archetypes") != null) {
 					for (Asset asset : ((ArchetypeMapNode) region.getProperty("Archetypes")).getAllAssets()) {
-						assetList.add((ScriptValue_Abstract) asset.convert());
+						assetList.add((ScriptValue) asset.convert());
 					}
 				}
 			}

@@ -1,11 +1,11 @@
 package com.dafrito.rfe;
 
-public class ScriptExecutable_EvaluateMathExpression extends ScriptElement implements ScriptValue_Abstract, ScriptExecutable, Nodeable {
-	private ScriptValue_Abstract lhs, rhs;
+public class ScriptExecutable_EvaluateMathExpression extends ScriptElement implements ScriptValue, ScriptExecutable, Nodeable {
+	private ScriptValue lhs, rhs;
 	private ScriptOperatorType operator;
 	private ScriptValueType type;
 
-	public ScriptExecutable_EvaluateMathExpression(Referenced ref, ScriptValue_Abstract lhs, ScriptValue_Abstract rhs, ScriptOperatorType expressionType) {
+	public ScriptExecutable_EvaluateMathExpression(Referenced ref, ScriptValue lhs, ScriptValue rhs, ScriptOperatorType expressionType) {
 		super(ref);
 		this.type = ScriptValueType.createType(lhs);
 		this.lhs = lhs;
@@ -14,13 +14,13 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		return this.getValue();
 	}
 
@@ -31,7 +31,7 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		assert Debugger.openNode("Mathematic Expressions", "Executing Mathematic Expression");
 		assert Debugger.addNode(this);
 		ScriptValue_Numeric left = (ScriptValue_Numeric) this.lhs.getValue();
@@ -39,7 +39,7 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 		if ((this.operator == ScriptOperatorType.DIVIDE || this.operator == ScriptOperatorType.MODULUS) && right.getNumericValue().doubleValue() == 0.0d) {
 			throw new Exception_Nodeable_DivisionByZero(this);
 		}
-		ScriptValue_Abstract returning = null;
+		ScriptValue returning = null;
 		switch (this.operator) {
 		case PLUS:
 			returning = new ScriptValue_Numeric(this.getEnvironment(), left.increment(this, right));
@@ -77,17 +77,17 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		throw new Exception_InternalError(this, "Unexecuted Variable");
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesCompare(ref, rhs.castToType(ref, this.getType()));
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesEqual(ref, rhs.castToType(ref, this.getType()));
 	}
 }

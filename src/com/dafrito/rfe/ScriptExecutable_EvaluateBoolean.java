@@ -1,10 +1,10 @@
 package com.dafrito.rfe;
 
-public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements ScriptExecutable, ScriptValue_Abstract {
-	private ScriptValue_Abstract lhs, rhs;
+public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements ScriptExecutable, ScriptValue {
+	private ScriptValue lhs, rhs;
 	private ScriptOperatorType comparison;
 
-	public ScriptExecutable_EvaluateBoolean(Referenced ref, ScriptValue_Abstract lhs, ScriptValue_Abstract rhs, ScriptOperatorType comparison) {
+	public ScriptExecutable_EvaluateBoolean(Referenced ref, ScriptValue lhs, ScriptValue rhs, ScriptOperatorType comparison) {
 		super(ref);
 		this.lhs = lhs;
 		this.rhs = rhs;
@@ -12,7 +12,7 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.addNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
 		if (this.getType().equals(type)) {
 			return this;
@@ -22,18 +22,18 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		assert Debugger.openNode("Boolean Evaluations", "Executing Boolean Evaluation");
 		assert Debugger.addNode(this);
-		ScriptValue_Abstract returning = null;
+		ScriptValue returning = null;
 		assert Debugger.openNode("Getting left value");
 		assert Debugger.addSnapNode("Left before resolution", this.lhs);
-		ScriptValue_Abstract lhs = this.lhs.getValue();
+		ScriptValue lhs = this.lhs.getValue();
 		assert Debugger.addSnapNode("Left", lhs);
 		assert Debugger.closeNode();
 		assert Debugger.openNode("Getting right value");
 		assert Debugger.addSnapNode("Right before resolution", this.rhs);
-		ScriptValue_Abstract rhs = this.rhs.getValue();
+		ScriptValue rhs = this.rhs.getValue();
 		assert Debugger.addSnapNode("Right", rhs);
 		assert Debugger.closeNode();
 		switch (this.comparison) {
@@ -69,7 +69,7 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this.execute();
 	}
 
@@ -90,17 +90,17 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

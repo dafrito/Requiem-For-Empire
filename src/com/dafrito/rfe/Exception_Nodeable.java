@@ -195,11 +195,11 @@ class Exception_Nodeable_ClassCast extends Exception_Nodeable {
 	private static final long serialVersionUID = 375067664989244754L;
 	private String value, castingValue;
 
-	public Exception_Nodeable_ClassCast(Referenced ref, ScriptValue_Abstract value, ScriptValue_Abstract castValue) throws Exception_Nodeable {
+	public Exception_Nodeable_ClassCast(Referenced ref, ScriptValue value, ScriptValue castValue) throws Exception_Nodeable {
 		this(ref, value.getType().getName(), castValue.getType().getName());
 	}
 
-	public Exception_Nodeable_ClassCast(Referenced ref, ScriptValue_Abstract castingValue, ScriptValueType type) throws Exception_Nodeable {
+	public Exception_Nodeable_ClassCast(Referenced ref, ScriptValue castingValue, ScriptValueType type) throws Exception_Nodeable {
 		this(ref, type.getName(), type.getName());
 	}
 
@@ -385,9 +385,9 @@ class Exception_Nodeable_IncomparableObjects extends Exception_Nodeable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1863802775557161344L;
-	private ScriptValue_Abstract lhs, rhs;
+	private ScriptValue lhs, rhs;
 
-	public Exception_Nodeable_IncomparableObjects(Referenced ref, ScriptValue_Abstract lhs, ScriptValue_Abstract rhs) {
+	public Exception_Nodeable_IncomparableObjects(Referenced ref, ScriptValue lhs, ScriptValue rhs) {
 		super(ref);
 		this.lhs = lhs;
 		this.rhs = rhs;

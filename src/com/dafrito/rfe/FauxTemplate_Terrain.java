@@ -25,10 +25,10 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing terrain faux template function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Terrain template = (FauxTemplate_Terrain) rawTemplate;
-		ScriptValue_Abstract returning = null;
+		ScriptValue returning = null;
 		assert Debugger.addSnapNode("Template provided", template);
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
@@ -160,7 +160,7 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 		this.addFauxFunction("getGroundCohesion", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("getTemperature", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("getWaterDepth", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		this.addFauxFunction("setBrushDensityWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("setElevationWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
@@ -172,7 +172,7 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 		this.addFauxFunction("setGroundCohesion", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("setTemperature", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("setWaterDepth", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		this.addFauxFunction("setBrushDensity", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);

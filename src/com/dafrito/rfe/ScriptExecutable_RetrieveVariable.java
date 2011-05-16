@@ -1,11 +1,11 @@
 package com.dafrito.rfe;
 
-public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable implements ScriptExecutable, ScriptValue_Abstract, Nodeable, Referenced {
+public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable implements ScriptExecutable, ScriptValue, Nodeable, Referenced {
 	private String name;
-	private ScriptValue_Abstract template;
+	private ScriptValue template;
 	private ScriptElement reference;
 
-	public ScriptExecutable_RetrieveVariable(Referenced ref, ScriptValue_Abstract template, String name, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptExecutable_RetrieveVariable(Referenced ref, ScriptValue template, String name, ScriptValueType type) throws Exception_Nodeable {
 		super(ref.getEnvironment(), type, null);
 		this.reference = ref.getDebugReference();
 		this.name = name;
@@ -13,13 +13,13 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		return this.getVariable().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		return this.getValue();
 	}
 
@@ -41,7 +41,7 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this.getVariable().getValue();
 	}
 
@@ -78,22 +78,22 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	}
 
 	@Override
-	public ScriptValue_Abstract setReference(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setReference(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		return this.getVariable().setReference(ref, value);
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		return this.getVariable().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

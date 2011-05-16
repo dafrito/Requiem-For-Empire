@@ -1,11 +1,11 @@
 package com.dafrito.rfe;
 
-public class ScriptExecutable_AutoMathematicator extends ScriptElement implements ScriptExecutable, ScriptValue_Abstract, Nodeable {
-	private ScriptValue_Abstract value;
+public class ScriptExecutable_AutoMathematicator extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
+	private ScriptValue value;
 	private ScriptOperatorType operator;
 	private boolean isPost;
 
-	public ScriptExecutable_AutoMathematicator(Referenced ref, ScriptValue_Abstract value, ScriptOperatorType operator, boolean isPost) {
+	public ScriptExecutable_AutoMathematicator(Referenced ref, ScriptValue value, ScriptOperatorType operator, boolean isPost) {
 		super(ref);
 		this.value = value;
 		this.operator = operator;
@@ -13,15 +13,15 @@ public class ScriptExecutable_AutoMathematicator extends ScriptElement implement
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		return this.value = this.value.castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws Exception_Nodeable {
 		assert Debugger.openNode("Auto-Mathematicator Executions", "Executing Auto-Mathematicator");
-		ScriptValue_Abstract returning;
+		ScriptValue returning;
 		if (this.operator == ScriptOperatorType.INCREMENT) {
 			returning = ((ScriptValue_Numeric) this.value.getValue()).setNumericValue(((ScriptValue_Numeric) this.value.getValue()).increment(this));
 		} else {
@@ -38,7 +38,7 @@ public class ScriptExecutable_AutoMathematicator extends ScriptElement implement
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		assert this.value.getValue() instanceof ScriptValue_Numeric : "Should be a ScriptValue_Numeric: " + this.value.getValue();
 		ScriptValue_Numeric value = new ScriptValue_Numeric(this.getEnvironment(), ((ScriptValue_Numeric) this.value.getValue()).getNumericValue());
 		ScriptValue_Numeric otherValue = (ScriptValue_Numeric) this.execute().getValue();
@@ -76,17 +76,17 @@ public class ScriptExecutable_AutoMathematicator extends ScriptElement implement
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

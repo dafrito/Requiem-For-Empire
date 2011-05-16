@@ -17,11 +17,11 @@ public class FauxTemplate_MovementEvaluator extends FauxTemplate implements Node
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing movement evaluator faux template function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		assert Debugger.addSnapNode("Template provided", rawTemplate);
 		assert Debugger.addSnapNode("Parameters provided", params);
-		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, rawTemplate);
+		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, rawTemplate);
 		assert Debugger.closeNode();
 		return returning;
 	}
@@ -33,7 +33,7 @@ public class FauxTemplate_MovementEvaluator extends FauxTemplate implements Node
 		assert Debugger.openNode("Faux Template Initializations", "Initializing movement evaluator faux template");
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> params = new LinkedList<ScriptValue>();
 		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING)));
 		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
 		this.addFauxFunction("evaluateMovementCost", ScriptValueType.DOUBLE, params, ScriptKeywordType.PUBLIC, true, false);

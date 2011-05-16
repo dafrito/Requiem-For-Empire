@@ -28,13 +28,13 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing Interface Element Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_InterfaceElement template = (FauxTemplate_InterfaceElement) rawTemplate;
-		ScriptValue_Abstract returning;
+		ScriptValue returning;
 		assert Debugger.addSnapNode("Template provided", template);
 		assert Debugger.addSnapNode("Parameters provided", params);
-		ScriptValue_Abstract value;
+		ScriptValue value;
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_InterfaceElement) this.createObject(ref, template);
@@ -82,18 +82,18 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing interface element faux template");
 		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
-		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
 		this.addConstructor(this.getType(), fxnParams);
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
 		this.addConstructor(this.getType(), fxnParams);
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
-		this.addFauxFunction("getUniqueStylesheet", ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING), new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getClassStylesheet", ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING), new LinkedList<ScriptValue_Abstract>(), ScriptKeywordType.PUBLIC, false, false);
+		fxnParams = new LinkedList<ScriptValue>();
+		this.addFauxFunction("getUniqueStylesheet", ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING), new LinkedList<ScriptValue>(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getClassStylesheet", ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING), new LinkedList<ScriptValue>(), ScriptKeywordType.PUBLIC, false, false);
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
 		this.addFauxFunction("setUniqueStylesheet", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("setClassStylesheet", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);

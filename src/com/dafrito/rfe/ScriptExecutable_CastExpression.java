@@ -1,6 +1,6 @@
 package com.dafrito.rfe;
 
-public class ScriptExecutable_CastExpression extends ScriptElement implements ScriptExecutable, ScriptValue_Abstract, Nodeable {
+public class ScriptExecutable_CastExpression extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
 	private ScriptExecutable castExpression;
 	private ScriptValueType type;
 
@@ -11,17 +11,17 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue_Abstract execute() throws Exception_Nodeable {
-		ScriptValue_Abstract left = this.castExpression.execute().getValue();
+	public ScriptValue execute() throws Exception_Nodeable {
+		ScriptValue left = this.castExpression.execute().getValue();
 		assert Debugger.openNode("Cast Expression Executions", "Executing cast to " + this.getType());
 		assert Debugger.addSnapNode("Value", left);
-		ScriptValue_Abstract value = this.castExpression.execute().castToType(this, this.getType());
+		ScriptValue value = this.castExpression.execute().castToType(this, this.getType());
 		assert Debugger.closeNode();
 		return value;
 	}
@@ -33,7 +33,7 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this.execute();
 	}
 
@@ -53,17 +53,17 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

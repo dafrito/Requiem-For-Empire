@@ -25,7 +25,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing Discrete Region Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_DiscreteRegion template = (FauxTemplate_DiscreteRegion) rawTemplate;
 		assert Debugger.addSnapNode("Template provided", template);
@@ -59,17 +59,17 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 			}
 		} else if (name.equals("getProperty")) {
 			if (params.size() == 1) {
-				ScriptValue_Abstract returning = (ScriptValue_Abstract) Parser.convert(this.getEnvironment(), template.getRegion().getProperty(Parser.getString(params.get(0))));
+				ScriptValue returning = (ScriptValue) Parser.convert(this.getEnvironment(), template.getRegion().getProperty(Parser.getString(params.get(0))));
 				assert Debugger.addSnapNode("Retrieved property", returning);
 				assert Debugger.closeNode();
 				return returning;
 			}
 		} else if (name.equals("getCenter")) {
-			ScriptValue_Abstract returning = Parser.getRiffPoint(this.getEnvironment(), template.getRegion().getCenter());
+			ScriptValue returning = Parser.getRiffPoint(this.getEnvironment(), template.getRegion().getCenter());
 			assert Debugger.closeNode();
 			return returning;
 		}
-		ScriptValue_Abstract returning = this.getExtendedFauxClass().execute(ref, name, params, template);
+		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();
 		return returning;
 	}
@@ -83,25 +83,25 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing discrete region faux template");
 		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
-		List<ScriptValue_Abstract> fxnParams = new LinkedList<ScriptValue_Abstract>();
+		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), this.getType()));
 		this.addConstructor(this.getType(), fxnParams);
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
 		this.addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
 		this.addFauxFunction("addAsset", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.getObjectType(this.getEnvironment())));
 		this.addFauxFunction("setProperty", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
 		this.addFauxFunction("getProperty", ScriptValueType.getObjectType(this.getEnvironment()), fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		fxnParams = new LinkedList<ScriptValue_Abstract>();
+		fxnParams = new LinkedList<ScriptValue>();
 		this.addFauxFunction("getCenter", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}

@@ -1,6 +1,6 @@
 package com.dafrito.rfe;
 
-public class ScriptValue_String implements ScriptValue_Abstract, ScriptConvertible, Nodeable {
+public class ScriptValue_String implements ScriptValue, ScriptConvertible, Nodeable {
 	private String value;
 	private final ScriptEnvironment environment;
 
@@ -10,7 +10,7 @@ public class ScriptValue_String implements ScriptValue_Abstract, ScriptConvertib
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.addNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
 		if (this.getType().equals(type)) {
 			return this;
@@ -40,7 +40,7 @@ public class ScriptValue_String implements ScriptValue_Abstract, ScriptConvertib
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this;
 	}
 
@@ -58,7 +58,7 @@ public class ScriptValue_String implements ScriptValue_Abstract, ScriptConvertib
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		assert Debugger.openNode("Value Assignments", "Setting String Value");
 		assert Debugger.addSnapNode("Former value", this);
 		this.value = ((ScriptValue_String) value.castToType(ref, this.getType())).getStringValue();
@@ -67,12 +67,12 @@ public class ScriptValue_String implements ScriptValue_Abstract, ScriptConvertib
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getStringValue().compareTo(((ScriptValue_String) rhs.castToType(ref, this.getType())).getStringValue());
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getStringValue().equals(((ScriptValue_String) rhs.castToType(ref, this.getType())).getStringValue());
 	}
 }

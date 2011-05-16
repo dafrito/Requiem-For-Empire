@@ -13,17 +13,17 @@ public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing RiffDali Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
-		ScriptValue_Abstract returning = null;
+		ScriptValue returning = null;
 		assert Debugger.addSnapNode("Template provided", rawTemplate);
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name.equals("parseColor")) {
 			returning = Parser.getRiffColor(this.getEnvironment(), RiffJavaToolbox.getColor(Parser.getString(params.get(0))));
 		} else if (name.equals("paintPanel")) {
-			List<ScriptValue_Abstract> list = Parser.getList(params.get(1));
-			List<ScriptValue_Abstract> paramList = new LinkedList<ScriptValue_Abstract>();
-			for (ScriptValue_Abstract value : list) {
+			List<ScriptValue> list = Parser.getList(params.get(1));
+			List<ScriptValue> paramList = new LinkedList<ScriptValue>();
+			for (ScriptValue value : list) {
 				paramList.clear();
 				paramList.add(value);
 				ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), ref, params.get(0), "drawRegion", paramList);
@@ -42,7 +42,7 @@ public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing RiffDali faux template");
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		List<ScriptValue_Abstract> fxnParams = FauxTemplate.createEmptyParamList();
+		List<ScriptValue> fxnParams = FauxTemplate.createEmptyParamList();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
 		this.addFauxFunction("parseColor", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Color.COLORSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, true);
 		fxnParams = FauxTemplate.createEmptyParamList();

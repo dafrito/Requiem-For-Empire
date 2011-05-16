@@ -2,7 +2,7 @@ package com.dafrito.rfe;
 import java.util.List;
 
 
-public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implements ScriptValue_Abstract, Nodeable {
+public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 	private String name;
 
 	public ScriptTemplate_Placeholder(ScriptEnvironment env, String name) {
@@ -31,7 +31,7 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		return this.getTemplate().castToType(ref, type);
 	}
 
@@ -52,7 +52,7 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public ScriptFunction_Abstract getFunction(String name, List<ScriptValue_Abstract> params) {
+	public ScriptFunction_Abstract getFunction(String name, List<ScriptValue> params) {
 		return this.getTemplate().getFunction(name, params);
 	}
 
@@ -93,7 +93,7 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		return this.getTemplate().getValue();
 	}
 
@@ -158,17 +158,17 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		return this.getTemplate().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getTemplate().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getTemplate().valuesEqual(ref, rhs);
 	}
 }

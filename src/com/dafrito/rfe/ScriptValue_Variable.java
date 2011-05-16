@@ -1,12 +1,36 @@
 package com.dafrito.rfe;
 
-public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
-	private ScriptValue_Abstract value;
+public class ScriptValue_Variable implements ScriptValue, Nodeable {
+
+	public static ScriptValue createUninitializedObject(ScriptEnvironment env, ScriptValueType type) {
+		if (type == null) {
+			return null;
+		}
+		if (type.equals(ScriptKeywordType.BOOLEAN)) {
+			return new ScriptValue_Boolean(env, false);
+		} else if (type.equals(ScriptKeywordType.SHORT)) {
+			return new ScriptValue_Numeric(env, (short) 0);
+		} else if (type.equals(ScriptKeywordType.INT)) {
+			return new ScriptValue_Numeric(env, 0);
+		} else if (type.equals(ScriptKeywordType.LONG)) {
+			return new ScriptValue_Numeric(env, (long) 0);
+		} else if (type.equals(ScriptKeywordType.FLOAT)) {
+			return new ScriptValue_Numeric(env, 0.0f);
+		} else if (type.equals(ScriptKeywordType.DOUBLE)) {
+			return new ScriptValue_Numeric(env, 0.0d);
+		} else if (type.equals(ScriptKeywordType.STRING)) {
+			return new ScriptValue_String(env, "");
+		} else {
+			return null;
+		}
+	}
+
+	private ScriptValue value;
 	private final ScriptKeywordType permission;
 	private final ScriptEnvironment environment;
 	private final ScriptValueType type;
 
-	public ScriptValue_Variable(ScriptEnvironment env, ScriptValue_Abstract value, ScriptKeywordType permission) throws Exception_Nodeable {
+	public ScriptValue_Variable(ScriptEnvironment env, ScriptValue value, ScriptKeywordType permission) throws Exception_Nodeable {
 		this(env, value.getType(), value, permission);
 	}
 
@@ -14,19 +38,19 @@ public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
 		this(env, type, null, permission);
 	}
 
-	public ScriptValue_Variable(ScriptEnvironment env, ScriptValueType type, ScriptValue_Abstract value, ScriptKeywordType permission) throws Exception_Nodeable {
+	public ScriptValue_Variable(ScriptEnvironment env, ScriptValueType type, ScriptValue value, ScriptKeywordType permission) throws Exception_Nodeable {
 		this.environment = env;
 		this.permission = permission;
 		this.type = type;
 		if (value == null) {
-			this.value = ScriptValue.createUninitializedObject(env, type);
+			this.value = createUninitializedObject(env, type);
 		} else {
 			this.value = value;
 		}
 	}
 
 	@Override
-	public ScriptValue_Abstract castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
 		if (this.isConvertibleTo(type)) {
 			return new ScriptValue_Variable(this.getEnvironment(), this.getType(), this.getValue(), this.getPermission());
 		}
@@ -49,10 +73,10 @@ public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
 	}
 
 	@Override
-	public ScriptValue_Abstract getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws Exception_Nodeable {
 		assert Debugger.openNode("Variable Value Retrievals", "Retrieving Variable's Value");
 		assert Debugger.addNode(this);
-		ScriptValue_Abstract returning;
+		ScriptValue returning;
 		if (this.value != null) {
 			returning = this.value.getValue();
 		} else {
@@ -93,7 +117,7 @@ public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
 		return true;
 	}
 
-	public ScriptValue_Abstract setReference(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setReference(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		assert Debugger.openNode("Reference Assignments", "Setting Variable Reference");
 		if (!ScriptValueType.isPrimitiveType(this.getType())) {
 			assert Debugger.addNode("Assigning reference");
@@ -117,17 +141,17 @@ public class ScriptValue_Variable implements ScriptValue_Abstract, Nodeable {
 	}
 
 	@Override
-	public ScriptValue_Abstract setValue(Referenced ref, ScriptValue_Abstract value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		return this.setReference(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue_Abstract rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
 		if (this.value == null || this.value.getValue() == null || this.value.getValue() instanceof ScriptValue_Null) {
 			return (rhs == null || rhs instanceof ScriptValue_Null);
 		}

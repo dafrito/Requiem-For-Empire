@@ -16,7 +16,7 @@ public class ScriptValueType {
 		return new ScriptValueType_StringDeferrer(ref, type);
 	}
 
-	public static ScriptValueType createType(ScriptEnvironment env, ScriptValue_Abstract template, String name) {
+	public static ScriptValueType createType(ScriptEnvironment env, ScriptValue template, String name) {
 		return new ScriptValueType_ObjectDeferrer(env, template, name);
 	}
 
@@ -25,11 +25,11 @@ public class ScriptValueType {
 		return new ScriptValueType_StringDeferrer(env, type);
 	}
 
-	public static ScriptValueType createType(ScriptValue_Abstract value) {
+	public static ScriptValueType createType(ScriptValue value) {
 		return new ScriptValueType_ValueDeferrer(value);
 	}
 
-	public static ScriptValueType createType(ScriptValue_Abstract template, String name) {
+	public static ScriptValueType createType(ScriptValue template, String name) {
 		return new ScriptValueType_ObjectDeferrer(template, name);
 	}
 
@@ -128,8 +128,8 @@ public class ScriptValueType {
 
 	private static int identifierSeed = 0;
 
-	public static List<ScriptValue_Abstract> createEmptyParamList() {
-		return new LinkedList<ScriptValue_Abstract>();
+	public static List<ScriptValue> createEmptyParamList() {
+		return new LinkedList<ScriptValue>();
 	}
 
 	public static void initialize(ScriptEnvironment env) throws Exception_Nodeable {
