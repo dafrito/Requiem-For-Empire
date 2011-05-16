@@ -1,12 +1,13 @@
 package com.dafrito.rfe.points;
 
+import com.bluespot.geom.vectors.Vector3d;
 import com.dafrito.rfe.FauxTemplate_Point;
 import com.dafrito.rfe.ScriptConvertible;
 import com.dafrito.rfe.ScriptEnvironment;
 
 public class Point_Euclidean extends Point implements ScriptConvertible {
-	private double x, y, z;
-	private static int pointNum = 0;
+
+	private final Vector3d point;
 
 	public Point_Euclidean(ScriptEnvironment env, double x, double y, double z) {
 		this(env, null, x, y, z);
@@ -14,22 +15,54 @@ public class Point_Euclidean extends Point implements ScriptConvertible {
 
 	public Point_Euclidean(ScriptEnvironment env, String name, double x, double y, double z) {
 		super(env, name);
-		pointNum++;
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		point = Vector3d.mutable(x, y, z);
 	}
 
-	public void addX(double x) {
-		this.x += x;
+	@Override
+	public Point.System getSystem() {
+		return Point.System.EUCLIDEAN;
 	}
 
-	public void addY(double y) {
-		this.y += y;
+	@Override
+	public double getX() {
+		return this.point.getX();
 	}
 
-	public void addZ(double z) {
-		this.z += z;
+	@Override
+	public double getY() {
+		return this.point.getY();
+	}
+
+	@Override
+	public double getZ() {
+		return this.point.getZ();
+	}
+
+	@Override
+	public void setX(double value) {
+		this.point.setX(value);
+	}
+
+	@Override
+	public void setY(double value) {
+		this.point.setY(value);
+	}
+
+	@Override
+	public void setZ(double value) {
+		this.point.setZ(value);
+	}
+
+	public void addX(double offset) {
+		this.point.addX(offset);
+	}
+
+	public void addY(double offset) {
+		this.point.addY(offset);
+	}
+
+	public void addZ(double offset) {
+		this.point.addZ(offset);
 	}
 
 	// ScriptConvertible implementation
@@ -40,58 +73,25 @@ public class Point_Euclidean extends Point implements ScriptConvertible {
 		return point;
 	}
 
-	// Object overloading
 	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Point_Euclidean)) {
+	public int hashCode() {
+		return this.point.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Point_Euclidean)) {
 			return false;
 		}
-		Point_Euclidean testPoint = (Point_Euclidean) o;
-		return (Points.areEqual(Point.System.EUCLIDEAN, this.x, testPoint.getX()) && Points.areEqual(Point.System.EUCLIDEAN, this.y, testPoint.getY()) && Points.areEqual(Point.System.EUCLIDEAN, this.z, testPoint.getZ()));
-	}
-
-	@Override
-	public Point.System getSystem() {
-		return Point.System.EUCLIDEAN;
-	}
-
-	// Point implementation
-	@Override
-	public double getX() {
-		return this.x;
-	}
-
-	@Override
-	public double getY() {
-		return this.y;
-	}
-
-	@Override
-	public double getZ() {
-		return this.z;
-	}
-
-	@Override
-	public void setX(double x) {
-		this.x = x;
-	}
-
-	@Override
-	public void setY(double y) {
-		this.y = y;
-	}
-
-	@Override
-	public void setZ(double z) {
-		this.z = z;
+		Point_Euclidean other = (Point_Euclidean) obj;
+		return this.point.equals(other.point);
 	}
 
 	@Override
 	public String toString() {
-		String string = new String();
-		string += "(" + this.x;
-		string += ", " + this.y;
-		string += ", " + this.z + ")";
-		return string;
+		return String.format("Point_Euclidean[%s]", this.point);
 	}
 }
