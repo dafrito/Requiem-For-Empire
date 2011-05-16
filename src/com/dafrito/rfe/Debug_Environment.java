@@ -28,9 +28,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class Debug_Environment extends JFrame implements ActionListener, ChangeListener {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8190546125680224912L;
 
 	public static void initialize() {
