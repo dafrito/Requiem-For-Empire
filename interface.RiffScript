@@ -1,10 +1,10 @@
 class Number{
-	private double value;
+	private double _value;
 	public Number(double value){
-		value=value;
+		_value=value;
 	}
-	public double getValue(){return value;}
-	public void setValue(double value){value=value;}
+	public double getValue(){return _value;}
+	public void setValue(double value){_value=value;}
 }
 class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator{
 	private Scenario scenario;
