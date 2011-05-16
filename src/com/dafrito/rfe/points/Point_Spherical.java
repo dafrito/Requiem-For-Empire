@@ -1,13 +1,13 @@
 package com.dafrito.rfe.points;
 
+import com.bluespot.geom.vectors.Vector3d;
 import com.dafrito.rfe.ScriptEnvironment;
 
 public class Point_Spherical extends Point {
-	public static final double LATITUDEMAXIMUM = 180;
-	public static final double LONGITUDEMAXIMUM = 360;
-	private double latitude;
-	private double longitude;
-	private double magnitude;
+	private static final double LATITUDEMAXIMUM = 180;
+	private static final double LONGITUDEMAXIMUM = 360;
+
+	private final Vector3d point;
 
 	public Point_Spherical(ScriptEnvironment env, double longitude, double latitude, double magnitude) {
 		this(env, null, longitude, latitude, magnitude);
@@ -15,105 +15,117 @@ public class Point_Spherical extends Point {
 
 	public Point_Spherical(ScriptEnvironment env, String name, double longitude, double latitude, double magnitude) {
 		super(env, name);
-		this.longitude = longitude % LONGITUDEMAXIMUM;
-		this.latitude = latitude % LATITUDEMAXIMUM;
-		this.magnitude = magnitude;
-	}
-
-	// Object overloading
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Point_Spherical)) {
-			return false;
-		}
-		Point_Spherical point = ((Point_Spherical) o);
-		if (Points.areEqual(Point.System.EUCLIDEAN, this.getY(), 90.0d) && Points.areEqual(Point.System.EUCLIDEAN, point.getY(), 90.0d)) {
-			return true;
-		}
-		if (Points.areEqual(Point.System.EUCLIDEAN, this.getY(), -90.0d) && Points.areEqual(Point.System.EUCLIDEAN, point.getY(), -90.0d)) {
-			return true;
-		}
-		return Points.areEqual(Point.System.SPHERICAL, this.getX(), point.getX()) && Points.areEqual(Point.System.SPHERICAL, this.getY(), point.getY());
-	}
-
-	public double getLatitudeDegrees() {
-		return this.latitude;
-	}
-
-	public double getLatitudeRadians() {
-		return Math.toRadians(this.latitude);
-	}
-
-	// Degrees
-	public double getLongitudeDegrees() {
-		return this.longitude;
-	}
-
-	// Radians
-	public double getLongitudeRadians() {
-		return Math.toRadians(this.longitude);
+		this.point = Vector3d.mutable(longitude, latitude, magnitude);
 	}
 
 	@Override
 	public Point.System getSystem() {
-		return Point.System.EUCLIDEAN;
+		return Point.System.SPHERICAL;
 	}
 
-	// Point implementation
+	/**
+	 * Simplify the vector such that the underlying point is using the smallest
+	 * values.
+	 */
+	private void simplify() {
+		this.point.setX(this.point.getX() % LONGITUDEMAXIMUM);
+		this.point.setY(this.point.getY() % LATITUDEMAXIMUM);
+	}
+
 	@Override
 	public double getX() {
-		return this.getLongitudeDegrees();
+		this.simplify();
+		return this.point.getX();
+	}
+
+	public double getLatitudeDegrees() {
+		return this.getX();
+	}
+
+	public double getLatitudeRadians() {
+		return Math.toRadians(this.getX());
+	}
+
+	@Override
+	public void setX(double value) {
+		this.point.setX(value);
+	}
+
+	public void setLatitudeDegrees(double value) {
+		this.setX(value);
+	}
+
+	public void setLatitudeRadians(double value) {
+		this.setX(Math.toDegrees(value));
 	}
 
 	@Override
 	public double getY() {
-		return this.getLatitudeDegrees();
+		this.simplify();
+		return this.point.getY();
+	}
+
+	public double getLongitudeDegrees() {
+		return this.getY();
+	}
+
+	public double getLongitudeRadians() {
+		return Math.toRadians(this.getY());
+	}
+
+	@Override
+	public void setY(double value) {
+		this.point.setY(value);
+	}
+
+	public void setLongitudeDegrees(double value) {
+		this.point.setY(value);
+	}
+
+	public void setLongitudeRadians(double value) {
+		this.point.setY(Math.toDegrees(value));
 	}
 
 	@Override
 	public double getZ() {
-		return this.magnitude;
-	}
-
-	public void setLatitudeDegrees(double latitude) {
-		this.latitude = latitude % LATITUDEMAXIMUM;
-	}
-
-	public void setLatitudeRadians(double latitude) {
-		this.latitude = Math.toDegrees(latitude);
-		;
-	}
-
-	public void setLongitudeDegrees(double longitude) {
-		this.longitude = longitude % LONGITUDEMAXIMUM;
-	}
-
-	public void setLongitudeRadians(double longitude) {
-		this.longitude = Math.toDegrees(longitude);
-	}
-
-	@Override
-	public void setX(double x) {
-		this.setLongitudeDegrees(x);
-	}
-
-	@Override
-	public void setY(double y) {
-		this.setLatitudeDegrees(y);
+		return this.point.getZ();
 	}
 
 	@Override
 	public void setZ(double z) {
-		this.magnitude = z;
+		this.point.setZ(z);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Point_Spherical)) {
+			return false;
+		}
+		Point_Spherical other = (Point_Spherical) obj;
+		this.simplify();
+		other.simplify();
+		return this.point.equals(other.point);
+	}
+
+	@Override
+	public int hashCode() {
+		this.simplify();
+		return this.point.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		String string = new String();
+		this.simplify();
+		StringBuilder builder = new StringBuilder("Point_Spherical[");
 		if (this.getName() != null) {
-			string += this.getName();
+			builder.append('"');
+			builder.append(this.getName());
+			builder.append("\" ");
 		}
-		string += "(" + this.longitude + " degrees longitude, " + this.latitude + " degrees latitude, " + this.magnitude + ")";
-		return string;
+		builder.append(this.point);
+		return builder.toString();
 	}
 }
