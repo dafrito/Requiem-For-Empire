@@ -25,6 +25,8 @@ import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.bluespot.swing.Components;
+
 public class DebugEnvironment extends JFrame implements ActionListener, ChangeListener {
 	private static final long serialVersionUID = -8190546125680224912L;
 
@@ -49,6 +51,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	}
 
 	public static void main(String[] args) {
+		Components.LookAndFeel.NATIVE.activate();
 		new DebugEnvironment(800, 800);
 	}
 
