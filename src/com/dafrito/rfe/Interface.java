@@ -103,7 +103,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		}
 	}
 
-	public BufferedImage getBackBuffer() {
+	public BufferedImage backBuffer() {
 		return this.backBuffer;
 	}
 
@@ -307,7 +307,7 @@ class PainterThread extends Thread {
 		try {
 			while (this.shouldDraw) {
 				//Debugger.hitStopWatch(Thread.currentThread().getName());
-				this.riffInterface.getFrontBuffer().getGraphics().drawImage(this.riffInterface.getBackBuffer(), 0, 0, null);
+				this.riffInterface.getFrontBuffer().getGraphics().drawImage(this.riffInterface.backBuffer(), 0, 0, null);
 				this.riffInterface.flushQueue();
 				this.riffInterface.updateBufferedImage();
 				this.riffInterface.repaint();
