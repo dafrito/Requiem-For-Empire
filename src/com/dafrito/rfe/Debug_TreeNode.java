@@ -14,44 +14,6 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-class Debug_CacheElement implements Comparable<Debug_CacheElement> {
-	private int value = 1;
-	private Object data;
-
-	public Debug_CacheElement(Object data, int value) {
-		this.data = data;
-		this.value = value;
-	}
-
-	@Override
-	public int compareTo(Debug_CacheElement elem) {
-		if (this.value < elem.getAccessed()) {
-			return -1;
-		}
-		if (this.value == elem.getAccessed()) {
-			return 0;
-		}
-		return 1;
-	}
-
-	public int getAccessed() {
-		return this.value;
-	}
-
-	public Object getData() {
-		return this.data;
-	}
-
-	public void increment() {
-		this.value++;
-	}
-
-	@Override
-	public String toString() {
-		return "(Used " + this.value + " time(s)) '" + this.data + "'";
-	}
-}
-
 public class Debug_TreeNode implements MutableTreeNode {
 	private static int identifier = 0;
 	private static Vector<Object> cacheData = new Vector<Object>();
@@ -411,52 +373,5 @@ public class Debug_TreeNode implements MutableTreeNode {
 			return this.getData().toString();
 		}
 		return null;
-	}
-}
-
-class Debug_TreeNode_Orphaned extends Debug_TreeNode {
-	private List<MutableTreeNode> pathList = new LinkedList<MutableTreeNode>();
-
-	public Debug_TreeNode_Orphaned(Debug_TreeNode node) {
-		super(node.getUnique(), node.getGroupCode(), node.getDataCode());
-		Object[] array = node.getTreePath("Path to Orphan").getPath();
-		for (Object elem : array) {
-			this.pathList.add((MutableTreeNode) elem);
-		}
-		for (Debug_TreeNode child : node.getChildren()) {
-			this.addChild(child.duplicate());
-		}
-	}
-
-	@Override
-	public List<MutableTreeNode> getRelativePathFromRoot(List<MutableTreeNode> list) {
-		for (int i = 0; i < this.pathList.size(); i++) {
-			list.add(i, this.pathList.get(i));
-		}
-		return list;
-	}
-}
-
-class Incrementor {
-	private int value;
-
-	public Incrementor() {
-		this(0);
-	}
-
-	public Incrementor(int initial) {
-		this.value = initial;
-	}
-
-	public int getValue() {
-		return this.value;
-	}
-
-	public void increment() {
-		this.increment(1);
-	}
-
-	public void increment(int value) {
-		this.value += value;
 	}
 }
