@@ -85,6 +85,9 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void componentResized(ComponentEvent e) {
+		if (this.buffer == null) {
+			return;
+		}
 		if (this.buffer.getWidth() != this.getWidth() || this.buffer.getHeight() != this.getHeight()) {
 			this.buffer = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
 			this.backBuffer = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
