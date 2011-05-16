@@ -1,11 +1,12 @@
 package com.dafrito.rfe;
-public abstract class Action implements Comparable {
+
+public abstract class Action implements Comparable<Action> {
 	public static void execute(Order superOrder) throws FailedActionException {
 	}
 
 	@Override
-	public int compareTo(Object obj) {
-		return this.toString().compareTo(((Action) obj).toString());
+	public int compareTo(Action obj) {
+		return this.toString().compareTo(obj.toString());
 	}
 
 	@Override
