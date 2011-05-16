@@ -6,7 +6,6 @@ import com.dafrito.rfe.Point;
 import com.dafrito.rfe.Point_Euclidean;
 import com.dafrito.rfe.Point_Spherical;
 import com.dafrito.rfe.Terrestrial;
-import com.dafrito.rfe.Point.System;
 
 /**
  * A collection of math utilities.

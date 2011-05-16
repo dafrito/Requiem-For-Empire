@@ -19,7 +19,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
@@ -48,7 +47,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		Debug_TreeNode.addPrecached(DebugString.OUTPUTTREE, "Output Tree");
 	}
 
-	private JSplitPane vertSplitPane;
 	private JTabbedPane tabbedPane, filteredPanes;
 	private JLabel status;
 	private JMenuItem newFile, openFile, closeFile, saveFile, saveFileAs, exit,
@@ -67,8 +65,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	private Map<String, java.util.List<Debug_Listener>> filteredOutputMap = new HashMap<String, java.util.List<Debug_Listener>>();
 	private String priorityExecutingClass;
 	private java.util.List<String> exceptions, ignores, allThreads;
-
-	private Map<String, Integer> exceptionMap = new HashMap<String, Integer>();
 
 	private ScriptEnvironment environment;
 

@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
@@ -8,8 +9,7 @@ import java.util.TreeSet;
 
 import javax.swing.Timer;
 
-
-class ScheduledEvent implements Comparable, Nodeable {
+class ScheduledEvent implements Comparable<ScheduledEvent>, Nodeable {
 	private Long time;
 	private Asset asset;
 	private ScriptTemplate_Abstract listener;
@@ -21,8 +21,8 @@ class ScheduledEvent implements Comparable, Nodeable {
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		return this.time.compareTo(((ScheduledEvent) o).getTime());
+	public int compareTo(ScheduledEvent o) {
+		return this.time.compareTo(o.getTime());
 	}
 
 	public Asset getAsset() {

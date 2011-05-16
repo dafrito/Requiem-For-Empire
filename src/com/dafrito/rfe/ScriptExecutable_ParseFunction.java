@@ -1,12 +1,11 @@
 package com.dafrito.rfe;
+
 import java.util.Collection;
 import java.util.List;
-
 
 public class ScriptExecutable_ParseFunction extends ScriptElement implements ScriptFunction_Abstract, ScriptExecutable, Nodeable {
 	private boolean isStatic, isAbstract;
 	private ScriptGroup body;
-	private ScriptValue_Abstract template;
 	private String name;
 	private ScriptValueType returnType;
 	private List<ScriptValue_Abstract> parameters;
@@ -15,7 +14,6 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	public ScriptExecutable_ParseFunction(Referenced ref, ScriptValueType returnType, ScriptValue_Abstract object, String name, List<ScriptValue_Abstract> paramList, ScriptKeywordType permission, boolean isStatic, boolean isAbstract, ScriptGroup body) {
 		super(ref);
 		this.name = name;
-		this.template = object;
 		this.returnType = returnType;
 		this.parameters = paramList;
 		this.permission = permission;

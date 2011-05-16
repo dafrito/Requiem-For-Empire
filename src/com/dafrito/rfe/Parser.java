@@ -1199,7 +1199,7 @@ public class Parser {
 	public static List<ScriptValue_Abstract> parseParamGroup(ScriptEnvironment env, List<Object> elementsList, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.openNode("Parameter-Group Parsing", "Parsing Parameter-Group (" + elementsList.size() + " element(s) in group)");
 		assert Debugger.addSnapNode(DebugString.ELEMENTS, elementsList);
-		Iterator iter = elementsList.iterator();
+		Iterator<Object> iter = elementsList.iterator();
 		List<ScriptValue_Abstract> groupList = new LinkedList<ScriptValue_Abstract>();
 		List<Object> currentParamList = new LinkedList<Object>();
 		env.advanceNestedStack();

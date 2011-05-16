@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Enumeration;
@@ -12,7 +13,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-
 
 class Debug_CacheElement implements Comparable<Debug_CacheElement> {
 	private int value = 1;
@@ -164,7 +164,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 	}
 
 	@Override
-	public Enumeration children() {
+	public Enumeration<Debug_TreeNode> children() {
 		return Collections.enumeration(this.children);
 	}
 
@@ -330,10 +330,10 @@ public class Debug_TreeNode implements MutableTreeNode {
 	}
 
 	public int getTotalChildren() {
-		Iterator iter = this.children.iterator();
+		Iterator<Debug_TreeNode> iter = this.children.iterator();
 		int value = this.children.size() + 1;
 		while (iter.hasNext()) {
-			value += ((Debug_TreeNode) iter.next()).getChildCount();
+			value += (iter.next()).getChildCount();
 		}
 		return value;
 	}

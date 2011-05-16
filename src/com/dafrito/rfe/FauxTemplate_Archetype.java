@@ -1,7 +1,7 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String ARCHETYPESTRING = "Archetype";
@@ -48,7 +48,9 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 			for (Ace parent : template.getArchetype().getParents()) {
 				parents.add(Parser.getRiffAce(parent));
 			}
-			ScriptValue_Abstract returning = Parser.getRiffList(this.getEnvironment(), parents);
+			// This getRiffList line might not be necessary; it used to have a variable
+			// assigned to it, but it was never used.
+			Parser.getRiffList(this.getEnvironment(), parents);
 			assert Debugger.closeNode();
 			return null;
 		}

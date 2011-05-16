@@ -1,7 +1,7 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static ScriptKeyword OBJECT;
@@ -26,7 +26,6 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 	@Override
 	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing Object Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
-		ScriptValue_Abstract returning;
 		assert Debugger.addSnapNode("Template provided", rawTemplate);
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {

@@ -16,7 +16,6 @@ public class DiscreteRegionBSPNode implements Nodeable {
 	private Set<DiscreteRegion> rightNeighbors;
 	private Set<DiscreteRegion> tempList;
 	private DiscreteRegionBSPNode root;
-	private int openThreads = 0;
 
 	public DiscreteRegionBSPNode(DiscreteRegion region) {
 		this(null, region.getPoints().get(0), region.getPoints().get(1));
@@ -111,7 +110,7 @@ public class DiscreteRegionBSPNode implements Nodeable {
 				assert Debugger.closeNode();
 				return;
 			}
-			List pointList = region.getPoints();
+			List<Point> pointList = region.getPoints();
 			for (int i = 0; i < pointList.size(); i++) {
 				this.addLine(region, pointList.get(i), pointList.get((i + 1) % pointList.size()));
 			}
@@ -129,7 +128,7 @@ public class DiscreteRegionBSPNode implements Nodeable {
 				assert Debugger.closeNode();
 				return;
 			}
-			List pointList = region.getPoints();
+			List<Point> pointList = region.getPoints();
 			for (int i = 0; i < pointList.size(); i++) {
 				this.addLine(region, pointList.get(i), pointList.get((i + 1) % pointList.size()));
 			}
@@ -234,14 +233,14 @@ public class DiscreteRegionBSPNode implements Nodeable {
 	}
 
 	public DiscreteRegion getRegion(Point point) {
-		Set set = this.getRegions(point);
+		Set<DiscreteRegion> set = this.getRegions(point);
 		if (set.size() > 1) {
 			throw new Exception_InternalError("More than one polygon found for supposedly single-polygon query (" + point + ")");
 		} else if (set.size() == 0) {
 			assert false;
 			throw new Exception_InternalError("No polygon found at location (" + point + ")");
 		}
-		return (DiscreteRegion) set.iterator().next();
+		return set.iterator().next();
 	}
 
 	public Set<DiscreteRegion> getRegionList() {
@@ -336,9 +335,9 @@ public class DiscreteRegionBSPNode implements Nodeable {
 			if (struct.hasIndeterminates()) {
 				assert Debugger.addNode("Removing region from left neighbors.");
 				this.leftNeighbors.remove(region);
-				Iterator polys = this.rightNeighbors.iterator();
+				Iterator<DiscreteRegion> polys = this.rightNeighbors.iterator();
 				while (polys.hasNext()) {
-					((DiscreteRegion) polys.next()).removeRegionNeighbor(region);
+					(polys.next()).removeRegionNeighbor(region);
 				}
 				assert Debugger.addSnapNode("Left neighbors", this.leftNeighbors);
 			}
@@ -353,9 +352,9 @@ public class DiscreteRegionBSPNode implements Nodeable {
 			if (struct.hasIndeterminates()) {
 				assert Debugger.addNode("Removing region from right neighbors.");
 				this.rightNeighbors.remove(region);
-				Iterator polys = this.leftNeighbors.iterator();
+				Iterator<DiscreteRegion> polys = this.leftNeighbors.iterator();
 				while (polys.hasNext()) {
-					((DiscreteRegion) polys.next()).removeRegionNeighbor(region);
+					(polys.next()).removeRegionNeighbor(region);
 				}
 				assert Debugger.addSnapNode("Left neighbors", this.rightNeighbors);
 			}

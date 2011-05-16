@@ -1,8 +1,8 @@
 package com.dafrito.rfe;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
-
 
 public abstract class Exception_Nodeable extends Exception implements Nodeable {
 	/**
@@ -280,24 +280,21 @@ class Exception_Nodeable_FunctionAlreadyDefined extends Exception_Nodeable {
 
 // Function exception(s)
 class Exception_Nodeable_FunctionNotFound extends Exception_Nodeable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4051248649703169850L;
 	private String name;
-	private List params;
+	private List<?> params;
 
-	public Exception_Nodeable_FunctionNotFound(Object ref, String name, List params) {
+	public Exception_Nodeable_FunctionNotFound(Object ref, String name, List<?> params) {
 		this(((Referenced) ref).getEnvironment(), ref, name, params);
 	}
 
-	public Exception_Nodeable_FunctionNotFound(ScriptEnvironment env, Object ref, String name, List params) {
+	public Exception_Nodeable_FunctionNotFound(ScriptEnvironment env, Object ref, String name, List<?> params) {
 		super(env, ref);
 		this.name = name;
 		this.params = params;
 	}
 
-	public Exception_Nodeable_FunctionNotFound(ScriptEnvironment env, String name, List params) {
+	public Exception_Nodeable_FunctionNotFound(ScriptEnvironment env, String name, List<?> params) {
 		super(env);
 		this.name = name;
 		this.params = params;
@@ -311,6 +308,10 @@ class Exception_Nodeable_FunctionNotFound extends Exception_Nodeable {
 	@Override
 	public String getName() {
 		return "Function not found (" + ScriptFunction.getDisplayableFunctionName(this.name) + ")";
+	}
+
+	public List<?> getParams() {
+		return this.params;
 	}
 }
 

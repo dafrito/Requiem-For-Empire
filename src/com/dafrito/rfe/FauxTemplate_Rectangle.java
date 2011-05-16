@@ -1,7 +1,7 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implements ScriptConvertible, Nodeable {
 	public static final String RECTANGLESTRING = "Rectangle";
@@ -30,7 +30,6 @@ public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implem
 		ScriptValue_Abstract returning;
 		assert Debugger.addSnapNode("Template provided", template);
 		assert Debugger.addSnapNode("Parameters provided", params);
-		ScriptValue_Abstract value;
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Rectangle) this.createObject(ref, template);

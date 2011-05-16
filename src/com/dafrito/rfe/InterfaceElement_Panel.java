@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Collections;
@@ -6,7 +7,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 
 public class InterfaceElement_Panel extends InterfaceElement implements Interface_Container, RiffInterface_MouseListener, Nodeable, ScriptConvertible {
 	private List<GraphicalElement> elements;
@@ -31,9 +31,9 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 		}
 	}
 
-	public void addAll(List list) {
+	public void addAll(List<GraphicalElement> list) {
 		for (int i = 0; i < list.size(); i++) {
-			this.add((GraphicalElement) list.get(i));
+			this.add(list.get(i));
 		}
 		if (this.getRoot() != null) {
 			this.getRoot().repaint();

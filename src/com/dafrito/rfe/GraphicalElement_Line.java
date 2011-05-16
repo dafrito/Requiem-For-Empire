@@ -1,12 +1,11 @@
 package com.dafrito.rfe;
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.List;
 
-
 public class GraphicalElement_Line extends InterfaceElement implements ScriptConvertible, Nodeable {
 	private Point pointA, pointB;
-	private ScriptEnvironment environment;
 
 	public GraphicalElement_Line(ScriptEnvironment env, Point pointA, Point pointB) {
 		super(env, null, null);

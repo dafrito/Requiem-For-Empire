@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -16,7 +17,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.tree.TreePath;
 
-
 public class Debug_Listener extends JPanel implements ActionListener, ComponentListener {
 	/**
 	 * 
@@ -26,7 +26,6 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	private DebugEnvironment debugger;
 	private int width;
 	// GUI stuff
-	private String name;
 	protected JButton createListener, sendToFilter, refresh, jump;
 	protected JCheckBox isSynchronized, isCapturing, defaultFilter;
 	private JSplitPane treeAndHotspotSplitPane;
@@ -45,7 +44,6 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 		this.debugger = debugger;
 		this.width = this.debugger.getWidth();
 		this.source = source;
-		this.name = name;
 		this.setLayout(new BorderLayout());
 		// Set up top-of-the-window buttons
 		JPanel buttons = new JPanel();

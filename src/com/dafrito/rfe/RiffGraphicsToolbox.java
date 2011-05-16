@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.awt.Color;
 import java.awt.Polygon;
 import java.util.LinkedList;
@@ -41,9 +42,9 @@ public class RiffGraphicsToolbox {
 	// Creates a Java-displayable polygon from the discreteRegion
 	public static Polygon getPolygonFromDiscreteRegion(JPanel panel, DiscreteRegion region) {
 		Polygon poly = new Polygon();
-		List pointList = region.getPoints();
+		List<Point> pointList = region.getPoints();
 		for (int i = 0; i < pointList.size(); i++) {
-			poly.addPoint((int) ((Point) pointList.get(i)).getX(), panel.getHeight() - (int) ((Point) pointList.get(i)).getY());
+			poly.addPoint((int) (pointList.get(i)).getX(), panel.getHeight() - (int) (pointList.get(i)).getY());
 		}
 		return poly;
 	}

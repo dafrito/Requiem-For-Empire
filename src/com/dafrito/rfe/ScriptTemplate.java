@@ -1,9 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 
 public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptValue_Abstract, Nodeable, ScriptConvertible {
 	public static ScriptTemplate createTemplate(ScriptEnvironment env, ScriptValueType type, ScriptValueType extended, List<ScriptValueType> interfaces, boolean isAbstract) {
@@ -37,6 +37,10 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		this.preconstructors = new LinkedList<ScriptExecutable>();
 		this.extended = extended;
 		this.isAbstract = isAbstract;
+	}
+
+	public ScriptValueType getExtended() {
+		return this.extended;
 	}
 
 	@Override
@@ -289,12 +293,12 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		}
 		assert Debugger.openNode("Template Initializations", "Initializing Template (" + this.getType() + ")");
 		if (!this.isAbstract()) {
-			for (Map.Entry entry : this.functions.entrySet()) {
-				List<ScriptFunction_Abstract> functions = this.functions.get(entry.getKey());
+			for (Map.Entry<String, List<ScriptFunction_Abstract>> entry : this.functions.entrySet()) {
+				List<ScriptFunction_Abstract> functions = entry.getValue();
 				for (int i = 0; i < functions.size(); i++) {
 					if (functions.get(i).isAbstract()) {
 						// We don't implement it, so fail.
-						throw new Exception_Nodeable_UnimplementedFunction(this.getEnvironment(), this, (String) entry.getKey());
+						throw new Exception_Nodeable_UnimplementedFunction(this.getEnvironment(), this, entry.getKey());
 					}
 				}
 			}
@@ -325,8 +329,8 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		}
 		assert Debugger.closeNode();
 		List<Object> deleteList = new LinkedList<Object>();
-		for (Map.Entry entry : this.functions.entrySet()) {
-			List<ScriptFunction_Abstract> functions = this.functions.get(entry.getKey());
+		for (Map.Entry<String, List<ScriptFunction_Abstract>> entry : this.functions.entrySet()) {
+			List<ScriptFunction_Abstract> functions = entry.getValue();
 			for (int i = 0; i < functions.size(); i++) {
 				if (functions.get(i) instanceof ScriptExecutable_ParseFunction) {
 					ScriptExecutable_ParseFunction fxn = (ScriptExecutable_ParseFunction) functions.get(i);
@@ -413,8 +417,8 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		}
 		if (this.functions != null && this.functions.size() > 0) {
 			assert Debugger.openNode("Functions (" + this.functions.size() + " function(s))");
-			for (Map.Entry entry : this.functions.entrySet()) {
-				assert Debugger.addSnapNode(ScriptFunction.getDisplayableFunctionName((String) entry.getKey()), entry.getValue());
+			for (Map.Entry<String, List<ScriptFunction_Abstract>> entry : this.functions.entrySet()) {
+				assert Debugger.addSnapNode(ScriptFunction.getDisplayableFunctionName(entry.getKey()), entry.getValue());
 			}
 			assert Debugger.closeNode();
 		}

@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -17,7 +18,6 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-
 public class Debug_Tree extends JPanel implements ActionListener, MouseListener {
 	/**
 	 * 
@@ -28,13 +28,13 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 	private JTree tree;
 	private JPopupMenu popup;
 	private JMenuItem copySelectedNodeGroup, copySelectedNodeData;
-	private Debug_TreeNode currentNode, lastChild, root;
+	private Debug_TreeNode currentNode, lastChild;
 
 	// Constructor
 	public Debug_Tree(Debug_Filter filter) {
 		this.filter = filter;
 		this.setLayout(new GridLayout(1, 0));
-		this.add(this.tree = new JTree(new DefaultTreeModel(this.root = this.currentNode = new Debug_TreeNode(DebugString.OUTPUTTREE))));
+		this.add(this.tree = new JTree(new DefaultTreeModel(this.currentNode = new Debug_TreeNode(DebugString.OUTPUTTREE))));
 		this.popup = new JPopupMenu();
 		this.popup.add(this.copySelectedNodeData = new JMenuItem("Copy Selected"));
 		this.popup.add(this.copySelectedNodeGroup = new JMenuItem("Copy Selected's Group"));

@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 
 public class DiscreteRegion implements Nodeable, ScriptConvertible {
 	public static void paint(Graphics2D g2d, DiscreteRegion transformedRegion, Rectangle bounds, boolean fill) {
@@ -161,13 +161,13 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 		assert Debugger.openNode("Discrete Region Neighbor Evaluations", "Checking for neighbor status");
 		assert Debugger.addSnapNode("This region", this);
 		assert Debugger.addSnapNode("Potential neighbor", region);
-		List regionPoints = region.getPoints();
+		List<Point> regionPoints = region.getPoints();
 		for (int i = 0; i < this.points.size(); i++) {
-			Point pointA = (Point) this.points.get(i);
-			Point pointB = (Point) this.points.get((i + 1) % this.points.size());
+			Point pointA = this.points.get(i);
+			Point pointB = this.points.get((i + 1) % this.points.size());
 			for (int j = 0; j < regionPoints.size(); j++) {
-				Point testPoint = (Point) regionPoints.get(j);
-				Point otherTestPoint = (Point) regionPoints.get((j + 1) % regionPoints.size());
+				Point testPoint = regionPoints.get(j);
+				Point otherTestPoint = regionPoints.get((j + 1) % regionPoints.size());
 				if (!RiffPolygonToolbox.testForColinearity(pointA, pointB, testPoint, otherTestPoint)) {
 					continue;
 				}
@@ -210,12 +210,14 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 	}
 
 	// ScriptConvertible implementation
+	@Override
 	public Object convert() {
 		FauxTemplate_DiscreteRegion region = new FauxTemplate_DiscreteRegion(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING).getType());
 		region.setRegion(this);
 		return region;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		DiscreteRegion otherRegion = (DiscreteRegion) o;
 		List<Point> pointList = otherRegion.getPoints();
@@ -275,6 +277,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 		return this.version;
 	}
 
+	@Override
 	public int hashCode() {
 		return this.points.hashCode();
 	}
@@ -284,6 +287,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 	}
 
 	// Nodeable implementation
+	@Override
 	public boolean nodificate() {
 		assert Debugger.openNode("Discrete Region (" + this.points.size() + " point(s))");
 		assert Debugger.addSnapNode("Points (" + this.points.size() + " point(s))", this.points);
@@ -328,7 +332,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 		assert Debugger.openNode("Extrema Recalculations", "Recalculating extrema");
 		this.resetExtrema();
 		for (int i = 0; i < this.points.size(); i++) {
-			this.testExtrema((Point) this.points.get(i));
+			this.testExtrema(this.points.get(i));
 		}
 		assert Debugger.closeNode();
 	}
@@ -340,7 +344,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 	}
 
 	public void removePoint(int pointNum) {
-		Point point = (Point) this.points.get(pointNum);
+		Point point = this.points.get(pointNum);
 		this.removePoint(point);
 	}
 

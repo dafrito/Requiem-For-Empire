@@ -1,13 +1,11 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement implements ScriptConvertible, Nodeable {
 	public static final String DISCRETEREGIONSTRING = "DiscreteRegion";
 	private DiscreteRegion region;
-	private java.awt.Color color;
-	private static int i = 0;
 
 	public FauxTemplate_DiscreteRegion(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, DISCRETEREGIONSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);

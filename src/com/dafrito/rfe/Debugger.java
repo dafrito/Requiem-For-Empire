@@ -15,24 +15,24 @@ public class Debugger {
 	private static Map<String, Long> stopWatches = new HashMap<String, Long>();
 	private static DebugEnvironment debugger;
 
-	public synchronized static boolean addCollectionNode(Object group, Collection list) {
+	public synchronized static boolean addCollectionNode(Object group, Collection<?> list) {
 		if (list.size() == 0) {
 			return true;
 		}
-		Iterator iter = list.iterator();
+		Iterator<?> iter = list.iterator();
 		while (iter.hasNext()) {
 			addNode(iter.next());
 		}
 		return true;
 	}
 
-	public synchronized static boolean addMapNode(Object group, Map map) {
+	public synchronized static boolean addMapNode(Object group, Map<?, ?> map) {
 		if (map.size() == 0) {
 			return true;
 		}
-		Iterator iter = map.entrySet().iterator();
+		Iterator<?> iter = map.entrySet().iterator();
 		while (iter.hasNext()) {
-			Map.Entry entry = (Map.Entry) iter.next();
+			Map.Entry<?, ?> entry = (Map.Entry<?, ?>) iter.next();
 			addSnapNode(entry.getKey().toString(), entry.getValue());
 		}
 		return true;
@@ -66,10 +66,10 @@ public class Debugger {
 			return true;
 		}
 		if (o instanceof Collection) {
-			return addCollectionNode(group, (Collection) o);
+			return addCollectionNode(group, (Collection<?>) o);
 		}
 		if (o instanceof Map) {
-			return addMapNode(group, (Map) o);
+			return addMapNode(group, (Map<?, ?>) o);
 		}
 		getDebugger().addNode(new Debug_TreeNode(group, o));
 		if (o instanceof Exception) {
@@ -197,7 +197,7 @@ public class Debugger {
 		return printDebug(category, "(" + slash + categoryArray[1 + offset] + ":" + categoryArray[0 + offset] + ")");
 	}
 
-	public static boolean printDebug(String category, Collection list) {
+	public static boolean printDebug(String category, Collection<?> list) {
 		return printDebug(category, Strings.displayList(list));
 	}
 

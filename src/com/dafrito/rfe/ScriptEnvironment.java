@@ -1,13 +1,12 @@
 package com.dafrito.rfe;
+
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
 import javax.swing.JOptionPane;
-
 
 public class ScriptEnvironment implements Nodeable {
 	private Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)
@@ -73,9 +72,8 @@ public class ScriptEnvironment implements Nodeable {
 		try {
 			assert Debugger.openNode("Executing Script-Environment (Default Run)");
 			this.clearStacks();
-			Iterator iter = this.templates.values().iterator();
-			while (iter.hasNext()) {
-				((ScriptTemplate_Abstract) iter.next()).initialize();
+			for (ScriptTemplate_Abstract template : this.templates.values()) {
+				template.initialize();
 			}
 			List<ScriptValue_Abstract> params = new LinkedList<ScriptValue_Abstract>();
 			if (Debugger.getPriorityExecutingClass() != null) {
@@ -84,13 +82,10 @@ public class ScriptEnvironment implements Nodeable {
 					return;
 				}
 			}
-			ScriptFunction_Abstract function;
 			List<String> templateNames = new LinkedList<String>();
-			iter = this.templates.entrySet().iterator();
-			while (iter.hasNext()) {
-				Map.Entry entry = (Map.Entry) iter.next();
-				if ((function = ((ScriptTemplate_Abstract) entry.getValue()).getFunction("main", params)) != null) {
-					templateNames.add((String) entry.getKey());
+			for (Map.Entry<String, ScriptTemplate_Abstract> entry : this.templates.entrySet()) {
+				if (entry.getValue().getFunction("main", params) != null) {
+					templateNames.add(entry.getKey());
 				}
 			}
 			if (templateNames.size() == 0) {
@@ -132,11 +127,9 @@ public class ScriptEnvironment implements Nodeable {
 
 	public String getName(ScriptValueType keyword) {
 		assert keyword != null;
-		Iterator iter = this.variableTypes.entrySet().iterator();
-		while (iter.hasNext()) {
-			Map.Entry entry = (Map.Entry) iter.next();
+		for (Map.Entry<String, ScriptValueType> entry : this.variableTypes.entrySet()) {
 			if (keyword.equals(entry.getValue())) {
-				return (String) entry.getKey();
+				return entry.getKey();
 			}
 		}
 		throw new Exception_InternalError(this, "Name not found for keyword");

@@ -31,21 +31,21 @@ public final class Strings {
 	}
 
 	// Helper Function.
-	public static String displayList(Collection list) {
+	public static String displayList(Collection<?> list) {
 		return displayList(list, "item", "items");
 	}
 
 	// Helper Function.
-	public static String displayList(Collection list, String singular) {
+	public static String displayList(Collection<?> list, String singular) {
 		return displayList(list, singular, new String(singular + "s"));
 	}
 
-	public static String displayList(Collection list, String singular, String plural) {
+	public static String displayList(Collection<?> list, String singular, String plural) {
 		return displayList(list, singular, plural, 0);
 	}
 
 	// Takes a list and returns a string containing its contents in a readable form.
-	public static String displayList(Collection list, String singular, String plural, int nestedVal) {
+	public static String displayList(Collection<?> list, String singular, String plural, int nestedVal) {
 		String string = new String();
 		if (list == null || list.isEmpty()) {
 			string += "\n" + tab(nestedVal) + "This list is empty.";
@@ -55,14 +55,14 @@ public final class Strings {
 		} else {
 			string += "\n" + tab(nestedVal) + "This list contains " + list.size() + " " + plural;
 		}
-		Iterator iter = list.iterator();
+		Iterator<?> iter = list.iterator();
 		int value = 1;
 		while (iter.hasNext()) {
 			Object obj = iter.next();
 			string += "\n" + value + ". " + tab(nestedVal);
 			value++;
 			if (obj instanceof Collection) {
-				string += "Nested list:" + displayList((Collection) obj, singular, plural, nestedVal + 1);
+				string += "Nested list:" + displayList((Collection<?>) obj, singular, plural, nestedVal + 1);
 			} else {
 				string += obj;
 			}

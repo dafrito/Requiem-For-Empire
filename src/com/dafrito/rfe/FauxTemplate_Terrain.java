@@ -1,7 +1,7 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, ScriptConvertible {
 	public static final String TERRAINSTRING = "Terrain";
@@ -31,7 +31,6 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 		ScriptValue_Abstract returning = null;
 		assert Debugger.addSnapNode("Template provided", template);
 		assert Debugger.addSnapNode("Parameters provided", params);
-		ScriptValue_Abstract value;
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Terrain) this.createObject(ref, template);

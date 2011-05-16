@@ -1,10 +1,8 @@
 package com.dafrito.rfe;
+
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-
 
 public class SplitterThread extends Thread {
 	private DiscreteRegionBSPNode root;
@@ -36,10 +34,7 @@ public class SplitterThread extends Thread {
 		Debugger.hitStopWatch(Thread.currentThread().getName());
 		assert Debugger.openNode("Splitter Thread Executions", "Executing Splitter Thread (" + this.regions.size() + " region(s))");
 		assert Debugger.addSnapNode("Regions (" + this.regions.size() + " region(s))", this.regions);
-		Iterator iter = this.regions.iterator();
-		while (iter.hasNext()) {
-			DiscreteRegion region = (DiscreteRegion) iter.next();
-			List regionPoints = region.getPoints();
+		for (DiscreteRegion region : this.regions) {
 			this.root = RiffPolygonToolbox.removeOverlappingPolygons(this.root, region, this.recurse);
 			if (!this.recurse) {
 				break;
@@ -47,7 +42,6 @@ public class SplitterThread extends Thread {
 		}
 		if (this.recurse) {
 			Set<DiscreteRegion> polygons = this.root.getRegionList();
-			Iterator polyIter = polygons.iterator();
 			Set<DiscreteRegion> neighbors = new HashSet<DiscreteRegion>();
 			this.root.clearTempList();
 			for (DiscreteRegion thisRegion : this.root.getRegionList()) {

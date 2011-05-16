@@ -1,7 +1,7 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
-
 
 public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue_Abstract {
 	public static List<ScriptValue_Abstract> createEmptyParamList() {
@@ -34,7 +34,6 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 	public ScriptValue_Abstract execute(Referenced ref, String name, List<ScriptValue_Abstract> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing INSERTFAUXTEMPLATENAMEHERE Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_InterfaceElement template = (FauxTemplate_InterfaceElement) rawTemplate;
-		ScriptValue_Abstract returning;
 		assert Debugger.addSnapNode("Template provided", template);
 		assert Debugger.addSnapNode("Parameters provided", params);
 		throw new Exception_InternalError("Invalid default in FauxTemplate:execute");

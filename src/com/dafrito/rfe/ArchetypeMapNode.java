@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +18,6 @@ public class ArchetypeMapNode {
 	private Map<Archetype, ArchetypeMapNode> parents;
 	private Map<Archetype, ArchetypeMapNode> children;
 	private Archetype archetype;
-	private ArchetypeMapNode root;
 	private Map<Archetype, ArchetypeMapNode> index;
 
 	private List<Asset> assets;

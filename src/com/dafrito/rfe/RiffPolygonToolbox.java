@@ -196,13 +196,13 @@ public class RiffPolygonToolbox {
 
 	// Confirms that the line formed by the two points is an interior line.
 	public static boolean confirmInteriorLine(Point pointA, Point pointB, DiscreteRegion region) {
-		List pointList = region.getPoints();
+		List<Point> pointList = region.getPoints();
 		assert Debugger.printDebug("Polygon/confirmInteriorLine", "(confirmInteriorLine)\nConfirming interior line with these points: " + pointA + ", " + pointB);
 		assert Debugger.printDebug("Polygon/confirmInteriorLine/data", "Region: " + region);
 		assert Debugger.printDebug("Polygon/confirmInteriorLine", "Testing for intersections.");
 		for (int i = 0; i < pointList.size(); i++) {
-			Point testPointA = (Point) pointList.get(i);
-			Point testPointB = (Point) pointList.get((i + 1) % pointList.size());
+			Point testPointA = pointList.get(i);
+			Point testPointB = pointList.get((i + 1) % pointList.size());
 			if ((testPointA.equals(pointA) && testPointB.equals(pointB)) || (testPointA.equals(pointB) && testPointB.equals(pointA))) {
 				return false;
 			}
@@ -241,19 +241,19 @@ public class RiffPolygonToolbox {
 		}
 		assert Debugger.printDebug("Polygon/convertPolyToConvex", "This polygon is concave. Attempting to subdivide...");
 		DiscreteRegion testRegion;
-		List pointList = region.getPoints();
+		List<Point> pointList = region.getPoints();
 		for (int i = 0; i < pointList.size(); i++) {
 			boolean alreadyCreated = false;
 			assert Debugger.printDebug("Polygon/convertPolyToConvex", "Attempting to form a triangle from these points:");
 			assert Debugger.printDebug("Polygon/convertPolyToConvex", "First point: " + pointList.get(i) + ", Second Point: " + pointList.get((i + 1) % pointList.size()) + ", Third point: " + pointList.get((i + 2) % pointList.size()));
-			if (RiffPolygonToolbox.confirmInteriorLine((Point) pointList.get(i), (Point) pointList.get((i + 2) % pointList.size()), region) == false) {
+			if (RiffPolygonToolbox.confirmInteriorLine(pointList.get(i), pointList.get((i + 2) % pointList.size()), region) == false) {
 				assert Debugger.printDebug("Polygon/convertPolyToConvex", "Failed interior-line test.");
 				continue;
 			}
 			testRegion = new DiscreteRegion(region.getEnvironment(), region.getProperties());
-			testRegion.addPoint((Point) pointList.get(i));
-			testRegion.addPoint((Point) pointList.get((i + 1) % pointList.size()));
-			testRegion.addPoint((Point) pointList.get((i + 2) % pointList.size()));
+			testRegion.addPoint(pointList.get(i));
+			testRegion.addPoint(pointList.get((i + 1) % pointList.size()));
+			testRegion.addPoint(pointList.get((i + 2) % pointList.size()));
 			for (int k = 0; k < convexPolygons.size(); k++) {
 				if (testRegion.equals(convexPolygons.get(k))) {
 					alreadyCreated = true;
@@ -265,7 +265,7 @@ public class RiffPolygonToolbox {
 				continue;
 			}
 			assert Debugger.printDebug("Polygon/convertPolyToConvex", "Removing this point: " + pointList.get((i + 1) % pointList.size()));
-			region.removePoint((Point) pointList.get((i + 1) % pointList.size()));
+			region.removePoint(pointList.get((i + 1) % pointList.size()));
 			assert Debugger.printDebug("Polygon/convertPolyToConvex", "Yielding the new triangle and this remaining region: " + region);
 			convexPolygons.add(testRegion);
 			convexPolygons.addAll(RiffPolygonToolbox.convertPolyToConvex(region));
@@ -321,16 +321,16 @@ public class RiffPolygonToolbox {
 		assert Debugger.openNode("Adjacent Edge Finding", "Finding Adjacent Edge");
 		assert Debugger.addSnapNode("Region", region);
 		assert Debugger.addSnapNode("Neighbor", neighbor);
-		List pointList = region.getPoints();
+		List<Point> pointList = region.getPoints();
 		IntersectionPoint intersect = null;
 		for (int i = 0; i < pointList.size(); i++) {
-			List otherPointList = neighbor.getPoints();
-			Point pointA = (Point) pointList.get(i);
-			Point pointB = (Point) pointList.get((i + 1) % pointList.size());
+			List<Point> otherPointList = neighbor.getPoints();
+			Point pointA = pointList.get(i);
+			Point pointB = pointList.get((i + 1) % pointList.size());
 			assert Debugger.openNode("Line-by-Line Tests", "Control points: " + pointA + ", " + pointB);
 			for (int j = 0; j < otherPointList.size(); j++) {
-				Point pointC = (Point) otherPointList.get(j);
-				Point pointD = (Point) otherPointList.get((j + 1) % otherPointList.size());
+				Point pointC = otherPointList.get(j);
+				Point pointD = otherPointList.get((j + 1) % otherPointList.size());
 				assert Debugger.openNode("Testing points (" + pointC + ", " + pointD + ")");
 				PointSideStruct struct = RiffPolygonToolbox.getPointSideList(pointA, pointB, pointC, pointD);
 				if (struct.getIndeterminates().size() == 2) {
@@ -943,8 +943,6 @@ public class RiffPolygonToolbox {
 		PointSideStruct struct = new PointSideStruct();
 		for (int k = 0; k < pointList.size(); k++) {
 			Point testPoint = pointList.get(k);
-			double value = 0.0d;
-			boolean flag = false;
 			if (RiffPolygonToolbox.testForColinearity(linePointA, linePointB, testPoint)) {
 				struct.addIndeterminate(testPoint);
 				continue;
@@ -961,7 +959,6 @@ public class RiffPolygonToolbox {
 		assert Debugger.addSnapNode("First-Line", linePointA + ", " + linePointB);
 		assert Debugger.addSnapNode("Test-Line", testPointA + ", " + testPointB);
 		PointSideStruct struct = new PointSideStruct();
-		double value = 0.0d;
 		if (RiffPolygonToolbox.testForColinearity(linePointA, linePointB, testPointA)) {
 			struct.addIndeterminate(testPointA);
 		} else {
