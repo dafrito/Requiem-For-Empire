@@ -11,7 +11,7 @@ import java.util.Map;
 class Debugger {
 	// Debug_Environment fxns
 	private static Map<String, Long> stopWatches = new HashMap<String, Long>();
-	private static Debug_Environment debugger;
+	private static DebugEnvironment debugger;
 
 	public synchronized static boolean addCollectionNode(Object group, Collection list) {
 		if (list.size() == 0) {
@@ -137,7 +137,7 @@ class Debugger {
 		return (int) ((((double) Runtime.getRuntime().totalMemory()) / ((double) Runtime.getRuntime().maxMemory())) * 100);
 	}
 
-	public static Debug_Environment getDebugger() {
+	public static DebugEnvironment getDebugger() {
 		return debugger;
 	}
 
@@ -220,7 +220,7 @@ class Debugger {
 		getDebugger().reset();
 	}
 
-	public static void setDebugger(Debug_Environment debugger) {
+	public static void setDebugger(DebugEnvironment debugger) {
 		if (Debugger.debugger == null) {
 			Debugger.debugger = debugger;
 		}

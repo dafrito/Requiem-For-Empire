@@ -38,7 +38,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	private File file;
 	private boolean hasChanged, isValid;
 	private static int fileNumber = 1;
-	private Debug_Environment debugger;
+	private DebugEnvironment debugger;
 	private JTextArea textArea;
 	private Stack<CompoundEdit> edits = new Stack<CompoundEdit>();
 	private Stack<CompoundEdit> undoneEdits = new Stack<CompoundEdit>();
@@ -50,19 +50,19 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	private Vector<String> displayedExceptions;
 	private String prefix = "";
 
-	public Debug_ScriptElement(Debug_Environment debugger) {
+	public Debug_ScriptElement(DebugEnvironment debugger) {
 		this.debugger = debugger;
 		if (this.selectFile(false)) {
 			this.isValid = this.openFile();
 		}
 	}
 
-	public Debug_ScriptElement(Debug_Environment debugger, File file) {
+	public Debug_ScriptElement(DebugEnvironment debugger, File file) {
 		this.debugger = debugger;
 		this.isValid = this.openFile(file);
 	}
 
-	public Debug_ScriptElement(Debug_Environment debugger, String string) {
+	public Debug_ScriptElement(DebugEnvironment debugger, String string) {
 		this.debugger = debugger;
 		if (string != null) {
 			this.file = new File(string);

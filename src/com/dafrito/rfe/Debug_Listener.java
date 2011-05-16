@@ -23,7 +23,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	 */
 	private static final long serialVersionUID = -6965306788286409632L;
 	// Core stuff
-	private Debug_Environment debugger;
+	private DebugEnvironment debugger;
 	private int width;
 	// GUI stuff
 	private String name;
@@ -39,7 +39,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	// CONSTRUCTOR!!
 	private String threadName;
 
-	public Debug_Listener(String threadName, Debug_Environment debugger, Debug_Listener source, String name) {
+	public Debug_Listener(String threadName, DebugEnvironment debugger, Debug_Listener source, String name) {
 		this.threadName = threadName;
 		this.treePanel = new Debug_Tree(new Debug_Filter(this));
 		this.debugger = debugger;
@@ -147,7 +147,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	}
 
 	// Quick retrievals
-	public Debug_Environment getDebugger() {
+	public DebugEnvironment getDebugger() {
 		return this.debugger;
 	}
 

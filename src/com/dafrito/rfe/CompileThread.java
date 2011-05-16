@@ -6,12 +6,12 @@ package com.dafrito.rfe;
 import java.util.Vector;
 
 class CompileThread extends Thread {
-	private Debug_Environment debugEnvironment;
+	private DebugEnvironment debugEnvironment;
 	private boolean shouldExecute;
 	public static final String COMPILETHREADSTRING = "Compilation";
 	private static int threadNum = 0;
 
-	public CompileThread(Debug_Environment debugEnv, boolean shouldExecute) {
+	public CompileThread(DebugEnvironment debugEnv, boolean shouldExecute) {
 		super(COMPILETHREADSTRING + " " + threadNum++);
 		this.debugEnvironment = debugEnv;
 		this.shouldExecute = shouldExecute;

@@ -25,7 +25,7 @@ import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Debug_Environment extends JFrame implements ActionListener, ChangeListener {
+public class DebugEnvironment extends JFrame implements ActionListener, ChangeListener {
 	private static final long serialVersionUID = -8190546125680224912L;
 
 	public static void initialize() {
@@ -49,7 +49,7 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 	}
 
 	public static void main(String[] args) {
-		new Debug_Environment(800, 800);
+		new DebugEnvironment(800, 800);
 	}
 
 	private JSplitPane vertSplitPane;
@@ -76,7 +76,7 @@ public class Debug_Environment extends JFrame implements ActionListener, ChangeL
 
 	private ScriptEnvironment environment;
 
-	public Debug_Environment(int width, int height) {
+	public DebugEnvironment(int width, int height) {
 		super("RFE Debugger");
 		Debugger.setDebugger(this);
 		initialize();
