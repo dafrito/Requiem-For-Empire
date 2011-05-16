@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.awt.Color;
 import java.util.Collections;
 import java.util.Iterator;
@@ -6,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
+import com.dafrito.rfe.util.Strings;
 
 public class Parser {
 	private static List<StylesheetParams> stylesheetParams = new LinkedList<StylesheetParams>();
@@ -229,7 +231,7 @@ public class Parser {
 	public static List<Object> extractNumbers(List<Object> lineList) {
 		for (int i = 0; i < lineList.size(); i++) {
 			if (lineList.get(i) instanceof ScriptGroup) {
-				((ScriptGroup) lineList.get(i)).setElements(extractNumbers((List<Object>) ((ScriptGroup) lineList.get(i)).getElements()));
+				((ScriptGroup) lineList.get(i)).setElements(extractNumbers(((ScriptGroup) lineList.get(i)).getElements()));
 				continue;
 			}
 			if (!(lineList.get(i) instanceof ScriptLine)) {
@@ -951,7 +953,7 @@ public class Parser {
 						throw new Exception_Nodeable_UnexpectedType(env, list.get(i), "Curly group");
 					}
 					List<ScriptExecutable> bodyList = parseBodyList(env, ((ScriptGroup) list.get(i)).getElements(), type);
-					ScriptExecutable_ForStatement forStatement = new ScriptExecutable_ForStatement((ScriptExecutable) parameterList.get(0), (ScriptExecutable) parameterList.get(1), (ScriptExecutable) parameterList.get(2), bodyList);
+					ScriptExecutable_ForStatement forStatement = new ScriptExecutable_ForStatement(parameterList.get(0), parameterList.get(1), parameterList.get(2), bodyList);
 					assert Debugger.closeNode("For statement parsed", forStatement);
 					env.retreatNestedStack();
 					return forStatement;
@@ -1724,10 +1726,10 @@ public class Parser {
 		for (int i = 0; i < list.size(); i++) {
 			Object obj = list.get(i);
 			if (obj instanceof ScriptGroup) {
-				string += RiffToolbox.tab(offset) + "Script Group:\n" + printParseList(((ScriptGroup) obj).getElements(), offset + 1);
+				string += Strings.tab(offset) + "Script Group:\n" + printParseList(((ScriptGroup) obj).getElements(), offset + 1);
 				continue;
 			}
-			string += RiffToolbox.tab(offset) + obj + "\n";
+			string += Strings.tab(offset) + obj + "\n";
 		}
 		return string;
 	}

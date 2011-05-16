@@ -1,10 +1,12 @@
 package com.dafrito.rfe;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.dafrito.rfe.util.Points;
 
 class PointSideStruct implements Nodeable {
 	private List<Point> left, right, indeterminates;
@@ -127,12 +129,12 @@ class RiffIntersectionPoint implements Nodeable {
 
 public class RiffPolygonToolbox {
 	public static boolean areSlopesEqual(Point pointA, Point pointB, Point testPointA, Point testPointB) {
-		if (RiffToolbox.areEqual(pointA, pointB.getX(), pointA.getX())) {
-			if (RiffToolbox.areEqual(testPointA, testPointA.getX(), testPointB.getX())) {
+		if (Points.areEqual(pointA, pointB.getX(), pointA.getX())) {
+			if (Points.areEqual(testPointA, testPointA.getX(), testPointB.getX())) {
 				return true;
 			}
 		}
-		return RiffToolbox.areEqual(Point.System.EUCLIDEAN, Math.abs(RiffPolygonToolbox.getSlope(pointA, pointB)), Math.abs(RiffPolygonToolbox.getSlope(testPointA, testPointB)));
+		return Points.areEqual(Point.System.EUCLIDEAN, Math.abs(RiffPolygonToolbox.getSlope(pointA, pointB)), Math.abs(RiffPolygonToolbox.getSlope(testPointA, testPointB)));
 	}
 
 	public static void assertCCWPolygon(DiscreteRegion region) {
@@ -291,9 +293,9 @@ public class RiffPolygonToolbox {
 	// Using the two given points to create a line, it returns a list of the distribution of points from the polygon. 
 	// This list contains two lists, one containing all the points on the left side, and one containing all the points on the right.
 	public static void doPointSideTest(PointSideStruct struct, Point point, double value) {
-		if (RiffToolbox.areEqual(Point.System.EUCLIDEAN, value, 0.0d)) {
+		if (Points.areEqual(Point.System.EUCLIDEAN, value, 0.0d)) {
 			struct.addIndeterminate(point);
-		} else if (RiffToolbox.isGreaterThan(value, 0.0d)) {
+		} else if (Points.isGreaterThan(value, 0.0d)) {
 			struct.addRight(point, value);
 		} else {
 			struct.addLeft(point, value);
@@ -403,44 +405,44 @@ public class RiffPolygonToolbox {
 	}
 
 	public static boolean getBoundingRectIntersection(double xMin, double xMax, double yMin, double yMax, Point point, boolean allowTangent) {
-		if (RiffToolbox.isLessThan(point.getX(), xMin)) {
+		if (Points.isLessThan(point.getX(), xMin)) {
 			return false;
 		}
-		if (RiffToolbox.areEqual(point, point.getX(), xMin) && !allowTangent) {
+		if (Points.areEqual(point, point.getX(), xMin) && !allowTangent) {
 			return false;
 		}
-		if (RiffToolbox.isGreaterThan(point.getX(), xMax)) {
+		if (Points.isGreaterThan(point.getX(), xMax)) {
 			return false;
 		}
-		if (RiffToolbox.areEqual(point, point.getX(), xMax) && !allowTangent) {
+		if (Points.areEqual(point, point.getX(), xMax) && !allowTangent) {
 			return false;
 		}
-		if (RiffToolbox.isLessThan(point.getY(), yMin)) {
+		if (Points.isLessThan(point.getY(), yMin)) {
 			return false;
 		}
-		if (RiffToolbox.areEqual(point, point.getY(), yMin) && !allowTangent) {
+		if (Points.areEqual(point, point.getY(), yMin) && !allowTangent) {
 			return false;
 		}
-		if (RiffToolbox.isGreaterThan(point.getY(), yMax)) {
+		if (Points.isGreaterThan(point.getY(), yMax)) {
 			return false;
 		}
-		if (RiffToolbox.areEqual(point, point.getY(), yMax) && !allowTangent) {
+		if (Points.areEqual(point, point.getY(), yMax) && !allowTangent) {
 			return false;
 		}
 		return true;
 	}
 
 	public static boolean getBoundingRectIntersection(Point pointA, Point pointB, DiscreteRegion region) {
-		if (RiffToolbox.isLessThan(Math.max(pointA.getX(), pointB.getX()), region.getLeftExtreme())) {
+		if (Points.isLessThan(Math.max(pointA.getX(), pointB.getX()), region.getLeftExtreme())) {
 			return false;
 		}
-		if (RiffToolbox.isGreaterThan(Math.min(pointA.getX(), pointB.getX()), region.getRightExtreme())) {
+		if (Points.isGreaterThan(Math.min(pointA.getX(), pointB.getX()), region.getRightExtreme())) {
 			return false;
 		}
-		if (RiffToolbox.isLessThan(Math.max(pointA.getY(), pointB.getY()), region.getBottomExtreme())) {
+		if (Points.isLessThan(Math.max(pointA.getY(), pointB.getY()), region.getBottomExtreme())) {
 			return false;
 		}
-		if (RiffToolbox.isGreaterThan(Math.min(pointA.getY(), pointB.getY()), region.getTopExtreme())) {
+		if (Points.isGreaterThan(Math.min(pointA.getY(), pointB.getY()), region.getTopExtreme())) {
 			return false;
 		}
 		return true;
@@ -457,39 +459,39 @@ public class RiffPolygonToolbox {
 		if (pointA.equals(pointD) && pointB.equals(pointC)) {
 			return true;
 		}
-		if (RiffToolbox.areEqual(Point.System.EUCLIDEAN, Math.abs(RiffPolygonToolbox.getSlope(pointA, pointB)), Double.POSITIVE_INFINITY) && RiffToolbox.areEqual(Point.System.EUCLIDEAN, Math.abs(RiffPolygonToolbox.getSlope(pointC, pointD)), Double.POSITIVE_INFINITY)) {
-			if (RiffToolbox.areEqual(pointA, pointA.getX(), pointC.getX())) {
+		if (Points.areEqual(Point.System.EUCLIDEAN, Math.abs(RiffPolygonToolbox.getSlope(pointA, pointB)), Double.POSITIVE_INFINITY) && Points.areEqual(Point.System.EUCLIDEAN, Math.abs(RiffPolygonToolbox.getSlope(pointC, pointD)), Double.POSITIVE_INFINITY)) {
+			if (Points.areEqual(pointA, pointA.getX(), pointC.getX())) {
 				return false;
 			}
 		} else {
-			if (RiffToolbox.isLessThan(Math.max(pointA.getX(), pointB.getX()), Math.min(pointC.getX(), pointD.getX()))) {
+			if (Points.isLessThan(Math.max(pointA.getX(), pointB.getX()), Math.min(pointC.getX(), pointD.getX()))) {
 				return false;
 			}
-			if (RiffToolbox.areEqual(pointA, Math.max(pointA.getX(), pointB.getX()), Math.min(pointC.getX(), pointD.getX())) && !includeTangents) {
+			if (Points.areEqual(pointA, Math.max(pointA.getX(), pointB.getX()), Math.min(pointC.getX(), pointD.getX())) && !includeTangents) {
 				return false;
 			}
-			if (RiffToolbox.isGreaterThan(Math.min(pointA.getX(), pointB.getX()), Math.max(pointC.getX(), pointD.getX()))) {
+			if (Points.isGreaterThan(Math.min(pointA.getX(), pointB.getX()), Math.max(pointC.getX(), pointD.getX()))) {
 				return false;
 			}
-			if (RiffToolbox.areEqual(pointA, Math.min(pointA.getX(), pointB.getX()), Math.max(pointC.getX(), pointD.getX())) && !includeTangents) {
+			if (Points.areEqual(pointA, Math.min(pointA.getX(), pointB.getX()), Math.max(pointC.getX(), pointD.getX())) && !includeTangents) {
 				return false;
 			}
 		}
-		if (RiffToolbox.areEqual(pointA, RiffPolygonToolbox.getSlope(pointA, pointB), 0.0d) && RiffToolbox.areEqual(Point.System.EUCLIDEAN, RiffPolygonToolbox.getSlope(pointC, pointD), 0.0d)) {
-			if (!RiffToolbox.areEqual(pointA, pointA.getY(), pointC.getY())) {
+		if (Points.areEqual(pointA, RiffPolygonToolbox.getSlope(pointA, pointB), 0.0d) && Points.areEqual(Point.System.EUCLIDEAN, RiffPolygonToolbox.getSlope(pointC, pointD), 0.0d)) {
+			if (!Points.areEqual(pointA, pointA.getY(), pointC.getY())) {
 				return false;
 			}
 		} else {
-			if (RiffToolbox.isLessThan(Math.max(pointA.getY(), pointB.getY()), Math.min(pointC.getY(), pointD.getY()))) {
+			if (Points.isLessThan(Math.max(pointA.getY(), pointB.getY()), Math.min(pointC.getY(), pointD.getY()))) {
 				return false;
 			}
-			if (RiffToolbox.areEqual(pointA, Math.max(pointA.getY(), pointB.getY()), Math.min(pointC.getY(), pointD.getY())) && !includeTangents) {
+			if (Points.areEqual(pointA, Math.max(pointA.getY(), pointB.getY()), Math.min(pointC.getY(), pointD.getY())) && !includeTangents) {
 				return false;
 			}
-			if (RiffToolbox.isGreaterThan(Math.min(pointA.getY(), pointB.getY()), Math.max(pointC.getY(), pointD.getY()))) {
+			if (Points.isGreaterThan(Math.min(pointA.getY(), pointB.getY()), Math.max(pointC.getY(), pointD.getY()))) {
 				return false;
 			}
-			if (RiffToolbox.areEqual(pointA, Math.min(pointA.getY(), pointB.getY()), Math.max(pointC.getY(), pointD.getY())) && !includeTangents) {
+			if (Points.areEqual(pointA, Math.min(pointA.getY(), pointB.getY()), Math.max(pointC.getY(), pointD.getY())) && !includeTangents) {
 				return false;
 			}
 		}
@@ -550,20 +552,20 @@ public class RiffPolygonToolbox {
 		assert Debugger.printDebug("Polygon/getExtensionPoints/data", "Region to extend to: " + region);
 		double YValue = RiffPolygonToolbox.getExtensionPoint(pointA, pointB, region.getLeftExtreme() - 1.0d);
 		double XValue = region.getLeftExtreme() - 1.0d;
-		if (RiffToolbox.isGreaterThan(YValue, region.getTopExtreme())) {
+		if (Points.isGreaterThan(YValue, region.getTopExtreme())) {
 			YValue = region.getTopExtreme() + 1.0d;
 			XValue = (YValue - pointA.getY()) / RiffPolygonToolbox.getSlope(pointA, pointB) + pointA.getX();
-		} else if (RiffToolbox.isLessThan(YValue, region.getBottomExtreme())) {
+		} else if (Points.isLessThan(YValue, region.getBottomExtreme())) {
 			YValue = region.getBottomExtreme() - 1.0d;
 			XValue = (YValue - pointA.getY()) / RiffPolygonToolbox.getSlope(pointA, pointB) + pointA.getX();
 		}
 		pointList.add(createPoint(pointA, pointA.getName(), XValue, YValue, 0.0d));
 		YValue = RiffPolygonToolbox.getExtensionPoint(pointA, pointB, region.getRightExtreme() + 1.0d);
 		XValue = region.getRightExtreme() + 1.0d;
-		if (RiffToolbox.isGreaterThan(YValue, region.getTopExtreme())) {
+		if (Points.isGreaterThan(YValue, region.getTopExtreme())) {
 			YValue = region.getTopExtreme() + 1.0d;
 			XValue = (YValue - pointA.getY()) / RiffPolygonToolbox.getSlope(pointA, pointB) + pointA.getX();
-		} else if (RiffToolbox.isLessThan(YValue, region.getBottomExtreme())) {
+		} else if (Points.isLessThan(YValue, region.getBottomExtreme())) {
 			YValue = region.getBottomExtreme() - 1.0d;
 			XValue = (YValue - pointA.getY()) / RiffPolygonToolbox.getSlope(pointA, pointB) + pointA.getX();
 		}
@@ -612,51 +614,51 @@ public class RiffPolygonToolbox {
 		// Test for infinite slopes, and if found, get real intersection points.
 		if (Math.abs(slope) == Double.POSITIVE_INFINITY) {
 			assert Debugger.addNode("Slope of the control points is infinite.");
-			if (RiffToolbox.isGreaterThan(pointA.getX(), Math.max(testPointA.getX(), testPointB.getX()))) {
+			if (Points.isGreaterThan(pointA.getX(), Math.max(testPointA.getX(), testPointB.getX()))) {
 				assert Debugger.closeNode("The X-value is greater than the maximum X-value of the test points, returning null.");
 				return null;
-			} else if (RiffToolbox.areEqual(pointA, pointA.getX(), Math.max(testPointA.getX(), testPointB.getX()))) {
+			} else if (Points.areEqual(pointA, pointA.getX(), Math.max(testPointA.getX(), testPointB.getX()))) {
 				assert Debugger.addNode("The X-value is equal to the maximum X-value of the test points, setting tangent flag.");
 				tangentFlag = true;
 			}
-			if (RiffToolbox.isLessThan(pointA.getX(), Math.min(testPointA.getX(), testPointB.getX()))) {
+			if (Points.isLessThan(pointA.getX(), Math.min(testPointA.getX(), testPointB.getX()))) {
 				assert Debugger.closeNode("The X-value is less than the minimum X-value of the test points, returning null.");
 				return null;
-			} else if (RiffToolbox.areEqual(pointA, pointA.getX(), Math.min(testPointA.getX(), testPointB.getX()))) {
+			} else if (Points.areEqual(pointA, pointA.getX(), Math.min(testPointA.getX(), testPointB.getX()))) {
 				assert Debugger.addNode("The X-value is equal to the minimum X-value of the test points, setting tangent flag.");
 				tangentFlag = true;
 			}
 			double yIntersection = testSlope * (pointA.getX() - testPointA.getX()) + testPointA.getY();
-			if (!RiffToolbox.areEqual(Point.System.EUCLIDEAN, 0.0d, testSlope)) {
+			if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, testSlope)) {
 				assert Debugger.addNode("The testSlope is not zero.");
-				if (RiffToolbox.isLessThan(yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
+				if (Points.isLessThan(yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
 					assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the testPoints, returning null.");
 					return null;
-				} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
+				} else if (Points.areEqual(testPointA, yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
 					assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the testPoints, setting tangent flag.");
 					tangentFlag = true;
 				}
-				if (RiffToolbox.isGreaterThan(yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
+				if (Points.isGreaterThan(yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
 					assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the testPoints, returning null.");
 					return null;
-				} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
+				} else if (Points.areEqual(testPointA, yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
 					assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the testpoints, setting tangent flag.");
 					tangentFlag = true;
 				}
 			}
-			if (!RiffToolbox.areEqual(Point.System.EUCLIDEAN, 0.0d, slope)) {
+			if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, slope)) {
 				assert Debugger.addNode("The slope is not zero.");
-				if (RiffToolbox.isLessThan(yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
+				if (Points.isLessThan(yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
 					assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the control points, returning null.");
 					return null;
-				} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
+				} else if (Points.areEqual(testPointA, yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
 					assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the control points, setting tangent flag.");
 					tangentFlag = true;
 				}
-				if (RiffToolbox.isGreaterThan(yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
+				if (Points.isGreaterThan(yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
 					assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the control points, returning null.");
 					return null;
-				} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
+				} else if (Points.areEqual(testPointA, yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
 					assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the control points, setting tangent flag.");
 					tangentFlag = true;
 				}
@@ -672,51 +674,51 @@ public class RiffPolygonToolbox {
 		}
 		if (Math.abs(testSlope) == Double.POSITIVE_INFINITY) {
 			assert Debugger.addNode("Slope of the test points is infinite.");
-			if (RiffToolbox.isGreaterThan(testPointA.getX(), Math.max(pointA.getX(), pointB.getX()))) {
+			if (Points.isGreaterThan(testPointA.getX(), Math.max(pointA.getX(), pointB.getX()))) {
 				assert Debugger.closeNode("The X-value is greater than the maximum X-value of the control points, returning null.");
 				return null;
-			} else if (RiffToolbox.areEqual(testPointA, testPointA.getX(), Math.max(pointA.getX(), pointB.getX()))) {
+			} else if (Points.areEqual(testPointA, testPointA.getX(), Math.max(pointA.getX(), pointB.getX()))) {
 				assert Debugger.addNode("The X-value is equal to the maximum X-value of the control points, setting tangent flag.");
 				tangentFlag = true;
 			}
-			if (RiffToolbox.isLessThan(testPointA.getX(), Math.min(pointA.getX(), pointB.getX()))) {
+			if (Points.isLessThan(testPointA.getX(), Math.min(pointA.getX(), pointB.getX()))) {
 				assert Debugger.closeNode("The X-value is less than the minimum X-value of the control points, returning null.");
 				return null;
-			} else if (RiffToolbox.areEqual(testPointA, testPointA.getX(), Math.min(pointA.getX(), pointB.getX()))) {
+			} else if (Points.areEqual(testPointA, testPointA.getX(), Math.min(pointA.getX(), pointB.getX()))) {
 				assert Debugger.addNode("The X-value is equal to the minimum X-value of the control points, setting tangent flag.");
 				tangentFlag = true;
 			}
 			double yIntersection = slope * (testPointA.getX() - pointA.getX()) + pointA.getY();
-			if (!RiffToolbox.areEqual(Point.System.EUCLIDEAN, 0.0d, testSlope)) {
+			if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, testSlope)) {
 				assert Debugger.addNode("The testSlope is not zero.");
-				if (RiffToolbox.isLessThan(yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
+				if (Points.isLessThan(yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
 					assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the testPoints, returning null.");
 					return null;
-				} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
+				} else if (Points.areEqual(testPointA, yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
 					assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the testPoints, setting tangent flag.");
 					tangentFlag = true;
 				}
-				if (RiffToolbox.isGreaterThan(yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
+				if (Points.isGreaterThan(yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
 					assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the testPoints, returning null.");
 					return null;
-				} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
+				} else if (Points.areEqual(testPointA, yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
 					assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the testpoints, setting tangent flag.");
 					tangentFlag = true;
 				}
 			}
-			if (!RiffToolbox.areEqual(Point.System.EUCLIDEAN, 0.0d, slope)) {
+			if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, slope)) {
 				assert Debugger.addNode("The slope is not zero.");
-				if (RiffToolbox.isLessThan(yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
+				if (Points.isLessThan(yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
 					assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the control points, returning null.");
 					return null;
-				} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
+				} else if (Points.areEqual(testPointA, yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
 					assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the control points, setting tangent flag.");
 					tangentFlag = true;
 				}
-				if (RiffToolbox.isGreaterThan(yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
+				if (Points.isGreaterThan(yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
 					assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the control points, returning null.");
 					return null;
-				} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
+				} else if (Points.areEqual(testPointA, yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
 					assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the control points, setting tangent flag.");
 					tangentFlag = true;
 				}
@@ -731,98 +733,98 @@ public class RiffPolygonToolbox {
 			return returning;
 		}
 		// Bounding rect testing of the two lines.
-		if (RiffToolbox.isLessThan(Math.max(pointB.getX(), pointA.getX()), Math.min(testPointA.getX(), testPointB.getX()))) {
+		if (Points.isLessThan(Math.max(pointB.getX(), pointA.getX()), Math.min(testPointA.getX(), testPointB.getX()))) {
 			assert Debugger.closeNode("The maximum x-value of the control points is less than the minimum X-value of the testPoints, returning null.");
 			return null;
-		} else if (RiffToolbox.areEqual(testPointA, Math.max(pointB.getX(), pointA.getX()), Math.min(testPointA.getX(), testPointB.getX()))) {
+		} else if (Points.areEqual(testPointA, Math.max(pointB.getX(), pointA.getX()), Math.min(testPointA.getX(), testPointB.getX()))) {
 			assert Debugger.addNode("The maximum x-value of the control points is equal to the minimum X-value of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
-		if (RiffToolbox.isGreaterThan(Math.min(pointB.getX(), pointA.getX()), Math.max(testPointA.getX(), testPointB.getX()))) {
+		if (Points.isGreaterThan(Math.min(pointB.getX(), pointA.getX()), Math.max(testPointA.getX(), testPointB.getX()))) {
 			assert Debugger.closeNode("The minimum x-value of the control points is greater than the maximum X-value of the testPoints, returning null.");
 			return null;
-		} else if (RiffToolbox.areEqual(testPointA, Math.min(pointB.getX(), pointA.getX()), Math.max(testPointA.getX(), testPointB.getX()))) {
+		} else if (Points.areEqual(testPointA, Math.min(pointB.getX(), pointA.getX()), Math.max(testPointA.getX(), testPointB.getX()))) {
 			assert Debugger.addNode("The minimum x-value of the control points is equal to the maximum X-value of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
-		if (RiffToolbox.isLessThan(Math.max(pointA.getY(), pointB.getY()), Math.min(testPointA.getY(), testPointB.getY()))) {
+		if (Points.isLessThan(Math.max(pointA.getY(), pointB.getY()), Math.min(testPointA.getY(), testPointB.getY()))) {
 			assert Debugger.closeNode("The maximum Y-value of the control points is less than the minimum Y-value of the testPoints, returning null.");
 			return null;
-		} else if (RiffToolbox.areEqual(testPointA, Math.max(pointA.getY(), pointB.getY()), Math.min(testPointA.getY(), testPointB.getY()))) {
+		} else if (Points.areEqual(testPointA, Math.max(pointA.getY(), pointB.getY()), Math.min(testPointA.getY(), testPointB.getY()))) {
 			assert Debugger.addNode("The maximum Y-value of the control points is equal to the minimum  Y-value of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
-		if (RiffToolbox.isGreaterThan(Math.min(pointA.getY(), pointB.getY()), Math.max(testPointA.getY(), testPointB.getY()))) {
+		if (Points.isGreaterThan(Math.min(pointA.getY(), pointB.getY()), Math.max(testPointA.getY(), testPointB.getY()))) {
 			assert Debugger.closeNode("The minimum Y-value of the control points is greater than the maximum Y-value of the testPoints, returning null.");
 			return null;
-		} else if (RiffToolbox.areEqual(testPointA, Math.min(pointA.getY(), pointB.getY()), Math.max(testPointA.getY(), testPointB.getY()))) {
+		} else if (Points.areEqual(testPointA, Math.min(pointA.getY(), pointB.getY()), Math.max(testPointA.getY(), testPointB.getY()))) {
 			assert Debugger.addNode("The minimum Y-value of the control points is equal to than the maximum Y-value of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
 		// X-intersection testing.
 		double xIntersection = ((-slope * pointA.getX() + pointA.getY()) - (-testSlope * testPointA.getX() + testPointA.getY())) / (testSlope - slope);
 		assert Debugger.addNode("The X-intercept between these two points is: " + xIntersection);
-		if (RiffToolbox.isLessThan(xIntersection, Math.min(testPointA.getX(), testPointB.getX()))) {
+		if (Points.isLessThan(xIntersection, Math.min(testPointA.getX(), testPointB.getX()))) {
 			assert Debugger.closeNode("The X-intercept is less than the minimum of the X-values of the testPoints, returning null.");
 			return null;
-		} else if (RiffToolbox.areEqual(testPointA, xIntersection, Math.min(testPointA.getX(), testPointB.getX()))) {
+		} else if (Points.areEqual(testPointA, xIntersection, Math.min(testPointA.getX(), testPointB.getX()))) {
 			assert Debugger.addNode("The X-intercept is equal to the minimum of the X-values of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
-		if (RiffToolbox.isGreaterThan(xIntersection, Math.max(testPointA.getX(), testPointB.getX()))) {
+		if (Points.isGreaterThan(xIntersection, Math.max(testPointA.getX(), testPointB.getX()))) {
 			assert Debugger.closeNode("The X-intercept is greater than the maximum of the X-values of the testPoints, returning null.");
 			return null;
-		} else if (RiffToolbox.areEqual(testPointA, xIntersection, Math.max(testPointA.getX(), testPointB.getX()))) {
+		} else if (Points.areEqual(testPointA, xIntersection, Math.max(testPointA.getX(), testPointB.getX()))) {
 			assert Debugger.addNode("The X-intercept is equal to the maximum of the X-values of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
-		if (RiffToolbox.isLessThan(xIntersection, Math.min(pointA.getX(), pointB.getX()))) {
+		if (Points.isLessThan(xIntersection, Math.min(pointA.getX(), pointB.getX()))) {
 			assert Debugger.closeNode("The X-intercept is less than the minimum of the X-values of the control points, returning null.");
 			return null;
-		} else if (RiffToolbox.areEqual(testPointA, xIntersection, Math.min(pointA.getX(), pointB.getX()))) {
+		} else if (Points.areEqual(testPointA, xIntersection, Math.min(pointA.getX(), pointB.getX()))) {
 			assert Debugger.addNode("The X-intercept is equal to the minimum of the X-values of the control points, setting tangent flag.");
 			tangentFlag = true;
 		}
-		if (RiffToolbox.isGreaterThan(xIntersection, Math.max(pointA.getX(), pointB.getX()))) {
+		if (Points.isGreaterThan(xIntersection, Math.max(pointA.getX(), pointB.getX()))) {
 			assert Debugger.closeNode("The X-intercept is greater than the maximum of the X-values of the control points, returning null.");
 			return null;
-		} else if (RiffToolbox.areEqual(testPointA, xIntersection, Math.max(pointA.getX(), pointB.getX()))) {
+		} else if (Points.areEqual(testPointA, xIntersection, Math.max(pointA.getX(), pointB.getX()))) {
 			assert Debugger.addNode("The X-intercept is equal to the maximum of the X-values of the control points, setting tangent flag.");
 			tangentFlag = true;
 		}
 		// Y-intersection testing.
 		double yIntersection = slope * xIntersection + (-slope * pointA.getX() + pointA.getY());
 		assert Debugger.addNode("The Y-intercept between these two points is: " + yIntersection);
-		if (!RiffToolbox.areEqual(Point.System.EUCLIDEAN, 0.0d, testSlope)) {
+		if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, testSlope)) {
 			assert Debugger.addNode("The testSlope is not zero.");
-			if (RiffToolbox.isLessThan(yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
+			if (Points.isLessThan(yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
 				assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the testPoints, returning null.");
 				return null;
-			} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
+			} else if (Points.areEqual(testPointA, yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
 				assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the testPoints, setting tangent flag.");
 				tangentFlag = true;
 			}
-			if (RiffToolbox.isGreaterThan(yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
+			if (Points.isGreaterThan(yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
 				assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the testPoints, returning null.");
 				return null;
-			} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
+			} else if (Points.areEqual(testPointA, yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
 				assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the testpoints, setting tangent flag.");
 				tangentFlag = true;
 			}
 		}
-		if (!RiffToolbox.areEqual(Point.System.EUCLIDEAN, 0.0d, slope)) {
+		if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, slope)) {
 			assert Debugger.addNode("The slope is not zero.");
-			if (RiffToolbox.isLessThan(yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
+			if (Points.isLessThan(yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
 				assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the control points, returning null.");
 				return null;
-			} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
+			} else if (Points.areEqual(testPointA, yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
 				assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the control points, setting tangent flag.");
 				tangentFlag = true;
 			}
-			if (RiffToolbox.isGreaterThan(yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
+			if (Points.isGreaterThan(yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
 				assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the control points, returning null.");
 				return null;
-			} else if (RiffToolbox.areEqual(testPointA, yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
+			} else if (Points.areEqual(testPointA, yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
 				assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the control points, setting tangent flag.");
 				tangentFlag = true;
 			}
@@ -905,7 +907,7 @@ public class RiffPolygonToolbox {
 			assert Debugger.printDebug("Polygon/getMinimumPointBetweenLine", "PointA is equal to PointB, returning pointA.\n(/getMinimumPointBetweenLine)");
 			return pointA;
 		}
-		double omegaValue = ((source.getX() - pointA.getX()) * (pointB.getX() - pointA.getX()) + (source.getY() - pointA.getY()) * (pointB.getY() - pointA.getY())) / Math.pow(RiffToolbox.getDistance(pointA, pointB), 2);
+		double omegaValue = ((source.getX() - pointA.getX()) * (pointB.getX() - pointA.getX()) + (source.getY() - pointA.getY()) * (pointB.getY() - pointA.getY())) / Math.pow(Points.getDistance(pointA, pointB), 2);
 		double xValue = pointA.getX() + omegaValue * (pointB.getX() - pointA.getX());
 		double yValue = pointA.getY() + omegaValue * (pointB.getY() - pointA.getY());
 		Point minimumPoint = createPoint(pointA, null, xValue, yValue, 0.0d);
@@ -1133,7 +1135,7 @@ public class RiffPolygonToolbox {
 					if (testSlope == slope) {
 						double y = slope * (pointC.getX() - pointA.getX()) + pointA.getY();
 						if (y == pointC.getY()) {
-							if (RiffToolbox.getDistance(pointA, pointB) + RiffToolbox.getDistance(pointB, pointC) == RiffToolbox.getDistance(pointA, pointC)) {
+							if (Points.getDistance(pointA, pointB) + Points.getDistance(pointB, pointC) == Points.getDistance(pointA, pointC)) {
 								if (RiffPolygonToolbox.confirmInteriorLine(pointA, pointC, region)) {
 									assert Debugger.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointB);
 									assert Debugger.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointA + ", " + pointC);
@@ -1142,7 +1144,7 @@ public class RiffPolygonToolbox {
 								}
 								continue;
 							}
-						} else if (RiffToolbox.getDistance(pointB, pointC) + RiffToolbox.getDistance(pointA, pointC) == RiffToolbox.getDistance(pointA, pointB)) {
+						} else if (Points.getDistance(pointB, pointC) + Points.getDistance(pointA, pointC) == Points.getDistance(pointA, pointB)) {
 							if (RiffPolygonToolbox.confirmInteriorLine(pointA, pointB, region)) {
 								assert Debugger.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointC);
 								assert Debugger.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointA + ", " + pointB);
@@ -1150,7 +1152,7 @@ public class RiffPolygonToolbox {
 								k--;
 							}
 							continue;
-						} else if (RiffToolbox.getDistance(pointB, pointA) + RiffToolbox.getDistance(pointA, pointC) == RiffToolbox.getDistance(pointC, pointB)) {
+						} else if (Points.getDistance(pointB, pointA) + Points.getDistance(pointA, pointC) == Points.getDistance(pointC, pointB)) {
 							if (RiffPolygonToolbox.confirmInteriorLine(pointC, pointB, region)) {
 								assert Debugger.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointA);
 								assert Debugger.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointC + ", " + pointB);
@@ -1408,7 +1410,7 @@ public class RiffPolygonToolbox {
 			if (pointA.equals(pointList.get(i)) || pointA.equals(pointList.get((i + 1) % pointList.size()))) {
 				continue;
 			}
-			if (RiffToolbox.areEqual(pointA, pointA.getY(), RiffPolygonToolbox.getSlope(pointList.get(i), pointList.get((i + 1) % pointList.size())) * (pointA.getX() - (pointList.get(i)).getX()) + (pointList.get(i)).getY())) {
+			if (Points.areEqual(pointA, pointA.getY(), RiffPolygonToolbox.getSlope(pointList.get(i), pointList.get((i + 1) % pointList.size())) * (pointA.getX() - (pointList.get(i)).getX()) + (pointList.get(i)).getY())) {
 				return true;
 			}
 		}
@@ -1416,7 +1418,7 @@ public class RiffPolygonToolbox {
 	}
 
 	public static boolean testForColinearity(Point linePointA, Point linePointB, Point testPoint) {
-		return RiffToolbox.areEqual(testPoint, testPoint.getY(), (RiffPolygonToolbox.getSlope(linePointA, linePointB) * (testPoint.getX() - linePointA.getX()) + linePointA.getY()));
+		return Points.areEqual(testPoint, testPoint.getY(), (RiffPolygonToolbox.getSlope(linePointA, linePointB) * (testPoint.getX() - linePointA.getX()) + linePointA.getY()));
 	}
 
 	public static boolean testForColinearity(Point pointA, Point pointB, Point testPointA, Point testPointB) {
@@ -1433,13 +1435,13 @@ public class RiffPolygonToolbox {
 		assert Debugger.printDebug("Polygon/testForColinearity", "Slopes are equal, so beginning point-slope test.");
 		assert Debugger.printDebug("Polygon/testForColinearity/data", "First point-slope test: " + (RiffPolygonToolbox.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY()));
 		assert Debugger.printDebug("Polygon/testForColinearity/data", "Expected value: " + testPointA.getY());
-		if (!RiffToolbox.areEqual(Point.System.EUCLIDEAN, RiffPolygonToolbox.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY(), testPointA.getY())) {
+		if (!Points.areEqual(Point.System.EUCLIDEAN, RiffPolygonToolbox.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY(), testPointA.getY())) {
 			assert Debugger.printDebug("Polygon/testForColinearity/heavyDebug", "First point failed point-slope test, so returning false.\n(/testForColinearity)");
 			return false;
 		}
 		assert Debugger.printDebug("Polygon/testForColinearity/data", "Second point-slope test: " + (RiffPolygonToolbox.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY()));
 		assert Debugger.printDebug("Polygon/testForColinearity/data", "Expected value: " + testPointB.getY());
-		if (!RiffToolbox.areEqual(Point.System.EUCLIDEAN, RiffPolygonToolbox.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY(), testPointB.getY())) {
+		if (!Points.areEqual(Point.System.EUCLIDEAN, RiffPolygonToolbox.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY(), testPointB.getY())) {
 			assert Debugger.printDebug("Polygon/testForColinearity/heavyDebug", "Second point failed point-slope test, so returning false.\n(/testForColinearity)");
 			return false;
 		}

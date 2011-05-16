@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 // Requiem for Empire
 import java.awt.Color;
 import java.awt.Graphics;
@@ -22,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import com.dafrito.rfe.util.Points;
 
 public class Interface extends JPanel implements MouseListener, MouseMotionListener, WindowListener, ComponentListener, KeyListener {
 	/**
@@ -153,7 +155,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public synchronized void mouseDragged(MouseEvent e) {
-		double distance = RiffToolbox.getDistance(this.lastX, this.lastY, e.getX(), e.getY());
+		double distance = Points.getDistance(this.lastX, this.lastY, e.getX(), e.getY());
 		if (e.getX() - this.lastX < 0) {
 			distance *= -1;
 		}

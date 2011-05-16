@@ -2,6 +2,8 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.util.Points;
+
 
 public class Point_Path extends Point implements ScriptConvertible, Nodeable {
 	private List<Point> points = new LinkedList<Point>();
@@ -37,7 +39,7 @@ public class Point_Path extends Point implements ScriptConvertible, Nodeable {
 		assert Debugger.addNode(this);
 		while (this.points.size() > 1) {
 			double distance = (this.getScenario().getGameTime() - this.startTime) * this.getVelocity(this.movementCosts.get(0)); // distance traveled
-			double total = RiffToolbox.getDistance(this.points.get(0), this.points.get(1));
+			double total = Points.getDistance(this.points.get(0), this.points.get(1));
 			double offset = distance / total;
 			if (distance >= total) {
 				this.startTime += (long) (total / this.getVelocity(this.movementCosts.get(0)));
@@ -78,7 +80,7 @@ public class Point_Path extends Point implements ScriptConvertible, Nodeable {
 	public long getTotalTime() {
 		long time = 0;
 		for (int i = 0; i < this.points.size() - 1; i++) {
-			double total = RiffToolbox.getDistance(this.points.get(i), this.points.get(i + 1));
+			double total = Points.getDistance(this.points.get(i), this.points.get(i + 1));
 			time += (long) (total / this.getVelocity(this.movementCosts.get(i)));
 		}
 		return time;

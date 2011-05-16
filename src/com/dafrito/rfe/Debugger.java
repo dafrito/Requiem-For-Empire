@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-class Debugger {
+import com.dafrito.rfe.util.Strings;
+
+public class Debugger {
 	// Debug_Environment fxns
 	private static Map<String, Long> stopWatches = new HashMap<String, Long>();
 	private static DebugEnvironment debugger;
@@ -196,7 +198,7 @@ class Debugger {
 	}
 
 	public static boolean printDebug(String category, Collection list) {
-		return printDebug(category, RiffToolbox.displayList(list));
+		return printDebug(category, Strings.displayList(list));
 	}
 
 	public static boolean printDebug(String category, Object obj) {

@@ -2,6 +2,8 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.util.Points;
+
 
 public class Gradient_Radial implements Gradient {
 	private static final int polygonVertices = 4;
@@ -35,7 +37,7 @@ public class Gradient_Radial implements Gradient {
 
 	@Override
 	public Krumflex getKrumflexAt(Point point) {
-		double distance = RiffToolbox.getDistance(this.getFocus(), point);
+		double distance = Points.getDistance(this.getFocus(), point);
 		if (Math.abs(distance) > this.getRadius() || this.getExponent() == 0) {
 			return this.getKrumflex().getKrumflexFromIntensity(0.0d);
 		}

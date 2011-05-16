@@ -1,4 +1,7 @@
 package com.dafrito.rfe;
+
+import com.dafrito.rfe.util.Points;
+
 public class Point_Euclidean extends Point implements ScriptConvertible {
 	private double x, y, z;
 	private static int pointNum = 0;
@@ -42,7 +45,7 @@ public class Point_Euclidean extends Point implements ScriptConvertible {
 			return false;
 		}
 		Point_Euclidean testPoint = (Point_Euclidean) o;
-		return (RiffToolbox.areEqual(Point.System.EUCLIDEAN, this.x, testPoint.getX()) && RiffToolbox.areEqual(Point.System.EUCLIDEAN, this.y, testPoint.getY()) && RiffToolbox.areEqual(Point.System.EUCLIDEAN, this.z, testPoint.getZ()));
+		return (Points.areEqual(Point.System.EUCLIDEAN, this.x, testPoint.getX()) && Points.areEqual(Point.System.EUCLIDEAN, this.y, testPoint.getY()) && Points.areEqual(Point.System.EUCLIDEAN, this.z, testPoint.getZ()));
 	}
 
 	@Override

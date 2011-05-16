@@ -1,4 +1,7 @@
 package com.dafrito.rfe;
+
+import com.dafrito.rfe.util.Points;
+
 public class Point_Spherical extends Point {
 	public static final double LATITUDEMAXIMUM = 180;
 	public static final double LONGITUDEMAXIMUM = 360;
@@ -24,13 +27,13 @@ public class Point_Spherical extends Point {
 			return false;
 		}
 		Point_Spherical point = ((Point_Spherical) o);
-		if (RiffToolbox.areEqual(Point.System.EUCLIDEAN, this.getY(), 90.0d) && RiffToolbox.areEqual(Point.System.EUCLIDEAN, point.getY(), 90.0d)) {
+		if (Points.areEqual(Point.System.EUCLIDEAN, this.getY(), 90.0d) && Points.areEqual(Point.System.EUCLIDEAN, point.getY(), 90.0d)) {
 			return true;
 		}
-		if (RiffToolbox.areEqual(Point.System.EUCLIDEAN, this.getY(), -90.0d) && RiffToolbox.areEqual(Point.System.EUCLIDEAN, point.getY(), -90.0d)) {
+		if (Points.areEqual(Point.System.EUCLIDEAN, this.getY(), -90.0d) && Points.areEqual(Point.System.EUCLIDEAN, point.getY(), -90.0d)) {
 			return true;
 		}
-		return RiffToolbox.areEqual(Point.System.SPHERICAL, this.getX(), point.getX()) && RiffToolbox.areEqual(Point.System.SPHERICAL, this.getY(), point.getY());
+		return Points.areEqual(Point.System.SPHERICAL, this.getX(), point.getX()) && Points.areEqual(Point.System.SPHERICAL, this.getY(), point.getY());
 	}
 
 	public double getLatitudeDegrees() {

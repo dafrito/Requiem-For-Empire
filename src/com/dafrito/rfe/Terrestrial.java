@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import com.dafrito.rfe.util.Points;
+
 
 public class Terrestrial implements Serializable {
 	/**
@@ -144,11 +146,11 @@ public class Terrestrial implements Serializable {
 			int optimum = -1;
 			assert Debugger.openNode("Getting optimum region (" + availableNeighbors.size() + " option(s))");
 			for (int i = 0; i < availableNeighbors.size(); i++) {
-				double value = RiffToolbox.getDistance(currentPoint, nearestNeighborPoints.get(i)) * path.getLastMovementCost();
+				double value = Points.getDistance(currentPoint, nearestNeighborPoints.get(i)) * path.getLastMovementCost();
 				assert Debugger.addNode("Movement cost from current location to border of current region (" + value + ")");
-				value += RiffToolbox.getDistance(nearestNeighborPoints.get(i), destinationPoint) * movementCosts.get(i);
+				value += Points.getDistance(nearestNeighborPoints.get(i), destinationPoint) * movementCosts.get(i);
 				assert Debugger.addSnapNode("Current neighbor (Total movement cost: " + value + ")", availableNeighbors.get(i));
-				if (RiffToolbox.isLessThan(value, minimumValue)) {
+				if (Points.isLessThan(value, minimumValue)) {
 					assert Debugger.addNode("Value is less than current minimum, setting as new value (" + minimumValue + " to " + value + ")");
 					minimumValue = value;
 					optimum = i;

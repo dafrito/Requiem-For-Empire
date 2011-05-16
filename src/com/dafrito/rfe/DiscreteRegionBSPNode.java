@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -6,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.dafrito.rfe.util.Points;
 
 public class DiscreteRegionBSPNode implements Nodeable {
 	private Point pointA, pointB;
@@ -260,7 +262,7 @@ public class DiscreteRegionBSPNode implements Nodeable {
 		double value = RiffPolygonToolbox.testPointAgainstLine(point, this.pointA, this.pointB);
 		assert Debugger.addNode("Point-side test result: " + value);
 		Set<DiscreteRegion> polyList = new HashSet<DiscreteRegion>();
-		if (RiffToolbox.isGreaterThan(value, 0.0d)) {
+		if (Points.isGreaterThan(value, 0.0d)) {
 			assert Debugger.addNode("Value is greater than zero.");
 			if (this.rightNode != null) {
 				assert Debugger.openNode("Deferring to right node");
@@ -273,7 +275,7 @@ public class DiscreteRegionBSPNode implements Nodeable {
 				polyList.addAll(this.rightNeighbors);
 			}
 		}
-		if (RiffToolbox.isLessThan(value, 0.0d)) {
+		if (Points.isLessThan(value, 0.0d)) {
 			assert Debugger.addNode("Value is less than zero.");
 			if (this.leftNode != null) {
 				assert Debugger.openNode("Deferring to left node");
@@ -286,7 +288,7 @@ public class DiscreteRegionBSPNode implements Nodeable {
 				polyList.addAll(this.leftNeighbors);
 			}
 		}
-		if (RiffToolbox.areEqual(Point.System.EUCLIDEAN, value, 0.0d)) {
+		if (Points.areEqual(Point.System.EUCLIDEAN, value, 0.0d)) {
 			assert Debugger.addNode("Value is equal to zero, adding both lists.");
 			polyList.addAll(this.leftNeighbors);
 			polyList.addAll(this.rightNeighbors);
