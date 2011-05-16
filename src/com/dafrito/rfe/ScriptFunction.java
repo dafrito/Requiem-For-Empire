@@ -1,8 +1,8 @@
 package com.dafrito.rfe;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 	public static boolean areParametersConvertible(List<ScriptValue> source, List<ScriptValue> list) {

@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 
-public class RiffGraphicsToolbox {
+public class Geometry {
 	// Converts a Java-point to a RiffPoint
 	public static Point convertPointToEuclidean(ScriptEnvironment env, java.awt.Point point) {
 		return new Point_Euclidean(env, point.getX(), point.getY(), 0);
