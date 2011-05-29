@@ -48,7 +48,7 @@ public class Debugger {
 			return true;
 		}
 		if (o == null) {
-			getDebugger().addNode(new Debug_TreeNode(group, "null"));
+			getDebugInspector().addNode(new Debug_TreeNode(group, "null"));
 			return true;
 		}
 		if (o instanceof Nodeable) {
@@ -62,7 +62,7 @@ public class Debugger {
 				} else {
 					exceptionName = "Exception";
 				}
-				getDebugger().getUnfilteredOutput().getHotspotPanel().createHotspot(getDebugger().getLastNodeAdded(), exceptionName);
+				getDebugger().getUnfilteredOutput().getHotspotPanel().createHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
 			}
 			return true;
 		}
@@ -72,7 +72,7 @@ public class Debugger {
 		if (o instanceof Map) {
 			return addMapNode(group, (Map<?, ?>) o);
 		}
-		getDebugger().addNode(new Debug_TreeNode(group, o));
+		getDebugInspector().addNode(new Debug_TreeNode(group, o));
 		if (o instanceof Exception) {
 			String exceptionName;
 			if (o instanceof Exception_Nodeable) {
@@ -82,7 +82,7 @@ public class Debugger {
 			} else {
 				exceptionName = "Exception";
 			}
-			getDebugger().getUnfilteredOutput().getHotspotPanel().createHotspot(getDebugger().getLastNodeAdded(), exceptionName);
+			getDebugger().getUnfilteredOutput().getHotspotPanel().createHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
 		}
 		return true;
 	}
@@ -103,15 +103,11 @@ public class Debugger {
 		return true;
 	}
 
-	public static boolean atFullAllocation() {
-		return getAllocationPercentage() == 100;
-	}
-
 	public static boolean closeNode() {
 		if (getDebugger().isIgnoringThisThread()) {
 			return true;
 		}
-		getDebugger().closeNode();
+		getDebugInspector().closeNode();
 		return true;
 	}
 
@@ -128,32 +124,16 @@ public class Debugger {
 	}
 
 	public static boolean closeNodeTo(Object string) {
-		getDebugger().closeNodeTo(string);
+		getDebugInspector().closeNodeTo(string);
 		return true;
 	}
 
 	public static boolean ensureCurrentNode(Object string) {
-		return getDebugger().ensureCurrentNode(string);
-	}
-
-	public static int getAllocationPercentage() {
-		return (int) ((((double) Runtime.getRuntime().totalMemory()) / ((double) Runtime.getRuntime().maxMemory())) * 100);
-	}
-
-	public static DebugEnvironment getDebugger() {
-		return debugger;
-	}
-
-	public static int getFreePercentage() {
-		return (int) ((((double) Runtime.getRuntime().freeMemory()) / ((double) Runtime.getRuntime().totalMemory())) * 100);
+		return getDebugInspector().ensureCurrentNode(string);
 	}
 
 	public static Debug_TreeNode getLastNodeAdded() {
-		return getDebugger().getLastNodeAdded();
-	}
-
-	public static String getPriorityExecutingClass() {
-		return getDebugger().getPriorityExecutingClass();
+		return getDebugInspector().getLastNodeAdded();
 	}
 
 	public static String getString(DebugString value) {
@@ -183,7 +163,7 @@ public class Debugger {
 		if (getDebugger().isIgnoringThisThread()) {
 			return true;
 		}
-		getDebugger().openNode(new Debug_TreeNode(group, string));
+		getDebugInspector().openNode(new Debug_TreeNode(group, string));
 		return true;
 	}
 
@@ -221,6 +201,30 @@ public class Debugger {
 
 	public static void reset() {
 		getDebugger().reset();
+	}
+
+	public static boolean atFullAllocation() {
+		return getAllocationPercentage() == 100;
+	}
+
+	public static int getAllocationPercentage() {
+		return (int) ((((double) Runtime.getRuntime().totalMemory()) / ((double) Runtime.getRuntime().maxMemory())) * 100);
+	}
+
+	public static DebugEnvironment getDebugger() {
+		return debugger;
+	}
+
+	public static DebugEnvironment.TreeBuildingInspector getDebugInspector() {
+		return debugger.getInspector();
+	}
+
+	public static int getFreePercentage() {
+		return (int) ((((double) Runtime.getRuntime().freeMemory()) / ((double) Runtime.getRuntime().totalMemory())) * 100);
+	}
+
+	public static String getPriorityExecutingClass() {
+		return getDebugger().getPriorityExecutingClass();
 	}
 
 	public static void setDebugger(DebugEnvironment debugger) {

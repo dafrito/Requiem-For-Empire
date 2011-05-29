@@ -340,72 +340,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		}
 	}
 
-	public void addNode(Debug_TreeNode node) {
-		this.addNode(node, false);
-	}
-
-	public void addNode(Debug_TreeNode node, boolean setAsCurrent) {
-		if (this.isIgnoringThisThread()) {
-			return;
-		}
-		if (this.filteredOutputMap.get(Thread.currentThread().getName()) == null || this.filteredOutputMap.get(Thread.currentThread().getName()).size() == 0) {
-			this.filteredOutputMap.put(Thread.currentThread().getName(), new Vector<Debug_Listener>());
-			this.filteredOutputMap.get(Thread.currentThread().getName()).add(new Debug_Listener(Thread.currentThread().getName(), this, null, Thread.currentThread().getName()));
-			this.filteredPanes.add(Thread.currentThread().getName(), this.filteredOutputMap.get(Thread.currentThread().getName()).get(0));
-		}
-		for (Debug_Listener listener : this.filteredOutputMap.get(Thread.currentThread().getName())) {
-			if (listener.isCapturing()) {
-				if (!listener.getTreePanel().getFilter().isListening()) {
-					listener.getTreePanel().getFilter().sniffNode(node);
-					if (listener.getTreePanel().getFilter().isListening()) {
-						this.addNodeToOutput(node, setAsCurrent, listener);
-					}
-				} else {
-					this.addNodeToOutput(node, setAsCurrent, listener);
-				}
-				return;
-			}
-		}
-		for (Debug_Listener listener : this.filteredOutputMap.get(Thread.currentThread().getName())) {
-			this.addNodeToOutput(node.duplicate(), setAsCurrent, listener);
-		}
-	}
-
-	private void addNodeToOutput(Debug_TreeNode node, boolean setAsCurrent, Debug_Listener listener) {
-		if (!listener.getTreePanel().getFilter().isListening()) {
-			listener.getTreePanel().getFilter().sniffNode(node);
-			if (!listener.getTreePanel().getFilter().isListening()) {
-				return;
-			}
-			node = new Debug_TreeNode_Orphaned(listener.getSource().getTreePanel().getLastNodeAdded());
-		}
-		if (listener.getTreePanel().getCurrentNode().hasChildren() && listener.getTreePanel().getCurrentNode().getLastChild().getGroup() != null && node.getGroup() != null && listener.getTreePanel().getCurrentNode().getLastChild().getGroup().equals(node.getGroup())) {
-			if (listener.getTreePanel().getCurrentNode().getLastChild().getData().equals(node.getGroup())) {
-				listener.getTreePanel().getCurrentNode().getLastChild().addChild(node);
-				node.setPracticalParent(listener.getTreePanel().getCurrentNode());
-				if (setAsCurrent) {
-					listener.getTreePanel().setAsCurrent(node);
-				}
-			} else {
-				Debug_TreeNode lastNode = listener.getTreePanel().getCurrentNode().removeLastChild();
-				Debug_TreeNode groupNode = new Debug_TreeNode(node.getGroupCode(), node.getGroupCode());
-				groupNode.addChild(lastNode);
-				groupNode.addChild(node);
-				lastNode.setPracticalParent(listener.getTreePanel().getCurrentNode());
-				node.setPracticalParent(listener.getTreePanel().getCurrentNode());
-				listener.getTreePanel().addNode(groupNode);
-				if (setAsCurrent) {
-					listener.getTreePanel().setAsCurrent(node);
-				}
-			}
-			return;
-		}
-		listener.getTreePanel().addNode(node);
-		if (setAsCurrent) {
-			listener.getTreePanel().setAsCurrent(node);
-		}
-	}
-
 	public Debug_Listener addOutputListener(Debug_Listener source, Object filter) {
 		if (filter == null || "".equals(filter)) {
 			return null;
@@ -435,47 +369,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.execute.setEnabled(value);
 	}
 
-	public void closeNode() {
-		if (this.isIgnoringThisThread()) {
-			return;
-		}
-		for (Debug_Listener listener : this.filteredOutputMap.get(Thread.currentThread().getName())) {
-			if (listener.isCapturing() && listener.getTreePanel().getFilter().isListening()) {
-				listener.getTreePanel().closeNode();
-				return;
-			}
-		}
-		for (Debug_Listener listener : this.filteredOutputMap.get(Thread.currentThread().getName())) {
-			if (listener.getTreePanel().getFilter().isListening()) {
-				listener.getTreePanel().closeNode();
-			}
-		}
-	}
-
-	public void closeNodeTo(Object string) {
-		if (this.isIgnoringThisThread()) {
-			return;
-		}
-		for (Debug_Listener listener : this.filteredOutputMap.get(Thread.currentThread().getName())) {
-			while (listener.getTreePanel().getFilter().isListening() && !listener.getTreePanel().getCurrentNode().getData().equals(string)) {
-				listener.getTreePanel().closeNode();
-			}
-		}
-	}
-
-	public boolean ensureCurrentNode(Object obj) {
-		if (!this.reset.isEnabled()) {
-			return true;
-		}
-		if (this.isInExceptionsMode() && !this.exceptions.contains(Thread.currentThread().getName())) {
-			return true;
-		}
-		if (this.ignores.contains(Thread.currentThread().getName())) {
-			return true;
-		}
-		return this.getUnfilteredCurrentNode().getData().equals(obj);
-	}
-
 	public void focusOnOutput(Debug_Listener output) {
 		assert output != null;
 		this.filteredPanes.setSelectedIndex(this.filteredPanes.indexOfComponent(output));
@@ -487,10 +380,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 
 	public Debug_Listener getFilteringOutput() {
 		return this.filtering;
-	}
-
-	public Debug_TreeNode getLastNodeAdded() {
-		return this.getUnfilteredOutput().getTreePanel().getLastNodeAdded();
 	}
 
 	public String getPriorityExecutingClass() {
@@ -555,11 +444,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 
 	public boolean isResetting() {
 		return !this.reset.isEnabled();
-	}
-
-	// Node stuff
-	public void openNode(Debug_TreeNode node) {
-		this.addNode(node, true);
 	}
 
 	// Deprecated, deprecated, deprecated...
@@ -658,5 +542,135 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			this.setCanUndo(this.scriptElements.get(this.tabbedPane.getSelectedIndex() - 1).canUndo());
 			this.setCanRedo(this.scriptElements.get(this.tabbedPane.getSelectedIndex() - 1).canRedo());
 		}
+	}
+
+	private final TreeBuildingInspector inspector = new TreeBuildingInspector();
+
+	public TreeBuildingInspector getInspector() {
+		return this.inspector;
+	}
+
+	public class TreeBuildingInspector {
+
+		private TreeBuildingInspector() {
+		}
+
+		public void addNode(Debug_TreeNode node) {
+			this.addNode(node, false);
+		}
+
+		public void addNode(Debug_TreeNode node, boolean setAsCurrent) {
+			if (isIgnoringThisThread()) {
+				return;
+			}
+			String threadName = Thread.currentThread().getName();
+			if (filteredOutputMap.get(threadName) == null || filteredOutputMap.get(threadName).isEmpty()) {
+				filteredOutputMap.put(threadName, new Vector<Debug_Listener>());
+				filteredOutputMap.get(threadName).add(new Debug_Listener(threadName, DebugEnvironment.this, null, threadName));
+				filteredPanes.add(threadName, filteredOutputMap.get(threadName).get(0));
+			}
+			for (Debug_Listener listener : filteredOutputMap.get(Thread.currentThread().getName())) {
+				if (listener.isCapturing()) {
+					if (!listener.getTreePanel().getFilter().isListening()) {
+						listener.getTreePanel().getFilter().sniffNode(node);
+						if (listener.getTreePanel().getFilter().isListening()) {
+							this.addNodeToOutput(node, setAsCurrent, listener);
+						}
+					} else {
+						this.addNodeToOutput(node, setAsCurrent, listener);
+					}
+					return;
+				}
+			}
+			for (Debug_Listener listener : filteredOutputMap.get(Thread.currentThread().getName())) {
+				this.addNodeToOutput(node.duplicate(), setAsCurrent, listener);
+			}
+		}
+
+		private void addNodeToOutput(Debug_TreeNode node, boolean setAsCurrent, Debug_Listener listener) {
+			if (!listener.getTreePanel().getFilter().isListening()) {
+				listener.getTreePanel().getFilter().sniffNode(node);
+				if (!listener.getTreePanel().getFilter().isListening()) {
+					return;
+				}
+				node = new Debug_TreeNode_Orphaned(listener.getSource().getTreePanel().getLastNodeAdded());
+			}
+			if (listener.getTreePanel().getCurrentNode().hasChildren() && listener.getTreePanel().getCurrentNode().getLastChild().getGroup() != null && node.getGroup() != null && listener.getTreePanel().getCurrentNode().getLastChild().getGroup().equals(node.getGroup())) {
+				if (listener.getTreePanel().getCurrentNode().getLastChild().getData().equals(node.getGroup())) {
+					listener.getTreePanel().getCurrentNode().getLastChild().addChild(node);
+					node.setPracticalParent(listener.getTreePanel().getCurrentNode());
+					if (setAsCurrent) {
+						listener.getTreePanel().setAsCurrent(node);
+					}
+				} else {
+					Debug_TreeNode lastNode = listener.getTreePanel().getCurrentNode().removeLastChild();
+					Debug_TreeNode groupNode = new Debug_TreeNode(node.getGroupCode(), node.getGroupCode());
+					groupNode.addChild(lastNode);
+					groupNode.addChild(node);
+					lastNode.setPracticalParent(listener.getTreePanel().getCurrentNode());
+					node.setPracticalParent(listener.getTreePanel().getCurrentNode());
+					listener.getTreePanel().addNode(groupNode);
+					if (setAsCurrent) {
+						listener.getTreePanel().setAsCurrent(node);
+					}
+				}
+				return;
+			}
+			listener.getTreePanel().addNode(node);
+			if (setAsCurrent) {
+				listener.getTreePanel().setAsCurrent(node);
+			}
+		}
+
+		public void closeNode() {
+			if (isIgnoringThisThread()) {
+				return;
+			}
+			for (Debug_Listener listener : filteredOutputMap.get(Thread.currentThread().getName())) {
+				if (listener.isCapturing() && listener.getTreePanel().getFilter().isListening()) {
+					listener.getTreePanel().closeNode();
+					return;
+				}
+			}
+			for (Debug_Listener listener : filteredOutputMap.get(Thread.currentThread().getName())) {
+				if (listener.getTreePanel().getFilter().isListening()) {
+					listener.getTreePanel().closeNode();
+				}
+			}
+		}
+
+		public void closeNodeTo(Object string) {
+			if (isIgnoringThisThread()) {
+				return;
+			}
+			for (Debug_Listener listener : filteredOutputMap.get(Thread.currentThread().getName())) {
+				while (listener.getTreePanel().getFilter().isListening() && !listener.getTreePanel().getCurrentNode().getData().equals(string)) {
+					listener.getTreePanel().closeNode();
+				}
+			}
+		}
+
+		public boolean ensureCurrentNode(Object obj) {
+			if (!reset.isEnabled()) {
+				return true;
+			}
+			if (isInExceptionsMode() && !exceptions.contains(Thread.currentThread().getName())) {
+				return true;
+			}
+			if (ignores.contains(Thread.currentThread().getName())) {
+				return true;
+			}
+			return getUnfilteredCurrentNode().getData().equals(obj);
+		}
+
+		public Debug_TreeNode getLastNodeAdded() {
+			return getUnfilteredOutput().getTreePanel().getLastNodeAdded();
+		}
+
+		// Node stuff
+		public void openNode(Debug_TreeNode node) {
+			this.addNode(node, true);
+		}
+
 	}
 }
