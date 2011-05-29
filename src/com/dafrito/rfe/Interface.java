@@ -236,18 +236,18 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 				return;
 			}
 			if (Debugger.atFullAllocation() && Debugger.getFreePercentage() > 50) {
-				Debugger.setExceptionsMode(true);
+				Debugger.getDebugger().setExceptionsMode(true);
 			}
 			if (!this.ignoreMemoryWarning && Debugger.atFullAllocation() && Debugger.getFreePercentage() < 20) {
 				System.gc();
 				if (Debugger.getFreePercentage() > 20) {
 					return;
 				}
-				Debugger.report();
+				Debugger.getDebugger().report();
 				this.emergencyStop = true;
 				int option = JOptionPane.showConfirmDialog(null, "Memory usage exceeds 80% of full allocation. Reset debug tree?", "Memory Warning (" + Debugger.getFreePercentage() + "% free)", JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.YES_OPTION) {
-					Debugger.reset();
+					Debugger.getDebugger().reset();
 					this.emergencyStop = false;
 				} else {
 					this.ignoreMemoryWarning = true;

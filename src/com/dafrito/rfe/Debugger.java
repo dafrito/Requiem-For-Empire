@@ -195,14 +195,6 @@ public class Debugger {
 		}
 	}
 
-	public static void report() {
-		getDebugger().report();
-	}
-
-	public static void reset() {
-		getDebugger().reset();
-	}
-
 	public static boolean atFullAllocation() {
 		return getAllocationPercentage() == 100;
 	}
@@ -223,21 +215,9 @@ public class Debugger {
 		return (int) ((((double) Runtime.getRuntime().freeMemory()) / ((double) Runtime.getRuntime().totalMemory())) * 100);
 	}
 
-	public static String getPriorityExecutingClass() {
-		return getDebugger().getPriorityExecutingClass();
-	}
-
 	public static void setDebugger(DebugEnvironment debugger) {
 		if (Debugger.debugger == null) {
 			Debugger.debugger = debugger;
 		}
-	}
-
-	public static void setExceptionsMode(boolean value) {
-		getDebugger().setExceptionsMode(value);
-	}
-
-	public static void setPriorityExecutingClass(String name) {
-		getDebugger().setPriorityExecutingClass(name);
 	}
 }

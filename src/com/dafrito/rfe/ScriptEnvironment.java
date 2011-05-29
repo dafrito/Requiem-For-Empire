@@ -78,9 +78,9 @@ public class ScriptEnvironment implements Nodeable {
 				template.initialize();
 			}
 			List<ScriptValue> params = new LinkedList<ScriptValue>();
-			if (Debugger.getPriorityExecutingClass() != null) {
-				if (this.getTemplate(Debugger.getPriorityExecutingClass()) != null && this.getTemplate(Debugger.getPriorityExecutingClass()).getFunction("main", params) != null) {
-					ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate(Debugger.getPriorityExecutingClass()), "main", params);
+			if (Debugger.getDebugger().getPriorityExecutingClass() != null) {
+				if (this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()) != null && this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()).getFunction("main", params) != null) {
+					ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()), "main", params);
 					return;
 				}
 			}
@@ -105,7 +105,7 @@ public class ScriptEnvironment implements Nodeable {
 				assert Debugger.closeNode();
 				return;
 			}
-			Debugger.setPriorityExecutingClass((String) selection);
+			Debugger.getDebugger().setPriorityExecutingClass((String) selection);
 			assert Debugger.addNode(this);
 			ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate((String) selection), "main", params);
 			assert Debugger.ensureCurrentNode("Executing Script-Environment (Default Run)");
