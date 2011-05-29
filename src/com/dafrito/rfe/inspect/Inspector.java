@@ -11,10 +11,12 @@ import com.dafrito.rfe.Debugger;
  * but I might make it more specific if this is warranted.
  * 
  * @author Aaron Faanes
+ * @param <T>
+ *            the common super-type of visited elements.
  * @see Debugger
  * @see DebugEnvironment
  */
-public interface Inspector {
+public interface Inspector<T> {
 
 	/**
 	 * Visit a field.
@@ -24,7 +26,7 @@ public interface Inspector {
 	 * @param value
 	 *            the value of the specified field. It may be null.
 	 */
-	public void field(String name, Object value);
+	public void field(String name, T value);
 
 	/**
 	 * Visit some value. This may be the logical content of some group, or an
@@ -33,7 +35,7 @@ public interface Inspector {
 	 * @param value
 	 *            the visited value. It may be null.
 	 */
-	public void value(Object value);
+	public void value(T value);
 
 	/**
 	 * Visit a inner group. The returned {@link Inspector} must be used to
@@ -47,7 +49,7 @@ public interface Inspector {
 	 * @return a {@link Inspector} that must be used to visit the content of the
 	 *         group
 	 */
-	public Inspector group(String groupName);
+	public Inspector<T> group(String groupName);
 
 	/**
 	 * Visit a comment. This lets inspectors ignore descriptive information,
