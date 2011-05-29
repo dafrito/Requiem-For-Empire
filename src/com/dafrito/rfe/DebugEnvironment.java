@@ -7,8 +7,10 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
@@ -29,8 +31,15 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 
 	private JTabbedPane tabbedPane, filteredPanes;
 	private JLabel status;
-	private JMenuItem newFile, openFile, closeFile, saveFile, saveFileAs, exit,
-			reset, report;
+	private final JMenuItem newFile = new JMenuItem("New", 'N');
+	private final JMenuItem openFile = new JMenuItem("Open...", 'O');
+	private final JMenuItem closeFile = new JMenuItem("Close");
+	private final JMenuItem saveFile = new JMenuItem("Save", 'S');
+	private final JMenuItem saveFileAs = new JMenuItem("Save As...", 'A');
+	private final JMenuItem report = new JMenuItem("Report", 'T');
+	private final JMenuItem reset = new JMenuItem("Reset");
+	private final JMenuItem exit = new JMenuItem("Exit", 'X');
+
 	private JMenuItem compile, execute, compileAndRun;
 	private JMenuItem undo, redo;
 	private JMenuItem removeTab, clearTab, createListener, renameTab;
@@ -44,54 +53,89 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	private Debug_Listener filtering;
 	private Map<String, java.util.List<Debug_Listener>> filteredOutputMap = new HashMap<String, java.util.List<Debug_Listener>>();
 	private String priorityExecutingClass;
-	private java.util.List<String> exceptions, ignores, allThreads;
+
+	private final Set<String> ignores = new HashSet<String>();
+
+	private final Set<String> exceptions = new HashSet<String>();
+
+	private final Set<String> knownThreads = new HashSet<String>();
+
+	private void populateKnownThreads() {
+		this.knownThreads.add("AWT-EventQueue-0");
+		this.knownThreads.add(CompileThread.COMPILETHREADSTRING);
+		this.knownThreads.add(ExecutionThread.EXECUTIONTHREADSTRING);
+		this.knownThreads.add(PolygonPipeline.POLYGONPIPELINESTRING);
+		this.knownThreads.add(SplitterThread.SPLITTERTHREADSTRING);
+	}
 
 	private ScriptEnvironment environment;
 
 	public DebugEnvironment(int width, int height) {
 		super("RFE Debugger");
-		Debugger.setDebugger(this);
-		this.scriptElements = new LinkedList<Debug_ScriptElement>();
-		this.exceptions = new LinkedList<String>();
-		this.ignores = new LinkedList<String>();
-		this.allThreads = new LinkedList<String>();
-		this.allThreads.add("AWT-EventQueue-0");
-		this.allThreads.add(CompileThread.COMPILETHREADSTRING);
-		this.allThreads.add(ExecutionThread.EXECUTIONTHREADSTRING);
-		this.allThreads.add(PolygonPipeline.POLYGONPIPELINESTRING);
-		this.allThreads.add(SplitterThread.SPLITTERTHREADSTRING);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(width, height);
-		// Menu bar
+		Debugger.setDebugger(this);
+		this.populateKnownThreads();
+		this.scriptElements = new LinkedList<Debug_ScriptElement>();
+
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().add(this.status = new JLabel(" Ready"), BorderLayout.SOUTH);
 		this.getContentPane().add(this.tabbedPane = new JTabbedPane());
 		this.tabbedPane.addChangeListener(this);
+
 		this.menuBar = new JMenuBar();
 		this.setJMenuBar(this.menuBar);
+
 		JMenu fileMenu = new JMenu("File");
 		this.menuBar.add(fileMenu);
 		fileMenu.setMnemonic('F');
+
+		fileMenu.add(this.newFile);
+		this.newFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+		fileMenu.add(this.openFile);
+		this.newFile.addActionListener(this);
+
+		this.openFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+		fileMenu.add(this.closeFile);
+		this.openFile.addActionListener(this);
+
+		this.closeFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		this.closeFile.addActionListener(this);
+
+		fileMenu.add(this.saveFile);
+		this.saveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		this.saveFile.addActionListener(this);
+
+		fileMenu.add(this.saveFileAs);
+		this.saveFileAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+		this.saveFileAs.addActionListener(this);
+
+		fileMenu.add(this.report);
+		this.report.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0));
+		this.report.addActionListener(this);
+
+		fileMenu.add(this.reset);
+		this.reset.addActionListener(this);
+
+		fileMenu.add(this.exit);
+		this.exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+		this.exit.addActionListener(this);
+
 		this.editMenu = new JMenu("Edit");
 		this.menuBar.add(this.editMenu);
 		this.editMenu.setMnemonic('E');
+		this.editMenu.add(this.undo = new JMenuItem("Undo", 'U'));
+		this.undo.addActionListener(this);
+		this.editMenu.add(this.redo = new JMenuItem("Redo", 'R'));
+		this.redo.addActionListener(this);
+
 		this.parserMenu = new JMenu("Parser");
 		this.parserMenu.setMnemonic('P');
 		this.menuBar.add(this.parserMenu);
-		fileMenu.add(this.newFile = new JMenuItem("New Script", 'N'));
-		fileMenu.add(this.openFile = new JMenuItem("Open Script...", 'O'));
-		fileMenu.add(this.closeFile = new JMenuItem("Close Script", 'C'));
-		fileMenu.add(this.saveFile = new JMenuItem("Save Script", 'S'));
-		fileMenu.add(this.saveFileAs = new JMenuItem("Save Script As...", 'A'));
-		fileMenu.add(this.report = new JMenuItem("Report", 'T'));
-		fileMenu.add(this.reset = new JMenuItem("Reset"));
-		fileMenu.add(this.exit = new JMenuItem("Exit", 'X'));
-		this.editMenu.add(this.undo = new JMenuItem("Undo", 'U'));
-		this.editMenu.add(this.redo = new JMenuItem("Redo", 'R'));
 		this.parserMenu.add(this.compile = new JMenuItem("Compile", 'C'));
 		this.parserMenu.add(this.execute = new JMenuItem("Execute", 'X'));
 		this.parserMenu.add(this.compileAndRun = new JMenuItem("Compile and Run", 'R'));
 		this.execute.setEnabled(false);
+
 		JMenu debugMenu = new JMenu("Debugger");
 		this.menuBar.add(debugMenu);
 		debugMenu.add(this.exceptionsMode = new JRadioButtonMenuItem("Lazy Filter Mode"));
@@ -107,6 +151,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		debugMenu.addSeparator();
 		debugMenu.add(this.addAssertionFailure = new JMenuItem("Add Assertion Failure"));
 		debugMenu.add(this.removeAssertionFailure = new JMenuItem("Remove Assertion Failure"));
+
 		this.listenerMenu = new JMenu("Listener");
 		this.menuBar.add(this.listenerMenu);
 		this.listenerMenu.setMnemonic('L');
@@ -114,6 +159,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.listenerMenu.add(this.renameTab = new JMenuItem("Rename Tab...", 'N'));
 		this.listenerMenu.add(this.clearTab = new JMenuItem("Clear Tab", 'C'));
 		this.listenerMenu.add(this.removeTab = new JMenuItem("Remove Tab", 'R'));
+
 		ButtonGroup group = new ButtonGroup();
 		group.add(this.exceptionsMode);
 		group.add(this.ignoreMode);
@@ -123,34 +169,19 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		// Accelerators
 		this.clearTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
 		this.removeTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-		this.newFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-		this.openFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-		this.closeFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-		this.saveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-		this.saveFileAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-		this.exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+
 		this.undo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
 		this.redo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
 		this.compile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 		this.execute.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
-		this.report.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0));
 		this.compileAndRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, ActionEvent.CTRL_MASK));
 		// Listeners
-		this.reset.addActionListener(this);
 		this.renameTab.addActionListener(this);
-		this.report.addActionListener(this);
 		this.filteredPanes.addChangeListener(this);
 		this.clearTab.addActionListener(this);
 		this.removeTab.addActionListener(this);
 		this.createListener.addActionListener(this);
-		this.newFile.addActionListener(this);
-		this.openFile.addActionListener(this);
-		this.closeFile.addActionListener(this);
-		this.saveFile.addActionListener(this);
-		this.saveFileAs.addActionListener(this);
-		this.exit.addActionListener(this);
-		this.undo.addActionListener(this);
-		this.redo.addActionListener(this);
+
 		this.compile.addActionListener(this);
 		this.execute.addActionListener(this);
 		this.compileAndRun.addActionListener(this);

@@ -25,6 +25,7 @@ public class EditorRunner implements Runnable {
 		}
 		Components.LookAndFeel.NATIVE.activate();
 		JFrame frame = new DebugEnvironment(800, 600);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Components.center(frame);
 		frame.setVisible(true);
 	}
