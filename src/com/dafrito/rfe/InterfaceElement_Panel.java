@@ -164,11 +164,11 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 	@Override
 	public void riffMouseEvent(RiffInterface_MouseEvent event) {
 		if (event instanceof RiffInterface_DragEvent) {
-			if (event.getButton() == RiffInterface_MouseListener.MouseButton.LEFT) {
+			if (event.getButton() == MouseButton.LEFT) {
 				this.offset.addX(-((RiffInterface_DragEvent) event).getXOffset() / Math.pow(2, this.offset.getZ()));
 				this.offset.addY(-((RiffInterface_DragEvent) event).getYOffset() / Math.pow(2, this.offset.getZ()));
 			}
-			if (event.getButton() == RiffInterface_MouseListener.MouseButton.RIGHT) {
+			if (event.getButton() == MouseButton.RIGHT) {
 				this.offset.addZ(((RiffInterface_DragEvent) event).getDistance() / 50);
 			}
 		}

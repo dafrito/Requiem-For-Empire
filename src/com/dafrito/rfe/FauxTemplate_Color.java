@@ -36,7 +36,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 				template = (FauxTemplate_Color) this.createObject(ref, template);
 			}
 			if (params.size() == 1) {
-				template.setColor(RiffJavaToolbox.getColor(Parser.getString(params.get(0))));
+				template.setColor(Stylesheets.getColor(Parser.getString(params.get(0))));
 			} else if (params.size() == 3) {
 				if (params.get(0).isConvertibleTo(ScriptValueType.INT)) {
 					int r, g, b;
@@ -115,7 +115,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setColor")) {
-			template.setColor(RiffJavaToolbox.getColor(Parser.getString(params.get(0))));
+			template.setColor(Stylesheets.getColor(Parser.getString(params.get(0))));
 			assert Debugger.closeNode();
 			return null;
 		}
@@ -184,7 +184,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 		if (this.color == null) {
 			assert Debugger.addNode("Color: null");
 		} else {
-			assert Debugger.addNode("Color: " + RiffJavaToolbox.getColorName(this.color));
+			assert Debugger.addNode("Color: " + Stylesheets.getColorName(this.color));
 		}
 		assert Debugger.closeNode();
 		return true;

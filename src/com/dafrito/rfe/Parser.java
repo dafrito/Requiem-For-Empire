@@ -1401,12 +1401,12 @@ public class Parser {
 				if (elements.get(offset) instanceof ScriptOperator && ((ScriptOperator) elements.get(offset)).getType() == ScriptOperatorType.POUNDSIGN) {
 					offset++;
 					if (elements.get(offset) instanceof ScriptLine) {
-						color = RiffJavaToolbox.getColor("#" + ((ScriptLine) elements.get(offset)).getString());
+						color = Stylesheets.getColor("#" + ((ScriptLine) elements.get(offset)).getString());
 					} else {
-						color = RiffJavaToolbox.getColor("#" + ((ScriptValue_Numeric) elements.get(offset)).longValue());
+						color = Stylesheets.getColor("#" + ((ScriptValue_Numeric) elements.get(offset)).longValue());
 					}
 				} else {
-					color = RiffJavaToolbox.getColor(((ScriptLine) elements.get(offset)).getString());
+					color = Stylesheets.getColor(((ScriptLine) elements.get(offset)).getString());
 					if (color == null) {
 						throw new Exception_Nodeable_UnparseableElement((ScriptLine) elements.get(offset), "parseStylesheet");
 					}
@@ -1438,12 +1438,12 @@ public class Parser {
 				if (elements.get(offset) instanceof ScriptOperator && ((ScriptOperator) elements.get(offset)).getType() == ScriptOperatorType.POUNDSIGN) {
 					offset++;
 					if (elements.get(offset) instanceof ScriptLine) {
-						color = RiffJavaToolbox.getColor("#" + ((ScriptLine) elements.get(offset)).getString());
+						color = Stylesheets.getColor("#" + ((ScriptLine) elements.get(offset)).getString());
 					} else {
-						color = RiffJavaToolbox.getColor("#" + ((ScriptValue_Numeric) elements.get(offset)).longValue());
+						color = Stylesheets.getColor("#" + ((ScriptValue_Numeric) elements.get(offset)).longValue());
 					}
 				} else {
-					color = RiffJavaToolbox.getColor(((ScriptLine) elements.get(offset)).getString());
+					color = Stylesheets.getColor(((ScriptLine) elements.get(offset)).getString());
 				}
 				StylesheetBackgroundColorElement bgColorElem = new StylesheetBackgroundColorElement(color);
 				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Background color stylesheet-element parsed", bgColorElem);

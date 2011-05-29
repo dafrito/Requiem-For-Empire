@@ -36,7 +36,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	private InterfaceElement_Root rootElement;
 	private int lastX, lastY;
 	private java.util.List<RiffInterface_Event> queuedEvents = new LinkedList<RiffInterface_Event>();
-	private RiffInterface_MouseListener.MouseButton lastButton;
+	private MouseButton lastButton;
 	private boolean ignoreMemoryWarning;
 	private BufferedImage buffer, backBuffer;
 	private long secondBegin;
@@ -148,12 +148,12 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public synchronized void mouseClicked(MouseEvent e) {
-		RiffInterface_ClickEvent event = new RiffInterface_ClickEvent(e.getX(), e.getY(), RiffJavaToolbox.getRiffButton(e.getButton()), e.getClickCount());
+		RiffInterface_ClickEvent event = new RiffInterface_ClickEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()), e.getClickCount());
 		assert Debugger.addNode(event);
 		this.queuedEvents.add(event);
 		this.lastX = e.getX();
 		this.lastY = e.getY();
-		this.lastButton = RiffJavaToolbox.getRiffButton(e.getButton());
+		this.lastButton = MouseButton.getButton(e.getButton());
 	}
 
 	@Override
@@ -186,17 +186,17 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public synchronized void mousePressed(MouseEvent e) {
-		RiffInterface_MouseDownEvent event = new RiffInterface_MouseDownEvent(e.getX(), e.getY(), RiffJavaToolbox.getRiffButton(e.getButton()));
+		RiffInterface_MouseDownEvent event = new RiffInterface_MouseDownEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()));
 		assert Debugger.addNode(event);
 		this.queuedEvents.add(event);
 		this.lastX = e.getX();
 		this.lastY = e.getY();
-		this.lastButton = RiffJavaToolbox.getRiffButton(e.getButton());
+		this.lastButton = MouseButton.getButton(e.getButton());
 	}
 
 	@Override
 	public synchronized void mouseReleased(MouseEvent e) {
-		RiffInterface_MouseUpEvent event = new RiffInterface_MouseUpEvent(e.getX(), e.getY(), RiffJavaToolbox.getRiffButton(e.getButton()));
+		RiffInterface_MouseUpEvent event = new RiffInterface_MouseUpEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()));
 		assert Debugger.addNode(event);
 		this.queuedEvents.add(event);
 		this.lastX = -1;

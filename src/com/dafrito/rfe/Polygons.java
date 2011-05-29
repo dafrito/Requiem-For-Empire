@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -1479,4 +1481,23 @@ public class Polygons {
 	public static double testPointAgainstLine(Point testPoint, Point linePointA, Point linePointB) {
 		return -1 * ((testPoint.getY() - linePointA.getY()) * (linePointB.getX() - linePointA.getX()) - (testPoint.getX() - linePointA.getX()) * (linePointB.getY() - linePointA.getY()));
 	}
+
+	public static Polygon convertToPolygon(DiscreteRegion region) {
+		Polygon polygon = new Polygon();
+		for (Point point : region.getPoints()) {
+			polygon.addPoint((int) point.getX(), (int) point.getY());
+		}
+		return polygon;
+	}
+
+	public static DiscreteRegion convertToRegion(ScriptEnvironment env, Rectangle rect) {
+		DiscreteRegion region = new DiscreteRegion();
+		region.addPoint(new Point_Euclidean(env, rect.getX(), rect.getY(), 0.0d));
+		region.addPoint(new Point_Euclidean(env, rect.getX(), rect.getY() + rect.getHeight(), 0.0d));
+		region.addPoint(new Point_Euclidean(env, rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight(), 0.0d));
+		region.addPoint(new Point_Euclidean(env, rect.getX() + rect.getWidth(), rect.getY(), 0.0d));
+		Polygons.optimizePolygon(region);
+		return region;
+	}
+
 }

@@ -20,7 +20,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 		assert Debugger.openNode("Discrete-Region Painting", "Painting Discrete Region");
 		assert Debugger.addNode(transformedRegion);
 		Polygons.optimizePolygon(transformedRegion);
-		transformedRegion = Polygons.clip(transformedRegion, RiffJavaToolbox.convertToRegion(transformedRegion.getEnvironment(), bounds));
+		transformedRegion = Polygons.clip(transformedRegion, Polygons.convertToRegion(transformedRegion.getEnvironment(), bounds));
 		if (transformedRegion != null) {
 			// Draw transformed line
 			assert Debugger.addSnapNode("Clipped Region", transformedRegion);
@@ -30,7 +30,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 				} else {
 					g2d.setColor(Color.WHITE);
 				}
-				g2d.fillPolygon(RiffJavaToolbox.convertToPolygon(transformedRegion));
+				g2d.fillPolygon(Polygons.convertToPolygon(transformedRegion));
 			} else {
 				if (transformedRegion.getProperty("BorderColor") != null) {
 					g2d.setColor((Color) transformedRegion.getProperty("BorderColor"));
@@ -39,7 +39,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 				} else {
 					g2d.setColor(Color.WHITE);
 				}
-				g2d.drawPolygon(RiffJavaToolbox.convertToPolygon(transformedRegion));
+				g2d.drawPolygon(Polygons.convertToPolygon(transformedRegion));
 			}
 		}
 		assert Debugger.closeNode();

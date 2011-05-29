@@ -1,31 +1,9 @@
 package com.dafrito.rfe;
+
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Polygon;
-import java.awt.Rectangle;
 
-import com.dafrito.rfe.points.Point;
-import com.dafrito.rfe.points.Point_Euclidean;
-
-public class RiffJavaToolbox {
-	public static Polygon convertToPolygon(DiscreteRegion region) {
-		Polygon polygon = new Polygon();
-		for (Point point : region.getPoints()) {
-			polygon.addPoint((int) point.getX(), (int) point.getY());
-		}
-		return polygon;
-	}
-
-	public static DiscreteRegion convertToRegion(ScriptEnvironment env, Rectangle rect) {
-		DiscreteRegion region = new DiscreteRegion();
-		region.addPoint(new Point_Euclidean(env, rect.getX(), rect.getY(), 0.0d));
-		region.addPoint(new Point_Euclidean(env, rect.getX(), rect.getY() + rect.getHeight(), 0.0d));
-		region.addPoint(new Point_Euclidean(env, rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight(), 0.0d));
-		region.addPoint(new Point_Euclidean(env, rect.getX() + rect.getWidth(), rect.getY(), 0.0d));
-		Polygons.optimizePolygon(region);
-		return region;
-	}
-
+public class Stylesheets {
 	public static Color getColor(String colorString) {
 		// W3C CSS standard colors: aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple, red, silver, teal, white, and yellow
 		if (colorString.charAt(0) != '#') {
@@ -117,20 +95,6 @@ public class RiffJavaToolbox {
 		switch (style) {
 		case Font.PLAIN:
 			return "Plain";
-		}
-		throw new Exception_InternalError("Invalid default");
-	}
-
-	public static RiffInterface_MouseListener.MouseButton getRiffButton(int button) {
-		switch (button) {
-		case java.awt.event.MouseEvent.BUTTON1:
-			return RiffInterface_MouseListener.MouseButton.LEFT;
-		case java.awt.event.MouseEvent.BUTTON2:
-			return RiffInterface_MouseListener.MouseButton.MIDDLE;
-		case java.awt.event.MouseEvent.BUTTON3:
-			return RiffInterface_MouseListener.MouseButton.RIGHT;
-		case java.awt.event.MouseEvent.NOBUTTON:
-			return null;
 		}
 		throw new Exception_InternalError("Invalid default");
 	}

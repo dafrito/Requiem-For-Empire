@@ -3,7 +3,7 @@ package com.dafrito.rfe;
 class RiffInterface_ClickEvent extends RiffInterface_MouseEvent implements Nodeable {
 	private final int clicks;
 
-	public RiffInterface_ClickEvent(int x, int y, RiffInterface_MouseListener.MouseButton button, int clicks) {
+	public RiffInterface_ClickEvent(int x, int y, MouseButton button, int clicks) {
 		super(x, y, button);
 		this.clicks = clicks;
 	}
@@ -26,7 +26,7 @@ class RiffInterface_DragEvent extends RiffInterface_MouseEvent implements Nodeab
 	private final int xOffset, yOffset;
 	private final double distance;
 
-	public RiffInterface_DragEvent(int x, int y, RiffInterface_MouseListener.MouseButton button, int xOffset, int yOffset, double distance) {
+	public RiffInterface_DragEvent(int x, int y, MouseButton button, int xOffset, int yOffset, double distance) {
 		super(x, y, button);
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
@@ -57,7 +57,7 @@ class RiffInterface_DragEvent extends RiffInterface_MouseEvent implements Nodeab
 }
 
 class RiffInterface_MouseDownEvent extends RiffInterface_MouseEvent implements Nodeable {
-	public RiffInterface_MouseDownEvent(int x, int y, RiffInterface_MouseListener.MouseButton button) {
+	public RiffInterface_MouseDownEvent(int x, int y, MouseButton button) {
 		super(x, y, button);
 	}
 
@@ -72,15 +72,15 @@ class RiffInterface_MouseDownEvent extends RiffInterface_MouseEvent implements N
 
 class RiffInterface_MouseEvent implements Nodeable, RiffInterface_Event {
 	final int x, y;
-	final RiffInterface_MouseListener.MouseButton button;
+	final MouseButton button;
 
-	public RiffInterface_MouseEvent(int x, int y, RiffInterface_MouseListener.MouseButton button) {
+	public RiffInterface_MouseEvent(int x, int y, MouseButton button) {
 		this.x = x;
 		this.y = y;
 		this.button = button;
 	}
 
-	public RiffInterface_MouseListener.MouseButton getButton() {
+	public MouseButton getButton() {
 		return this.button;
 	}
 
@@ -104,15 +104,11 @@ class RiffInterface_MouseEvent implements Nodeable, RiffInterface_Event {
 }
 
 public interface RiffInterface_MouseListener {
-	public enum MouseButton {
-		LEFT, MIDDLE, RIGHT
-	}
-
 	public void riffMouseEvent(RiffInterface_MouseEvent event);
 }
 
 class RiffInterface_MouseUpEvent extends RiffInterface_MouseEvent implements Nodeable {
-	public RiffInterface_MouseUpEvent(int x, int y, RiffInterface_MouseListener.MouseButton button) {
+	public RiffInterface_MouseUpEvent(int x, int y, MouseButton button) {
 		super(x, y, button);
 	}
 
