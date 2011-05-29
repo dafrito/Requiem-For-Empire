@@ -20,8 +20,8 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 	public static void paint(Graphics2D g2d, DiscreteRegion transformedRegion, Rectangle bounds, boolean fill) {
 		assert Debugger.openNode("Discrete-Region Painting", "Painting Discrete Region");
 		assert Debugger.addNode(transformedRegion);
-		RiffPolygonToolbox.optimizePolygon(transformedRegion);
-		transformedRegion = RiffPolygonToolbox.clip(transformedRegion, RiffJavaToolbox.convertToRegion(transformedRegion.getEnvironment(), bounds));
+		Polygons.optimizePolygon(transformedRegion);
+		transformedRegion = Polygons.clip(transformedRegion, RiffJavaToolbox.convertToRegion(transformedRegion.getEnvironment(), bounds));
 		if (transformedRegion != null) {
 			// Draw transformed line
 			assert Debugger.addSnapNode("Clipped Region", transformedRegion);
@@ -171,10 +171,10 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 			for (int j = 0; j < regionPoints.size(); j++) {
 				Point testPoint = regionPoints.get(j);
 				Point otherTestPoint = regionPoints.get((j + 1) % regionPoints.size());
-				if (!RiffPolygonToolbox.testForColinearity(pointA, pointB, testPoint, otherTestPoint)) {
+				if (!Polygons.testForColinearity(pointA, pointB, testPoint, otherTestPoint)) {
 					continue;
 				}
-				if (!RiffPolygonToolbox.getBoundingRectIntersection(pointA, pointB, testPoint, otherTestPoint)) {
+				if (!Polygons.getBoundingRectIntersection(pointA, pointB, testPoint, otherTestPoint)) {
 					continue;
 				}
 				region.addNeighbor(this);

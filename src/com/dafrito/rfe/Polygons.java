@@ -130,14 +130,14 @@ class RiffIntersectionPoint implements Nodeable {
 	}
 }
 
-public class RiffPolygonToolbox {
+public class Polygons {
 	public static boolean areSlopesEqual(Point pointA, Point pointB, Point testPointA, Point testPointB) {
 		if (Points.areEqual(pointA, pointB.getX(), pointA.getX())) {
 			if (Points.areEqual(testPointA, testPointA.getX(), testPointB.getX())) {
 				return true;
 			}
 		}
-		return Points.areEqual(Point.System.EUCLIDEAN, Math.abs(RiffPolygonToolbox.getSlope(pointA, pointB)), Math.abs(RiffPolygonToolbox.getSlope(testPointA, testPointB)));
+		return Points.areEqual(Point.System.EUCLIDEAN, Math.abs(Polygons.getSlope(pointA, pointB)), Math.abs(Polygons.getSlope(testPointA, testPointB)));
 	}
 
 	public static void assertCCWPolygon(DiscreteRegion region) {
@@ -148,7 +148,7 @@ public class RiffPolygonToolbox {
 		}
 		assert Debugger.printDebug("Polygon/assertCCWPolygon/data", "Region: " + region);
 		assert Debugger.printDebug("Polygon/assertCCWPolygon/data", "Interior point: " + region.getInteriorPoint());
-		PointSideStruct struct = RiffPolygonToolbox.getPointSideList(region, region.getInteriorPoint());
+		PointSideStruct struct = Polygons.getPointSideList(region, region.getInteriorPoint());
 		if (struct.hasIndeterminates()) {
 			assert Debugger.printDebug("Polygon/assertCCWPolygon", "*** ERROR: Unanticipated colinear values in assertCCWPolygon.");
 			return;
@@ -209,7 +209,7 @@ public class RiffPolygonToolbox {
 			if ((testPointA.equals(pointA) && testPointB.equals(pointB)) || (testPointA.equals(pointB) && testPointB.equals(pointA))) {
 				return false;
 			}
-			IntersectionPoint intersect = RiffPolygonToolbox.getIntersection(pointA, pointB, testPointA, testPointB);
+			IntersectionPoint intersect = Polygons.getIntersection(pointA, pointB, testPointA, testPointB);
 			if (intersect != null && !intersect.isTangent()) {
 				assert Debugger.printDebug("Polygon/confirmInteriorLine", "Testing line intersected the polygon, returning false.");
 				assert Debugger.printDebug("Polygon/confirmInteriorLine/data", "Failing line: " + testPointA + ", " + testPointB);
@@ -218,7 +218,7 @@ public class RiffPolygonToolbox {
 			}
 		}
 		assert Debugger.printDebug("Polygon/confirmInteriorLine", "Checking for crosses.");
-		int crosses = RiffPolygonToolbox.getCrosses(pointA.getX() + (pointB.getX() - pointA.getX()) / 2, pointA.getY() + (pointB.getY() - pointA.getY()) / 2, region);
+		int crosses = Polygons.getCrosses(pointA.getX() + (pointB.getX() - pointA.getX()) / 2, pointA.getY() + (pointB.getY() - pointA.getY()) / 2, region);
 		if (crosses == 0 || crosses % 2 == 0) {
 			assert Debugger.printDebug("Polygon/confirmInteriorLine", "Cross-test failed, returning false.\n(/confirmInteriorLine)");
 			return false;
@@ -231,13 +231,13 @@ public class RiffPolygonToolbox {
 	public static List<DiscreteRegion> convertPolyToConvex(DiscreteRegion originalRegion) {
 		assert Debugger.printDebug("Polygon/convertPolyToConvex", "Attempting to convert this polygon into its convex parts...");
 		assert Debugger.printDebug("Polygon/convertPolyToConvex", originalRegion);
-		DiscreteRegion region = RiffPolygonToolbox.optimizePolygon(originalRegion);
+		DiscreteRegion region = Polygons.optimizePolygon(originalRegion);
 		assert Debugger.printDebug("Polygon/convertPolyToConvex", "Optimized region: " + region);
 		if (region == null) {
 			return null;
 		}
 		List<DiscreteRegion> convexPolygons = new LinkedList<DiscreteRegion>();
-		if (RiffPolygonToolbox.isPolygonConvex(region) == true) {
+		if (Polygons.isPolygonConvex(region) == true) {
 			assert Debugger.printDebug("Polygon/convertPolyToConvex", "This polygon is convex, so adding it to the list and returning.");
 			convexPolygons.add(region);
 			return convexPolygons;
@@ -249,7 +249,7 @@ public class RiffPolygonToolbox {
 			boolean alreadyCreated = false;
 			assert Debugger.printDebug("Polygon/convertPolyToConvex", "Attempting to form a triangle from these points:");
 			assert Debugger.printDebug("Polygon/convertPolyToConvex", "First point: " + pointList.get(i) + ", Second Point: " + pointList.get((i + 1) % pointList.size()) + ", Third point: " + pointList.get((i + 2) % pointList.size()));
-			if (RiffPolygonToolbox.confirmInteriorLine(pointList.get(i), pointList.get((i + 2) % pointList.size()), region) == false) {
+			if (Polygons.confirmInteriorLine(pointList.get(i), pointList.get((i + 2) % pointList.size()), region) == false) {
 				assert Debugger.printDebug("Polygon/convertPolyToConvex", "Failed interior-line test.");
 				continue;
 			}
@@ -271,7 +271,7 @@ public class RiffPolygonToolbox {
 			region.removePoint(pointList.get((i + 1) % pointList.size()));
 			assert Debugger.printDebug("Polygon/convertPolyToConvex", "Yielding the new triangle and this remaining region: " + region);
 			convexPolygons.add(testRegion);
-			convexPolygons.addAll(RiffPolygonToolbox.convertPolyToConvex(region));
+			convexPolygons.addAll(Polygons.convertPolyToConvex(region));
 			break;
 		}
 		return convexPolygons;
@@ -281,7 +281,7 @@ public class RiffPolygonToolbox {
 	public static List<DiscreteRegion> convertPolyToConvex(List<DiscreteRegion> polygons) {
 		List<DiscreteRegion> list = new LinkedList<DiscreteRegion>();
 		for (int i = 0; i < polygons.size(); i++) {
-			list.addAll(RiffPolygonToolbox.convertPolyToConvex(polygons.get(i)));
+			list.addAll(Polygons.convertPolyToConvex(polygons.get(i)));
 		}
 		return list;
 	}
@@ -308,11 +308,11 @@ public class RiffPolygonToolbox {
 	public static Point findMiddlePoint(Point pointA, Point pointB, Point pointC) {
 		assert Debugger.printDebug("Polygon/findMiddlePoint", "(findMiddlePoint)");
 		assert Debugger.printDebug("Polygon/findMiddlePoint/data", "Points to test: " + pointA + ", " + pointB + ", " + pointC);
-		if (RiffPolygonToolbox.getBoundingRectIntersection(Math.min(pointA.getX(), pointB.getX()), Math.max(pointA.getX(), pointB.getX()), Math.min(pointA.getY(), pointB.getY()), Math.max(pointA.getY(), pointB.getY()), pointC, true)) {
+		if (Polygons.getBoundingRectIntersection(Math.min(pointA.getX(), pointB.getX()), Math.max(pointA.getX(), pointB.getX()), Math.min(pointA.getY(), pointB.getY()), Math.max(pointA.getY(), pointB.getY()), pointC, true)) {
 			assert Debugger.printDebug("Polygon/findMiddlePoint", "Returning pointC.\n(/findMiddlePoint)");
 			return pointC;
 		}
-		if (RiffPolygonToolbox.getBoundingRectIntersection(Math.min(pointA.getX(), pointC.getX()), Math.max(pointA.getX(), pointC.getX()), Math.min(pointA.getY(), pointC.getY()), Math.max(pointA.getY(), pointC.getY()), pointB, true)) {
+		if (Polygons.getBoundingRectIntersection(Math.min(pointA.getX(), pointC.getX()), Math.max(pointA.getX(), pointC.getX()), Math.min(pointA.getY(), pointC.getY()), Math.max(pointA.getY(), pointC.getY()), pointB, true)) {
 			assert Debugger.printDebug("Polygon/findMiddlePoint", "Returning pointB.\n(/findMiddlePoint)");
 			return pointB;
 		}
@@ -335,11 +335,11 @@ public class RiffPolygonToolbox {
 				Point pointC = otherPointList.get(j);
 				Point pointD = otherPointList.get((j + 1) % otherPointList.size());
 				assert Debugger.openNode("Testing points (" + pointC + ", " + pointD + ")");
-				PointSideStruct struct = RiffPolygonToolbox.getPointSideList(pointA, pointB, pointC, pointD);
+				PointSideStruct struct = Polygons.getPointSideList(pointA, pointB, pointC, pointD);
 				if (struct.getIndeterminates().size() == 2) {
 					Point minPoint, otherMinPoint;
-					IntersectionPoint thisIntersect = RiffPolygonToolbox.getIntersection(pointA, pointB, pointC, pointD);
-					if (thisIntersect != null && !RiffPolygonToolbox.getBoundingRectIntersection(pointA, pointB, pointC, pointD, false)) {
+					IntersectionPoint thisIntersect = Polygons.getIntersection(pointA, pointB, pointC, pointD);
+					if (thisIntersect != null && !Polygons.getBoundingRectIntersection(pointA, pointB, pointC, pointD, false)) {
 						intersect = thisIntersect;
 						assert Debugger.closeNode("They intersect on a tangent, saving and continuing (Intersection: " + thisIntersect + ")");
 						continue;
@@ -462,7 +462,7 @@ public class RiffPolygonToolbox {
 		if (pointA.equals(pointD) && pointB.equals(pointC)) {
 			return true;
 		}
-		if (Points.areEqual(Point.System.EUCLIDEAN, Math.abs(RiffPolygonToolbox.getSlope(pointA, pointB)), Double.POSITIVE_INFINITY) && Points.areEqual(Point.System.EUCLIDEAN, Math.abs(RiffPolygonToolbox.getSlope(pointC, pointD)), Double.POSITIVE_INFINITY)) {
+		if (Points.areEqual(Point.System.EUCLIDEAN, Math.abs(Polygons.getSlope(pointA, pointB)), Double.POSITIVE_INFINITY) && Points.areEqual(Point.System.EUCLIDEAN, Math.abs(Polygons.getSlope(pointC, pointD)), Double.POSITIVE_INFINITY)) {
 			if (Points.areEqual(pointA, pointA.getX(), pointC.getX())) {
 				return false;
 			}
@@ -480,7 +480,7 @@ public class RiffPolygonToolbox {
 				return false;
 			}
 		}
-		if (Points.areEqual(pointA, RiffPolygonToolbox.getSlope(pointA, pointB), 0.0d) && Points.areEqual(Point.System.EUCLIDEAN, RiffPolygonToolbox.getSlope(pointC, pointD), 0.0d)) {
+		if (Points.areEqual(pointA, Polygons.getSlope(pointA, pointB), 0.0d) && Points.areEqual(Point.System.EUCLIDEAN, Polygons.getSlope(pointC, pointD), 0.0d)) {
 			if (!Points.areEqual(pointA, pointA.getY(), pointC.getY())) {
 				return false;
 			}
@@ -533,7 +533,7 @@ public class RiffPolygonToolbox {
 					overlappedVertices.add(testPointB);
 				}
 			}
-			IntersectionPoint intersect = RiffPolygonToolbox.getIntersection(crossMidPoint, crossExtremePoint, testPointA, testPointB);
+			IntersectionPoint intersect = Polygons.getIntersection(crossMidPoint, crossExtremePoint, testPointA, testPointB);
 			if (intersect == null || intersect.isTangent()) {
 				continue;
 			}
@@ -545,7 +545,7 @@ public class RiffPolygonToolbox {
 
 	// Takes two points and extends their line so that the x-value provided by the extension is at an endpoint of the line.
 	public static double getExtensionPoint(Point pointA, Point pointB, double extension) {
-		return RiffPolygonToolbox.getSlope(pointA, pointB) * (extension - pointA.getX()) + pointA.getY();
+		return Polygons.getSlope(pointA, pointB) * (extension - pointA.getX()) + pointA.getY();
 	}
 
 	// Extends a line, provided by the two points, in both directions so that their x coordinates are equal to the left and right double values provided with correct slope.
@@ -553,24 +553,24 @@ public class RiffPolygonToolbox {
 		List<Point> pointList = new LinkedList<Point>();
 		assert Debugger.printDebug("Polygon/getExtensionPoints", "(getExtensionPoints)\nExtending these points: " + pointA + ", " + pointB);
 		assert Debugger.printDebug("Polygon/getExtensionPoints/data", "Region to extend to: " + region);
-		double YValue = RiffPolygonToolbox.getExtensionPoint(pointA, pointB, region.getLeftExtreme() - 1.0d);
+		double YValue = Polygons.getExtensionPoint(pointA, pointB, region.getLeftExtreme() - 1.0d);
 		double XValue = region.getLeftExtreme() - 1.0d;
 		if (Points.isGreaterThan(YValue, region.getTopExtreme())) {
 			YValue = region.getTopExtreme() + 1.0d;
-			XValue = (YValue - pointA.getY()) / RiffPolygonToolbox.getSlope(pointA, pointB) + pointA.getX();
+			XValue = (YValue - pointA.getY()) / Polygons.getSlope(pointA, pointB) + pointA.getX();
 		} else if (Points.isLessThan(YValue, region.getBottomExtreme())) {
 			YValue = region.getBottomExtreme() - 1.0d;
-			XValue = (YValue - pointA.getY()) / RiffPolygonToolbox.getSlope(pointA, pointB) + pointA.getX();
+			XValue = (YValue - pointA.getY()) / Polygons.getSlope(pointA, pointB) + pointA.getX();
 		}
 		pointList.add(createPoint(pointA, pointA.getName(), XValue, YValue, 0.0d));
-		YValue = RiffPolygonToolbox.getExtensionPoint(pointA, pointB, region.getRightExtreme() + 1.0d);
+		YValue = Polygons.getExtensionPoint(pointA, pointB, region.getRightExtreme() + 1.0d);
 		XValue = region.getRightExtreme() + 1.0d;
 		if (Points.isGreaterThan(YValue, region.getTopExtreme())) {
 			YValue = region.getTopExtreme() + 1.0d;
-			XValue = (YValue - pointA.getY()) / RiffPolygonToolbox.getSlope(pointA, pointB) + pointA.getX();
+			XValue = (YValue - pointA.getY()) / Polygons.getSlope(pointA, pointB) + pointA.getX();
 		} else if (Points.isLessThan(YValue, region.getBottomExtreme())) {
 			YValue = region.getBottomExtreme() - 1.0d;
-			XValue = (YValue - pointA.getY()) / RiffPolygonToolbox.getSlope(pointA, pointB) + pointA.getX();
+			XValue = (YValue - pointA.getY()) / Polygons.getSlope(pointA, pointB) + pointA.getX();
 		}
 		pointList.add(createPoint(pointA, pointB.getName(), XValue, YValue, 0.0d));
 		assert Debugger.printDebug("Polygon/getExtensionPoints", "List of extended points: " + pointList.get(0) + ", " + pointList.get(1) + "\n(/getExtensionPoints)");
@@ -607,13 +607,13 @@ public class RiffPolygonToolbox {
 			return returning;
 		}
 		// Test for colinearity of these points.
-		if (RiffPolygonToolbox.testForColinearity(pointA, pointB, testPointA, testPointB)) {
+		if (Polygons.testForColinearity(pointA, pointB, testPointA, testPointB)) {
 			assert Debugger.closeNode("These lines are colinear, returning null.");
 			return null;
 		}
 		// Get slopes.
-		double slope = RiffPolygonToolbox.getSlope(pointA, pointB);
-		double testSlope = RiffPolygonToolbox.getSlope(testPointA, testPointB);
+		double slope = Polygons.getSlope(pointA, pointB);
+		double testSlope = Polygons.getSlope(testPointA, testPointB);
 		// Test for infinite slopes, and if found, get real intersection points.
 		if (Math.abs(slope) == Double.POSITIVE_INFINITY) {
 			assert Debugger.addNode("Slope of the control points is infinite.");
@@ -850,12 +850,12 @@ public class RiffPolygonToolbox {
 		assert Debugger.addNode("Line: " + pointA + ", " + pointB);
 		List<Point> pointList = region.getPoints();
 		List<RiffIntersectionPoint> intersectPoints = new LinkedList<RiffIntersectionPoint>();
-		if (!RiffPolygonToolbox.getBoundingRectIntersection(pointA, pointB, region)) {
+		if (!Polygons.getBoundingRectIntersection(pointA, pointB, region)) {
 			assert Debugger.closeNode("Bounding-rect test between the line and the region returned false, returning empty list.");
 			return intersectPoints;
 		}
 		for (int i = 0; i < pointList.size(); i++) {
-			IntersectionPoint intersectPoint = RiffPolygonToolbox.getIntersection(pointA, pointB, pointList.get(i), pointList.get((i + 1) % pointList.size()));
+			IntersectionPoint intersectPoint = Polygons.getIntersection(pointA, pointB, pointList.get(i), pointList.get((i + 1) % pointList.size()));
 			if (intersectPoint != null) {
 				RiffIntersectionPoint intersect = new RiffIntersectionPoint(intersectPoint.getPoint(), i);
 				if (!intersectPoints.contains(intersect)) {
@@ -915,7 +915,7 @@ public class RiffPolygonToolbox {
 		double yValue = pointA.getY() + omegaValue * (pointB.getY() - pointA.getY());
 		Point minimumPoint = createPoint(pointA, null, xValue, yValue, 0.0d);
 		assert Debugger.printDebug("Polygon/getMinimumPointBetweenLine", "Point yielded: " + minimumPoint);
-		return RiffPolygonToolbox.findMiddlePoint(pointA, pointB, minimumPoint);
+		return Polygons.findMiddlePoint(pointA, pointB, minimumPoint);
 	}
 
 	public static PointSideStruct getPointSideList(DiscreteRegion region, Point testPoint) {
@@ -927,11 +927,11 @@ public class RiffPolygonToolbox {
 		for (int k = 0; k < pointList.size(); k++) {
 			Point linePointA = pointList.get(k);
 			Point linePointB = pointList.get((k + 1) % pointList.size());
-			if (RiffPolygonToolbox.testForColinearity(linePointA, linePointB, testPoint)) {
+			if (Polygons.testForColinearity(linePointA, linePointB, testPoint)) {
 				struct.addIndeterminate(testPoint);
 				continue;
 			}
-			doPointSideTest(struct, testPoint, RiffPolygonToolbox.testPointAgainstLine(testPoint, linePointA, linePointB));
+			doPointSideTest(struct, testPoint, Polygons.testPointAgainstLine(testPoint, linePointA, linePointB));
 		}
 		struct.validate();
 		assert Debugger.closeNode(struct);
@@ -946,11 +946,11 @@ public class RiffPolygonToolbox {
 		PointSideStruct struct = new PointSideStruct();
 		for (int k = 0; k < pointList.size(); k++) {
 			Point testPoint = pointList.get(k);
-			if (RiffPolygonToolbox.testForColinearity(linePointA, linePointB, testPoint)) {
+			if (Polygons.testForColinearity(linePointA, linePointB, testPoint)) {
 				struct.addIndeterminate(testPoint);
 				continue;
 			}
-			doPointSideTest(struct, testPoint, RiffPolygonToolbox.testPointAgainstLine(testPoint, linePointA, linePointB));
+			doPointSideTest(struct, testPoint, Polygons.testPointAgainstLine(testPoint, linePointA, linePointB));
 		}
 		struct.validate();
 		assert Debugger.closeNode(struct);
@@ -962,15 +962,15 @@ public class RiffPolygonToolbox {
 		assert Debugger.addSnapNode("First-Line", linePointA + ", " + linePointB);
 		assert Debugger.addSnapNode("Test-Line", testPointA + ", " + testPointB);
 		PointSideStruct struct = new PointSideStruct();
-		if (RiffPolygonToolbox.testForColinearity(linePointA, linePointB, testPointA)) {
+		if (Polygons.testForColinearity(linePointA, linePointB, testPointA)) {
 			struct.addIndeterminate(testPointA);
 		} else {
-			doPointSideTest(struct, testPointA, RiffPolygonToolbox.testPointAgainstLine(testPointA, linePointA, linePointB));
+			doPointSideTest(struct, testPointA, Polygons.testPointAgainstLine(testPointA, linePointA, linePointB));
 		}
-		if (RiffPolygonToolbox.testForColinearity(linePointA, linePointB, testPointB)) {
+		if (Polygons.testForColinearity(linePointA, linePointB, testPointB)) {
 			struct.addIndeterminate(testPointB);
 		} else {
-			doPointSideTest(struct, testPointB, RiffPolygonToolbox.testPointAgainstLine(testPointB, linePointA, linePointB));
+			doPointSideTest(struct, testPointB, Polygons.testPointAgainstLine(testPointB, linePointA, linePointB));
 		}
 		struct.validate();
 		assert Debugger.closeNode(struct);
@@ -1039,7 +1039,7 @@ public class RiffPolygonToolbox {
 							continue;
 						}
 						DiscreteRegion testRegion = new DiscreteRegion(firstRegion.getEnvironment(), firstRegion.getProperties());
-						PointSideStruct struct = RiffPolygonToolbox.getPointSideList(firstRegion, firstRegion.getPoints().get(q), firstRegion.getPoints().get((q + 1) % firstRegion.getPoints().size()));
+						PointSideStruct struct = Polygons.getPointSideList(firstRegion, firstRegion.getPoints().get(q), firstRegion.getPoints().get((q + 1) % firstRegion.getPoints().size()));
 						if (struct.getLeftPoints().isEmpty()) {
 							int firstPoint = q;
 							if (q > (q + 1) % firstRegion.getPoints().size()) {
@@ -1071,14 +1071,14 @@ public class RiffPolygonToolbox {
 								testRegion.addPoint(firstRegion.getPoints().get((firstPoint + offsetPoint) % firstRegion.getPoints().size()));
 							}
 						}
-						if (!RiffPolygonToolbox.isPolygonConvex(testRegion)) {
+						if (!Polygons.isPolygonConvex(testRegion)) {
 							continue;
 						}
 						optimizedList.add(testRegion);
 						polyList.remove(firstRegion);
 						polyList.remove(secondRegion);
 						optimizedList.addAll(polyList);
-						return RiffPolygonToolbox.joinPolygons(optimizedList);
+						return Polygons.joinPolygons(optimizedList);
 					}
 				}
 			}
@@ -1086,7 +1086,16 @@ public class RiffPolygonToolbox {
 		return polyList;
 	}
 
-	// Removes overlapping points, points that are not essential, and also confirms that the polygon is at least three points, and invalidate self-intersecting polygons.
+	/**
+	 * Removes overlapping points, points that are not essential, and also
+	 * confirms that the polygon is at least three points, and invalidate
+	 * self-intersecting polygons.
+	 * 
+	 * @param region
+	 *            the region that will be optimized
+	 * @return {@code region} if it has been optimized, {@code null} if it is
+	 *         invalid
+	 */
 	public static DiscreteRegion optimizePolygon(DiscreteRegion region) {
 		if (region.isOptimized()) {
 			return region;
@@ -1099,7 +1108,7 @@ public class RiffPolygonToolbox {
 			assert Debugger.closeNode("Polygon invalid because it has less than 3 points, returning null.");
 			return null;
 		}
-		RiffPolygonToolbox.assertCCWPolygon(region);
+		Polygons.assertCCWPolygon(region);
 		// Remove all overlapping points.
 		for (int i = 0; i < pointList.size(); i++) {
 			for (int j = 0; j < pointList.size(); j++) {
@@ -1125,18 +1134,18 @@ public class RiffPolygonToolbox {
 					continue;
 				}
 				Point pointB = pointList.get(j);
-				double slope = RiffPolygonToolbox.getSlope(pointA, pointB);
+				double slope = Polygons.getSlope(pointA, pointB);
 				for (int k = 0; k < pointList.size(); k++) {
 					if (k == i || k == j) {
 						continue;
 					}
 					Point pointC = pointList.get(k);
-					double testSlope = RiffPolygonToolbox.getSlope(pointA, pointC);
+					double testSlope = Polygons.getSlope(pointA, pointC);
 					if (testSlope == slope) {
 						double y = slope * (pointC.getX() - pointA.getX()) + pointA.getY();
 						if (y == pointC.getY()) {
 							if (Points.getDistance(pointA, pointB) + Points.getDistance(pointB, pointC) == Points.getDistance(pointA, pointC)) {
-								if (RiffPolygonToolbox.confirmInteriorLine(pointA, pointC, region)) {
+								if (Polygons.confirmInteriorLine(pointA, pointC, region)) {
 									assert Debugger.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointB);
 									assert Debugger.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointA + ", " + pointC);
 									pointList.remove(j);
@@ -1145,7 +1154,7 @@ public class RiffPolygonToolbox {
 								continue;
 							}
 						} else if (Points.getDistance(pointB, pointC) + Points.getDistance(pointA, pointC) == Points.getDistance(pointA, pointB)) {
-							if (RiffPolygonToolbox.confirmInteriorLine(pointA, pointB, region)) {
+							if (Polygons.confirmInteriorLine(pointA, pointB, region)) {
 								assert Debugger.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointC);
 								assert Debugger.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointA + ", " + pointB);
 								pointList.remove(k);
@@ -1153,7 +1162,7 @@ public class RiffPolygonToolbox {
 							}
 							continue;
 						} else if (Points.getDistance(pointB, pointA) + Points.getDistance(pointA, pointC) == Points.getDistance(pointC, pointB)) {
-							if (RiffPolygonToolbox.confirmInteriorLine(pointC, pointB, region)) {
+							if (Polygons.confirmInteriorLine(pointC, pointB, region)) {
 								assert Debugger.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointA);
 								assert Debugger.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointC + ", " + pointB);
 								pointList.remove(i);
@@ -1171,7 +1180,7 @@ public class RiffPolygonToolbox {
 				if (i == j) {
 					continue;
 				}
-				IntersectionPoint point = RiffPolygonToolbox.getIntersection(pointList.get(i), pointList.get((i + 1) % pointList.size()), pointList.get(j), pointList.get((j + 1) % pointList.size()));
+				IntersectionPoint point = Polygons.getIntersection(pointList.get(i), pointList.get((i + 1) % pointList.size()), pointList.get(j), pointList.get((j + 1) % pointList.size()));
 				if (point == null || point.isTangent()) {
 					continue;
 				}
@@ -1194,7 +1203,7 @@ public class RiffPolygonToolbox {
 	public static List<DiscreteRegion> optimizePolygons(Collection<DiscreteRegion> list) {
 		List<DiscreteRegion> polygons = new LinkedList<DiscreteRegion>();
 		for (DiscreteRegion region : list) {
-			region = RiffPolygonToolbox.optimizePolygon(region);
+			region = Polygons.optimizePolygon(region);
 			if (region == null) {
 				continue;
 			}
@@ -1240,7 +1249,7 @@ public class RiffPolygonToolbox {
 				iter = potentialList.iterator();
 				continue;
 			}
-			if (!RiffPolygonToolbox.getBoundingRectIntersection(region, otherRegion)) {
+			if (!Polygons.getBoundingRectIntersection(region, otherRegion)) {
 				assert Debugger.addNode("Polygons do not intersect with their bounding rects.");
 				region.addRegionToMap(otherRegion);
 				otherRegion.addRegionToMap(region);
@@ -1248,7 +1257,7 @@ public class RiffPolygonToolbox {
 				iter = potentialList.iterator();
 				continue;
 			}
-			if (!RiffPolygonToolbox.testforRegionPointSideIntersection(region, otherRegion) && !RiffPolygonToolbox.testforRegionPointSideIntersection(otherRegion, region)) {
+			if (!Polygons.testforRegionPointSideIntersection(region, otherRegion) && !Polygons.testforRegionPointSideIntersection(otherRegion, region)) {
 				assert Debugger.addNode("Polygons do not intersect according to the point-side polygon test.");
 				region.addRegionToMap(otherRegion);
 				otherRegion.addRegionToMap(region);
@@ -1259,12 +1268,12 @@ public class RiffPolygonToolbox {
 			assert Debugger.openNode("Beginning primary line-by-line overlap-check sequence.");
 			for (int k = 0; k < regionPoints.size(); k++) {
 				assert Debugger.addNode("Now testing using this potentially intersecting line: " + regionPoints.get(k) + ", " + regionPoints.get((k + 1) % regionPoints.size()));
-				if (!RiffPolygonToolbox.getBoundingRectIntersection(regionPoints.get(k), regionPoints.get((k + 1) % regionPoints.size()), otherRegion)) {
+				if (!Polygons.getBoundingRectIntersection(regionPoints.get(k), regionPoints.get((k + 1) % regionPoints.size()), otherRegion)) {
 					assert Debugger.addNode("The current line's bounding rect does not overlap the other region's.");
 					continue;
 				}
 				DiscreteRegion splittingRegion = new DiscreteRegion(otherRegion);
-				DiscreteRegion newRegion = RiffPolygonToolbox.splitPolygonUsingEdge(splittingRegion, regionPoints.get(k), regionPoints.get((k + 1) % regionPoints.size()), false);
+				DiscreteRegion newRegion = Polygons.splitPolygonUsingEdge(splittingRegion, regionPoints.get(k), regionPoints.get((k + 1) % regionPoints.size()), false);
 				if (newRegion == null) {
 					assert Debugger.addNode("New-region is null, continuing...");
 					continue;
@@ -1277,9 +1286,9 @@ public class RiffPolygonToolbox {
 					root.removeRegion(otherRegion);
 					if (recurse) {
 						assert Debugger.addNode("Recursing.");
-						root = RiffPolygonToolbox.removeOverlappingPolygons(root, splittingRegion, recurse);
-						root = RiffPolygonToolbox.removeOverlappingPolygons(root, newRegion, recurse);
-						root = RiffPolygonToolbox.removeOverlappingPolygons(root, region, recurse);
+						root = Polygons.removeOverlappingPolygons(root, splittingRegion, recurse);
+						root = Polygons.removeOverlappingPolygons(root, newRegion, recurse);
+						root = Polygons.removeOverlappingPolygons(root, region, recurse);
 						assert Debugger.closeNode();
 						assert Debugger.closeNode();
 						assert Debugger.closeNode();
@@ -1299,12 +1308,12 @@ public class RiffPolygonToolbox {
 			assert Debugger.openNode("Beginning counter line-by-line overlap-check sequence.");
 			for (int k = 0; k < otherRegionPoints.size(); k++) {
 				assert Debugger.addNode("Now testing using this potentially intersecting line: " + otherRegionPoints.get(k) + ", " + otherRegionPoints.get((k + 1) % otherRegionPoints.size()));
-				if (!RiffPolygonToolbox.getBoundingRectIntersection(otherRegionPoints.get(k), otherRegionPoints.get((k + 1) % otherRegionPoints.size()), region)) {
+				if (!Polygons.getBoundingRectIntersection(otherRegionPoints.get(k), otherRegionPoints.get((k + 1) % otherRegionPoints.size()), region)) {
 					assert Debugger.addNode("The current line's bounding rect does not overlap the other region's.");
 					continue;
 				}
 				DiscreteRegion oldRegion = new DiscreteRegion(region);
-				DiscreteRegion newRegion = RiffPolygonToolbox.splitPolygonUsingEdge(region, otherRegionPoints.get(k), otherRegionPoints.get((k + 1) % otherRegionPoints.size()), false);
+				DiscreteRegion newRegion = Polygons.splitPolygonUsingEdge(region, otherRegionPoints.get(k), otherRegionPoints.get((k + 1) % otherRegionPoints.size()), false);
 				if (newRegion == null) {
 					assert Debugger.addNode("New-region is null.");
 					continue;
@@ -1316,8 +1325,8 @@ public class RiffPolygonToolbox {
 					assert Debugger.closeNode();
 					if (recurse) {
 						assert Debugger.addNode("Recursing.");
-						root = RiffPolygonToolbox.removeOverlappingPolygons(root, newRegion, recurse);
-						root = RiffPolygonToolbox.removeOverlappingPolygons(root, region, recurse);
+						root = Polygons.removeOverlappingPolygons(root, newRegion, recurse);
+						root = Polygons.removeOverlappingPolygons(root, region, recurse);
 						assert Debugger.closeNode();
 						assert Debugger.closeNode();
 						assert Debugger.closeNode();
@@ -1367,13 +1376,13 @@ public class RiffPolygonToolbox {
 		assert Debugger.addSnapNode("Region to split", otherRegion);
 		assert Debugger.addNode("Hyperplane: " + hyperPlane);
 		List<Point> otherRegionPoints = otherRegion.getPoints();
-		List<Point> extendedPointsList = RiffPolygonToolbox.getExtensionPoints(pointA, pointB, otherRegion);
-		List<RiffIntersectionPoint> intersectedList = RiffPolygonToolbox.getIntersections(extendedPointsList.get(0), extendedPointsList.get(1), otherRegion);
+		List<Point> extendedPointsList = Polygons.getExtensionPoints(pointA, pointB, otherRegion);
+		List<RiffIntersectionPoint> intersectedList = Polygons.getIntersections(extendedPointsList.get(0), extendedPointsList.get(1), otherRegion);
 		if (intersectedList.size() != 2) {
 			assert Debugger.closeNode("No, insufficient, or too many intersections found, returning null.");
 			return null;
 		}
-		if (!hyperPlane && !RiffPolygonToolbox.getBoundingRectIntersection(pointA, pointB, intersectedList.get(0).getIntersection(), intersectedList.get(1).getIntersection())) {
+		if (!hyperPlane && !Polygons.getBoundingRectIntersection(pointA, pointB, intersectedList.get(0).getIntersection(), intersectedList.get(1).getIntersection())) {
 			assert Debugger.closeNode("Bounding rect test failed between splitting edge and intersecting points, returning null.");
 			return null;
 		}
@@ -1398,8 +1407,8 @@ public class RiffPolygonToolbox {
 			assert Debugger.addSnapNode("Point-Removals", "Current State", otherRegion);
 		}
 		assert Debugger.addSnapNode("Old region", otherRegion);
-		RiffPolygonToolbox.optimizePolygon(otherRegion);
-		RiffPolygonToolbox.optimizePolygon(newRegion);
+		Polygons.optimizePolygon(otherRegion);
+		Polygons.optimizePolygon(newRegion);
 		assert Debugger.closeNode();
 		return newRegion;
 	}
@@ -1410,7 +1419,7 @@ public class RiffPolygonToolbox {
 			if (pointA.equals(pointList.get(i)) || pointA.equals(pointList.get((i + 1) % pointList.size()))) {
 				continue;
 			}
-			if (Points.areEqual(pointA, pointA.getY(), RiffPolygonToolbox.getSlope(pointList.get(i), pointList.get((i + 1) % pointList.size())) * (pointA.getX() - (pointList.get(i)).getX()) + (pointList.get(i)).getY())) {
+			if (Points.areEqual(pointA, pointA.getY(), Polygons.getSlope(pointList.get(i), pointList.get((i + 1) % pointList.size())) * (pointA.getX() - (pointList.get(i)).getX()) + (pointList.get(i)).getY())) {
 				return true;
 			}
 		}
@@ -1418,7 +1427,7 @@ public class RiffPolygonToolbox {
 	}
 
 	public static boolean testForColinearity(Point linePointA, Point linePointB, Point testPoint) {
-		return Points.areEqual(testPoint, testPoint.getY(), (RiffPolygonToolbox.getSlope(linePointA, linePointB) * (testPoint.getX() - linePointA.getX()) + linePointA.getY()));
+		return Points.areEqual(testPoint, testPoint.getY(), (Polygons.getSlope(linePointA, linePointB) * (testPoint.getX() - linePointA.getX()) + linePointA.getY()));
 	}
 
 	public static boolean testForColinearity(Point pointA, Point pointB, Point testPointA, Point testPointB) {
@@ -1428,20 +1437,20 @@ public class RiffPolygonToolbox {
 		if ((pointA.equals(testPointA) && pointB.equals(testPointB)) || (pointA.equals(testPointB) && pointB.equals(testPointA))) {
 			return true;
 		}
-		if (!RiffPolygonToolbox.areSlopesEqual(pointA, pointB, testPointA, testPointB)) {
+		if (!Polygons.areSlopesEqual(pointA, pointB, testPointA, testPointB)) {
 			assert Debugger.printDebug("Polygon/testForColinearity/heavyDebug", "Slopes are not equal, so returning false.\n(/testForColinearity)");
 			return false;
 		}
 		assert Debugger.printDebug("Polygon/testForColinearity", "Slopes are equal, so beginning point-slope test.");
-		assert Debugger.printDebug("Polygon/testForColinearity/data", "First point-slope test: " + (RiffPolygonToolbox.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY()));
+		assert Debugger.printDebug("Polygon/testForColinearity/data", "First point-slope test: " + (Polygons.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY()));
 		assert Debugger.printDebug("Polygon/testForColinearity/data", "Expected value: " + testPointA.getY());
-		if (!Points.areEqual(Point.System.EUCLIDEAN, RiffPolygonToolbox.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY(), testPointA.getY())) {
+		if (!Points.areEqual(Point.System.EUCLIDEAN, Polygons.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY(), testPointA.getY())) {
 			assert Debugger.printDebug("Polygon/testForColinearity/heavyDebug", "First point failed point-slope test, so returning false.\n(/testForColinearity)");
 			return false;
 		}
-		assert Debugger.printDebug("Polygon/testForColinearity/data", "Second point-slope test: " + (RiffPolygonToolbox.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY()));
+		assert Debugger.printDebug("Polygon/testForColinearity/data", "Second point-slope test: " + (Polygons.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY()));
 		assert Debugger.printDebug("Polygon/testForColinearity/data", "Expected value: " + testPointB.getY());
-		if (!Points.areEqual(Point.System.EUCLIDEAN, RiffPolygonToolbox.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY(), testPointB.getY())) {
+		if (!Points.areEqual(Point.System.EUCLIDEAN, Polygons.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY(), testPointB.getY())) {
 			assert Debugger.printDebug("Polygon/testForColinearity/heavyDebug", "Second point failed point-slope test, so returning false.\n(/testForColinearity)");
 			return false;
 		}
@@ -1456,7 +1465,7 @@ public class RiffPolygonToolbox {
 		List<Point> regionList = region.getPoints();
 		assert Debugger.printDebug("Polygon/testforRegionPointSideIntersection", "Beginning line-by-line point-side check.");
 		for (int i = 0; i < regionList.size(); i++) {
-			PointSideStruct struct = RiffPolygonToolbox.getPointSideList(otherRegion, regionList.get(i), regionList.get((i + 1) % regionList.size()));
+			PointSideStruct struct = Polygons.getPointSideList(otherRegion, regionList.get(i), regionList.get((i + 1) % regionList.size()));
 			if (struct.isGreaterThan()) {
 				assert Debugger.printDebug("Polygon/testforRegionPointSideIntersection", "This line guarantees a pass of the point-side test, returning false. Line: " + regionList.get(i) + ", " + regionList.get((i + 1) % regionList.size()));
 				assert Debugger.printDebug("Polygon/testforRegionPointSideIntersection", "(/testForRegionPointSideIntersection)");

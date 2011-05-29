@@ -22,7 +22,7 @@ public class RiffJavaToolbox {
 		region.addPoint(new Point_Euclidean(env, rect.getX(), rect.getY() + rect.getHeight(), 0.0d));
 		region.addPoint(new Point_Euclidean(env, rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight(), 0.0d));
 		region.addPoint(new Point_Euclidean(env, rect.getX() + rect.getWidth(), rect.getY(), 0.0d));
-		RiffPolygonToolbox.optimizePolygon(region);
+		Polygons.optimizePolygon(region);
 		return region;
 	}
 

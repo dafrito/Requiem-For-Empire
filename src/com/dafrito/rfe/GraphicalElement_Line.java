@@ -77,15 +77,15 @@ public class GraphicalElement_Line extends InterfaceElement implements ScriptCon
 		Point translatedPointA = new Point_Euclidean(this.getEnvironment(), ax + this.getParent().getContainerElement().getDrawingBounds().getX() + width, ay + this.getParent().getContainerElement().getDrawingBounds().getY() + height, 0.0d);
 		Point translatedPointB = new Point_Euclidean(this.getEnvironment(), bx + this.getParent().getContainerElement().getDrawingBounds().getX() + width, by + this.getParent().getContainerElement().getDrawingBounds().getY() + height, 0.0d);
 		DiscreteRegion region = RiffJavaToolbox.convertToRegion(this.getEnvironment(), this.getParent().getContainerElement().getDrawingBounds());
-		List<RiffIntersectionPoint> intersections = RiffPolygonToolbox.getIntersections(translatedPointA, translatedPointB, region);
-		if (intersections.size() == 0 && !RiffPolygonToolbox.getBoundingRectIntersection(translatedPointA, translatedPointA, region) && !RiffPolygonToolbox.getBoundingRectIntersection(translatedPointB, translatedPointB, region)) {
+		List<RiffIntersectionPoint> intersections = Polygons.getIntersections(translatedPointA, translatedPointB, region);
+		if (intersections.size() == 0 && !Polygons.getBoundingRectIntersection(translatedPointA, translatedPointA, region) && !Polygons.getBoundingRectIntersection(translatedPointB, translatedPointB, region)) {
 			return;
 		}
 		if (intersections.size() == 2) {
 			translatedPointA = intersections.get(0).getIntersection();
 			translatedPointB = intersections.get(1).getIntersection();
 		} else if (intersections.size() == 1) {
-			if (RiffPolygonToolbox.getBoundingRectIntersection(translatedPointA, translatedPointA, region)) {
+			if (Polygons.getBoundingRectIntersection(translatedPointA, translatedPointA, region)) {
 				translatedPointB = intersections.get(0).getIntersection();
 			} else {
 				translatedPointA = intersections.get(0).getIntersection();

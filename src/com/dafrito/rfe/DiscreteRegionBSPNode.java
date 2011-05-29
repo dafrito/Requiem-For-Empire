@@ -44,9 +44,9 @@ public class DiscreteRegionBSPNode implements Nodeable {
 	public synchronized void addLine(DiscreteRegion owner, Point pointA, Point pointB) {
 		assert Debugger.openNode("BSP Line Additions", "Adding line to BSP tree (" + pointA + ", " + pointB + ")");
 		assert Debugger.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
-		PointSideStruct struct = RiffPolygonToolbox.getPointSideList(this.pointA, this.pointB, pointA, pointB);
+		PointSideStruct struct = Polygons.getPointSideList(this.pointA, this.pointB, pointA, pointB);
 		assert Debugger.addNode(struct);
-		if (RiffPolygonToolbox.testForColinearity(pointA, pointB, this.pointA, this.pointB) || struct.isColinear()) {
+		if (Polygons.testForColinearity(pointA, pointB, this.pointA, this.pointB) || struct.isColinear()) {
 			assert Debugger.closeNode();
 			return;
 		}
@@ -82,12 +82,12 @@ public class DiscreteRegionBSPNode implements Nodeable {
 		assert Debugger.openNode("BSP Region Additions", "Adding region to BSP tree");
 		assert Debugger.addNode(region);
 		assert Debugger.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
-		RiffPolygonToolbox.optimizePolygon(region);
-		PointSideStruct struct = RiffPolygonToolbox.getPointSideList(region, this.pointA, this.pointB);
+		Polygons.optimizePolygon(region);
+		PointSideStruct struct = Polygons.getPointSideList(region, this.pointA, this.pointB);
 		if (struct.isStraddling()) {
 			assert Debugger.addNode("Region is straddling this node's line, splitting.");
 			this.root.removeRegion(region);
-			DiscreteRegion splitPolygon = RiffPolygonToolbox.splitPolygonUsingEdge(region, this.pointA, this.pointB, true);
+			DiscreteRegion splitPolygon = Polygons.splitPolygonUsingEdge(region, this.pointA, this.pointB, true);
 			if (splitPolygon == null) {
 				assert Debugger.addNode("Unexpected null region from split.");
 				assert Debugger.addNode(struct);
@@ -157,8 +157,8 @@ public class DiscreteRegionBSPNode implements Nodeable {
 		assert Debugger.openNode("Region Categorizations", "Categorizing Region");
 		assert Debugger.addNode(region);
 		assert Debugger.addNode(this);
-		RiffPolygonToolbox.optimizePolygon(region);
-		PointSideStruct struct = RiffPolygonToolbox.getPointSideList(region, this.pointA, this.pointB);
+		Polygons.optimizePolygon(region);
+		PointSideStruct struct = Polygons.getPointSideList(region, this.pointA, this.pointB);
 		assert Debugger.addNode(struct);
 		if (struct.isLessThan() && struct.hasIndeterminates()) {
 			assert Debugger.addNode("Region has points which are less than or equal to this node's line, adding to left neighbors.");
@@ -199,8 +199,8 @@ public class DiscreteRegionBSPNode implements Nodeable {
 		assert Debugger.openNode("BSP Potential List Creations", "Retrieving Potentially-Intersecting List");
 		assert Debugger.addSnapNode("Testing Region", region);
 		assert Debugger.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
-		RiffPolygonToolbox.optimizePolygon(region);
-		PointSideStruct struct = RiffPolygonToolbox.getPointSideList(region, this.pointA, this.pointB);
+		Polygons.optimizePolygon(region);
+		PointSideStruct struct = Polygons.getPointSideList(region, this.pointA, this.pointB);
 		if (struct.isStraddling()) {
 			assert Debugger.addNode("Region is straddling this line, returning full list.");
 			Set<DiscreteRegion> polys = new HashSet<DiscreteRegion>();
@@ -259,7 +259,7 @@ public class DiscreteRegionBSPNode implements Nodeable {
 
 	public Set<DiscreteRegion> getRegions(Point point) {
 		assert Debugger.openNode("BSP Polygon Retrievals", "Finding polygon by point: " + point);
-		double value = RiffPolygonToolbox.testPointAgainstLine(point, this.pointA, this.pointB);
+		double value = Polygons.testPointAgainstLine(point, this.pointA, this.pointB);
 		assert Debugger.addNode("Point-side test result: " + value);
 		Set<DiscreteRegion> polyList = new HashSet<DiscreteRegion>();
 		if (Points.isGreaterThan(value, 0.0d)) {
@@ -329,7 +329,7 @@ public class DiscreteRegionBSPNode implements Nodeable {
 		assert Debugger.openNode("BSP Region Removals", "Removing region from BSP tree");
 		assert Debugger.addNode(region);
 		assert Debugger.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
-		PointSideStruct struct = RiffPolygonToolbox.getPointSideList(region, this.pointA, this.pointB);
+		PointSideStruct struct = Polygons.getPointSideList(region, this.pointA, this.pointB);
 		assert Debugger.addNode(struct);
 		if (struct.isLessThan()) {
 			assert Debugger.addNode("Region is less than this node's line.");

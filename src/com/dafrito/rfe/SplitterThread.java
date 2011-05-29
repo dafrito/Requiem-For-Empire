@@ -35,7 +35,7 @@ public class SplitterThread extends Thread {
 		assert Debugger.openNode("Splitter Thread Executions", "Executing Splitter Thread (" + this.regions.size() + " region(s))");
 		assert Debugger.addSnapNode("Regions (" + this.regions.size() + " region(s))", this.regions);
 		for (DiscreteRegion region : this.regions) {
-			this.root = RiffPolygonToolbox.removeOverlappingPolygons(this.root, region, this.recurse);
+			this.root = Polygons.removeOverlappingPolygons(this.root, region, this.recurse);
 			if (!this.recurse) {
 				break;
 			}

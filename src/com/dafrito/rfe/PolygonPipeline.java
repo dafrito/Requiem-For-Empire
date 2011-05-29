@@ -23,13 +23,13 @@ public class PolygonPipeline extends Thread {
 			assert Debugger.closeNode("Region is null.");
 			return;
 		}
-		List<DiscreteRegion> polygonList = RiffPolygonToolbox.convertPolyToConvex(this.region);
+		List<DiscreteRegion> polygonList = Polygons.convertPolyToConvex(this.region);
 		if (polygonList == null) {
 			assert Debugger.closeNode("Region is null.");
 			return;
 		}
-		polygonList = RiffPolygonToolbox.joinPolygons(polygonList);
-		polygonList = RiffPolygonToolbox.optimizePolygons(polygonList);
+		polygonList = Polygons.joinPolygons(polygonList);
+		polygonList = Polygons.optimizePolygons(polygonList);
 		this.terrestrial.addValidatedRegions(polygonList);
 		assert Debugger.closeNode();
 		Debugger.hitStopWatch(Thread.currentThread().getName());

@@ -113,8 +113,8 @@ public class Terrestrial implements Serializable {
 				}
 				assert Debugger.addSnapNode("Placing neighbor in neighbors list", neighbor);
 				assert Debugger.openNode("Retrieving nearest colinear point");
-				Point[] line = RiffPolygonToolbox.getAdjacentEdge(currentRegion, neighbor);
-				Point point = RiffPolygonToolbox.getMinimumPointBetweenLine(line[0], line[1], currentPoint);
+				Point[] line = Polygons.getAdjacentEdge(currentRegion, neighbor);
+				Point point = Polygons.getMinimumPointBetweenLine(line[0], line[1], currentPoint);
 				assert Debugger.addNode("Adding neighbor and point (" + point + ")", neighbor);
 				availableNeighbors.add(neighbor);
 				nearestNeighborPoints.add(point);
