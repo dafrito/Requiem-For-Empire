@@ -200,7 +200,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			this.addReferenced(new Debug_ScriptElement(this, (String) null));
 		} else if (event.getSource().equals(this.openFile)) {
 			Debug_ScriptElement element = new Debug_ScriptElement(this);
-			if (element.isValid()) {
+			if (element.hasFile()) {
 				this.addReferenced(element);
 			}
 		} else if (event.getSource().equals(this.closeFile)) {

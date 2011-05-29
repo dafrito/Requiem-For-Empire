@@ -178,8 +178,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 		return this.hasChanged;
 	}
 
-	@Override
-	public boolean isValid() {
+	public boolean hasFile() {
 		return this.isValid;
 	}
 
