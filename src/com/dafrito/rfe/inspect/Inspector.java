@@ -22,7 +22,7 @@ public interface Inspector {
 	 * @param name
 	 *            the logical name of the field
 	 * @param value
-	 *            the value of the specified field
+	 *            the value of the specified field. It may be null.
 	 */
 	public void field(String name, Object value);
 
@@ -31,7 +31,7 @@ public interface Inspector {
 	 * element in a collection.
 	 * 
 	 * @param value
-	 *            the visited value
+	 *            the visited value. It may be null.
 	 */
 	public void value(Object value);
 
