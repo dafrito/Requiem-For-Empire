@@ -3,15 +3,14 @@ package com.dafrito.rfe;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
@@ -50,7 +49,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 		assert Debugger.openNode("Discrete-Region Transformation", "Transforming Discrete Region");
 		assert Debugger.addNode(region);
 		// Offset translation
-		List<Point> points = new LinkedList<Point>(region.getPoints());
+		List<Point> points = new ArrayList<Point>(region.getPoints());
 		DiscreteRegion transformedRegion = new DiscreteRegion(region.getEnvironment());
 		transformedRegion.setProperties(region.getProperties());
 		for (Point point : points) {
@@ -94,7 +93,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 		assert Debugger.openNode("Discrete Region Creation", "Creating discrete region (Duplicating otherRegion)");
 		this.environment = otherRegion.getEnvironment();
 		this.neighbors = new HashSet<DiscreteRegion>();
-		this.points = new Vector<Point>(otherRegion.getPoints());
+		this.points = new ArrayList<Point>(otherRegion.getPoints());
 		this.leftExtreme = otherRegion.getLeftExtreme();
 		this.rightExtreme = otherRegion.getRightExtreme();
 		this.topExtreme = otherRegion.getTopExtreme();
@@ -113,7 +112,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 			assert Debugger.addNode(env);
 		}
 		this.environment = env;
-		this.points = new Vector<Point>();
+		this.points = new ArrayList<Point>();
 		this.neighbors = new HashSet<DiscreteRegion>();
 		this.properties = new HashMap<String, Object>();
 		this.resetExtrema();
@@ -123,7 +122,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 	public DiscreteRegion(ScriptEnvironment env, Map<String, Object> prop) {
 		assert Debugger.openNode("Discrete Region Creation", "Creating discrete region (Script environment and properties provided)");
 		this.environment = env;
-		this.points = new Vector<Point>();
+		this.points = new ArrayList<Point>();
 		this.neighbors = new HashSet<DiscreteRegion>();
 		this.properties = prop;
 		assert Debugger.closeNode("Region created", this);
@@ -257,7 +256,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 	}
 
 	public List<Point> getPoints() {
-		return new LinkedList<Point>(this.points);
+		return new ArrayList<Point>(this.points);
 	}
 
 	public Map<String, Object> getProperties() {
