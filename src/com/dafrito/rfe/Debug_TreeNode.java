@@ -21,8 +21,10 @@ public class Debug_TreeNode implements MutableTreeNode {
 	private static java.util.Map<Object, Integer> cacheMap = new HashMap<Object, Integer>();
 	public static java.util.Map<DebugString, Object> precacheData = new EnumMap<DebugString, Object>(DebugString.class);
 
-	public static void addPrecached(DebugString key, Object value) {
-		precacheData.put(key, value);
+	static {
+		for (DebugString str : DebugString.values()) {
+			precacheData.put(str, str.getText());
+		}
 	}
 
 	public static List<Debug_CacheElement> getCacheData() {

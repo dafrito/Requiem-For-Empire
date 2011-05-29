@@ -27,26 +27,6 @@ import javax.swing.event.ChangeListener;
 public class DebugEnvironment extends JFrame implements ActionListener, ChangeListener {
 	private static final long serialVersionUID = -8190546125680224912L;
 
-	public static void initialize() {
-		Debug_TreeNode.addPrecached(DebugString.ELEMENTS, "Elements");
-		Debug_TreeNode.addPrecached(DebugString.SCRIPTGROUPPARENTHETICAL, "Script Group (parenthetical)");
-		Debug_TreeNode.addPrecached(DebugString.SCRIPTGROUPCURLY, "Script Group (curly)");
-		Debug_TreeNode.addPrecached(DebugString.NUMERICSCRIPTVALUESHORT, "Numeric Script-Value (short)");
-		Debug_TreeNode.addPrecached(DebugString.NUMERICSCRIPTVALUEINT, "Numeric Script-Value (int)");
-		Debug_TreeNode.addPrecached(DebugString.NUMERICSCRIPTVALUELONG, "Numeric Script-Value (long)");
-		Debug_TreeNode.addPrecached(DebugString.NUMERICSCRIPTVALUEFLOAT, "Numeric Script-Value (float)");
-		Debug_TreeNode.addPrecached(DebugString.NUMERICSCRIPTVALUEDOUBLE, "Numeric Script-Value (double)");
-		Debug_TreeNode.addPrecached(DebugString.PERMISSIONNULL, "Permission: null");
-		Debug_TreeNode.addPrecached(DebugString.PERMISSIONPRIVATE, "Permission: private");
-		Debug_TreeNode.addPrecached(DebugString.PERMISSIONPROTECTED, "Permission: protected");
-		Debug_TreeNode.addPrecached(DebugString.PERMISSIONPUBLIC, "Permission: public");
-		Debug_TreeNode.addPrecached(DebugString.SCRIPTLINE, "Script Line: ");
-		Debug_TreeNode.addPrecached(DebugString.SCRIPTOPERATOR, "Script Operator: ");
-		Debug_TreeNode.addPrecached(DebugString.ORIGINALSTRING, "Original String: '");
-		Debug_TreeNode.addPrecached(DebugString.REFERENCEDELEMENTNULL, "Referenced Element: null");
-		Debug_TreeNode.addPrecached(DebugString.OUTPUTTREE, "Output Tree");
-	}
-
 	private JTabbedPane tabbedPane, filteredPanes;
 	private JLabel status;
 	private JMenuItem newFile, openFile, closeFile, saveFile, saveFileAs, exit,
@@ -71,7 +51,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	public DebugEnvironment(int width, int height) {
 		super("RFE Debugger");
 		Debugger.setDebugger(this);
-		initialize();
 		this.scriptElements = new LinkedList<Debug_ScriptElement>();
 		this.exceptions = new LinkedList<String>();
 		this.ignores = new LinkedList<String>();
