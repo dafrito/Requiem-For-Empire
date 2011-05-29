@@ -3,6 +3,8 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement implements ScriptConvertible, Nodeable {
 	public static final String DISCRETEREGIONSTRING = "DiscreteRegion";
 	private DiscreteRegion region;
@@ -113,12 +115,11 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Discrete Region Faux Script-Element");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode(this.region);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setRegion(DiscreteRegion region) {

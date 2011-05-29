@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.Collection;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class ScriptFunction_Faux extends ScriptFunction implements ScriptFunction_Abstract, Nodeable {
 	private FauxTemplate fauxTemplate;
@@ -36,14 +38,12 @@ public class ScriptFunction_Faux extends ScriptFunction implements ScriptFunctio
 		}
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Faux Script-Function (" + ScriptFunction.getDisplayableFunctionName(this.name) + ")");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode("Faux Template Type: " + this.fauxTemplate.getType());
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setFauxTemplate(ScriptTemplate_Abstract template) {

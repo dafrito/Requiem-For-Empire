@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 
@@ -36,12 +37,11 @@ public class GraphicalElement_Line extends InterfaceElement implements ScriptCon
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Line Graphical Element");
 		assert Debugger.addNode("First point: " + this.pointA);
 		assert Debugger.addNode("Second point: " + this.pointB);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

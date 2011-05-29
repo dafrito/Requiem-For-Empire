@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implements ScriptValue, ScriptExecutable, Nodeable, Referenced {
 	private ScriptKeywordType permission;
 	private String name;
@@ -62,11 +64,10 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 
 	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Variable-Creation Script-Element (" + this.name + ")");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

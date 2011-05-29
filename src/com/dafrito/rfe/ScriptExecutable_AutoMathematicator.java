@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptExecutable_AutoMathematicator extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
 	private ScriptValue value;
 	private ScriptOperatorType operator;
@@ -56,7 +58,7 @@ public class ScriptExecutable_AutoMathematicator extends ScriptElement implement
 
 	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		if (this.operator == ScriptOperatorType.INCREMENT) {
 			if (this.isPost) {
 				assert Debugger.openNode("Auto-Mathematicators", "Auto-Mathematicator(Post-Incrementing)");
@@ -72,7 +74,6 @@ public class ScriptExecutable_AutoMathematicator extends ScriptElement implement
 		}
 		assert Debugger.addSnapNode("Value", this.value);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

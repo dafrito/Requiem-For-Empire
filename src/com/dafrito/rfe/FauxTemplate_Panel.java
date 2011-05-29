@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements ScriptConvertible, Nodeable {
 	public static final String PANELSTRING = "Panel";
@@ -143,10 +145,9 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Panel Faux Template");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }

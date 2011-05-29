@@ -60,12 +60,6 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 	}
 
 	@Override
-	public boolean nodificate() {
-		super.nodificate();
-		return true;
-	}
-
-	@Override
 	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in FauxTemplate");
 	}

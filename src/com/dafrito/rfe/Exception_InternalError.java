@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class Exception_InternalError extends RuntimeException implements Nodeable {
 	/**
@@ -112,11 +114,11 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		boolean debug = false;
 		assert debug = true;
 		if (!debug) {
-			return true;
+			return;
 		}
 		assert Debugger.openNode("Exceptions and Errors", this.getMessage());
 		if (this.object != null) {
@@ -149,7 +151,6 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 			assert Debugger.closeNode();
 		}
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

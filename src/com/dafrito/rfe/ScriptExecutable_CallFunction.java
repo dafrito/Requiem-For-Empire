@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.List;
 import java.util.Vector;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class ScriptExecutable_CallFunction extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
 	public static ScriptValue callFunction(ScriptEnvironment env, Referenced ref, ScriptValue object, String name, List<ScriptValue> params) throws Exception_Nodeable {
@@ -112,12 +114,11 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 
 	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Function Call (" + ScriptFunction.getDisplayableFunctionName(this.functionName) + ")");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addSnapNode("Parameters", this.params);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

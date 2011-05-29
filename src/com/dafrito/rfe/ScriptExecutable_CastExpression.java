@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptExecutable_CastExpression extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
 	private ScriptExecutable castExpression;
 	private ScriptValueType type;
@@ -44,12 +46,11 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 
 	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Script Cast Expression (To type: " + this.getType() + ")");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addSnapNode("Cast Expression", this.castExpression);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

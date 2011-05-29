@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.List;
 import java.util.Vector;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class Archetype implements ScriptConvertible, Nodeable {
 	private String name;
@@ -55,10 +57,9 @@ public class Archetype implements ScriptConvertible, Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Archetype (" + this.name + ")");
 		assert Debugger.addSnapNode("Aces (" + this.parents.size() + " ace(s))", this.parents);
 		assert Debugger.closeNode();
-		return true;
 	}
 }

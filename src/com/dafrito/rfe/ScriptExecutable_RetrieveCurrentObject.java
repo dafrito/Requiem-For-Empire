@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptExecutable_RetrieveCurrentObject extends ScriptValue_Variable implements ScriptExecutable, ScriptValue, Nodeable, Referenced {
 	private ScriptElement reference;
 
@@ -52,13 +54,11 @@ public class ScriptExecutable_RetrieveCurrentObject extends ScriptValue_Variable
 		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Current Object Placeholder");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

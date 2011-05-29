@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 
@@ -107,15 +108,13 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 		return true;
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Panel Interface Element");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addSnapNode("Terrestrial", this.terrestrial);
 		assert Debugger.addSnapNode("Graphical Elements: (" + this.elements.size() + " element(s))", this.elements);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

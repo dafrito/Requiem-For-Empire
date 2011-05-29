@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -7,7 +8,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
-
 
 public class InterfaceElement_Root extends InterfaceElement implements Interface_Container {
 	private JPanel drawingPanel;
@@ -246,12 +246,11 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Root Interface Element");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addSnapNode("Elements: " + this.elements.size() + " element(s)", this.elements);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

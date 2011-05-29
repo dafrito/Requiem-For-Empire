@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Points;
 
@@ -302,7 +303,7 @@ public class DiscreteRegionBSPNode implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("BSP Tree Node (" + this.pointA + ", " + this.pointB + ")");
 		assert Debugger.addSnapNode("Left Neighbors", this.leftNeighbors);
 		assert Debugger.addSnapNode("Right Neighbors", this.rightNeighbors);
@@ -317,7 +318,6 @@ public class DiscreteRegionBSPNode implements Nodeable {
 			assert Debugger.addSnapNode("Right node", this.rightNode);
 		}
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public synchronized void removeFromTempList(DiscreteRegion region) {

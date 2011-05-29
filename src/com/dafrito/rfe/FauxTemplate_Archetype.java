@@ -3,6 +3,8 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String ARCHETYPESTRING = "Archetype";
 	private Archetype archetype;
@@ -87,12 +89,11 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Archetype Faux Script-Element");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode(this.archetype);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setArchetype(Archetype archetype) {

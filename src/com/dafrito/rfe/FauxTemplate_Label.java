@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class FauxTemplate_Label extends FauxTemplate_InterfaceElement implements ScriptConvertible, Nodeable {
 	public static final String LABELSTRING = "Label";
@@ -86,16 +88,14 @@ public class FauxTemplate_Label extends FauxTemplate_InterfaceElement implements
 		return new FauxTemplate_Label(this.getEnvironment(), this.getType());
 	}
 
-	// Nodeable and ScriptConvertible implementations
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		if (this.getLabel() != null) {
 			assert Debugger.openNode("Label Faux Template (" + this.getLabel().getString() + ")");
 		} else {
 			assert Debugger.openNode("Label Faux Template");
 		}
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }

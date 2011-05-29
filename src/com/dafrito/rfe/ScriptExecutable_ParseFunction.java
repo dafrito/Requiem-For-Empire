@@ -3,6 +3,8 @@ package com.dafrito.rfe;
 import java.util.Collection;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptExecutable_ParseFunction extends ScriptElement implements ScriptFunction_Abstract, ScriptExecutable, Nodeable {
 	private boolean isStatic, isAbstract;
 	private ScriptGroup body;
@@ -92,15 +94,13 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 		return this.isStatic;
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Unparsed Script-Function (" + ScriptFunction.getDisplayableFunctionName(this.name) + ")");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode("Static: " + this.isStatic);
 		assert Debugger.addSnapNode("Body", this.body);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptValue_Variable implements ScriptValue, Nodeable {
 
 	public static ScriptValue createUninitializedObject(ScriptEnvironment env, ScriptValueType type) {
@@ -93,7 +95,7 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Script Variable (" + this.getType() + ")");
 		if (this.value != null) {
 			assert Debugger.addSnapNode("Referenced element (" + this.value.getType() + ")", this.value);
@@ -114,7 +116,6 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 			}
 		}
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public ScriptValue setReference(Referenced ref, ScriptValue value) throws Exception_Nodeable {

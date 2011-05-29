@@ -1,6 +1,8 @@
 package com.dafrito.rfe;
+
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class ScriptGroup extends ScriptElement implements Nodeable {
 	public enum GroupType {
@@ -25,7 +27,7 @@ public class ScriptGroup extends ScriptElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		switch (this.type) {
 		case curly:
 			assert Debugger.openNode(DebugString.SCRIPTGROUPCURLY);
@@ -38,7 +40,6 @@ public class ScriptGroup extends ScriptElement implements Nodeable {
 		}
 		assert Debugger.addSnapNode(DebugString.ELEMENTS, this.elements);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setElements(List<Object> list) {

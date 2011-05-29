@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement implements ScriptValue, ScriptExecutable, Nodeable {
 	private ScriptValue lhs, rhs;
 	private ScriptOperatorType operator;
@@ -54,15 +56,13 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Combo Boolean Expression");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addSnapNode("Left side", this.lhs);
 		assert Debugger.addSnapNode("Right side", this.rhs);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

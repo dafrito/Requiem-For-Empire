@@ -78,15 +78,13 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 		return this.getType().equals(type);
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Boolean Expression (" + ScriptOperator.getName(this.comparison) + ")");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addSnapNode("Left hand", this.lhs);
 		assert Debugger.addSnapNode("Right hand", this.rhs);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

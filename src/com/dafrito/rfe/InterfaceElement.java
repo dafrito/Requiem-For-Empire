@@ -1,9 +1,11 @@
 package com.dafrito.rfe;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConvertible {
 	private Stylesheet classStylesheet, uniqueStylesheet;
@@ -217,14 +219,12 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 		return false;
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Interface Element");
 		assert Debugger.addSnapNode("Unique Stylesheet", this.uniqueStylesheet);
 		assert Debugger.addSnapNode("Class Stylesheet", this.classStylesheet);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

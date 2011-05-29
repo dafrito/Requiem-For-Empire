@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptValue_Faux implements Nodeable, ScriptValue {
 	private final ScriptEnvironment environment;
 	private final ScriptValueType type;
@@ -35,9 +37,8 @@ public class ScriptValue_Faux implements Nodeable, ScriptValue {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addNode("Faux Script-Value (" + this.getType() + ")");
-		return true;
 	}
 
 	protected void setType(ScriptValueType type) {

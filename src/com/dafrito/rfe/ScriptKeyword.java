@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptKeyword extends ScriptElement implements Nodeable {
 	// String<-->Keyword functions
 	public static ScriptKeywordType getType(String string) {
@@ -141,11 +143,10 @@ public class ScriptKeyword extends ScriptElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("ScriptKeyword (" + this.getType() + ")");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

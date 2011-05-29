@@ -2,6 +2,8 @@ package com.dafrito.rfe;
 import java.util.Collections;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 
 public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 	private final ScriptEnvironment environment;
@@ -133,7 +135,7 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 
 	// Remaining unimplemented ScriptValue_Abstract functions
 	@Override
-	public abstract boolean nodificate();
+	public abstract void nodificate();
 
 	public abstract void setConstructing(boolean constructing) throws Exception_Nodeable;
 

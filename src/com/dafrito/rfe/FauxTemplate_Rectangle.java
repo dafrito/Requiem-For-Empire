@@ -3,6 +3,8 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implements ScriptConvertible, Nodeable {
 	public static final String RECTANGLESTRING = "Rectangle";
 
@@ -68,10 +70,9 @@ public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implem
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Rectangle Faux Template");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }

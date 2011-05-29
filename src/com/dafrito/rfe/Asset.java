@@ -1,11 +1,12 @@
 package com.dafrito.rfe;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
-
 
 public class Asset implements Nodeable, ScriptConvertible {
 	private ScriptEnvironment environment;
@@ -45,9 +46,8 @@ public class Asset implements Nodeable, ScriptConvertible {
 		return this.properties.get(name);
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Asset");
 		assert Debugger.addSnapNode("Location", this.getLocation());
 		if (this.aces != null && this.aces.size() > 0) {
@@ -59,7 +59,6 @@ public class Asset implements Nodeable, ScriptConvertible {
 			assert Debugger.addSnapNode("Properties (" + this.properties.size() + " properties)", this.properties);
 		}
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setLocation(Point location) {

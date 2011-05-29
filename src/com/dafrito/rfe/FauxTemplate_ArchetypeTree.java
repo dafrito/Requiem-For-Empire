@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String ARCHETYPETREESTRING = "ArchetypeTree";
@@ -80,12 +82,11 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Archetype Tree Faux Script-Element");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode(this.tree);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setTree(ArchetypeMapNode tree) {

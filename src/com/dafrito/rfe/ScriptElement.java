@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptElement implements Nodeable, Referenced {
 	private final ScriptEnvironment environment;
 	private final int lineNumber, originalLineOffset, length;
@@ -97,12 +99,11 @@ public class ScriptElement implements Nodeable, Referenced {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		if (this.getLineNumber() == -1) {
 			assert Debugger.addNode("ScriptElement: No information provided");
-			return true;
+			return;
 		}
 		assert Debugger.addSnapNode("ScriptElement (" + this.getFilename() + " @ " + this.getLineNumber() + ")", Debugger.getString(DebugString.ORIGINALSTRING) + this.getOriginalString() + "'");
-		return true;
 	}
 }

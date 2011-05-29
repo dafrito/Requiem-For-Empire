@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 class RiffInterface_ClickEvent extends RiffInterface_MouseEvent implements Nodeable {
 	private final int clicks;
 
@@ -13,12 +15,11 @@ class RiffInterface_ClickEvent extends RiffInterface_MouseEvent implements Nodea
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Mouse-Click Events", "Click Event");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode("Clicks: " + this.clicks);
 		assert Debugger.closeNode();
-		return true;
 	}
 }
 
@@ -46,13 +47,12 @@ class RiffInterface_DragEvent extends RiffInterface_MouseEvent implements Nodeab
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Mouse-Drag Events", "Mouse-Drag Event");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode("X-Offset: " + this.getXOffset());
 		assert Debugger.addNode("Y-Offset: " + this.getYOffset());
 		assert Debugger.closeNode();
-		return true;
 	}
 }
 
@@ -62,11 +62,10 @@ class RiffInterface_MouseDownEvent extends RiffInterface_MouseEvent implements N
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Mouse-Down Events", "Mouse-Down Event");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }
 
@@ -93,13 +92,12 @@ class RiffInterface_MouseEvent implements Nodeable, RiffInterface_Event {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Generic Mouse Event");
 		assert Debugger.addNode("X: " + this.getX());
 		assert Debugger.addNode("Y: " + this.getY());
 		assert Debugger.addNode("Button: " + this.getButton());
 		assert Debugger.closeNode();
-		return true;
 	}
 }
 
@@ -113,10 +111,9 @@ class RiffInterface_MouseUpEvent extends RiffInterface_MouseEvent implements Nod
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Mouse-Up Events", "Mouse-Up Event");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }

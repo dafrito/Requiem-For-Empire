@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.util.Strings;
 
 public class Debugger {

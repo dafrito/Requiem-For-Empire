@@ -1,6 +1,6 @@
 package com.dafrito.rfe;
-import java.util.List;
 
+import java.util.List;
 
 public class ScriptFunction_Constructor extends ScriptFunction {
 	private ScriptEnvironment environment;
@@ -26,10 +26,9 @@ public class ScriptFunction_Constructor extends ScriptFunction {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Constructor-Function Script-Element");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }

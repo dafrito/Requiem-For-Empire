@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptValue_Null extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
 	public ScriptValue_Null(Referenced ref) {
 		super(ref);
@@ -31,11 +33,9 @@ public class ScriptValue_Null extends ScriptElement implements ScriptExecutable,
 		return true;
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addNode("Null Script-Value");
-		return true;
 	}
 
 	@Override

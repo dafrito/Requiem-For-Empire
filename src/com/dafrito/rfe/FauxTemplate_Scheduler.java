@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, ScriptConvertible {
 	public static final String SCHEDULERSTRING = "Scheduler";
@@ -102,12 +104,11 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Scheduler Faux Template");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode(this.scheduler);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setScheduler(Scheduler scheduler) {

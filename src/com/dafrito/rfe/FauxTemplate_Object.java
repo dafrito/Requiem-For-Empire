@@ -3,6 +3,8 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static ScriptKeyword OBJECT;
 	public static final String OBJECTSTRING = "Object";
@@ -58,10 +60,9 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Object Faux Template");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }

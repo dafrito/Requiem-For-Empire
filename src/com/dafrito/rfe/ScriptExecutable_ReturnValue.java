@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptExecutable_ReturnValue extends ScriptElement implements ScriptExecutable, Returnable, Nodeable {
 	private ScriptValue value;
 
@@ -22,13 +24,11 @@ public class ScriptExecutable_ReturnValue extends ScriptElement implements Scrip
 		return this.value.getValue();
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Returnable Script-Value");
 		assert Debugger.addSnapNode("Returned Value", this.value);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	// Returnabled implementation

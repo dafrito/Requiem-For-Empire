@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String COLORSTRING = "Color";
@@ -178,16 +180,15 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Color Faux Template");
-		assert super.nodificate();
+		super.nodificate();
 		if (this.color == null) {
 			assert Debugger.addNode("Color: null");
 		} else {
 			assert Debugger.addNode("Color: " + Stylesheets.getColorName(this.color));
 		}
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setColor(java.awt.Color color) {

@@ -1,6 +1,6 @@
 package com.dafrito.rfe;
-import java.util.List;
 
+import java.util.List;
 
 public class ScriptExecutable_IfStatement extends ScriptElement implements ScriptExecutable, Returnable {
 	private ScriptValue testingValue;
@@ -48,15 +48,13 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 		return this.returnValue;
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Script If-Statement");
 		assert Debugger.addSnapNode("Testing Expression", this.testingValue);
 		assert Debugger.addSnapNode("Expressions", this.expressions);
 		assert Debugger.addSnapNode("Else statement", this.elseStatement);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setElseStatement(ScriptExecutable_IfStatement statement) {

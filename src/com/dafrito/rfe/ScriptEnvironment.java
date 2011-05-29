@@ -8,6 +8,8 @@ import java.util.Stack;
 
 import javax.swing.JOptionPane;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptEnvironment implements Nodeable {
 	private Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)
 	private Map<String, ScriptTemplate_Abstract> templates = new HashMap<String, ScriptTemplate_Abstract>(); // Map of object templates(Short,ScriptTemplate)
@@ -220,12 +222,11 @@ public class ScriptEnvironment implements Nodeable {
 
 	// Miscellaneous functions
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Script Environment");
 		assert Debugger.addSnapNode("Templates: " + this.templates.size() + " templates(s)", this.templates);
 		assert Debugger.addSnapNode("Thread Stacks", this.threads);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void reset() {
@@ -345,13 +346,12 @@ class ThreadStack implements Nodeable {
 	}
 
 	@Override
-	public synchronized boolean nodificate() {
+	public synchronized void nodificate() {
 		assert Debugger.openNode("Thread Stack");
 		assert Debugger.addNode(this.variableTable);
 		assert Debugger.addSnapNode("Object stack (" + this.objectStack.size() + ")", this.objectStack);
 		assert Debugger.addSnapNode("Function stack (" + this.functionStack.size() + ")", this.functionStack);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public synchronized void retreatNestedStack() {
@@ -408,7 +408,7 @@ class VariableStack implements Nodeable {
 	}
 
 	@Override
-	public synchronized boolean nodificate() {
+	public synchronized void nodificate() {
 		assert Debugger.openNode("Variable Stack");
 		assert Debugger.openNode("Nested Stacks (" + this.nestedStacks.size() + " stack(s))");
 		for (Map<String, ScriptValue_Variable> map : this.nestedStacks) {
@@ -418,7 +418,6 @@ class VariableStack implements Nodeable {
 		}
 		assert Debugger.closeNode();
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public synchronized void retreatNestedStack() {
@@ -455,11 +454,10 @@ class VariableTable implements Nodeable {
 	}
 
 	@Override
-	public synchronized boolean nodificate() {
+	public synchronized void nodificate() {
 		assert Debugger.openNode("Variable Table");
 		assert Debugger.addSnapNode("Variable Stacks (" + this.stacks.size() + " stack(s))", this.stacks);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public synchronized void retreatNestedStack() {

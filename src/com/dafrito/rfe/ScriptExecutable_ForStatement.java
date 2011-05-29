@@ -1,6 +1,8 @@
 package com.dafrito.rfe;
+
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class ScriptExecutable_ForStatement extends ScriptElement implements ScriptExecutable, Returnable, Nodeable {
 	private ScriptExecutable initializer, tester, repeater;
@@ -55,16 +57,14 @@ public class ScriptExecutable_ForStatement extends ScriptElement implements Scri
 		return this.returnValue;
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Script For-Statement");
 		assert Debugger.addSnapNode("Initializer", this.initializer);
 		assert Debugger.addSnapNode("Boolean expression", this.tester);
 		assert Debugger.addSnapNode("Repeating expression", this.repeater);
 		assert Debugger.addSnapNode("Expressions", this.expressions);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	// Returnable implementation

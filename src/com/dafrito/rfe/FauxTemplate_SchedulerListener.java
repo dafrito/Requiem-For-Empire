@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class FauxTemplate_SchedulerListener extends FauxTemplate implements Nodeable {
 	public static final String SCHEDULERLISTENERSTRING = "SchedulerListener";
@@ -46,12 +48,10 @@ public class FauxTemplate_SchedulerListener extends FauxTemplate implements Node
 		return new FauxTemplate_SchedulerListener(this.getEnvironment(), this.getType());
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Scheduler listener faux template");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }

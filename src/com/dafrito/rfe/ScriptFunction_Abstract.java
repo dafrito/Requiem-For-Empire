@@ -26,7 +26,7 @@ public interface ScriptFunction_Abstract {
 
 	public boolean isStatic();
 
-	public boolean nodificate();
+	public void nodificate();
 
 	public void setReturnValue(Referenced element, ScriptValue value) throws Exception_Nodeable;
 }

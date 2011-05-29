@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 
@@ -290,7 +291,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 
 	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Discrete Region (" + this.points.size() + " point(s))");
 		assert Debugger.addSnapNode("Points (" + this.points.size() + " point(s))", this.points);
 		if (this.properties.size() == 1) {
@@ -327,7 +328,6 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 		assert Debugger.addNode("Interior point: " + this.interiorPoint);
 		assert Debugger.closeNode();
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	private void recalculateExtrema() {

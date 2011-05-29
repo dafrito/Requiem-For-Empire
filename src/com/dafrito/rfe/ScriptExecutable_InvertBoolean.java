@@ -35,14 +35,12 @@ public class ScriptExecutable_InvertBoolean extends ScriptElement implements Scr
 		return this.getType().equals(type);
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Boolean Inverter");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addSnapNode("Value", this.value);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

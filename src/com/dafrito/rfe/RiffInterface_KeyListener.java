@@ -1,16 +1,17 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 class KeyEvent_KeyDown extends RiffInterface_KeyEvent implements Nodeable {
 	public KeyEvent_KeyDown(int key) {
 		super(key);
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Key Events", "Key-Down Event");
 		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }
 
@@ -20,11 +21,10 @@ class KeyEvent_KeyUp extends RiffInterface_KeyEvent implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Key Events", "Key-Up Event");
 		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }
 
@@ -40,9 +40,8 @@ class RiffInterface_KeyEvent implements Nodeable, RiffInterface_Event {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addNode("Key code: " + this.key);
-		return true;
 	}
 }
 

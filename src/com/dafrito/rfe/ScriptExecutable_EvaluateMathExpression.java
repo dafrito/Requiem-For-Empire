@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptExecutable_EvaluateMathExpression extends ScriptElement implements ScriptValue, ScriptExecutable, Nodeable {
 	private ScriptValue lhs, rhs;
 	private ScriptOperatorType operator;
@@ -66,14 +68,12 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 		return this.lhs.isConvertibleTo(type);
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Mathematical Expression Evaluator (" + ScriptOperator.getName(this.operator) + ")");
 		assert Debugger.addNode("Left", this.lhs);
 		assert Debugger.addNode("Right", this.rhs);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

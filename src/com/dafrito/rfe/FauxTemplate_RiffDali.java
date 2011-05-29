@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 	public static final String RIFFDALISTRING = "RiffDali";
@@ -54,10 +56,9 @@ public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("RiffDali Faux Template");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }

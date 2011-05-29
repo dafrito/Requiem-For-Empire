@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptOperator extends ScriptElement implements Nodeable {
 	public static String getName(ScriptOperatorType operatorCode) {
 		switch (operatorCode) {
@@ -178,11 +180,10 @@ public class ScriptOperator extends ScriptElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode(Debugger.getString(DebugString.SCRIPTOPERATOR) + this.getName());
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

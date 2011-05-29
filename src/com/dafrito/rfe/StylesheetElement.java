@@ -1,6 +1,8 @@
 package com.dafrito.rfe;
+
 import java.awt.Color;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 class StylesheetAbsoluteHeightElement extends StylesheetHeightElement implements Nodeable {
 	private Integer magnitude;
@@ -20,11 +22,10 @@ class StylesheetAbsoluteHeightElement extends StylesheetHeightElement implements
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Absolute Height Stylesheet-Element");
 		assert Debugger.addNode("Magnitude: " + this.magnitude);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setMagnitude(int magnitude) {
@@ -50,11 +51,10 @@ class StylesheetAbsoluteWidthElement extends StylesheetWidthElement implements N
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Absolute Width Stylesheet-Element");
 		assert Debugger.addNode("Width: " + this.magnitude);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setMagnitude(int magnitude) {
@@ -80,11 +80,10 @@ class StylesheetBackgroundColorElement extends StylesheetElement implements Node
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Background Color Stylesheet-Element");
 		assert Debugger.addNode("Color: " + Stylesheets.getColorName(this.color));
 		assert Debugger.closeNode();
-		return true;
 	}
 }
 
@@ -117,13 +116,12 @@ class StylesheetBorderElement extends StylesheetElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Border Stylesheet-Element");
 		assert Debugger.addNode("Magnitude: " + this.magnitude);
 		assert Debugger.addNode("Style: " + this.style);
 		assert Debugger.addNode("Color: " + Stylesheets.getColorName(this.color));
 		assert Debugger.closeNode();
-		return true;
 	}
 }
 
@@ -148,9 +146,8 @@ class StylesheetColorElement extends StylesheetElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addSnapNode("Color Stylesheet-Element", "Color: " + Stylesheets.getColorName(this.color));
-		return true;
 	}
 }
 
@@ -230,9 +227,8 @@ class StylesheetFontElement extends StylesheetElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addSnapNode("Font Stylesheet-Element", "Font Name: " + this.fontName);
-		return true;
 	}
 }
 
@@ -253,9 +249,8 @@ class StylesheetFontSizeElement extends StylesheetElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addSnapNode("Font Size Stylesheet-Element", "Font size: " + this.fontSize);
-		return true;
 	}
 }
 
@@ -276,9 +271,8 @@ class StylesheetFontStyleElement extends StylesheetElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addSnapNode("Font Style Stylesheet-Element", "Font-Size: " + Stylesheets.getFontStyleName(this.style));
-		return true;
 	}
 }
 
@@ -305,9 +299,8 @@ class StylesheetMarginElement extends StylesheetElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addSnapNode("Margin Stylesheet-Element", "Magnitude: " + this.magnitude);
-		return true;
 	}
 }
 
@@ -328,9 +321,8 @@ class StylesheetPaddingElement extends StylesheetElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addSnapNode("Padding Stylesheet-Element", "Magnitude: " + this.magnitude);
-		return true;
 	}
 }
 
@@ -352,9 +344,8 @@ class StylesheetPercentageHeightElement extends StylesheetHeightElement implemen
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addSnapNode("Percentage Height Stylesheet-Element", "Percentage: " + this.magnitude);
-		return true;
 	}
 
 	public void setMagnitude(double magnitude) {
@@ -380,9 +371,8 @@ class StylesheetPercentageWidthElement extends StylesheetWidthElement implements
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.addSnapNode("Percentage Width Stylesheet-Element", "Percentage: " + this.magnitude);
-		return true;
 	}
 
 	public void setMagnitude(double magnitude) {

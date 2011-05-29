@@ -1,9 +1,11 @@
 package com.dafrito.rfe;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, ScriptConvertible {
 	private Map<StylesheetElementType, StylesheetElement> styleElements = new HashMap<StylesheetElementType, StylesheetElement>(); // element code, element
@@ -57,9 +59,8 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, S
 		return this.isUnique;
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		if (this.name == null) {
 			assert Debugger.openNode("Anonymous stylesheet (" + this.styleElements.size() + " element(s))");
 		} else {
@@ -67,7 +68,6 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, S
 		}
 		assert Debugger.addNode(this.styleElements.values());
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setName(String name) {

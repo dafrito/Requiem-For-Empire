@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class Terrain implements Krumflex, ScriptConvertible, Nodeable {
 	private ScriptEnvironment environment;
 	private double brushDensity, waterDepth, temperature, groundCohesion, elevation;
@@ -90,7 +92,7 @@ public class Terrain implements Krumflex, ScriptConvertible, Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Terrain");
 		assert Debugger.addNode("Brush Density: " + this.getBrushDensity() + " (Weight: " + this.getBrushDensityWeight() + ")");
 		assert Debugger.addNode("Elevation: " + this.getElevation() + " (Weight: " + this.getElevationWeight() + ")");
@@ -98,7 +100,6 @@ public class Terrain implements Krumflex, ScriptConvertible, Nodeable {
 		assert Debugger.addNode("Temperature: " + this.getTemperature() + " (Weight: " + this.getTemperatureWeight() + ")");
 		assert Debugger.addNode("Water Depth: " + this.getWaterDepth() + " (Weight: " + this.getWaterDepthWeight() + ")");
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setBrushDensity(double brushDensity) {

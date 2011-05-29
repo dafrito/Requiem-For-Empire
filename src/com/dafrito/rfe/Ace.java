@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class Ace implements ScriptConvertible, Nodeable {
 	private Archetype archetype;
 	private double efficiency;
@@ -31,12 +33,11 @@ public class Ace implements ScriptConvertible, Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Ace");
 		assert Debugger.addNode(this.archetype);
 		assert Debugger.addNode("Efficiency: " + this.efficiency);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setEfficiency(double efficiency) {

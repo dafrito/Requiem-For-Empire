@@ -1,5 +1,6 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 
 public class IntersectionPoint implements Nodeable {
@@ -28,11 +29,10 @@ public class IntersectionPoint implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Intersection Point");
 		assert Debugger.addNode("Point: " + this.point);
 		assert Debugger.addNode("Tangent: " + this.isTangent);
 		assert Debugger.closeNode();
-		return true;
 	}
 }

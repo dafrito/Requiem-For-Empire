@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class InterfaceElement_Rectangle extends InterfaceElement implements Nodeable {
 	public InterfaceElement_Rectangle(ScriptEnvironment env, Stylesheet uniqueStyle, Stylesheet classStyle) {
@@ -9,11 +11,10 @@ public class InterfaceElement_Rectangle extends InterfaceElement implements Node
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Rectangle Interface Element");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

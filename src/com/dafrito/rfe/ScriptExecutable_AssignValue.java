@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptExecutable_AssignValue extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
 	private ScriptValue variable;
 	private ScriptValue value;
@@ -52,13 +54,12 @@ public class ScriptExecutable_AssignValue extends ScriptElement implements Scrip
 
 	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Assignment Script Expression");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addSnapNode("Left variable", this.variable);
 		assert Debugger.addSnapNode("Right value", this.value);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

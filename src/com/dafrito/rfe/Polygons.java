@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.points.Point_Spherical;
@@ -76,13 +77,12 @@ class PointSideStruct implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Point-Side Test Results");
 		assert Debugger.addSnapNode("Left-side Points (Weight: " + this.leftWeight + "): " + this.left.size() + " element(s)", this.left);
 		assert Debugger.addSnapNode("Right-side Points (Weight: " + this.rightWeight + "): " + this.right.size() + " element(s)", this.right);
 		assert Debugger.addSnapNode("Indeterminate Points: " + this.indeterminates.size() + " element(s)", this.indeterminates);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void validate() {
@@ -123,12 +123,11 @@ class RiffIntersectionPoint implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Intersection-Point Struct");
 		assert Debugger.addNode("Intersection-Point: " + this.intersect);
 		assert Debugger.addNode("Point-list offset of intersection: " + this.location);
 		assert Debugger.closeNode();
-		return true;
 	}
 }
 

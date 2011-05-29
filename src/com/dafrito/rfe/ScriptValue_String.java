@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptValue_String implements ScriptValue, ScriptConvertible, Nodeable {
 	private String value;
 	private final ScriptEnvironment environment;
@@ -50,11 +52,10 @@ public class ScriptValue_String implements ScriptValue, ScriptConvertible, Nodea
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("String Script-Value (" + this.getStringValue().length() + " character(s): " + this.getStringValue());
 		assert Debugger.addSnapNode("Reference", super.toString());
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

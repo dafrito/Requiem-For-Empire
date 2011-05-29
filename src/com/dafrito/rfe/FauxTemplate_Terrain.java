@@ -3,6 +3,8 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, ScriptConvertible {
 	public static final String TERRAINSTRING = "Terrain";
 	private Terrain terrain;
@@ -190,12 +192,11 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Terrain Faux Template");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode(this.terrain);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setTerrain(Terrain terrain) {

@@ -1,8 +1,10 @@
 package com.dafrito.rfe;
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class InterfaceElement_Label extends InterfaceElement implements Nodeable {
 	private String string;
@@ -34,12 +36,11 @@ public class InterfaceElement_Label extends InterfaceElement implements Nodeable
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Label Interface Element");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode("Label: " + this.string);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

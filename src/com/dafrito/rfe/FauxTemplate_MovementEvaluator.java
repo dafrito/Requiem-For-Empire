@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class FauxTemplate_MovementEvaluator extends FauxTemplate implements Nodeable {
 	public static final String MOVEMENTEVALUATORSTRING = "MovementEvaluator";
@@ -46,12 +48,10 @@ public class FauxTemplate_MovementEvaluator extends FauxTemplate implements Node
 		return new FauxTemplate_MovementEvaluator(this.getEnvironment(), this.getType());
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Movement evaluator faux template");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }

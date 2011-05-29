@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptLine extends ScriptElement implements Nodeable {
 	private String string;
 
@@ -18,11 +20,10 @@ public class ScriptLine extends ScriptElement implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode(Debugger.getString(DebugString.SCRIPTLINE) + this.string);
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setString(String string) {

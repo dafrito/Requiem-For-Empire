@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 	public static boolean areParametersConvertible(List<ScriptValue> source, List<ScriptValue> list) {
 		assert Debugger.openNode("Parameter-Convertibility Tests", "Parameter-Convertibility Test");
@@ -145,7 +147,7 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Script-Function (Returning " + this.type.getName() + ")");
 		if (this.params != null && this.params.size() > 0) {
 			assert Debugger.addSnapNode("Parameters: " + this.params.size() + " parameter(s)", this.params);
@@ -170,7 +172,6 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 		assert Debugger.addNode("Static: " + this.isStatic);
 		assert Debugger.addNode("Return Value Reference: " + this.returnValue);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

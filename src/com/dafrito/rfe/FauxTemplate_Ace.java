@@ -1,7 +1,9 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String ACESTRING = "Ace";
@@ -83,12 +85,11 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible,
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Ace Faux Script-Element");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.addNode(this.ace);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void setAce(Ace ace) {

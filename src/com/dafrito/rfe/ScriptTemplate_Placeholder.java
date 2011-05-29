@@ -1,6 +1,8 @@
 package com.dafrito.rfe;
+
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 
 public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 	private String name;
@@ -143,13 +145,11 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 		return this.getTemplate().isObject();
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Template Placeholder (" + this.name + ")");
 		assert Debugger.addSnapNode("Referenced Template", this.getTemplate());
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

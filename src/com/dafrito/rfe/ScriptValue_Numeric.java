@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible, Nodeable {
 	// Static functions
 	public static boolean testNumericValueConversion(ScriptValueType base, ScriptValueType cast) {
@@ -298,7 +300,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible, Node
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		switch (this.getType().getKeywordType()) {
 		case SHORT:
 			assert Debugger.openNode(DebugString.NUMERICSCRIPTVALUESHORT);
@@ -325,7 +327,6 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible, Node
 		}
 		assert Debugger.addNode("Reference: " + this);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public ScriptValue setNumericValue(Number value) {

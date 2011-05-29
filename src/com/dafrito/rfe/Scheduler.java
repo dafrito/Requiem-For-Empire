@@ -9,6 +9,8 @@ import java.util.TreeSet;
 
 import javax.swing.Timer;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 class ScheduledEvent implements Comparable<ScheduledEvent>, Nodeable {
 	private Long time;
 	private Asset asset;
@@ -38,12 +40,11 @@ class ScheduledEvent implements Comparable<ScheduledEvent>, Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Scheduled Event (" + this.time + ")");
 		assert Debugger.addNode(this.asset);
 		assert Debugger.addSnapNode("Listener", this.listener);
 		assert Debugger.closeNode();
-		return true;
 	}
 }
 
@@ -127,7 +128,7 @@ public class Scheduler implements ActionListener, ScriptConvertible, Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Scheduler");
 		assert Debugger.addNode("Compression: " + this.compression);
 		assert Debugger.addNode("Game-Time (In seconds from start): " + this.gameTime);
@@ -135,7 +136,6 @@ public class Scheduler implements ActionListener, ScriptConvertible, Nodeable {
 		assert Debugger.addNode("Default listener: " + this.defaultListener);
 		assert Debugger.addSnapNode("Events (" + this.events.size() + " event(s))", this.events);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	public void schedule(long time, Asset asset, ScriptTemplate_Abstract listener) {

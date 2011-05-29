@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptValue, Nodeable, ScriptConvertible {
 	public static ScriptTemplate createTemplate(ScriptEnvironment env, ScriptValueType type, ScriptValueType extended, List<ScriptValueType> interfaces, boolean isAbstract) {
 		return new ScriptTemplate(env, type, extended, interfaces, isAbstract);
@@ -401,9 +403,8 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		return this.isObject;
 	}
 
-	// Abstract nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		if (this.isObject) {
 			assert Debugger.openNode("Object (" + this.getType() + ")");
 		} else {
@@ -438,7 +439,6 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 			assert Debugger.addNode("Constructing: " + this.isConstructing);
 		}
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

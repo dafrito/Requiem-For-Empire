@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable implements ScriptExecutable, ScriptValue, Nodeable, Referenced {
 	private String name;
 	private ScriptValue template;
@@ -65,16 +67,14 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
-	// Nodeable implementation
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Variable-Placeholder (" + this.name + ")");
-		assert super.nodificate();
+		super.nodificate();
 		if (this.template != null) {
 			assert Debugger.addSnapNode("Reference Template", this.template);
 		}
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

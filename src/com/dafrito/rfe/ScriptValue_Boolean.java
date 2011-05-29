@@ -1,5 +1,7 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue, Nodeable {
 	private boolean value;
 	private final ScriptEnvironment environment;
@@ -50,11 +52,10 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue, Node
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Boolean Script Value (" + this.getBooleanValue() + ")");
 		assert Debugger.addNode("Reference: " + this);
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

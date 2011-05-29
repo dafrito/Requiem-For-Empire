@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
+
 public abstract class Exception_Nodeable extends Exception implements Nodeable {
 	/**
 	 * 
@@ -99,11 +101,11 @@ public abstract class Exception_Nodeable extends Exception implements Nodeable {
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		boolean debug = false;
 		assert debug = true;
 		if (!debug) {
-			return true;
+			return;
 		}
 		Debugger.openNode("Exceptions and Errors", this.getName());
 		if (this.object != null) {
@@ -137,7 +139,6 @@ public abstract class Exception_Nodeable extends Exception implements Nodeable {
 			assert Debugger.closeNode();
 		}
 		assert Debugger.closeNode();
-		return true;
 	}
 
 	@Override

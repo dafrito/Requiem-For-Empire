@@ -1,9 +1,10 @@
 package com.dafrito.rfe;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point_Path;
-
 
 public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConvertible, Nodeable {
 	public static final String PATHSTRING = "Path";
@@ -69,10 +70,9 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 	}
 
 	@Override
-	public boolean nodificate() {
+	public void nodificate() {
 		assert Debugger.openNode("Path Faux Script-Element");
-		assert super.nodificate();
+		super.nodificate();
 		assert Debugger.closeNode();
-		return true;
 	}
 }
