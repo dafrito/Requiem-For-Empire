@@ -7,12 +7,12 @@ class PainterThread extends Thread {
 	private Interface riffInterface;
 	private static int threadNum = 0;
 	private volatile boolean shouldDraw = true;
-	private static int delay;
+	private int delay;
 
 	public PainterThread(Interface riffInterface, int delay) {
 		super("Painter " + threadNum++);
 		this.riffInterface = riffInterface;
-		PainterThread.delay = delay;
+		this.delay = delay;
 	}
 
 	@Override
@@ -24,6 +24,11 @@ class PainterThread extends Thread {
 				this.riffInterface.flushQueue();
 				this.riffInterface.updateBufferedImage();
 				this.riffInterface.repaint();
+
+				int delay = this.delay;
+				if (!Debugger.getDebugger().isIgnoringThisThread()) {
+					delay = 1000;
+				}
 				Thread.sleep(delay);
 			}
 		} catch (RuntimeException ex) {

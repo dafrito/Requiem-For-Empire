@@ -61,13 +61,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		this.addMouseMotionListener(this);
 		this.buffer = (BufferedImage) this.createImage(this.frame.getContentPane().getWidth(), this.frame.getContentPane().getHeight());
 		this.backBuffer = (BufferedImage) this.createImage(this.frame.getContentPane().getWidth(), this.frame.getContentPane().getHeight());
-		boolean flag = false;
-		assert flag = true;
-		if (flag) {
-			this.painter = new PainterThread(this, 200);
-		} else {
-			this.painter = new PainterThread(this, 1000 / 60);
-		}
+		this.painter = new PainterThread(this, 1000 / 80);
 		this.painter.start();
 	}
 
