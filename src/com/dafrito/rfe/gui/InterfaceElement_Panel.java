@@ -33,6 +33,13 @@ import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.style.Stylesheet;
 
+/**
+ * A scriptable panel that draws {@link DiscreteRegion} and {@link Asset}
+ * objects.
+ * 
+ * @author Aaron Faanes
+ * @see FauxTemplate_RiffDali
+ */
 public class InterfaceElement_Panel extends InterfaceElement implements Interface_Container, RiffInterface_MouseListener, Nodeable, ScriptConvertible {
 	private List<GraphicalElement> elements;
 	private Point_Euclidean offset;
