@@ -70,7 +70,7 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Mathematical Expression Evaluator (" + ScriptOperator.getName(this.operator) + ")");
+		assert Debugger.openNode("Mathematical Expression Evaluator (" + this.operator + ")");
 		assert Debugger.addNode("Left", this.lhs);
 		assert Debugger.addNode("Right", this.rhs);
 		assert Debugger.closeNode();

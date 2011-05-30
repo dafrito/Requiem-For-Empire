@@ -1059,7 +1059,7 @@ public class Parser {
 	public static List<Object> parseOperator(ScriptLine line, String operator) {
 		int location = line.getString().indexOf(operator);
 		if (location != -1) {
-			assert Debugger.openNode("Operator Parsing", ScriptOperator.getName(ScriptOperator.getType(operator)) + " found in script-line: " + line.getString());
+			assert Debugger.openNode("Operator Parsing", ScriptOperatorType.parse(operator) + " found in script-line: " + line.getString());
 			assert Debugger.addNode(line);
 			List<Object> list = new LinkedList<Object>();
 			String string = line.getString().substring(0, location).trim();
@@ -1068,7 +1068,7 @@ public class Parser {
 				list.add(line);
 				line.setString(string);
 			}
-			list.add(new ScriptOperator(new ScriptLine(operator, line, location), ScriptOperator.getType(operator)));
+			list.add(new ScriptOperator(new ScriptLine(operator, line, location), ScriptOperatorType.parse(operator)));
 			string = originalString.substring(location + operator.length()).trim();
 			if (string.length() > 0) {
 				list.add(new ScriptLine(string, line, (short) (location + operator.length())));

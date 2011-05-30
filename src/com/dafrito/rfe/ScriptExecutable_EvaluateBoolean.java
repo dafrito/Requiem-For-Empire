@@ -80,7 +80,7 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Boolean Expression (" + ScriptOperator.getName(this.comparison) + ")");
+		assert Debugger.openNode("Boolean Expression (" + this.comparison + ")");
 		super.nodificate();
 		assert Debugger.addSnapNode("Left hand", this.lhs);
 		assert Debugger.addSnapNode("Right hand", this.rhs);

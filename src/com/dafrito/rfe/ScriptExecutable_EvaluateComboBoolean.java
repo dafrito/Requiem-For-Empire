@@ -21,7 +21,7 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue execute() throws Exception_Nodeable {
-		assert Debugger.openNode("Combo-Boolean Evaluations", "Evaluating Combo-Boolean Expression (" + ScriptOperator.getName(this.operator) + ")");
+		assert Debugger.openNode("Combo-Boolean Evaluations", "Evaluating Combo-Boolean Expression (" + this.operator + ")");
 		assert Debugger.addNode(this);
 		if (this.lhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
 			throw new Exception_Nodeable_ClassCast(this, this.lhs, ScriptValueType.BOOLEAN);

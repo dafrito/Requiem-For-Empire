@@ -49,7 +49,7 @@ public class ScriptExecutable_EvalAssignMathExpression extends ScriptElement imp
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("'Evaluate and Assign' mathematical expression (" + ScriptOperator.getName(this.operation) + ")");
+		assert Debugger.openNode("'Evaluate and Assign' mathematical expression (" + this.operation + ")");
 		assert Debugger.addSnapNode("Left side", this.left);
 		assert Debugger.addSnapNode("Right side", this.right);
 		assert Debugger.closeNode();
