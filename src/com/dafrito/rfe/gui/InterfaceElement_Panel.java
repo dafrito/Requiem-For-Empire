@@ -3,7 +3,6 @@ package com.dafrito.rfe.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -144,7 +143,7 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 		Set<DiscreteRegion> regions;
 		this.graphics = g2d;
 		if (this.terrestrial.getTree() == null) {
-			regions = new HashSet<DiscreteRegion>();
+			regions = Collections.emptySet();
 		} else {
 			regions = this.terrestrial.getTree().getRegionList();
 		}
