@@ -197,81 +197,60 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 			sheet.setUnique(true);
 		}
 		StylesheetElement element = this.getUniqueStylesheet().getElement(code);
-		if (code == StylesheetElementType.WIDTH) {
-			if (element != null) {
-				return element;
-			}
+		if (element != null) {
+			return element;
+		}
+		switch (code) {
+		case WIDTH:
 			element = new StylesheetPercentageWidthElement(1);
 			sheet.addElement(code, element);
 			return element;
-		} else if (code == StylesheetElementType.HEIGHT) {
-			if (element != null) {
-				return element;
-			}
+		case HEIGHT:
 			element = new StylesheetPercentageHeightElement(1);
 			sheet.addElement(code, element);
 			return element;
-		} else if (code == StylesheetElementType.COLOR) {
-			if (element != null) {
-				return element;
-			}
+		case COLOR:
 			element = new StylesheetColorElement("white");
 			sheet.addElement(code, element);
 			return element;
-		} else if (code == StylesheetElementType.FONTNAME) {
-			if (element != null) {
-				return element;
-			}
+		case FONTNAME:
 			element = new StylesheetFontElement("Lucida Sans Unicode");
 			sheet.addElement(code, element);
 			return element;
-		} else if (code == StylesheetElementType.FONTSIZE) {
-			if (element != null) {
-				return element;
-			}
+		case FONTSIZE:
 			element = new StylesheetFontSizeElement(18);
 			sheet.addElement(code, element);
 			return element;
-		} else if (code == StylesheetElementType.FONTSTYLE) {
-			if (element != null) {
-				return element;
-			}
+		case FONTSTYLE:
 			element = new StylesheetFontStyleElement(Font.PLAIN);
 			sheet.addElement(code, element);
 			return element;
-			// Borders
-		} else if (code == StylesheetElementType.BORDERBOTTOM || code == StylesheetElementType.BORDERTOP || code == StylesheetElementType.BORDERLEFT || code == StylesheetElementType.BORDERRIGHT) {
-			if (element != null) {
-				return element;
-			}
+		case BORDERBOTTOM:
+		case BORDERTOP:
+		case BORDERLEFT:
+		case BORDERRIGHT:
 			element = new StylesheetBorderElement(0, ScriptKeywordType.solid, Color.BLACK);
 			sheet.addElement(code, element);
 			return element;
-			// Margins
-		} else if (code == StylesheetElementType.MARGINLEFT || code == StylesheetElementType.MARGINRIGHT || code == StylesheetElementType.MARGINTOP || code == StylesheetElementType.MARGINBOTTOM) {
-			if (element != null) {
-				return element;
-			}
+		case MARGINBOTTOM:
+		case MARGINTOP:
+		case MARGINLEFT:
+		case MARGINRIGHT:
 			element = new StylesheetMarginElement(0);
 			sheet.addElement(code, element);
 			return element;
-			// Padding
-		} else if (code == StylesheetElementType.PADDINGLEFT || code == StylesheetElementType.PADDINGRIGHT || code == StylesheetElementType.PADDINGTOP || code == StylesheetElementType.PADDINGBOTTOM) {
-			if (element != null) {
-				return element;
-			}
+		case PADDINGBOTTOM:
+		case PADDINGTOP:
+		case PADDINGLEFT:
+		case PADDINGRIGHT:
 			element = new StylesheetPaddingElement(0);
 			sheet.addElement(code, element);
 			return element;
-			// Background color
-		} else if (code == StylesheetElementType.BACKGROUNDCOLOR) {
-			if (element != null) {
-				return element;
-			}
+		case BACKGROUNDCOLOR:
 			element = new StylesheetBackgroundColorElement(Color.BLACK);
 			sheet.addElement(code, element);
 			return element;
-		} else {
+		default:
 			throw new Exception_InternalError("No default setting set for element: " + code);
 		}
 	}
