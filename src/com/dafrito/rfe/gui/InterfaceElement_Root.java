@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -42,15 +43,13 @@ import com.dafrito.rfe.style.StylesheetPercentageWidthElement;
 import com.dafrito.rfe.style.StylesheetWidthElement;
 
 public class InterfaceElement_Root extends InterfaceElement implements Interface_Container {
-	private JPanel drawingPanel;
-	private static int drawingIteration = 0;
-	private java.util.List<RiffInterface_MouseListener> mouseListeners;
+	private final JPanel drawingPanel;
+	private final List<RiffInterface_MouseListener> mouseListeners = new LinkedList<RiffInterface_MouseListener>();
 	private GraphicalElement focusedElement;
-	private java.util.List<GraphicalElement> elements = new LinkedList<GraphicalElement>();
+	private final List<GraphicalElement> elements = new LinkedList<GraphicalElement>();
 
 	public InterfaceElement_Root(ScriptEnvironment environment, JPanel drawingPanel) {
 		super(environment, null, null);
-		this.mouseListeners = new LinkedList<RiffInterface_MouseListener>();
 		this.drawingPanel = drawingPanel;
 	}
 
@@ -288,7 +287,6 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 	@Override
 	public void paint(Graphics2D g2d) {
 		assert Debugger.openNode("Paint Operations", "Painting operation: " + this.getElements().size() + " element(s)");
-		drawingIteration++;
 		this.setXAnchor(0);
 		this.setYAnchor(0);
 		super.paint(g2d);
