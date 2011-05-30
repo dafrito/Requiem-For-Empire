@@ -21,12 +21,12 @@ class PainterThread extends Thread {
 	public void run() {
 		try {
 			while (this.shouldDraw) {
+				long start = System.currentTimeMillis();
 				this.riffInterface.getFrontBuffer().getGraphics().drawImage(this.riffInterface.backBuffer(), 0, 0, null);
 				this.riffInterface.flushQueue();
 				this.riffInterface.updateBufferedImage();
 				this.riffInterface.repaint();
-
-				int delay = this.delay;
+				long delay = Math.max(0l, this.delay - (System.currentTimeMillis() - start));
 				if (!Debugger.getDebugger().isIgnoringThisThread()) {
 					delay = 1000;
 				}
