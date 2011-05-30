@@ -1,7 +1,9 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.style;
 
 import java.awt.Color;
 import java.awt.Font;
+
+import com.dafrito.rfe.Exception_InternalError;
 
 public class Stylesheets {
 	public static Color getColor(String colorString) {

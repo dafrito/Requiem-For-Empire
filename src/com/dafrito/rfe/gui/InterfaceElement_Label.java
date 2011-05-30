@@ -1,10 +1,13 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.gui;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
+import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.ScriptEnvironment;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.style.Stylesheet;
 
 public class InterfaceElement_Label extends InterfaceElement implements Nodeable {
 	private String string;

@@ -9,6 +9,7 @@ import java.util.Stack;
 import javax.swing.JOptionPane;
 
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.style.Stylesheet;
 
 public class ScriptEnvironment implements Nodeable {
 	private Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)

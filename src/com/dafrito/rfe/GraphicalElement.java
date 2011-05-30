@@ -2,6 +2,8 @@ package com.dafrito.rfe;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import com.dafrito.rfe.gui.Interface_Container;
+
 public interface GraphicalElement {
 	public Rectangle getDrawingBounds();
 

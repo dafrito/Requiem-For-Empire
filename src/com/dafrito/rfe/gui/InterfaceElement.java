@@ -1,11 +1,33 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.gui;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.FauxTemplate_InterfaceElement;
+import com.dafrito.rfe.GraphicalElement;
+import com.dafrito.rfe.ScriptConvertible;
+import com.dafrito.rfe.ScriptEnvironment;
+import com.dafrito.rfe.ScriptKeywordType;
+import com.dafrito.rfe.ScriptValueType;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.style.Stylesheet;
+import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
+import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
+import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
+import com.dafrito.rfe.style.StylesheetBorderElement;
+import com.dafrito.rfe.style.StylesheetColorElement;
+import com.dafrito.rfe.style.StylesheetElement;
+import com.dafrito.rfe.style.StylesheetElementType;
+import com.dafrito.rfe.style.StylesheetFontElement;
+import com.dafrito.rfe.style.StylesheetFontSizeElement;
+import com.dafrito.rfe.style.StylesheetFontStyleElement;
+import com.dafrito.rfe.style.StylesheetHeightElement;
+import com.dafrito.rfe.style.StylesheetMarginElement;
+import com.dafrito.rfe.style.StylesheetPaddingElement;
+import com.dafrito.rfe.style.StylesheetWidthElement;
 
 public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConvertible {
 	private Stylesheet classStylesheet, uniqueStylesheet;

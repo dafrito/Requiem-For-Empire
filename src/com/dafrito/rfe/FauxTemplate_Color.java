@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.style.Stylesheets;
 
 public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertible, Nodeable {
 	public static final String COLORSTRING = "Color";

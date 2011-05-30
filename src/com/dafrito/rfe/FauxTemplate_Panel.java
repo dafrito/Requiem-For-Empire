@@ -3,7 +3,9 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.gui.InterfaceElement_Panel;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.style.Stylesheet;
 
 public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements ScriptConvertible, Nodeable {
 	public static final String PANELSTRING = "Panel";

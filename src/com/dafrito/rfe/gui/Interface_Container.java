@@ -1,5 +1,7 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.gui;
 import java.util.List;
+
+import com.dafrito.rfe.GraphicalElement;
 
 public interface Interface_Container {
 	public void add(GraphicalElement element);

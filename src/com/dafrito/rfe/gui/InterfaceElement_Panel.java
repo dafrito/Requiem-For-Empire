@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -8,9 +8,31 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.dafrito.rfe.ArchetypeMapNode;
+import com.dafrito.rfe.Asset;
+import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.DiscreteRegion;
+import com.dafrito.rfe.Exception_InternalError;
+import com.dafrito.rfe.Exception_Nodeable;
+import com.dafrito.rfe.FauxTemplate_Panel;
+import com.dafrito.rfe.FauxTemplate_RiffDali;
+import com.dafrito.rfe.GraphicalElement;
+import com.dafrito.rfe.MouseButton;
+import com.dafrito.rfe.Parser;
+import com.dafrito.rfe.ScriptConvertible;
+import com.dafrito.rfe.ScriptEnvironment;
+import com.dafrito.rfe.ScriptExecutable_CallFunction;
+import com.dafrito.rfe.ScriptTemplate_Abstract;
+import com.dafrito.rfe.ScriptValue;
+import com.dafrito.rfe.ScriptValueType;
+import com.dafrito.rfe.Terrestrial;
+import com.dafrito.rfe.gui.event.RiffInterface_DragEvent;
+import com.dafrito.rfe.gui.event.RiffInterface_MouseEvent;
+import com.dafrito.rfe.gui.event.RiffInterface_MouseListener;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
+import com.dafrito.rfe.style.Stylesheet;
 
 public class InterfaceElement_Panel extends InterfaceElement implements Interface_Container, RiffInterface_MouseListener, Nodeable, ScriptConvertible {
 	private List<GraphicalElement> elements;

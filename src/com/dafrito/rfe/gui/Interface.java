@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.gui;
 
 // Requiem for Empire
 import java.awt.Color;
@@ -23,6 +23,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.Exception_InternalError;
+import com.dafrito.rfe.MouseButton;
+import com.dafrito.rfe.ScriptEnvironment;
+import com.dafrito.rfe.gui.event.KeyEvent_KeyDown;
+import com.dafrito.rfe.gui.event.KeyEvent_KeyUp;
+import com.dafrito.rfe.gui.event.RiffInterface_ClickEvent;
+import com.dafrito.rfe.gui.event.RiffInterface_DragEvent;
+import com.dafrito.rfe.gui.event.RiffInterface_Event;
+import com.dafrito.rfe.gui.event.RiffInterface_MouseDownEvent;
+import com.dafrito.rfe.gui.event.RiffInterface_MouseUpEvent;
 import com.dafrito.rfe.points.Points;
 
 public class Interface extends JPanel implements MouseListener, MouseMotionListener, WindowListener, ComponentListener, KeyListener {

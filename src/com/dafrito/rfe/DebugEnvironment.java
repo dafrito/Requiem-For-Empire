@@ -41,7 +41,8 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	private final JMenuItem exit = new JMenuItem("Exit", 'X');
 
 	private JMenuItem compile, execute, compileAndRun;
-	private JMenuItem undo, redo;
+	private final JMenuItem undo;
+	private final JMenuItem redo;
 	private JMenuItem removeTab, clearTab, createListener, renameTab;
 	private JMenuItem addException, addExceptionFromList, addIgnore, addIgnoreFromList,
 			removeException, removeIgnore;

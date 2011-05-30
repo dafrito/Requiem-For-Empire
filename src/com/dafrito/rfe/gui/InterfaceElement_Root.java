@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.gui;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,6 +8,38 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
+
+import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.Exception_InternalError;
+import com.dafrito.rfe.GraphicalElement;
+import com.dafrito.rfe.ScriptEnvironment;
+import com.dafrito.rfe.ScriptKeywordType;
+import com.dafrito.rfe.gui.event.KeyEvent_KeyDown;
+import com.dafrito.rfe.gui.event.KeyEvent_KeyUp;
+import com.dafrito.rfe.gui.event.RiffInterface_ClickEvent;
+import com.dafrito.rfe.gui.event.RiffInterface_DragEvent;
+import com.dafrito.rfe.gui.event.RiffInterface_Event;
+import com.dafrito.rfe.gui.event.RiffInterface_KeyListener;
+import com.dafrito.rfe.gui.event.RiffInterface_MouseDownEvent;
+import com.dafrito.rfe.gui.event.RiffInterface_MouseListener;
+import com.dafrito.rfe.gui.event.RiffInterface_MouseUpEvent;
+import com.dafrito.rfe.style.Stylesheet;
+import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
+import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
+import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
+import com.dafrito.rfe.style.StylesheetBorderElement;
+import com.dafrito.rfe.style.StylesheetColorElement;
+import com.dafrito.rfe.style.StylesheetElement;
+import com.dafrito.rfe.style.StylesheetElementType;
+import com.dafrito.rfe.style.StylesheetFontElement;
+import com.dafrito.rfe.style.StylesheetFontSizeElement;
+import com.dafrito.rfe.style.StylesheetFontStyleElement;
+import com.dafrito.rfe.style.StylesheetHeightElement;
+import com.dafrito.rfe.style.StylesheetMarginElement;
+import com.dafrito.rfe.style.StylesheetPaddingElement;
+import com.dafrito.rfe.style.StylesheetPercentageHeightElement;
+import com.dafrito.rfe.style.StylesheetPercentageWidthElement;
+import com.dafrito.rfe.style.StylesheetWidthElement;
 
 public class InterfaceElement_Root extends InterfaceElement implements Interface_Container {
 	private JPanel drawingPanel;

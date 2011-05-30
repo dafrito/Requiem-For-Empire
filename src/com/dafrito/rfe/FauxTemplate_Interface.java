@@ -3,6 +3,7 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.gui.Interface;
 import com.dafrito.rfe.inspect.Nodeable;
 
 public class FauxTemplate_Interface extends FauxTemplate implements Nodeable, ScriptConvertible {
