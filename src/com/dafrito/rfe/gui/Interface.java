@@ -17,6 +17,9 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -55,7 +58,8 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	private int iterations;
 	private boolean emergencyStop;
 	private JFrame frame;
-	private PainterThread painter;
+
+	private ScheduledExecutorService painting;
 
 	public Interface(ScriptEnvironment env) {
 		this.frame = new JFrame("Requiem for Empire");
@@ -72,8 +76,8 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		this.addMouseMotionListener(this);
 		this.buffer = (BufferedImage) this.createImage(this.frame.getContentPane().getWidth(), this.frame.getContentPane().getHeight());
 		this.backBuffer = (BufferedImage) this.createImage(this.frame.getContentPane().getWidth(), this.frame.getContentPane().getHeight());
-		this.painter = new PainterThread(this, 1000 / 60);
-		this.painter.start();
+		this.painting = Executors.newScheduledThreadPool(4);
+		this.painting.scheduleAtFixedRate(new PaintInterface(this), 0, 1000 / 60, TimeUnit.MILLISECONDS);
 	}
 
 	protected void clear(Graphics g) {
@@ -280,7 +284,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		this.painter.stopLoop();
+		this.painting.shutdown();
 	}
 
 	@Override
