@@ -1,22 +1,21 @@
 package com.dafrito.rfe.gui;
 
-// Requiem for Empire
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -39,98 +38,154 @@ import com.dafrito.rfe.gui.event.RiffInterface_MouseDownEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseUpEvent;
 import com.dafrito.rfe.points.Points;
 
-public class Interface extends JPanel implements MouseListener, MouseMotionListener, WindowListener, ComponentListener, KeyListener {
-	/**
-	 * 
-	 */
+/**
+ * Displays the game world and dispatches input events.
+ * 
+ * @author Aaron Faanes
+ */
+public class Interface extends JPanel {
 	private static final long serialVersionUID = 8097618780874029519L;
 	private static final int HEIGHT = 600;
 	private static final int WIDTH = 800;
-	private ScriptEnvironment environment;
-	private InterfaceElement_Root rootElement;
+	private final InterfaceElement_Root rootElement;
 	private int lastX, lastY;
-	private java.util.List<RiffInterface_Event> queuedEvents = new LinkedList<RiffInterface_Event>();
+	private final Deque<RiffInterface_Event> queuedEvents = new ArrayDeque<RiffInterface_Event>();
 	private MouseButton lastButton;
 	private boolean ignoreMemoryWarning;
-	private BufferedImage buffer, backBuffer;
+	private BufferedImage frontBuffer, backBuffer;
 	private long secondBegin;
 	private int lastIteration;
 	private int iterations;
 	private boolean emergencyStop;
-	private JFrame frame;
+	private final JFrame frame = new JFrame("Requiem for Empire");
 
-	private ScheduledExecutorService painting;
+	/**
+	 * The {@link Executor} that manages updating the buffered images of this
+	 * interface panel.
+	 */
+	private final ScheduledExecutorService painting = Executors.newScheduledThreadPool(4);
 
 	public Interface(ScriptEnvironment env) {
-		this.frame = new JFrame("Requiem for Empire");
+		// TODO I'd like to move this code outside of this class, since I don't like
+		// panels controlling their own parent frames.
 		this.frame.setSize(WIDTH, HEIGHT);
 		this.frame.setContentPane(this);
-		this.frame.addWindowListener(this);
-		this.frame.addComponentListener(this);
 		this.frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.frame.setVisible(true);
-		this.frame.addKeyListener(this);
-		this.environment = env;
+
 		this.rootElement = new InterfaceElement_Root(env, this);
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
-		this.buffer = (BufferedImage) this.createImage(this.frame.getContentPane().getWidth(), this.frame.getContentPane().getHeight());
-		this.backBuffer = (BufferedImage) this.createImage(this.frame.getContentPane().getWidth(), this.frame.getContentPane().getHeight());
-		this.painting = Executors.newScheduledThreadPool(4);
-		this.painting.scheduleAtFixedRate(new PaintInterface(this), 0, 1000 / 60, TimeUnit.MILLISECONDS);
+		recreateBufferedImages();
+
+		this.painting.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				frontBuffer.getGraphics().drawImage(backBuffer, 0, 0, null);
+				flushQueue();
+				updateBufferedImage();
+				repaint();
+			}
+		}, 0, 1000 / 60, TimeUnit.MILLISECONDS);
+
+		// Stop painting this window when we close
+		this.frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				painting.shutdown();
+			}
+		});
+
+		// Resize the back buffer when we're resized
+		this.frame.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				if (frontBuffer == null) {
+					return;
+				}
+				if (frontBuffer.getWidth() != getWidth() || frontBuffer.getHeight() != getHeight()) {
+					recreateBufferedImages();
+				}
+			}
+		});
+
+		this.frame.addKeyListener(new KeyAdapter() {
+			@Override
+			public synchronized void keyPressed(KeyEvent e) {
+				KeyEvent_KeyDown event = new KeyEvent_KeyDown(e.getKeyCode());
+				assert Debugger.addNode(event);
+				queuedEvents.add(event);
+			}
+
+			@Override
+			public synchronized void keyReleased(KeyEvent e) {
+				KeyEvent_KeyUp event = new KeyEvent_KeyUp(e.getKeyCode());
+				assert Debugger.addNode(event);
+				queuedEvents.add(event);
+			}
+		});
+
+		this.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public synchronized void mouseClicked(MouseEvent e) {
+				RiffInterface_ClickEvent event = new RiffInterface_ClickEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()), e.getClickCount());
+				assert Debugger.addNode(event);
+				queuedEvents.add(event);
+				lastX = e.getX();
+				lastY = e.getY();
+				lastButton = MouseButton.getButton(e.getButton());
+			}
+
+			@Override
+			public synchronized void mousePressed(MouseEvent e) {
+				RiffInterface_MouseDownEvent event = new RiffInterface_MouseDownEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()));
+				assert Debugger.addNode(event);
+				queuedEvents.add(event);
+				lastX = e.getX();
+				lastY = e.getY();
+				lastButton = MouseButton.getButton(e.getButton());
+			}
+
+			@Override
+			public synchronized void mouseReleased(MouseEvent e) {
+				RiffInterface_MouseUpEvent event = new RiffInterface_MouseUpEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()));
+				assert Debugger.addNode(event);
+				queuedEvents.add(event);
+				lastX = -1;
+				lastY = -1;
+			}
+		});
+
+		this.addMouseMotionListener(new MouseAdapter() {
+
+			@Override
+			public synchronized void mouseDragged(MouseEvent e) {
+				double distance = Points.getDistance(lastX, lastY, e.getX(), e.getY());
+				if (e.getX() - lastX < 0) {
+					distance *= -1;
+				}
+				if (e.getX() == lastX && e.getY() - lastY < 0 && distance > 0) {
+					distance *= -1;
+				}
+				RiffInterface_DragEvent event = new RiffInterface_DragEvent(e.getX(), e.getY(), lastButton, e.getX() - lastX, e.getY() - lastY, distance);
+				assert Debugger.addNode(event);
+				queuedEvents.add(event);
+				lastX = e.getX();
+				lastY = e.getY();
+			}
+
+		});
 	}
 
-	protected void clear(Graphics g) {
-		this.paint(g);
+	private void recreateBufferedImages() {
+		this.frontBuffer = (BufferedImage) this.createImage(getWidth(), getHeight());
+		this.backBuffer = (BufferedImage) this.createImage(getWidth(), getHeight());
 	}
 
-	@Override
-	public void componentHidden(ComponentEvent e) {
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {
-	}
-
-	@Override
-	public void componentResized(ComponentEvent e) {
-		if (this.buffer == null) {
-			return;
-		}
-		if (this.buffer.getWidth() != this.getWidth() || this.buffer.getHeight() != this.getHeight()) {
-			this.buffer = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
-			this.backBuffer = (BufferedImage) this.createImage(this.getWidth(), this.getHeight());
-		}
-	}
-
-	@Override
-	public void componentShown(ComponentEvent e) {
-	}
-
-	public synchronized void flushQueue() {
+	private void flushQueue() {
 		assert Debugger.addNode("Flushing Event Queue (" + this.queuedEvents.size() + " event(s))");
-		List<RiffInterface_Event> flushQueue = new LinkedList<RiffInterface_Event>();
-		flushQueue.addAll(this.queuedEvents);
-		this.queuedEvents.removeAll(flushQueue);
-		for (int i = 0; i < flushQueue.size(); i++) {
-			this.rootElement.dispatchEvent(flushQueue.get(i));
+		while (!this.queuedEvents.isEmpty()) {
+			this.rootElement.dispatchEvent(this.queuedEvents.pop());
 		}
-	}
-
-	public BufferedImage backBuffer() {
-		return this.backBuffer;
-	}
-
-	public ScriptEnvironment getEnvironment() {
-		return this.environment;
-	}
-
-	public JFrame getFrame() {
-		return this.frame;
-	}
-
-	public BufferedImage getFrontBuffer() {
-		return this.buffer;
 	}
 
 	public InterfaceElement_Root getRoot() {
@@ -138,83 +193,8 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 	}
 
 	@Override
-	public synchronized void keyPressed(KeyEvent e) {
-		KeyEvent_KeyDown event = new KeyEvent_KeyDown(e.getKeyCode());
-		assert Debugger.addNode(event);
-		this.queuedEvents.add(event);
-	}
-
-	@Override
-	public synchronized void keyReleased(KeyEvent e) {
-		KeyEvent_KeyUp event = new KeyEvent_KeyUp(e.getKeyCode());
-		assert Debugger.addNode(event);
-		this.queuedEvents.add(event);
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-	}
-
-	@Override
-	public synchronized void mouseClicked(MouseEvent e) {
-		RiffInterface_ClickEvent event = new RiffInterface_ClickEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()), e.getClickCount());
-		assert Debugger.addNode(event);
-		this.queuedEvents.add(event);
-		this.lastX = e.getX();
-		this.lastY = e.getY();
-		this.lastButton = MouseButton.getButton(e.getButton());
-	}
-
-	@Override
-	public synchronized void mouseDragged(MouseEvent e) {
-		double distance = Points.getDistance(this.lastX, this.lastY, e.getX(), e.getY());
-		if (e.getX() - this.lastX < 0) {
-			distance *= -1;
-		}
-		if (e.getX() == this.lastX && e.getY() - this.lastY < 0 && distance > 0) {
-			distance *= -1;
-		}
-		RiffInterface_DragEvent event = new RiffInterface_DragEvent(e.getX(), e.getY(), this.lastButton, e.getX() - this.lastX, e.getY() - this.lastY, distance);
-		assert Debugger.addNode(event);
-		this.queuedEvents.add(event);
-		this.lastX = e.getX();
-		this.lastY = e.getY();
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-	}
-
-	@Override
-	public synchronized void mousePressed(MouseEvent e) {
-		RiffInterface_MouseDownEvent event = new RiffInterface_MouseDownEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()));
-		assert Debugger.addNode(event);
-		this.queuedEvents.add(event);
-		this.lastX = e.getX();
-		this.lastY = e.getY();
-		this.lastButton = MouseButton.getButton(e.getButton());
-	}
-
-	@Override
-	public synchronized void mouseReleased(MouseEvent e) {
-		RiffInterface_MouseUpEvent event = new RiffInterface_MouseUpEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()));
-		assert Debugger.addNode(event);
-		this.queuedEvents.add(event);
-		this.lastX = -1;
-		this.lastY = -1;
-	}
-
-	@Override
 	public void paint(Graphics g) {
-		g.drawImage(this.buffer, 0, 0, null);
+		g.drawImage(this.frontBuffer, 0, 0, null);
 		g.dispose();
 	}
 
@@ -223,7 +203,7 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		this.paint(g);
 	}
 
-	public synchronized void updateBufferedImage() {
+	private void updateBufferedImage() {
 		if (this.emergencyStop) {
 			return;
 		}
@@ -274,32 +254,4 @@ public class Interface extends JPanel implements MouseListener, MouseMotionListe
 		}
 	}
 
-	@Override
-	public void windowActivated(WindowEvent e) {
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		this.painting.shutdown();
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-	}
 }
