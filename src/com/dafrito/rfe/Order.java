@@ -1,7 +1,8 @@
 package com.dafrito.rfe;
+
 public abstract class Order {
 	protected double iterationTime;
-	protected int orderStatus;
+	protected OrderStatus orderStatus;
 
 	public Order() {
 		this.orderStatus = OrderStatus.INCOMPLETE;
@@ -15,7 +16,7 @@ public abstract class Order {
 		return this.iterationTime;
 	}
 
-	public int getStatus() {
+	public OrderStatus getStatus() {
 		return this.orderStatus;
 	}
 
@@ -23,7 +24,7 @@ public abstract class Order {
 		this.iterationTime = time;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(OrderStatus status) {
 		this.orderStatus = status;
 	}
 
