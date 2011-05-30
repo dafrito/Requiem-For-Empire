@@ -274,11 +274,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			}
 			this.exceptions.add(text.toString());
 		} else if (event.getSource().equals(this.addExceptionFromList)) {
-			if (this.allThreads == null || this.allThreads.size() == 0) {
-				JOptionPane.showMessageDialog(null, "There are no threads in the selection list.", "Empty Thread List", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-			Object text = JOptionPane.showInputDialog(null, "Select the thread name to add to the exceptions list", "Adding to Exceptions List", JOptionPane.PLAIN_MESSAGE, null, this.allThreads.toArray(), null);
+			Object text = JOptionPane.showInputDialog(null, "Select the thread name to add to the exceptions list", "Adding to Exceptions List", JOptionPane.PLAIN_MESSAGE, null, this.knownThreads.toArray(), null);
 			if (text == null) {
 				return;
 			}
@@ -304,11 +300,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			}
 			this.ignores.add(text.toString());
 		} else if (event.getSource().equals(this.addIgnoreFromList)) {
-			if (this.allThreads == null || this.allThreads.size() == 0) {
-				JOptionPane.showMessageDialog(null, "There are no threads in the selection list.", "Empty Thread List", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-			Object text = JOptionPane.showInputDialog(null, "Select the thread name to add to the ignore list", "Adding to Ignore List", JOptionPane.PLAIN_MESSAGE, null, this.allThreads.toArray(), null);
+			Object text = JOptionPane.showInputDialog(null, "Select the thread name to add to the ignore list", "Adding to Ignore List", JOptionPane.PLAIN_MESSAGE, null, this.knownThreads.toArray(), null);
 			if (text == null) {
 				return;
 			}
