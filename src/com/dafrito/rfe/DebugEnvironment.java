@@ -473,7 +473,9 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 
 	public void reset() {
 		this.reset.setEnabled(false);
-		this.filteredPanes.setSelectedIndex(0);
+		if (this.filteredPanes.getModel().isSelected()) {
+			this.filteredPanes.setSelectedIndex(0);
+		}
 		int children = this.filteredPanes.getComponentCount();
 		for (int i = 0; i < children; i++) {
 			((Debug_Listener) this.filteredPanes.getComponent(i)).removeTab();
