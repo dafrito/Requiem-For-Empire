@@ -21,7 +21,6 @@ class PainterThread extends Thread {
 	public void run() {
 		try {
 			while (this.shouldDraw) {
-				//Debugger.hitStopWatch(Thread.currentThread().getName());
 				this.riffInterface.getFrontBuffer().getGraphics().drawImage(this.riffInterface.backBuffer(), 0, 0, null);
 				this.riffInterface.flushQueue();
 				this.riffInterface.updateBufferedImage();
@@ -38,8 +37,6 @@ class PainterThread extends Thread {
 			this.riffInterface.getFrame().dispose();
 			throw ex;
 		} catch (InterruptedException ex) {
-		} finally {
-			//Debugger.hitStopWatch(Thread.currentThread().getName());
 		}
 	}
 
