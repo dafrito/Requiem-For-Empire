@@ -1,8 +1,13 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.script.proxies;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.Ace;
+import com.dafrito.rfe.Archetype;
+import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.Parser;
+import com.dafrito.rfe.Referenced;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;

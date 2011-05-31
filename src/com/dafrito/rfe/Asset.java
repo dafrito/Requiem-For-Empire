@@ -1,15 +1,19 @@
 package com.dafrito.rfe;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.proxies.FauxTemplate_Asset;
 
+@Inspectable
 public class Asset implements Nodeable, ScriptConvertible {
 	private ScriptEnvironment environment;
 	private Map<String, Object> properties = new HashMap<String, Object>();
@@ -32,16 +36,23 @@ public class Asset implements Nodeable, ScriptConvertible {
 		return asset;
 	}
 
+	@Inspectable
 	public List<Ace> getAces() {
-		return this.aces;
+		return Collections.unmodifiableList(this.aces);
 	}
 
 	public ScriptEnvironment getEnvironment() {
 		return this.environment;
 	}
 
+	@Inspectable
 	public Point getLocation() {
 		return this.location;
+	}
+
+	@Inspectable
+	public Map<String, Object> getProperties() {
+		return Collections.unmodifiableMap(this.properties);
 	}
 
 	public Object getProperty(String name) {

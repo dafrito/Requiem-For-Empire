@@ -11,6 +11,7 @@ import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.proxies.FauxTemplate_Line;
 
 public class GraphicalElement_Line extends InterfaceElement implements ScriptConvertible, Nodeable {
 	private Point pointA, pointB;

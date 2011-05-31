@@ -4,7 +4,7 @@
 package com.dafrito.rfe.script.exceptions;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.FauxTemplate_Color;
+import com.dafrito.rfe.script.proxies.FauxTemplate_Color;
 
 public class Exception_Nodeable_InvalidColorRange extends Exception_Nodeable {
 	/**

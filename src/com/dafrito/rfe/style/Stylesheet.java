@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.FauxTemplate;
 import com.dafrito.rfe.Referenced;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
@@ -16,6 +15,7 @@ import com.dafrito.rfe.script.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.ScriptValue;
 import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.proxies.FauxTemplate;
 
 public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, ScriptConvertible {
 	private Map<StylesheetElementType, StylesheetElement> styleElements = new HashMap<StylesheetElementType, StylesheetElement>(); // element code, element

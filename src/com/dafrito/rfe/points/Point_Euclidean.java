@@ -1,9 +1,9 @@
 package com.dafrito.rfe.points;
 
 import com.bluespot.geom.vectors.Vector3d;
-import com.dafrito.rfe.FauxTemplate_Point;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.proxies.FauxTemplate_Point;
 
 public class Point_Euclidean extends Point implements ScriptConvertible {
 

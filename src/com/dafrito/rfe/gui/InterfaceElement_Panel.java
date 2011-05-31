@@ -12,8 +12,6 @@ import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.Debugger;
 import com.dafrito.rfe.DiscreteRegion;
 import com.dafrito.rfe.Exception_InternalError;
-import com.dafrito.rfe.FauxTemplate_Panel;
-import com.dafrito.rfe.FauxTemplate_RiffDali;
 import com.dafrito.rfe.GraphicalElement;
 import com.dafrito.rfe.MouseButton;
 import com.dafrito.rfe.Parser;
@@ -31,6 +29,8 @@ import com.dafrito.rfe.script.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.ScriptValue;
 import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.proxies.FauxTemplate_Panel;
+import com.dafrito.rfe.script.proxies.FauxTemplate_RiffDali;
 import com.dafrito.rfe.style.Stylesheet;
 
 /**

@@ -17,6 +17,7 @@ import com.dafrito.rfe.script.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.ScriptValue;
 import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.proxies.FauxTemplate_Scheduler;
 
 class ScheduledEvent implements Comparable<ScheduledEvent>, Nodeable {
 	private Long time;

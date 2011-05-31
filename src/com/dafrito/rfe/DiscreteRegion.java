@@ -17,6 +17,7 @@ import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.proxies.FauxTemplate_DiscreteRegion;
 
 public class DiscreteRegion implements Nodeable, ScriptConvertible {
 	public static void paint(Graphics2D g2d, DiscreteRegion transformedRegion, Rectangle bounds, boolean fill) {
