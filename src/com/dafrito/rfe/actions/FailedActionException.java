@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.actions;
 public class FailedActionException extends OrderException {
 	/**
 	 * 

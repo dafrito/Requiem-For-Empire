@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +9,8 @@ import java.util.TreeSet;
 
 import javax.swing.Timer;
 
+import com.dafrito.rfe.Asset;
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.ScriptConvertible;

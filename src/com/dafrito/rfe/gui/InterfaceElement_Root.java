@@ -1,7 +1,5 @@
 package com.dafrito.rfe.gui;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Collections;
@@ -10,7 +8,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.gui.event.KeyEvent_KeyDown;
 import com.dafrito.rfe.gui.event.KeyEvent_KeyUp;
 import com.dafrito.rfe.gui.event.RiffInterface_ClickEvent;
@@ -21,24 +19,12 @@ import com.dafrito.rfe.gui.event.RiffInterface_MouseDownEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseListener;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseUpEvent;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.ScriptKeywordType;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.style.Stylesheet;
 import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
 import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
-import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
-import com.dafrito.rfe.style.StylesheetBorderElement;
-import com.dafrito.rfe.style.StylesheetColorElement;
 import com.dafrito.rfe.style.StylesheetElement;
 import com.dafrito.rfe.style.StylesheetElementType;
-import com.dafrito.rfe.style.StylesheetFontElement;
-import com.dafrito.rfe.style.StylesheetFontSizeElement;
-import com.dafrito.rfe.style.StylesheetFontStyleElement;
 import com.dafrito.rfe.style.StylesheetHeightElement;
-import com.dafrito.rfe.style.StylesheetMarginElement;
-import com.dafrito.rfe.style.StylesheetPaddingElement;
-import com.dafrito.rfe.style.StylesheetPercentageHeightElement;
-import com.dafrito.rfe.style.StylesheetPercentageWidthElement;
 import com.dafrito.rfe.style.StylesheetWidthElement;
 
 public class InterfaceElement_Root extends InterfaceElement implements Interface_Container {
@@ -199,59 +185,9 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 		if (element != null) {
 			return element;
 		}
-		switch (code) {
-		case WIDTH:
-			element = new StylesheetPercentageWidthElement(1);
-			sheet.addElement(code, element);
-			return element;
-		case HEIGHT:
-			element = new StylesheetPercentageHeightElement(1);
-			sheet.addElement(code, element);
-			return element;
-		case COLOR:
-			element = new StylesheetColorElement("white");
-			sheet.addElement(code, element);
-			return element;
-		case FONTNAME:
-			element = new StylesheetFontElement("Lucida Sans Unicode");
-			sheet.addElement(code, element);
-			return element;
-		case FONTSIZE:
-			element = new StylesheetFontSizeElement(18);
-			sheet.addElement(code, element);
-			return element;
-		case FONTSTYLE:
-			element = new StylesheetFontStyleElement(Font.PLAIN);
-			sheet.addElement(code, element);
-			return element;
-		case BORDERBOTTOM:
-		case BORDERTOP:
-		case BORDERLEFT:
-		case BORDERRIGHT:
-			element = new StylesheetBorderElement(0, ScriptKeywordType.solid, Color.BLACK);
-			sheet.addElement(code, element);
-			return element;
-		case MARGINBOTTOM:
-		case MARGINTOP:
-		case MARGINLEFT:
-		case MARGINRIGHT:
-			element = new StylesheetMarginElement(0);
-			sheet.addElement(code, element);
-			return element;
-		case PADDINGBOTTOM:
-		case PADDINGTOP:
-		case PADDINGLEFT:
-		case PADDINGRIGHT:
-			element = new StylesheetPaddingElement(0);
-			sheet.addElement(code, element);
-			return element;
-		case BACKGROUNDCOLOR:
-			element = new StylesheetBackgroundColorElement(Color.BLACK);
-			sheet.addElement(code, element);
-			return element;
-		default:
-			throw new Exception_InternalError("No default setting set for element: " + code);
-		}
+		element = code.defaultValue();
+		sheet.addElement(code, element);
+		return element;
 	}
 
 	@Override

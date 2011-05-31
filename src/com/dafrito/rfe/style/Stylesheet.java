@@ -1,11 +1,11 @@
 package com.dafrito.rfe.style;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptConvertible;
@@ -18,7 +18,7 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.proxies.FauxTemplate;
 
 public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, ScriptConvertible {
-	private Map<StylesheetElementType, StylesheetElement> styleElements = new HashMap<StylesheetElementType, StylesheetElement>(); // element code, element
+	private final Map<StylesheetElementType, StylesheetElement> styleElements = new EnumMap<StylesheetElementType, StylesheetElement>(StylesheetElementType.class);
 	private String name;
 	private boolean isUnique;
 	public static final String STYLESHEETSTRING = "Stylesheet";

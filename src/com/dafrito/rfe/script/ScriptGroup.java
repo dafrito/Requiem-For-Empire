@@ -2,8 +2,8 @@ package com.dafrito.rfe.script;
 
 import java.util.List;
 
-import com.dafrito.rfe.DebugString;
-import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.debug.DebugString;
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 

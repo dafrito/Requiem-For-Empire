@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.actions;
 
 public abstract class Action implements Comparable<Action> {
 	public static void execute(Order superOrder) throws FailedActionException {

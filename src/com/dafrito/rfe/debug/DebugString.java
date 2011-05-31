@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dafrito.rfe;
+package com.dafrito.rfe.debug;
 
 public enum DebugString {
 	ELEMENTS("Elements"),

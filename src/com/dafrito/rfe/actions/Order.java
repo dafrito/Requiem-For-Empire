@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.actions;
 
 public abstract class Order {
 	protected double iterationTime;

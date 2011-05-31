@@ -1,5 +1,6 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.actions.Scheduler;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class Scenario {

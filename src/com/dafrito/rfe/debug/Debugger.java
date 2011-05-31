@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dafrito.rfe;
+package com.dafrito.rfe.debug;
 
 import java.util.Collection;
 import java.util.HashMap;

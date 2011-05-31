@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;

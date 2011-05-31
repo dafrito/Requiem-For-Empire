@@ -3,8 +3,8 @@
  */
 package com.dafrito.rfe.inspect;
 
-import com.dafrito.rfe.DebugEnvironment.TreeBuildingInspector;
-import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.debug.DebugEnvironment.TreeBuildingInspector;
 
 /**
  * An {@link Inspector} that records nodes using an underlying

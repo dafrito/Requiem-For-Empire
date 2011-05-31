@@ -1,5 +1,6 @@
 package com.dafrito.rfe;
 
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.geom.Krumflex;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;

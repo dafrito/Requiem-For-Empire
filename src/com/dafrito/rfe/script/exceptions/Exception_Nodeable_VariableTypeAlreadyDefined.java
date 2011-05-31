@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.script.Referenced;
 
 public class Exception_Nodeable_VariableTypeAlreadyDefined extends Exception_Nodeable {

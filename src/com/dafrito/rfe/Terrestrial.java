@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.geom.DiscreteRegionBSPNode;
 import com.dafrito.rfe.geom.PolygonPipeline;

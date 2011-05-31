@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.debug.Debugger;
 
 /**
  * @author Aaron Faanes

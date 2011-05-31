@@ -5,9 +5,9 @@ package com.dafrito.rfe.script;
 
 import java.util.Vector;
 
-import com.dafrito.rfe.DebugEnvironment;
-import com.dafrito.rfe.Debug_ScriptElement;
-import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.debug.DebugEnvironment;
+import com.dafrito.rfe.debug.Debug_ScriptElement;
+import com.dafrito.rfe.debug.Debugger;
 
 public class CompileThread extends Thread {
 	private DebugEnvironment debugEnvironment;

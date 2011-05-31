@@ -9,8 +9,8 @@ import java.util.Set;
 
 import com.dafrito.rfe.ArchetypeMapNode;
 import com.dafrito.rfe.Asset;
-import com.dafrito.rfe.Debugger;
 import com.dafrito.rfe.Terrestrial;
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.gui.event.RiffInterface_DragEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseEvent;

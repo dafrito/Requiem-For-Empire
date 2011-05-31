@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script;
 
-import com.dafrito.rfe.DebugString;
-import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.debug.DebugString;
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
 public class ScriptOperator extends ScriptElement implements Nodeable {

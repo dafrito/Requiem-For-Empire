@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.debug;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;

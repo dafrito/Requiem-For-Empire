@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.gui.event;
 
-import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.gui.MouseButton;
 import com.dafrito.rfe.inspect.Nodeable;
 

@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.debug;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

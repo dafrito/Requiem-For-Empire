@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.debug;
 
 import java.util.Collections;
 import java.util.EnumMap;
@@ -14,6 +14,7 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import com.dafrito.rfe.Incrementor;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.strings.NamedTreePath;
 

@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.List;
 
-import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.geom.Polygons;
 import com.dafrito.rfe.geom.RiffIntersectionPoint;
