@@ -1,7 +1,5 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.script;
 
-import com.dafrito.rfe.script.ScriptElement;
-import com.dafrito.rfe.script.ScriptEnvironment;
 
 public interface Referenced {
 	public ScriptElement getDebugReference();

@@ -29,6 +29,7 @@ import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.CompoundEdit;
 
+import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.ScriptLine;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 

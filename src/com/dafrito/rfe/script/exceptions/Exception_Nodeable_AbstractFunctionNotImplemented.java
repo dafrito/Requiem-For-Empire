@@ -4,7 +4,7 @@
 package com.dafrito.rfe.script.exceptions;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.Referenced;
+import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptFunction_Abstract;
 import com.dafrito.rfe.script.ScriptTemplate_Abstract;
 

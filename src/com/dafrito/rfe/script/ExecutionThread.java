@@ -1,9 +1,12 @@
 /**
  * 
  */
-package com.dafrito.rfe;
+package com.dafrito.rfe.script;
 
-class ExecutionThread extends Thread {
+import com.dafrito.rfe.DebugEnvironment;
+import com.dafrito.rfe.Debugger;
+
+public class ExecutionThread extends Thread {
 	private DebugEnvironment debugEnvironment;
 	public static final String EXECUTIONTHREADSTRING = "Script Execution";
 	private static int threadNum = 0;

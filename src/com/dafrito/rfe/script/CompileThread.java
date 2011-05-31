@@ -1,11 +1,15 @@
 /**
  * 
  */
-package com.dafrito.rfe;
+package com.dafrito.rfe.script;
 
 import java.util.Vector;
 
-class CompileThread extends Thread {
+import com.dafrito.rfe.DebugEnvironment;
+import com.dafrito.rfe.Debug_ScriptElement;
+import com.dafrito.rfe.Debugger;
+
+public class CompileThread extends Thread {
 	private DebugEnvironment debugEnvironment;
 	private boolean shouldExecute;
 	public static final String COMPILETHREADSTRING = "Compilation";

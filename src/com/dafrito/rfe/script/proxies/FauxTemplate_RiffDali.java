@@ -4,9 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.Parser;
-import com.dafrito.rfe.Referenced;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Parser;
+import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.ScriptFunction;

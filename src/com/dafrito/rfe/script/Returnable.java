@@ -1,6 +1,5 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.script;
 
-import com.dafrito.rfe.script.ScriptValue;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
 public interface Returnable {

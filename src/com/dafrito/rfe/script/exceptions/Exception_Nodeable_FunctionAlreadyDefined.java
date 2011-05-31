@@ -4,7 +4,7 @@
 package com.dafrito.rfe.script.exceptions;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.Referenced;
+import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptFunction;
 
 public class Exception_Nodeable_FunctionAlreadyDefined extends Exception_Nodeable {

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.dafrito.rfe.Debugger;
 import com.dafrito.rfe.Exception_InternalError;
-import com.dafrito.rfe.Referenced;
+import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptExecutable;
 import com.dafrito.rfe.script.ScriptFunction;

@@ -26,6 +26,8 @@ import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.dafrito.rfe.script.CompileThread;
+import com.dafrito.rfe.script.ExecutionThread;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 

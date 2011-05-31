@@ -6,7 +6,7 @@ package com.dafrito.rfe.script.exceptions;
 import java.util.List;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.Referenced;
+import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptFunction;
 

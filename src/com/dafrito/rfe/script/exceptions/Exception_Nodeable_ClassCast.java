@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.Referenced;
+import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptValue;
 import com.dafrito.rfe.script.ScriptValueType;
 

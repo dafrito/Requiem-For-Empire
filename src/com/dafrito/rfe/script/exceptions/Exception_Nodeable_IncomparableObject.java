@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.Referenced;
+import com.dafrito.rfe.script.Referenced;
 
 class Exception_Nodeable_IncomparableObject extends Exception_Nodeable {
 	/**

@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.dafrito.rfe.Debugger;
 import com.dafrito.rfe.GraphicalElement_Line;
-import com.dafrito.rfe.Parser;
-import com.dafrito.rfe.Referenced;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
+import com.dafrito.rfe.script.Parser;
+import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptFunction;

@@ -2,7 +2,6 @@ package com.dafrito.rfe.script;
 import java.util.Collection;
 import java.util.List;
 
-import com.dafrito.rfe.Referenced;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
 public interface ScriptFunction_Abstract {

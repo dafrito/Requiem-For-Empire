@@ -3,8 +3,6 @@ package com.dafrito.rfe.script;
 import java.util.List;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.Referenced;
-import com.dafrito.rfe.Returnable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
 public class ScriptExecutable_IfStatement extends ScriptElement implements ScriptExecutable, Returnable {

@@ -9,6 +9,7 @@ import java.util.Stack;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Path;
 import com.dafrito.rfe.points.Points;
+import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.ScriptTemplate_Abstract;

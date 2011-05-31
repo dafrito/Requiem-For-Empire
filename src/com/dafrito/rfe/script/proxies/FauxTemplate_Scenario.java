@@ -4,11 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.Parser;
-import com.dafrito.rfe.Referenced;
 import com.dafrito.rfe.Scenario;
 import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Parser;
+import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptFunction;
