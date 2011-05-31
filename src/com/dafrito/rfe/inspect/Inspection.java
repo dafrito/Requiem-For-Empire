@@ -4,6 +4,7 @@
 package com.dafrito.rfe.inspect;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * A collection of methods that deal with inspection.
@@ -57,6 +58,11 @@ public final class Inspection {
 					Inspector<Object> groupInspector = inspector.group(logicalName);
 					for (Object v : (Iterable<?>) method.invoke(target)) {
 						groupInspector.value(v);
+					}
+				} else if (Map.class.isAssignableFrom(returned)) {
+					Inspector<Object> groupInspector = inspector.group(logicalName);
+					for (Map.Entry<?, ?> e : ((Map<?, ?>) method.invoke(target)).entrySet()) {
+						groupInspector.field(e.getKey() != null ? e.getKey().toString() : "null", e.getValue());
 					}
 				} else {
 					inspector.field(logicalName, method.invoke(target));
