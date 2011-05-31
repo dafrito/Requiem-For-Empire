@@ -6,7 +6,7 @@ package com.dafrito.rfe.style;
 import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
-public class StylesheetFontSizeElement extends StylesheetElement implements Nodeable {
+public class StylesheetFontSizeElement implements Nodeable {
 	private int fontSize;
 
 	public StylesheetFontSizeElement(int fontSize) {

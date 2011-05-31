@@ -6,7 +6,7 @@ package com.dafrito.rfe.style;
 import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
-public class StylesheetPaddingElement extends StylesheetElement implements Nodeable {
+public class StylesheetPaddingElement implements Nodeable {
 	private int magnitude;
 
 	public StylesheetPaddingElement(int magnitude) {

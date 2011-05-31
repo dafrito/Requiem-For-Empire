@@ -6,7 +6,7 @@ package com.dafrito.rfe.style;
 import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
-public class StylesheetFontStyleElement extends StylesheetElement implements Nodeable {
+public class StylesheetFontStyleElement implements Nodeable {
 	private int style;
 
 	public StylesheetFontStyleElement(int style) {

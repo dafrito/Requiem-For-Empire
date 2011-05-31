@@ -18,7 +18,7 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.proxies.FauxTemplate;
 
 public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, ScriptConvertible {
-	private final Map<StylesheetProperty, StylesheetElement> styleElements = new EnumMap<StylesheetProperty, StylesheetElement>(StylesheetProperty.class);
+	private final Map<StylesheetProperty, Object> styleElements = new EnumMap<StylesheetProperty, Object>(StylesheetProperty.class);
 	public static final String STYLESHEETSTRING = "Stylesheet";
 
 	public Stylesheet(ScriptEnvironment env) {
@@ -29,7 +29,7 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, S
 		super(env, ScriptValueType.createType(env, STYLESHEETSTRING));
 	}
 
-	public void addElement(StylesheetProperty type, StylesheetElement element) {
+	public void addElement(StylesheetProperty type, Object element) {
 		assert Debugger.openNode("Stylesheet Element Additions", "Adding a " + element + " element to this stylesheet");
 		assert Debugger.addNode(this);
 		assert Debugger.addNode(element);
@@ -49,7 +49,7 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, S
 		return null;
 	}
 
-	public StylesheetElement getElement(StylesheetProperty elementCode) {
+	public Object getElement(StylesheetProperty elementCode) {
 		return this.styleElements.get(elementCode);
 	}
 

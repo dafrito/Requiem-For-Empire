@@ -22,9 +22,8 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.style.Stylesheet;
 import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
 import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
-import com.dafrito.rfe.style.StylesheetElement;
-import com.dafrito.rfe.style.StylesheetProperty;
 import com.dafrito.rfe.style.StylesheetHeightElement;
+import com.dafrito.rfe.style.StylesheetProperty;
 import com.dafrito.rfe.style.StylesheetWidthElement;
 
 public class InterfaceElement_Root extends InterfaceElement implements Interface_Container {
@@ -174,13 +173,13 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 	}
 
 	@Override
-	public StylesheetElement getStyleElement(StylesheetProperty code) {
+	public Object getStyleElement(StylesheetProperty code) {
 		Stylesheet sheet = this.getUniqueStylesheet();
 		if (sheet == null) {
 			this.setUniqueStylesheet(new Stylesheet(this.getEnvironment()));
 			sheet = this.getUniqueStylesheet();
 		}
-		StylesheetElement element = this.getUniqueStylesheet().getElement(code);
+		Object element = this.getUniqueStylesheet().getElement(code);
 		if (element != null) {
 			return element;
 		}

@@ -14,123 +14,123 @@ import com.dafrito.rfe.script.ScriptKeywordType;
  * @author Aaron Faanes
  * 
  * @see Stylesheet
- * @see StylesheetElement
+ * @see Object
  */
 public enum StylesheetProperty {
 	WIDTH("Width") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetPercentageWidthElement(1);
 		}
 	},
 	HEIGHT("Height") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetPercentageHeightElement(1);
 		}
 	},
 	COLOR("Text Color") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetColorElement(Color.white);
 		}
 	},
 	BACKGROUNDCOLOR("Background Color") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetBackgroundColorElement(Color.black);
 		}
 	},
 	FONTNAME("Font Name") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetFontElement("Lucida Sans Unicode");
 		}
 	},
 	FONTSIZE("Font Size") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetFontSizeElement(18);
 		}
 	},
 	FONTSTYLE("Font Style") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetFontStyleElement(Font.PLAIN);
 		}
 	},
 
 	BORDERBOTTOM("Bottom Border") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetBorderElement(0, ScriptKeywordType.solid, Color.BLACK);
 		}
 	},
 	BORDERTOP("Top Border") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetBorderElement(0, ScriptKeywordType.solid, Color.BLACK);
 		}
 	},
 	BORDERLEFT("Left Border") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetBorderElement(0, ScriptKeywordType.solid, Color.BLACK);
 		}
 	},
 	BORDERRIGHT("Right Border") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetBorderElement(0, ScriptKeywordType.solid, Color.BLACK);
 		}
 	},
 
 	MARGINBOTTOM("Bottom Margin") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetMarginElement(0);
 		}
 	},
 	MARGINTOP("Top Margin") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetMarginElement(0);
 		}
 	},
 	MARGINLEFT("Left Margin") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetMarginElement(0);
 		}
 	},
 	MARGINRIGHT("Right Margin") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetMarginElement(0);
 		}
 	},
 
 	PADDINGBOTTOM("Bottom Padding") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetPaddingElement(0);
 		}
 	},
 	PADDINGTOP("Top Padding") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetPaddingElement(0);
 		}
 	},
 	PADDINGLEFT("Left Padding") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetPaddingElement(0);
 		}
 	},
 	PADDINGRIGHT("Right Padding") {
 		@Override
-		public StylesheetElement defaultValue() {
+		public Object defaultValue() {
 			return new StylesheetPaddingElement(0);
 		}
 	};
@@ -141,7 +141,7 @@ public enum StylesheetProperty {
 		this.name = name;
 	}
 
-	public StylesheetElement defaultValue() {
+	public Object defaultValue() {
 		throw new UnsupportedOperationException("Style element has no default");
 	}
 

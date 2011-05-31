@@ -9,7 +9,7 @@ import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptKeywordType;
 
-public class StylesheetBorderElement extends StylesheetElement implements Nodeable {
+public class StylesheetBorderElement implements Nodeable {
 	private int magnitude;
 	private ScriptKeywordType style;
 	private Color color;

@@ -18,14 +18,13 @@ import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.style.StylesheetBorderElement;
 import com.dafrito.rfe.style.StylesheetColorElement;
-import com.dafrito.rfe.style.StylesheetElement;
-import com.dafrito.rfe.style.StylesheetProperty;
 import com.dafrito.rfe.style.StylesheetFontElement;
 import com.dafrito.rfe.style.StylesheetFontSizeElement;
 import com.dafrito.rfe.style.StylesheetFontStyleElement;
 import com.dafrito.rfe.style.StylesheetHeightElement;
 import com.dafrito.rfe.style.StylesheetMarginElement;
 import com.dafrito.rfe.style.StylesheetPaddingElement;
+import com.dafrito.rfe.style.StylesheetProperty;
 import com.dafrito.rfe.style.StylesheetWidthElement;
 
 public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConvertible {
@@ -144,8 +143,8 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 		return ((StylesheetPaddingElement) this.getStyleElement(StylesheetProperty.PADDINGLEFT)).getMagnitude();
 	}
 
-	public StylesheetElement getNonRecursiveStyleElement(StylesheetProperty code) {
-		StylesheetElement element = null;
+	public Object getNonRecursiveStyleElement(StylesheetProperty code) {
+		Object element = null;
 		if (this.getUniqueStylesheet() != null) {
 			element = this.getUniqueStylesheet().getElement(code);
 			if (element != null) {
@@ -186,8 +185,8 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 		return this.getParent().getContainerElement().getRoot();
 	}
 
-	public StylesheetElement getStyleElement(StylesheetProperty code) {
-		StylesheetElement element = null;
+	public Object getStyleElement(StylesheetProperty code) {
+		Object element = null;
 		if (this.getUniqueStylesheet() != null) {
 			element = this.getUniqueStylesheet().getElement(code);
 			if (element != null) {

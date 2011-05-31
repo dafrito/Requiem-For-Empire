@@ -8,7 +8,7 @@ import java.awt.Color;
 import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
-public class StylesheetBackgroundColorElement extends StylesheetElement implements Nodeable {
+public class StylesheetBackgroundColorElement implements Nodeable {
 	private Color color;
 
 	public StylesheetBackgroundColorElement(Color backgroundColor) {
