@@ -5,13 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptValueType;
 
 @Inspectable
-public class Archetype implements ScriptConvertible, Nodeable {
+public class Archetype implements ScriptConvertible {
 
 	private final String name;
 	private final List<Ace> parents = new ArrayList<Ace>();
@@ -52,13 +51,6 @@ public class Archetype implements ScriptConvertible, Nodeable {
 		FauxTemplate_Archetype archetype = new FauxTemplate_Archetype(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING));
 		archetype.setArchetype(this);
 		return archetype;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Archetype (" + this.name + ")");
-		assert Debugger.addSnapNode("Aces (" + this.parents.size() + " ace(s))", this.parents);
-		assert Debugger.closeNode();
 	}
 
 	@Override
