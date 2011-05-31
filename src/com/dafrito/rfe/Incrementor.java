@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe;
 
-class Incrementor {
+public class Incrementor {
 	private int value;
 
 	public Incrementor() {

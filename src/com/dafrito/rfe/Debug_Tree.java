@@ -18,6 +18,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import com.dafrito.rfe.strings.NamedTreePath;
+
 public class Debug_Tree extends JPanel implements ActionListener, MouseListener {
 	/**
 	 * 

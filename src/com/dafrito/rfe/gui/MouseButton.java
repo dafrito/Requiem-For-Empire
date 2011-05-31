@@ -1,7 +1,9 @@
 /**
  * 
  */
-package com.dafrito.rfe;
+package com.dafrito.rfe.gui;
+
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public enum MouseButton {
 	LEFT, MIDDLE, RIGHT;

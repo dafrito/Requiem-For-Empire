@@ -1,6 +1,6 @@
 package com.dafrito.rfe.style;
 
-import com.dafrito.rfe.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 
 

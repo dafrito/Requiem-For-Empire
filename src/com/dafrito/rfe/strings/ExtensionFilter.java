@@ -1,10 +1,9 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.strings;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.dafrito.rfe.util.Strings;
 
 public class ExtensionFilter extends javax.swing.filechooser.FileFilter implements java.io.FileFilter {
 	private Set<String> extensions = new HashSet<String>();

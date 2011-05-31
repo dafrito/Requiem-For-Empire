@@ -26,10 +26,14 @@ import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.dafrito.rfe.geom.PolygonPipeline;
+import com.dafrito.rfe.geom.SplitterThread;
 import com.dafrito.rfe.script.CompileThread;
 import com.dafrito.rfe.script.ExecutionThread;
 import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.strings.ExtensionFilter;
 
 public class DebugEnvironment extends JFrame implements ActionListener, ChangeListener {
 	private static final long serialVersionUID = -8190546125680224912L;

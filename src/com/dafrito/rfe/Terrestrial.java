@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import com.dafrito.rfe.geom.DiscreteRegion;
+import com.dafrito.rfe.geom.DiscreteRegionBSPNode;
+import com.dafrito.rfe.geom.PolygonPipeline;
+import com.dafrito.rfe.geom.Polygons;
+import com.dafrito.rfe.geom.SplitterThread;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Path;
 import com.dafrito.rfe.points.Points;
@@ -14,6 +19,7 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.ScriptValue;
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
 

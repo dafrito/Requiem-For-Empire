@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.tree.TreePath;
 
+import com.dafrito.rfe.strings.NamedTreePath;
+
 public class Debug_Hotspots extends JPanel implements ActionListener, MouseListener {
 	/**
 	 * 

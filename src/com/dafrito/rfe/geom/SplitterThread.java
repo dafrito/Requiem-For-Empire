@@ -1,8 +1,11 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.geom;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.Terrestrial;
 
 public class SplitterThread extends Thread {
 	private DiscreteRegionBSPNode root;

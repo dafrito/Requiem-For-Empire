@@ -11,8 +11,6 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.Exception_InternalError;
-import com.dafrito.rfe.GraphicalElement;
 import com.dafrito.rfe.gui.event.KeyEvent_KeyDown;
 import com.dafrito.rfe.gui.event.KeyEvent_KeyUp;
 import com.dafrito.rfe.gui.event.RiffInterface_ClickEvent;
@@ -24,6 +22,7 @@ import com.dafrito.rfe.gui.event.RiffInterface_MouseListener;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseUpEvent;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptKeywordType;
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.style.Stylesheet;
 import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
 import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;

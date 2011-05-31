@@ -1,7 +1,7 @@
 package com.dafrito.rfe.points;
 
-import com.dafrito.rfe.Exception_InternalError;
 import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public class Point_Orbital extends Point {
 	private Point focus;

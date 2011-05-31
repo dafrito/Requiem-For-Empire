@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.Exception_InternalError;
 import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptExecutable;
@@ -15,6 +14,7 @@ import com.dafrito.rfe.script.ScriptTemplate;
 import com.dafrito.rfe.script.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.ScriptValue;
 import com.dafrito.rfe.script.ScriptValueType;
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
 public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue {

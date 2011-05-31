@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dafrito.rfe.util;
+package com.dafrito.rfe.strings;
 
 import java.io.File;
 import java.io.FileReader;

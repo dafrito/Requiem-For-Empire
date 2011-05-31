@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.dafrito.rfe.DebugString;
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.Exception_InternalError;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public class ScriptGroup extends ScriptElement implements Nodeable {
 	public enum GroupType {

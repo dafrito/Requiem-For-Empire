@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.dafrito.rfe.ArchetypeMapNode;
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.DiscreteRegion;
+import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.Referenced;

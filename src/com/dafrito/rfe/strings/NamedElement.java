@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.strings;
 public class NamedElement {
 	String name, formalName, adjective;
 

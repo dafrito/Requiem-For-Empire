@@ -31,7 +31,9 @@ import javax.swing.undo.CompoundEdit;
 
 import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.ScriptLine;
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.strings.ExtensionFilter;
 
 
 public class Debug_ScriptElement extends JPanel implements UndoableEditListener, ListSelectionListener, ComponentListener, MouseListener {

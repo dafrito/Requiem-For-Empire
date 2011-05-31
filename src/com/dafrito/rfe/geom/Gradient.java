@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.geom;
 
 import com.dafrito.rfe.points.Point;
 

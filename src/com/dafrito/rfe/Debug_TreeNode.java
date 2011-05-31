@@ -14,6 +14,9 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
+import com.dafrito.rfe.strings.NamedTreePath;
+
 public class Debug_TreeNode implements MutableTreeNode {
 	private static int identifier = 0;
 	private static Vector<Object> cacheData = new Vector<Object>();

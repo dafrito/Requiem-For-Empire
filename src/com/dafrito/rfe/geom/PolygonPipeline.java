@@ -1,5 +1,8 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.geom;
 import java.util.List;
+
+import com.dafrito.rfe.Debugger;
+import com.dafrito.rfe.Terrestrial;
 
 
 public class PolygonPipeline extends Thread {

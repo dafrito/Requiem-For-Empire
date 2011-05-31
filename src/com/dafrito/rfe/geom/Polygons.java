@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.geom;
 
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -8,129 +8,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.Debugger;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.points.Point_Spherical;
 import com.dafrito.rfe.points.Points;
 import com.dafrito.rfe.script.ScriptEnvironment;
-
-class PointSideStruct implements Nodeable {
-	private List<Point> left, right, indeterminates;
-	double leftWeight, rightWeight;
-
-	public PointSideStruct() {
-		this.left = new LinkedList<Point>();
-		this.right = new LinkedList<Point>();
-		this.indeterminates = new LinkedList<Point>();
-	}
-
-	public PointSideStruct(List<Point> left, List<Point> right, List<Point> indet) {
-		this.left = left;
-		this.right = right;
-		this.indeterminates = indet;
-	}
-
-	public void addIndeterminate(Point point) {
-		this.indeterminates.add(point);
-	}
-
-	public void addLeft(Point point, double value) {
-		this.left.add(point);
-		this.leftWeight += value;
-	}
-
-	public void addRight(Point point, double value) {
-		this.right.add(point);
-		this.rightWeight += value;
-	}
-
-	public List<Point> getIndeterminates() {
-		return this.indeterminates;
-	}
-
-	public List<Point> getLeftPoints() {
-		return this.left;
-	}
-
-	public List<Point> getRightPoints() {
-		return this.right;
-	}
-
-	public boolean hasIndeterminates() {
-		return !this.indeterminates.isEmpty();
-	}
-
-	public boolean isColinear() {
-		return this.left.size() == 0 && this.right.size() == 0;
-	}
-
-	public boolean isGreaterThan() {
-		return this.left.size() == 0 && this.right.size() != 0;
-	}
-
-	public boolean isLessThan() {
-		return this.left.size() != 0 && this.right.size() == 0;
-	}
-
-	public boolean isStraddling() {
-		return this.left.size() != 0 && this.right.size() != 0;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Point-Side Test Results");
-		assert Debugger.addSnapNode("Left-side Points (Weight: " + this.leftWeight + "): " + this.left.size() + " element(s)", this.left);
-		assert Debugger.addSnapNode("Right-side Points (Weight: " + this.rightWeight + "): " + this.right.size() + " element(s)", this.right);
-		assert Debugger.addSnapNode("Indeterminate Points: " + this.indeterminates.size() + " element(s)", this.indeterminates);
-		assert Debugger.closeNode();
-	}
-
-	public void validate() {
-		if (Math.abs(this.rightWeight) < Math.pow(10, -5) && this.right.size() > 0) {
-			assert Debugger.addNode("Right-side list is insignificant, clearing.");
-			this.right.clear();
-		}
-		if (Math.abs(this.leftWeight) < Math.pow(10, -5) && this.left.size() > 0) {
-			assert Debugger.addNode("Left-side list is insignificant, clearing.");
-			this.left.clear();
-		}
-	}
-}
-
-class RiffIntersectionPoint implements Nodeable {
-	private Point intersect;
-	private int location;
-
-	public RiffIntersectionPoint(Point intersect, int location) {
-		this.intersect = intersect;
-		this.location = location;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof RiffIntersectionPoint)) {
-			return false;
-		}
-		return this.getIntersection().equals(((RiffIntersectionPoint) o).getIntersection());
-	}
-
-	public Point getIntersection() {
-		return this.intersect;
-	}
-
-	public int getLocation() {
-		return this.location;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Intersection-Point Struct");
-		assert Debugger.addNode("Intersection-Point: " + this.intersect);
-		assert Debugger.addNode("Point-list offset of intersection: " + this.location);
-		assert Debugger.closeNode();
-	}
-}
 
 public class Polygons {
 	public static boolean areSlopesEqual(Point pointA, Point pointB, Point testPointA, Point testPointB) {

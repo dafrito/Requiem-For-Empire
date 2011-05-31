@@ -12,8 +12,9 @@ import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Inspection;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.inspect.NodeableInspector;
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.util.Strings;
+import com.dafrito.rfe.strings.Strings;
 
 public class Debugger {
 	private static DebugEnvironment debugger;

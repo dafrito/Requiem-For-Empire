@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.geom;
 
 import java.awt.Color;
 import java.awt.Polygon;
@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import com.dafrito.rfe.Terrain;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.script.ScriptEnvironment;

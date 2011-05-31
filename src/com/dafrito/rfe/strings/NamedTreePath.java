@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.strings;
 import javax.swing.tree.TreePath;
 
 public class NamedTreePath extends TreePath {

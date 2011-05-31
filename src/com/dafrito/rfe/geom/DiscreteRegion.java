@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.geom;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.dafrito.rfe.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;

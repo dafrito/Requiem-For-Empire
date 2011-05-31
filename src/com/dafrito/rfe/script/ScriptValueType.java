@@ -2,7 +2,7 @@ package com.dafrito.rfe.script;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Object;
 
