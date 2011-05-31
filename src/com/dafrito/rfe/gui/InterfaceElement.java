@@ -19,7 +19,7 @@ import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.style.StylesheetBorderElement;
 import com.dafrito.rfe.style.StylesheetColorElement;
 import com.dafrito.rfe.style.StylesheetElement;
-import com.dafrito.rfe.style.StylesheetElementType;
+import com.dafrito.rfe.style.StylesheetProperty;
 import com.dafrito.rfe.style.StylesheetFontElement;
 import com.dafrito.rfe.style.StylesheetFontSizeElement;
 import com.dafrito.rfe.style.StylesheetFontStyleElement;
@@ -57,11 +57,11 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public Color getBackgroundColor() {
-		return ((StylesheetBackgroundColorElement) this.getStyleElement(StylesheetElementType.BACKGROUNDCOLOR)).getColor();
+		return ((StylesheetBackgroundColorElement) this.getStyleElement(StylesheetProperty.BACKGROUNDCOLOR)).getColor();
 	}
 
 	public int getBottomBorderMagnitude() {
-		return ((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERBOTTOM)).getMagnitude();
+		return ((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERBOTTOM)).getMagnitude();
 	}
 
 	public int getBottomFluffMagnitude() {
@@ -69,11 +69,11 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getBottomMarginMagnitude() {
-		return ((StylesheetMarginElement) this.getStyleElement(StylesheetElementType.MARGINBOTTOM)).getMagnitude();
+		return ((StylesheetMarginElement) this.getStyleElement(StylesheetProperty.MARGINBOTTOM)).getMagnitude();
 	}
 
 	public int getBottomPaddingMagnitude() {
-		return ((StylesheetPaddingElement) this.getStyleElement(StylesheetElementType.PADDINGBOTTOM)).getMagnitude();
+		return ((StylesheetPaddingElement) this.getStyleElement(StylesheetProperty.PADDINGBOTTOM)).getMagnitude();
 	}
 
 	public Stylesheet getClassStylesheet() {
@@ -81,11 +81,11 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public Font getCurrentFont() {
-		return new Font(((StylesheetFontElement) this.getStyleElement(StylesheetElementType.FONTNAME)).getFontName(), ((StylesheetFontStyleElement) this.getStyleElement(StylesheetElementType.FONTSTYLE)).getStyle(), ((StylesheetFontSizeElement) this.getStyleElement(StylesheetElementType.FONTSIZE)).getFontSize());
+		return new Font(((StylesheetFontElement) this.getStyleElement(StylesheetProperty.FONTNAME)).getFontName(), ((StylesheetFontStyleElement) this.getStyleElement(StylesheetProperty.FONTSTYLE)).getStyle(), ((StylesheetFontSizeElement) this.getStyleElement(StylesheetProperty.FONTSIZE)).getFontSize());
 	}
 
 	public Color getCurrentTextColor() {
-		return ((StylesheetColorElement) this.getStyleElement(StylesheetElementType.COLOR)).getColor();
+		return ((StylesheetColorElement) this.getStyleElement(StylesheetProperty.COLOR)).getColor();
 	}
 
 	@Override
@@ -99,11 +99,11 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getFullHeight() {
-		return ((StylesheetMarginElement) this.getStyleElement(StylesheetElementType.MARGINTOP)).getMagnitude() + ((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERTOP)).getMagnitude() + ((StylesheetPaddingElement) this.getStyleElement(StylesheetElementType.PADDINGTOP)).getMagnitude() + this.getInternalHeight() + ((StylesheetPaddingElement) this.getStyleElement(StylesheetElementType.PADDINGBOTTOM)).getMagnitude() + ((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERBOTTOM)).getMagnitude() + ((StylesheetMarginElement) this.getStyleElement(StylesheetElementType.MARGINBOTTOM)).getMagnitude();
+		return ((StylesheetMarginElement) this.getStyleElement(StylesheetProperty.MARGINTOP)).getMagnitude() + ((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERTOP)).getMagnitude() + ((StylesheetPaddingElement) this.getStyleElement(StylesheetProperty.PADDINGTOP)).getMagnitude() + this.getInternalHeight() + ((StylesheetPaddingElement) this.getStyleElement(StylesheetProperty.PADDINGBOTTOM)).getMagnitude() + ((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERBOTTOM)).getMagnitude() + ((StylesheetMarginElement) this.getStyleElement(StylesheetProperty.MARGINBOTTOM)).getMagnitude();
 	}
 
 	public int getFullWidth() {
-		return ((StylesheetMarginElement) this.getStyleElement(StylesheetElementType.MARGINLEFT)).getMagnitude() + ((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERLEFT)).getMagnitude() + ((StylesheetPaddingElement) this.getStyleElement(StylesheetElementType.PADDINGLEFT)).getMagnitude() + this.getInternalWidth() + ((StylesheetPaddingElement) this.getStyleElement(StylesheetElementType.PADDINGRIGHT)).getMagnitude() + ((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERRIGHT)).getMagnitude() + ((StylesheetMarginElement) this.getStyleElement(StylesheetElementType.MARGINRIGHT)).getMagnitude();
+		return ((StylesheetMarginElement) this.getStyleElement(StylesheetProperty.MARGINLEFT)).getMagnitude() + ((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERLEFT)).getMagnitude() + ((StylesheetPaddingElement) this.getStyleElement(StylesheetProperty.PADDINGLEFT)).getMagnitude() + this.getInternalWidth() + ((StylesheetPaddingElement) this.getStyleElement(StylesheetProperty.PADDINGRIGHT)).getMagnitude() + ((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERRIGHT)).getMagnitude() + ((StylesheetMarginElement) this.getStyleElement(StylesheetProperty.MARGINRIGHT)).getMagnitude();
 	}
 
 	public int getHorizontalFluffMagnitude() {
@@ -111,7 +111,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getInternalHeight() {
-		StylesheetHeightElement element = (StylesheetHeightElement) this.getStyleElement(StylesheetElementType.HEIGHT);
+		StylesheetHeightElement element = (StylesheetHeightElement) this.getStyleElement(StylesheetProperty.HEIGHT);
 		if (element instanceof StylesheetAbsoluteHeightElement) {
 			return ((Integer) element.getMagnitude()).intValue();
 		} else {
@@ -120,7 +120,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getInternalWidth() {
-		StylesheetWidthElement element = (StylesheetWidthElement) this.getStyleElement(StylesheetElementType.WIDTH);
+		StylesheetWidthElement element = (StylesheetWidthElement) this.getStyleElement(StylesheetProperty.WIDTH);
 		if (element instanceof StylesheetAbsoluteWidthElement) {
 			return ((Integer) element.getMagnitude()).intValue();
 		} else {
@@ -129,7 +129,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getLeftBorderMagnitude() {
-		return ((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERLEFT)).getMagnitude();
+		return ((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERLEFT)).getMagnitude();
 	}
 
 	public int getLeftFluffMagnitude() {
@@ -137,14 +137,14 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getLeftMarginMagnitude() {
-		return ((StylesheetMarginElement) this.getStyleElement(StylesheetElementType.MARGINLEFT)).getMagnitude();
+		return ((StylesheetMarginElement) this.getStyleElement(StylesheetProperty.MARGINLEFT)).getMagnitude();
 	}
 
 	public int getLeftPaddingMagnitude() {
-		return ((StylesheetPaddingElement) this.getStyleElement(StylesheetElementType.PADDINGLEFT)).getMagnitude();
+		return ((StylesheetPaddingElement) this.getStyleElement(StylesheetProperty.PADDINGLEFT)).getMagnitude();
 	}
 
-	public StylesheetElement getNonRecursiveStyleElement(StylesheetElementType code) {
+	public StylesheetElement getNonRecursiveStyleElement(StylesheetProperty code) {
 		StylesheetElement element = null;
 		if (this.getUniqueStylesheet() != null) {
 			element = this.getUniqueStylesheet().getElement(code);
@@ -164,7 +164,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getRightBorderMagnitude() {
-		return ((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERRIGHT)).getMagnitude();
+		return ((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERRIGHT)).getMagnitude();
 	}
 
 	public int getRightFluffMagnitude() {
@@ -172,11 +172,11 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getRightMarginMagnitude() {
-		return ((StylesheetMarginElement) this.getStyleElement(StylesheetElementType.MARGINRIGHT)).getMagnitude();
+		return ((StylesheetMarginElement) this.getStyleElement(StylesheetProperty.MARGINRIGHT)).getMagnitude();
 	}
 
 	public int getRightPaddingMagnitude() {
-		return ((StylesheetPaddingElement) this.getStyleElement(StylesheetElementType.PADDINGRIGHT)).getMagnitude();
+		return ((StylesheetPaddingElement) this.getStyleElement(StylesheetProperty.PADDINGRIGHT)).getMagnitude();
 	}
 
 	public InterfaceElement_Root getRoot() {
@@ -186,7 +186,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 		return this.getParent().getContainerElement().getRoot();
 	}
 
-	public StylesheetElement getStyleElement(StylesheetElementType code) {
+	public StylesheetElement getStyleElement(StylesheetProperty code) {
 		StylesheetElement element = null;
 		if (this.getUniqueStylesheet() != null) {
 			element = this.getUniqueStylesheet().getElement(code);
@@ -204,7 +204,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getTopBorderMagnitude() {
-		return ((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERTOP)).getMagnitude();
+		return ((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERTOP)).getMagnitude();
 	}
 
 	public int getTopFluffMagnitude() {
@@ -212,11 +212,11 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getTopMarginMagnitude() {
-		return ((StylesheetMarginElement) this.getStyleElement(StylesheetElementType.MARGINTOP)).getMagnitude();
+		return ((StylesheetMarginElement) this.getStyleElement(StylesheetProperty.MARGINTOP)).getMagnitude();
 	}
 
 	public int getTopPaddingMagnitude() {
-		return ((StylesheetPaddingElement) this.getStyleElement(StylesheetElementType.PADDINGTOP)).getMagnitude();
+		return ((StylesheetPaddingElement) this.getStyleElement(StylesheetProperty.PADDINGTOP)).getMagnitude();
 	}
 
 	public Stylesheet getUniqueStylesheet() {
@@ -250,32 +250,32 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 
 	@Override
 	public void paint(Graphics2D g2d) {
-		if (!((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERLEFT)).getStyle().equals(ScriptKeywordType.none)) {
-			g2d.setColor(((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERLEFT)).getColor());
+		if (!((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERLEFT)).getStyle().equals(ScriptKeywordType.none)) {
+			g2d.setColor(((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERLEFT)).getColor());
 			int xPos = this.getXAnchor() + this.getLeftMarginMagnitude();
 			int yPos = this.getYAnchor() + this.getTopMarginMagnitude();
 			int width = this.getLeftBorderMagnitude();
 			int height = this.getTopBorderMagnitude() + this.getTopPaddingMagnitude() + this.getInternalHeight() + this.getBottomPaddingMagnitude() + this.getBottomBorderMagnitude();
 			g2d.fill(new Rectangle(xPos, yPos, width, height));
 		}
-		if (!((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERRIGHT)).getStyle().equals(ScriptKeywordType.none)) {
-			g2d.setColor(((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERRIGHT)).getColor());
+		if (!((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERRIGHT)).getStyle().equals(ScriptKeywordType.none)) {
+			g2d.setColor(((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERRIGHT)).getColor());
 			int xPos = this.getXAnchor() + this.getLeftFluffMagnitude() + this.getInternalWidth() + this.getRightPaddingMagnitude();
 			int yPos = this.getYAnchor() + this.getTopMarginMagnitude();
 			int width = this.getRightBorderMagnitude();
 			int height = this.getTopBorderMagnitude() + this.getTopPaddingMagnitude() + this.getInternalHeight() + this.getBottomPaddingMagnitude() + this.getBottomBorderMagnitude();
 			g2d.fill(new Rectangle(xPos, yPos, width, height));
 		}
-		if (!((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERTOP)).getStyle().equals(ScriptKeywordType.none)) {
-			g2d.setColor(((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERTOP)).getColor());
+		if (!((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERTOP)).getStyle().equals(ScriptKeywordType.none)) {
+			g2d.setColor(((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERTOP)).getColor());
 			int xPos = this.getXAnchor() + this.getLeftMarginMagnitude();
 			int yPos = this.getYAnchor() + this.getTopMarginMagnitude();
 			int width = this.getLeftBorderMagnitude() + this.getLeftPaddingMagnitude() + this.getInternalWidth() + this.getRightPaddingMagnitude() + this.getRightBorderMagnitude();
 			int height = this.getLeftBorderMagnitude();
 			g2d.fill(new Rectangle(xPos, yPos, width, height));
 		}
-		if (!((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERBOTTOM)).getStyle().equals(ScriptKeywordType.none)) {
-			g2d.setColor(((StylesheetBorderElement) this.getStyleElement(StylesheetElementType.BORDERBOTTOM)).getColor());
+		if (!((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERBOTTOM)).getStyle().equals(ScriptKeywordType.none)) {
+			g2d.setColor(((StylesheetBorderElement) this.getStyleElement(StylesheetProperty.BORDERBOTTOM)).getColor());
 			int xPos = this.getXAnchor() + this.getLeftMarginMagnitude();
 			int yPos = this.getYAnchor() + this.getTopFluffMagnitude() + this.getInternalHeight() + this.getBottomPaddingMagnitude();
 			int width = this.getLeftBorderMagnitude() + this.getLeftPaddingMagnitude() + this.getInternalWidth() + this.getRightPaddingMagnitude() + this.getRightBorderMagnitude();
@@ -307,7 +307,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 			this.uniqueStylesheet = new Stylesheet(this.environment);
 			this.uniqueStylesheet.setUnique(true);
 		}
-		this.getUniqueStylesheet().addElement(StylesheetElementType.WIDTH, new StylesheetAbsoluteWidthElement(width));
+		this.getUniqueStylesheet().addElement(StylesheetProperty.WIDTH, new StylesheetAbsoluteWidthElement(width));
 		Debugger.closeNode();
 	}
 

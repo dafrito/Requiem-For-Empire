@@ -49,7 +49,7 @@ import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.style.StylesheetBorderElement;
 import com.dafrito.rfe.style.StylesheetColorElement;
-import com.dafrito.rfe.style.StylesheetElementType;
+import com.dafrito.rfe.style.StylesheetProperty;
 import com.dafrito.rfe.style.StylesheetFontSizeElement;
 import com.dafrito.rfe.style.StylesheetHeightElement;
 import com.dafrito.rfe.style.StylesheetMarginElement;
@@ -1320,7 +1320,7 @@ public class Parser {
 					colorElem = new StylesheetColorElement(((ScriptLine) elements.get(offset)).getString());
 				}
 				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Color stylesheet-element parsed", colorElem);
-				stylesheet.addElement(StylesheetElementType.COLOR, colorElem);
+				stylesheet.addElement(StylesheetProperty.COLOR, colorElem);
 				i += offset - i;
 				continue;
 			}
@@ -1331,7 +1331,7 @@ public class Parser {
 				offset++;
 				fontSizeElem = new StylesheetFontSizeElement(((ScriptValue_Numeric) elements.get(offset)).intValue());
 				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Font size stylesheet-element parsed", fontSizeElem);
-				stylesheet.addElement(StylesheetElementType.FONTSIZE, fontSizeElem);
+				stylesheet.addElement(StylesheetProperty.FONTSIZE, fontSizeElem);
 				i += offset - i;
 				continue;
 			}
@@ -1348,7 +1348,7 @@ public class Parser {
 					widthElem = new StylesheetAbsoluteWidthElement(((ScriptValue_Numeric) elements.get(offset)).intValue());
 				}
 				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Width stylesheet-element parsed", widthElem);
-				stylesheet.addElement(StylesheetElementType.WIDTH, widthElem);
+				stylesheet.addElement(StylesheetProperty.WIDTH, widthElem);
 				i += offset - i;
 				continue;
 			}
@@ -1365,7 +1365,7 @@ public class Parser {
 					heightElem = new StylesheetAbsoluteHeightElement(((ScriptValue_Numeric) elements.get(offset)).intValue());
 				}
 				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Height stylesheet-element parsed", heightElem);
-				stylesheet.addElement(StylesheetElementType.HEIGHT, heightElem);
+				stylesheet.addElement(StylesheetProperty.HEIGHT, heightElem);
 				i += offset - i;
 				continue;
 			}
@@ -1378,18 +1378,18 @@ public class Parser {
 				marginElem = new StylesheetMarginElement(((ScriptValue_Numeric) elements.get(offset)).intValue());
 				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Margin stylesheet-element parsed", marginElem);
 				if (key.equals("margin")) {
-					stylesheet.addElement(StylesheetElementType.MARGINBOTTOM, marginElem);
-					stylesheet.addElement(StylesheetElementType.MARGINTOP, marginElem);
-					stylesheet.addElement(StylesheetElementType.MARGINLEFT, marginElem);
-					stylesheet.addElement(StylesheetElementType.MARGINRIGHT, marginElem);
+					stylesheet.addElement(StylesheetProperty.MARGINBOTTOM, marginElem);
+					stylesheet.addElement(StylesheetProperty.MARGINTOP, marginElem);
+					stylesheet.addElement(StylesheetProperty.MARGINLEFT, marginElem);
+					stylesheet.addElement(StylesheetProperty.MARGINRIGHT, marginElem);
 				} else if (key.equals("margin-bottom")) {
-					stylesheet.addElement(StylesheetElementType.MARGINBOTTOM, marginElem);
+					stylesheet.addElement(StylesheetProperty.MARGINBOTTOM, marginElem);
 				} else if (key.equals("margin-top")) {
-					stylesheet.addElement(StylesheetElementType.MARGINTOP, marginElem);
+					stylesheet.addElement(StylesheetProperty.MARGINTOP, marginElem);
 				} else if (key.equals("margin-left")) {
-					stylesheet.addElement(StylesheetElementType.MARGINLEFT, marginElem);
+					stylesheet.addElement(StylesheetProperty.MARGINLEFT, marginElem);
 				} else if (key.equals("margin-right")) {
-					stylesheet.addElement(StylesheetElementType.MARGINRIGHT, marginElem);
+					stylesheet.addElement(StylesheetProperty.MARGINRIGHT, marginElem);
 				}
 				i += offset - i;
 				continue;
@@ -1403,18 +1403,18 @@ public class Parser {
 				paddingElem = new StylesheetPaddingElement(((ScriptValue_Numeric) elements.get(offset)).intValue());
 				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Padding stylesheet-element parsed", paddingElem);
 				if (key.equals("padding")) {
-					stylesheet.addElement(StylesheetElementType.PADDINGBOTTOM, paddingElem);
-					stylesheet.addElement(StylesheetElementType.PADDINGTOP, paddingElem);
-					stylesheet.addElement(StylesheetElementType.PADDINGLEFT, paddingElem);
-					stylesheet.addElement(StylesheetElementType.PADDINGRIGHT, paddingElem);
+					stylesheet.addElement(StylesheetProperty.PADDINGBOTTOM, paddingElem);
+					stylesheet.addElement(StylesheetProperty.PADDINGTOP, paddingElem);
+					stylesheet.addElement(StylesheetProperty.PADDINGLEFT, paddingElem);
+					stylesheet.addElement(StylesheetProperty.PADDINGRIGHT, paddingElem);
 				} else if (key.equals("padding-bottom")) {
-					stylesheet.addElement(StylesheetElementType.PADDINGBOTTOM, paddingElem);
+					stylesheet.addElement(StylesheetProperty.PADDINGBOTTOM, paddingElem);
 				} else if (key.equals("padding-top")) {
-					stylesheet.addElement(StylesheetElementType.PADDINGTOP, paddingElem);
+					stylesheet.addElement(StylesheetProperty.PADDINGTOP, paddingElem);
 				} else if (key.equals("padding-left")) {
-					stylesheet.addElement(StylesheetElementType.PADDINGLEFT, paddingElem);
+					stylesheet.addElement(StylesheetProperty.PADDINGLEFT, paddingElem);
 				} else if (key.equals("padding-right")) {
-					stylesheet.addElement(StylesheetElementType.PADDINGRIGHT, paddingElem);
+					stylesheet.addElement(StylesheetProperty.PADDINGRIGHT, paddingElem);
 				}
 				i += offset - i;
 				continue;
@@ -1462,18 +1462,18 @@ public class Parser {
 				borderElem = new StylesheetBorderElement(width, style, color);
 				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Border stylesheet-element parsed", borderElem);
 				if (key.equals("border")) {
-					stylesheet.addElement(StylesheetElementType.BORDERBOTTOM, borderElem);
-					stylesheet.addElement(StylesheetElementType.BORDERTOP, borderElem);
-					stylesheet.addElement(StylesheetElementType.BORDERLEFT, borderElem);
-					stylesheet.addElement(StylesheetElementType.BORDERRIGHT, borderElem);
+					stylesheet.addElement(StylesheetProperty.BORDERBOTTOM, borderElem);
+					stylesheet.addElement(StylesheetProperty.BORDERTOP, borderElem);
+					stylesheet.addElement(StylesheetProperty.BORDERLEFT, borderElem);
+					stylesheet.addElement(StylesheetProperty.BORDERRIGHT, borderElem);
 				} else if (key.equals("border-bottom")) {
-					stylesheet.addElement(StylesheetElementType.BORDERBOTTOM, borderElem);
+					stylesheet.addElement(StylesheetProperty.BORDERBOTTOM, borderElem);
 				} else if (key.equals("border-top")) {
-					stylesheet.addElement(StylesheetElementType.BORDERTOP, borderElem);
+					stylesheet.addElement(StylesheetProperty.BORDERTOP, borderElem);
 				} else if (key.equals("border-left")) {
-					stylesheet.addElement(StylesheetElementType.BORDERLEFT, borderElem);
+					stylesheet.addElement(StylesheetProperty.BORDERLEFT, borderElem);
 				} else if (key.equals("border-right")) {
-					stylesheet.addElement(StylesheetElementType.BORDERRIGHT, borderElem);
+					stylesheet.addElement(StylesheetProperty.BORDERRIGHT, borderElem);
 				}
 				i += offset - i;
 				continue;
@@ -1495,7 +1495,7 @@ public class Parser {
 				}
 				StylesheetBackgroundColorElement bgColorElem = new StylesheetBackgroundColorElement(color);
 				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Background color stylesheet-element parsed", bgColorElem);
-				stylesheet.addElement(StylesheetElementType.BACKGROUNDCOLOR, bgColorElem);
+				stylesheet.addElement(StylesheetProperty.BACKGROUNDCOLOR, bgColorElem);
 				i += offset - i;
 				continue;
 			}

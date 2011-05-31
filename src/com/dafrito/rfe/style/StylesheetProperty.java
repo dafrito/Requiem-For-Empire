@@ -16,7 +16,7 @@ import com.dafrito.rfe.script.ScriptKeywordType;
  * @see Stylesheet
  * @see StylesheetElement
  */
-public enum StylesheetElementType {
+public enum StylesheetProperty {
 	WIDTH("Width") {
 		@Override
 		public StylesheetElement defaultValue() {
@@ -137,7 +137,7 @@ public enum StylesheetElementType {
 
 	private final String name;
 
-	private StylesheetElementType(String name) {
+	private StylesheetProperty(String name) {
 		this.name = name;
 	}
 
