@@ -14,11 +14,6 @@ public class StylesheetAbsoluteWidthElement extends StylesheetWidthElement imple
 	}
 
 	@Override
-	public String getElementName() {
-		return "n absolute width";
-	}
-
-	@Override
 	public Object getMagnitude() {
 		return this.magnitude;
 	}
@@ -33,4 +28,10 @@ public class StylesheetAbsoluteWidthElement extends StylesheetWidthElement imple
 	public void setMagnitude(int magnitude) {
 		this.magnitude = new Integer(magnitude);
 	}
+
+	@Override
+	public String toString() {
+		return "absolute width";
+	}
+
 }

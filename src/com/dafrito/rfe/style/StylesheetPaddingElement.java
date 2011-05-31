@@ -13,11 +13,6 @@ public class StylesheetPaddingElement extends StylesheetElement implements Nodea
 		this.magnitude = magnitude;
 	}
 
-	@Override
-	public String getElementName() {
-		return " padding";
-	}
-
 	public int getMagnitude() {
 		return this.magnitude;
 	}
@@ -26,4 +21,10 @@ public class StylesheetPaddingElement extends StylesheetElement implements Nodea
 	public void nodificate() {
 		assert Debugger.addSnapNode("Padding Stylesheet-Element", "Magnitude: " + this.magnitude);
 	}
+
+	@Override
+	public String toString() {
+		return "padding";
+	}
+
 }

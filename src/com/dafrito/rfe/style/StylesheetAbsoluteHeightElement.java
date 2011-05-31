@@ -14,11 +14,6 @@ public class StylesheetAbsoluteHeightElement extends StylesheetHeightElement imp
 	}
 
 	@Override
-	public String getElementName() {
-		return "n absolute height";
-	}
-
-	@Override
 	public Object getMagnitude() {
 		return this.magnitude;
 	}
@@ -32,5 +27,10 @@ public class StylesheetAbsoluteHeightElement extends StylesheetHeightElement imp
 
 	public void setMagnitude(int magnitude) {
 		this.magnitude = new Integer(magnitude);
+	}
+
+	@Override
+	public String toString() {
+		return "n absolute height";
 	}
 }

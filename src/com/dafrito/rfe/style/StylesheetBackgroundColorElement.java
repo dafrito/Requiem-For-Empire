@@ -20,14 +20,15 @@ public class StylesheetBackgroundColorElement extends StylesheetElement implemen
 	}
 
 	@Override
-	public String getElementName() {
-		return " background-color";
-	}
-
-	@Override
 	public void nodificate() {
 		assert Debugger.openNode("Background Color Stylesheet-Element");
 		assert Debugger.addNode("Color: " + Stylesheets.getColorName(this.color));
 		assert Debugger.closeNode();
 	}
+
+	@Override
+	public String toString() {
+		return "background-color";
+	}
+
 }

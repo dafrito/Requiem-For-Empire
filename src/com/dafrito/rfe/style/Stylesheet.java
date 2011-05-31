@@ -31,7 +31,7 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, S
 	}
 
 	public void addElement(StylesheetProperty type, StylesheetElement element) {
-		assert Debugger.openNode("Stylesheet Element Additions", "Adding a" + element.getElementName() + " element to this stylesheet");
+		assert Debugger.openNode("Stylesheet Element Additions", "Adding a " + element + " element to this stylesheet");
 		assert Debugger.addNode(this);
 		assert Debugger.addNode(element);
 		this.styleElements.put(type, element);

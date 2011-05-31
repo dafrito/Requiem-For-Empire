@@ -13,11 +13,6 @@ public class StylesheetMarginElement extends StylesheetElement implements Nodeab
 		this.magnitude = magnitude;
 	}
 
-	@Override
-	public String getElementName() {
-		return " margin";
-	}
-
 	public int getMagnitude() {
 		return this.magnitude;
 	}
@@ -26,4 +21,10 @@ public class StylesheetMarginElement extends StylesheetElement implements Nodeab
 	public void nodificate() {
 		assert Debugger.addSnapNode("Margin Stylesheet-Element", "Magnitude: " + this.magnitude);
 	}
+
+	@Override
+	public String toString() {
+		return "margin";
+	}
+
 }

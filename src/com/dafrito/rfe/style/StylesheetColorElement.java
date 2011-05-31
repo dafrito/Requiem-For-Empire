@@ -24,12 +24,12 @@ public class StylesheetColorElement extends StylesheetElement implements Nodeabl
 	}
 
 	@Override
-	public String getElementName() {
-		return " color";
+	public void nodificate() {
+		assert Debugger.addSnapNode("Color Stylesheet-Element", "Color: " + Stylesheets.getColorName(this.color));
 	}
 
 	@Override
-	public void nodificate() {
-		assert Debugger.addSnapNode("Color Stylesheet-Element", "Color: " + Stylesheets.getColorName(this.color));
+	public String toString() {
+		return "color";
 	}
 }

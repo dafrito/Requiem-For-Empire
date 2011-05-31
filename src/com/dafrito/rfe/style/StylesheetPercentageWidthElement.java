@@ -14,11 +14,6 @@ public class StylesheetPercentageWidthElement extends StylesheetWidthElement imp
 	}
 
 	@Override
-	public String getElementName() {
-		return " percentage-width";
-	}
-
-	@Override
 	public Object getMagnitude() {
 		return this.magnitude;
 	}
@@ -31,4 +26,10 @@ public class StylesheetPercentageWidthElement extends StylesheetWidthElement imp
 	public void setMagnitude(double magnitude) {
 		this.magnitude = new Double(magnitude);
 	}
+
+	@Override
+	public String toString() {
+		return "percentage-width";
+	}
+
 }

@@ -13,11 +13,6 @@ public class StylesheetFontElement extends StylesheetElement implements Nodeable
 		this.fontName = fontName;
 	}
 
-	@Override
-	public String getElementName() {
-		return " font";
-	}
-
 	public String getFontName() {
 		return this.fontName;
 	}
@@ -26,4 +21,10 @@ public class StylesheetFontElement extends StylesheetElement implements Nodeable
 	public void nodificate() {
 		assert Debugger.addSnapNode("Font Stylesheet-Element", "Font Name: " + this.fontName);
 	}
+
+	@Override
+	public String toString() {
+		return " font";
+	}
+
 }

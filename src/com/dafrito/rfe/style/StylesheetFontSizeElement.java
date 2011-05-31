@@ -13,11 +13,6 @@ public class StylesheetFontSizeElement extends StylesheetElement implements Node
 		this.fontSize = fontSize;
 	}
 
-	@Override
-	public String getElementName() {
-		return " font-size";
-	}
-
 	public int getFontSize() {
 		return this.fontSize;
 	}
@@ -26,4 +21,10 @@ public class StylesheetFontSizeElement extends StylesheetElement implements Node
 	public void nodificate() {
 		assert Debugger.addSnapNode("Font Size Stylesheet-Element", "Font size: " + this.fontSize);
 	}
+
+	@Override
+	public String toString() {
+		return "font-size";
+	}
+
 }

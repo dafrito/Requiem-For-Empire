@@ -14,11 +14,6 @@ public class StylesheetPercentageHeightElement extends StylesheetHeightElement i
 	}
 
 	@Override
-	public String getElementName() {
-		return " percentage-height";
-	}
-
-	@Override
 	public Object getMagnitude() {
 		return this.magnitude;
 	}
@@ -31,4 +26,10 @@ public class StylesheetPercentageHeightElement extends StylesheetHeightElement i
 	public void setMagnitude(double magnitude) {
 		this.magnitude = new Double(magnitude);
 	}
+
+	@Override
+	public String toString() {
+		return "percentage-height";
+	}
+
 }

@@ -24,11 +24,6 @@ public class StylesheetBorderElement extends StylesheetElement implements Nodeab
 		return this.color;
 	}
 
-	@Override
-	public String getElementName() {
-		return " border";
-	}
-
 	public int getMagnitude() {
 		return this.magnitude;
 	}
@@ -44,5 +39,10 @@ public class StylesheetBorderElement extends StylesheetElement implements Nodeab
 		assert Debugger.addNode("Style: " + this.style);
 		assert Debugger.addNode("Color: " + Stylesheets.getColorName(this.color));
 		assert Debugger.closeNode();
+	}
+
+	@Override
+	public String toString() {
+		return "border";
 	}
 }
