@@ -61,7 +61,9 @@ public class Debugger {
 			NodeableInspector inspector = new NodeableInspector(getDebugInspector());
 			Inspection.reflect(inspector, o);
 			inspector.close();
-		} else if (o instanceof Nodeable) {
+			return true;
+		}
+		if (o instanceof Nodeable) {
 			addNodeableNode(group, (Nodeable) o);
 			if (o instanceof Exception) {
 				String exceptionName;
