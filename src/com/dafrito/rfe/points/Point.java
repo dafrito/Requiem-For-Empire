@@ -1,7 +1,7 @@
 package com.dafrito.rfe.points;
 
 import com.dafrito.rfe.Exception_InternalError;
-import com.dafrito.rfe.ScriptEnvironment;
+import com.dafrito.rfe.script.ScriptEnvironment;
 
 public abstract class Point {
 	public enum System {

@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.ScriptEnvironment;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.style.Stylesheet;
 
 public class InterfaceElement_Rectangle extends InterfaceElement implements Nodeable {

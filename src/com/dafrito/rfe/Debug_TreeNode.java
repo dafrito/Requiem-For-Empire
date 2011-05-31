@@ -92,9 +92,9 @@ public class Debug_TreeNode implements MutableTreeNode {
 			cacheDataRepetitions.get(((Integer) this.dataCode).intValue()).increment();
 		} else {
 			cacheData.add(data);
-			cacheMap.put(data, new Integer(cacheData.size() - 1));
+			cacheMap.put(data, Integer.valueOf(cacheData.size() - 1));
 			cacheDataRepetitions.add(new Incrementor(1));
-			this.dataCode = new Integer(cacheData.size() - 1);
+			this.dataCode = Integer.valueOf(cacheData.size() - 1);
 		}
 	}
 

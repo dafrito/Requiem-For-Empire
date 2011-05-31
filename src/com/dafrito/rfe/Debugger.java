@@ -8,34 +8,40 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.dafrito.rfe.inspect.Inspectable;
+import com.dafrito.rfe.inspect.Inspection;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.NodeableInspector;
+import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.util.Strings;
 
 public class Debugger {
-	// Debug_Environment fxns
-	private static Map<String, Long> stopWatches = new HashMap<String, Long>();
 	private static DebugEnvironment debugger;
 
-	public synchronized static boolean addCollectionNode(Object group, Collection<?> list) {
-		if (list.size() == 0) {
-			return true;
+	public static DebugEnvironment getDebugger() {
+		return debugger;
+	}
+
+	public static DebugEnvironment.TreeBuildingInspector getDebugInspector() {
+		return debugger.getInspector();
+	}
+
+	public static void setDebugger(DebugEnvironment debugger) {
+		if (Debugger.debugger == null) {
+			Debugger.debugger = debugger;
 		}
-		Iterator<?> iter = list.iterator();
-		while (iter.hasNext()) {
-			addNode(iter.next());
-		}
+	}
+
+	public static boolean openNode(Object string) {
+		openNode(null, string);
 		return true;
 	}
 
-	public synchronized static boolean addMapNode(Object group, Map<?, ?> map) {
-		if (map.size() == 0) {
+	public static boolean openNode(Object group, Object string) {
+		if (getDebugger().isIgnoringThisThread()) {
 			return true;
 		}
-		Iterator<?> iter = map.entrySet().iterator();
-		while (iter.hasNext()) {
-			Map.Entry<?, ?> entry = (Map.Entry<?, ?>) iter.next();
-			addSnapNode(entry.getKey().toString(), entry.getValue());
-		}
+		getDebugInspector().openNode(new Debug_TreeNode(group, string));
 		return true;
 	}
 
@@ -51,7 +57,11 @@ public class Debugger {
 			getDebugInspector().addNode(new Debug_TreeNode(group, "null"));
 			return true;
 		}
-		if (o instanceof Nodeable) {
+		if (o.getClass().isAnnotationPresent(Inspectable.class)) {
+			NodeableInspector inspector = new NodeableInspector(getDebugInspector());
+			Inspection.reflect(inspector, o);
+			inspector.close();
+		} else if (o instanceof Nodeable) {
 			addNodeableNode(group, (Nodeable) o);
 			if (o instanceof Exception) {
 				String exceptionName;
@@ -66,11 +76,11 @@ public class Debugger {
 			}
 			return true;
 		}
-		if (o instanceof Collection) {
-			return addCollectionNode(group, (Collection<?>) o);
+		if (o instanceof Iterable) {
+			return addCollectionNode((Iterable<?>) o);
 		}
 		if (o instanceof Map) {
-			return addMapNode(group, (Map<?, ?>) o);
+			return addMapNode((Map<?, ?>) o);
 		}
 		getDebugInspector().addNode(new Debug_TreeNode(group, o));
 		if (o instanceof Exception) {
@@ -92,6 +102,26 @@ public class Debugger {
 		return true;
 	}
 
+	public synchronized static boolean addCollectionNode(Iterable<?> iterable) {
+		Iterator<?> iter = iterable.iterator();
+		while (iter.hasNext()) {
+			addNode(iter.next());
+		}
+		return true;
+	}
+
+	public synchronized static boolean addMapNode(Map<?, ?> map) {
+		if (map.isEmpty()) {
+			return true;
+		}
+		Iterator<?> iter = map.entrySet().iterator();
+		while (iter.hasNext()) {
+			Map.Entry<?, ?> entry = (Map.Entry<?, ?>) iter.next();
+			addSnapNode(entry.getKey().toString(), entry.getValue());
+		}
+		return true;
+	}
+
 	public static boolean addSnapNode(Object name, Object o) {
 		return addSnapNode(null, name, o);
 	}
@@ -101,6 +131,14 @@ public class Debugger {
 		addNode(o);
 		closeNode();
 		return true;
+	}
+
+	public static boolean ensureCurrentNode(Object string) {
+		return getDebugInspector().ensureCurrentNode(string);
+	}
+
+	public static Debug_TreeNode getLastNodeAdded() {
+		return getDebugInspector().getLastNodeAdded();
 	}
 
 	public static boolean closeNode() {
@@ -128,43 +166,12 @@ public class Debugger {
 		return true;
 	}
 
-	public static boolean ensureCurrentNode(Object string) {
-		return getDebugInspector().ensureCurrentNode(string);
-	}
-
-	public static Debug_TreeNode getLastNodeAdded() {
-		return getDebugInspector().getLastNodeAdded();
-	}
-
 	public static String getString(DebugString value) {
 		return Debug_TreeNode.getPrecached(value).toString();
 	}
 
-	public static void hitStopWatch(String name) {
-		if (stopWatches.get(name) == null) {
-			stopWatches.put(name, new Long(System.currentTimeMillis()));
-			return;
-		}
-		System.out.println("StopWatcher: " + name + " executed in " + (((double) (System.currentTimeMillis() - stopWatches.get(name).longValue())) / 1000) + " seconds");
-		stopWatches.remove(name);
-	}
-
 	public static boolean isResetting() {
 		return getDebugger().isResetting();
-	}
-
-	// Noding functions.
-	public static boolean openNode(Object string) {
-		openNode(null, string);
-		return true;
-	}
-
-	public static boolean openNode(Object group, Object string) {
-		if (getDebugger().isIgnoringThisThread()) {
-			return true;
-		}
-		getDebugInspector().openNode(new Debug_TreeNode(group, string));
-		return true;
 	}
 
 	public static boolean printDebug(String category) {
@@ -203,21 +210,27 @@ public class Debugger {
 		return (int) ((((double) Runtime.getRuntime().totalMemory()) / ((double) Runtime.getRuntime().maxMemory())) * 100);
 	}
 
-	public static DebugEnvironment getDebugger() {
-		return debugger;
-	}
-
-	public static DebugEnvironment.TreeBuildingInspector getDebugInspector() {
-		return debugger.getInspector();
-	}
-
 	public static int getFreePercentage() {
 		return (int) ((((double) Runtime.getRuntime().freeMemory()) / ((double) Runtime.getRuntime().totalMemory())) * 100);
 	}
 
-	public static void setDebugger(DebugEnvironment debugger) {
-		if (Debugger.debugger == null) {
-			Debugger.debugger = debugger;
+	private static final Map<String, Long> stopWatches = new HashMap<String, Long>();
+
+	/**
+	 * Start or stop a stop watch.
+	 * 
+	 * @param name
+	 *            the name of the stop watch. If no stopwatch is running with
+	 *            this name, a stopwatch is begun. Otherwise, the stopwatch is
+	 *            stopped.
+	 */
+	public static void hitStopWatch(String name) {
+		if (stopWatches.get(name) == null) {
+			stopWatches.put(name, Long.valueOf(System.currentTimeMillis()));
+			return;
 		}
+		System.out.println("StopWatcher: " + name + " executed in " + (((double) (System.currentTimeMillis() - stopWatches.get(name).longValue())) / 1000) + " seconds");
+		stopWatches.remove(name);
 	}
+
 }

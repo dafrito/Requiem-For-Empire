@@ -1,22 +1,50 @@
 package com.dafrito.rfe;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
+import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.ScriptConvertible;
+import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.ScriptValueType;
 
+@Inspectable
 public class Archetype implements ScriptConvertible, Nodeable {
-	private String name;
-	private List<Ace> parents = new Vector<Ace>();
-	private ScriptEnvironment environment;
+
+	private final String name;
+	private final List<Ace> parents = new ArrayList<Ace>();
+	private final ScriptEnvironment environment;
 
 	public Archetype(ScriptEnvironment env, String name) {
 		this.environment = env;
 		this.name = name;
 	}
 
+	public ScriptEnvironment getEnvironment() {
+		return this.environment;
+	}
+
 	public void addParent(Ace ace) {
 		this.parents.add(ace);
+	}
+
+	@Inspectable
+	public String getName() {
+		return this.name;
+	}
+
+	@Inspectable("Aces")
+	public List<Ace> getParents() {
+		return Collections.unmodifiableList(this.parents);
+	}
+
+	public Archetype getRoot() {
+		if (this.parents.isEmpty()) {
+			return this;
+		}
+		return this.parents.get(0).getArchetype().getRoot();
 	}
 
 	@Override
@@ -27,7 +55,15 @@ public class Archetype implements ScriptConvertible, Nodeable {
 	}
 
 	@Override
+	public void nodificate() {
+		assert Debugger.openNode("Archetype (" + this.name + ")");
+		assert Debugger.addSnapNode("Aces (" + this.parents.size() + " ace(s))", this.parents);
+		assert Debugger.closeNode();
+	}
+
+	@Override
 	public boolean equals(Object o) {
+		// XXX This implementation is invalid, since we consider equal strings equal to us.
 		if (o instanceof String) {
 			return this.name.equals(o);
 		}
@@ -37,29 +73,4 @@ public class Archetype implements ScriptConvertible, Nodeable {
 		return false;
 	}
 
-	public ScriptEnvironment getEnvironment() {
-		return this.environment;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public List<Ace> getParents() {
-		return this.parents;
-	}
-
-	public Archetype getRoot() {
-		if (this.parents == null || this.parents.size() == 0) {
-			return this;
-		}
-		return this.parents.get(0).getArchetype().getRoot();
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Archetype (" + this.name + ")");
-		assert Debugger.addSnapNode("Aces (" + this.parents.size() + " ace(s))", this.parents);
-		assert Debugger.closeNode();
-	}
 }

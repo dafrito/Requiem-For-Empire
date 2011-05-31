@@ -7,10 +7,10 @@ import com.dafrito.rfe.Debugger;
 import com.dafrito.rfe.Exception_InternalError;
 import com.dafrito.rfe.FauxTemplate_Path;
 import com.dafrito.rfe.Scenario;
-import com.dafrito.rfe.ScriptConvertible;
-import com.dafrito.rfe.ScriptEnvironment;
-import com.dafrito.rfe.ScriptValueType;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.ScriptConvertible;
+import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.ScriptValueType;
 
 public class Point_Path extends Point implements ScriptConvertible, Nodeable {
 	private List<Point> points = new LinkedList<Point>();

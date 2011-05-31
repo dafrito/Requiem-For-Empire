@@ -10,6 +10,13 @@ import java.util.TreeSet;
 import javax.swing.Timer;
 
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.ScriptConvertible;
+import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.ScriptExecutable_CallFunction;
+import com.dafrito.rfe.script.ScriptTemplate_Abstract;
+import com.dafrito.rfe.script.ScriptValue;
+import com.dafrito.rfe.script.ScriptValueType;
+import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
 class ScheduledEvent implements Comparable<ScheduledEvent>, Nodeable {
 	private Long time;

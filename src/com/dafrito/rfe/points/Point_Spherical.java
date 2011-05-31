@@ -1,7 +1,7 @@
 package com.dafrito.rfe.points;
 
 import com.bluespot.geom.vectors.Vector3d;
-import com.dafrito.rfe.ScriptEnvironment;
+import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class Point_Spherical extends Point {
 	private static final double LATITUDEMAXIMUM = 180;

@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe;
 
-enum DebugString {
+public enum DebugString {
 	ELEMENTS("Elements"),
 	SCRIPTGROUPPARENTHETICAL("Script Group (parenthetical)"),
 	SCRIPTGROUPCURLY("Script Group (curly)"),

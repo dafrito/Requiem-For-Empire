@@ -4,6 +4,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.ScriptConvertible;
+import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.ScriptFunction;
+import com.dafrito.rfe.script.ScriptKeywordType;
+import com.dafrito.rfe.script.ScriptTemplate;
+import com.dafrito.rfe.script.ScriptTemplate_Abstract;
+import com.dafrito.rfe.script.ScriptValue;
+import com.dafrito.rfe.script.ScriptValueType;
+import com.dafrito.rfe.script.ScriptValue_Faux;
+import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
 public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement implements ScriptConvertible, Nodeable {
 	public static final String DISCRETEREGIONSTRING = "DiscreteRegion";

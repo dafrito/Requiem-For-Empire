@@ -26,6 +26,9 @@ import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+
 public class DebugEnvironment extends JFrame implements ActionListener, ChangeListener {
 	private static final long serialVersionUID = -8190546125680224912L;
 
@@ -665,7 +668,10 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			if (ignores.contains(Thread.currentThread().getName())) {
 				return true;
 			}
-			return getUnfilteredCurrentNode().getData().equals(obj);
+			if (!getUnfilteredCurrentNode().getData().equals(obj)) {
+				throw new AssertionError(String.format("Unexpected current node: expected %s, got %s", obj, getUnfilteredCurrentNode().getData()));
+			}
+			return true;
 		}
 
 		public Debug_TreeNode getLastNodeAdded() {

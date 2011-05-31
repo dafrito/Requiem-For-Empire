@@ -3,6 +3,17 @@ package com.dafrito.rfe;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.ScriptExecutable;
+import com.dafrito.rfe.script.ScriptFunction;
+import com.dafrito.rfe.script.ScriptFunction_Faux;
+import com.dafrito.rfe.script.ScriptKeywordType;
+import com.dafrito.rfe.script.ScriptTemplate;
+import com.dafrito.rfe.script.ScriptTemplate_Abstract;
+import com.dafrito.rfe.script.ScriptValue;
+import com.dafrito.rfe.script.ScriptValueType;
+import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+
 public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue {
 	public static List<ScriptValue> createEmptyParamList() {
 		return new LinkedList<ScriptValue>();

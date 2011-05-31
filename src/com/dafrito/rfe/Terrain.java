@@ -1,6 +1,8 @@
 package com.dafrito.rfe;
 
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.ScriptConvertible;
+import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class Terrain implements Krumflex, ScriptConvertible, Nodeable {
 	private ScriptEnvironment environment;

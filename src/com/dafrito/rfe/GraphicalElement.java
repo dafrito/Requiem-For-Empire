@@ -3,6 +3,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import com.dafrito.rfe.gui.Interface_Container;
+import com.dafrito.rfe.script.ScriptEnvironment;
 
 public interface GraphicalElement {
 	public Rectangle getDrawingBounds();

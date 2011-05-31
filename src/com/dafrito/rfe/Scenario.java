@@ -1,4 +1,7 @@
 package com.dafrito.rfe;
+
+import com.dafrito.rfe.script.ScriptEnvironment;
+
 public class Scenario {
 	private ScriptEnvironment environment;
 	private Scheduler scheduler;

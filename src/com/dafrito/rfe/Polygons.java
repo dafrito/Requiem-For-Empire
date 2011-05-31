@@ -13,6 +13,7 @@ import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.points.Point_Spherical;
 import com.dafrito.rfe.points.Points;
+import com.dafrito.rfe.script.ScriptEnvironment;
 
 class PointSideStruct implements Nodeable {
 	private List<Point> left, right, indeterminates;

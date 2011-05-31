@@ -6,8 +6,8 @@ package com.dafrito.rfe.style;
 import java.awt.Color;
 
 import com.dafrito.rfe.Debugger;
-import com.dafrito.rfe.ScriptKeywordType;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.ScriptKeywordType;
 
 public class StylesheetBorderElement extends StylesheetElement implements Nodeable {
 	private int magnitude;
