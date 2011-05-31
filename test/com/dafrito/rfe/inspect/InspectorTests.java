@@ -5,11 +5,19 @@ package com.dafrito.rfe.inspect;
 
 import org.junit.Test;
 
+import com.dafrito.rfe.Archetype;
+
 /**
  * @author Aaron Faanes
  * 
  */
 public class InspectorTests {
+
+	@Test
+	public void annotationsProvideAutomatedInspection() throws Exception {
+		Archetype arch = new Archetype(null, "Grain");
+		Inspection.reflect(new NoopInspector<Object>(), arch);
+	}
 
 	@Test
 	public void inspectorVisitsAnImaginaryElement() {
