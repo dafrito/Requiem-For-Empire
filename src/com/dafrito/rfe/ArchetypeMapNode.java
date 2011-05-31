@@ -5,7 +5,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-// The archetype map node is intended for location and categorization of assets into their best-fit archetypes.
+/**
+ * The archetype map node is intended for location and categorization of assets
+ * into their best-fit archetypes.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public class ArchetypeMapNode {
 	public static ArchetypeMapNode createTree(Asset asset) {
 		List<Ace> aces = asset.getAces();
