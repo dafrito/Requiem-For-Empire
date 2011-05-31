@@ -77,4 +77,9 @@ public class PrettyXMLWriter implements Inspector<String> {
 	public String toString() {
 		return this.toString("\t");
 	}
+
+	@Override
+	public void close() {
+
+	}
 }

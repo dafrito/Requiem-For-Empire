@@ -60,4 +60,10 @@ public interface Inspector<T> {
 	 */
 	public void comment(String note);
 
+	/**
+	 * Freeze this inspector, so any construction that's taken place can be
+	 * finalized.
+	 */
+	public void close();
+
 }
