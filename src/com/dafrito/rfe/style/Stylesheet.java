@@ -20,7 +20,6 @@ import com.dafrito.rfe.script.proxies.FauxTemplate;
 public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, ScriptConvertible {
 	private final Map<StylesheetProperty, StylesheetElement> styleElements = new EnumMap<StylesheetProperty, StylesheetElement>(StylesheetProperty.class);
 	private String name;
-	private boolean isUnique;
 	public static final String STYLESHEETSTRING = "Stylesheet";
 
 	public Stylesheet(ScriptEnvironment env) {
@@ -65,10 +64,6 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, S
 		return new Stylesheet(this.getEnvironment(), true);
 	}
 
-	public boolean isUnique() {
-		return this.isUnique;
-	}
-
 	@Override
 	public void nodificate() {
 		if (this.name == null) {
@@ -84,7 +79,4 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, S
 		this.name = name;
 	}
 
-	public void setUnique(boolean isUnique) {
-		this.isUnique = isUnique;
-	}
 }

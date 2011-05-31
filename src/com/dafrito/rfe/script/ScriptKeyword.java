@@ -7,9 +7,6 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 public class ScriptKeyword extends ScriptElement implements Nodeable {
 	// String<-->Keyword functions
 	public static ScriptKeywordType getType(String string) {
-		if ("unique".equals(string)) {
-			return ScriptKeywordType.UNIQUE;
-		}
 		if ("Stylesheet".equals(string)) {
 			return ScriptKeywordType.STYLESHEET;
 		}

@@ -179,7 +179,6 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 		if (sheet == null) {
 			this.setUniqueStylesheet(new Stylesheet(this.getEnvironment()));
 			sheet = this.getUniqueStylesheet();
-			sheet.setUnique(true);
 		}
 		StylesheetElement element = this.getUniqueStylesheet().getElement(code);
 		if (element != null) {

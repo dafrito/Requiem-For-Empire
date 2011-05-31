@@ -305,7 +305,6 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 		assert Debugger.addSnapNode("Element", this);
 		if (null == this.getUniqueStylesheet()) {
 			this.uniqueStylesheet = new Stylesheet(this.environment);
-			this.uniqueStylesheet.setUnique(true);
 		}
 		this.getUniqueStylesheet().addElement(StylesheetProperty.WIDTH, new StylesheetAbsoluteWidthElement(width));
 		Debugger.closeNode();
