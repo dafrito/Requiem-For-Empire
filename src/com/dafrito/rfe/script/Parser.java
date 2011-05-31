@@ -715,7 +715,7 @@ public class Parser {
 					ScriptExecutable exec = (ScriptExecutable) creator;
 					if (((ScriptKeyword) obj).equals(ScriptKeywordType.STYLESHEET)) {
 						if (list.size() > i + 2 && list.get(i + 2) instanceof ScriptGroup) {
-							exec = new ScriptExecutable_AssignValue((Referenced) list.get(i + 1), (ScriptValue) exec, parseStylesheet((Referenced) list.get(i + 1), env, name, (ScriptGroup) list.get(i + 2)));
+							exec = new ScriptExecutable_AssignValue((Referenced) list.get(i + 1), (ScriptValue) exec, parseStylesheet((Referenced) list.get(i + 1), env, (ScriptGroup) list.get(i + 2)));
 						}
 						list.remove(i + 2);
 					}
@@ -1279,12 +1279,11 @@ public class Parser {
 		return parseParamGroup(env, group.getElements(), type);
 	}
 
-	public static Stylesheet parseStylesheet(Referenced ref, ScriptEnvironment env, String name, ScriptGroup group) throws Exception_Nodeable {
-		assert Debugger.openNode("Stylesheet Parsing", "Parsing Stylesheet (" + name + ")");
+	public static Stylesheet parseStylesheet(Referenced ref, ScriptEnvironment env, ScriptGroup group) throws Exception_Nodeable {
+		assert Debugger.openNode("Stylesheet Parsing", "Parsing Stylesheet");
 		List<Object> elements = group.getElements();
 		assert Debugger.addSnapNode("Elements (" + elements.size() + " element(s))", elements);
 		Stylesheet stylesheet = new Stylesheet(ref.getEnvironment(), true);
-		stylesheet.setName(name);
 		for (int i = 0; i < elements.size(); i++) {
 			if (elements.get(i) instanceof ScriptOperator && ((ScriptOperator) elements.get(i)).getType() == ScriptOperatorType.SEMICOLON) {
 				continue;

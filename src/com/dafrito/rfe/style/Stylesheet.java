@@ -19,7 +19,6 @@ import com.dafrito.rfe.script.proxies.FauxTemplate;
 
 public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, ScriptConvertible {
 	private final Map<StylesheetProperty, StylesheetElement> styleElements = new EnumMap<StylesheetProperty, StylesheetElement>(StylesheetProperty.class);
-	private String name;
 	public static final String STYLESHEETSTRING = "Stylesheet";
 
 	public Stylesheet(ScriptEnvironment env) {
@@ -54,10 +53,6 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, S
 		return this.styleElements.get(elementCode);
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
 	// FauxTemplate extensions
 	@Override
 	public ScriptTemplate instantiateTemplate() {
@@ -66,17 +61,8 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, S
 
 	@Override
 	public void nodificate() {
-		if (this.name == null) {
-			assert Debugger.openNode("Anonymous stylesheet (" + this.styleElements.size() + " element(s))");
-		} else {
-			assert Debugger.openNode("Stylesheet: " + this.name + " (" + this.styleElements.size() + " element(s))");
-		}
+		assert Debugger.openNode("Anonymous stylesheet (" + this.styleElements.size() + " element(s))");
 		assert Debugger.addNode(this.styleElements.values());
 		assert Debugger.closeNode();
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 }
