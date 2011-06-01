@@ -2,12 +2,12 @@ package com.dafrito.rfe.geom;
 
 import com.dafrito.rfe.points.Point;
 
-public interface Gradient {
+public interface Gradient<T extends GradientValue<T>> {
 	public double getBottomExtreme();
 
-	public Krumflex getKrumflex();
+	public T getGradientValue();
 
-	public Krumflex getKrumflexAt(Point point);
+	public T valueAt(Point point);
 
 	public double getLeftExtreme();
 
@@ -17,5 +17,5 @@ public interface Gradient {
 
 	public double getTopExtreme();
 
-	public void setKrumflex(Krumflex flex);
+	public void setGradientValue(T flex);
 }

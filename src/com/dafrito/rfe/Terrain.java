@@ -1,13 +1,13 @@
 package com.dafrito.rfe;
 
 import com.dafrito.rfe.debug.Debugger;
-import com.dafrito.rfe.geom.Krumflex;
+import com.dafrito.rfe.geom.GradientValue;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrain;
 
-public class Terrain implements Krumflex, ScriptConvertible, Nodeable {
+public class Terrain implements GradientValue<Terrain>, ScriptConvertible, Nodeable {
 	private ScriptEnvironment environment;
 	private double brushDensity, waterDepth, temperature, groundCohesion, elevation;
 	private double brushDensityWeight, elevationWeight, groundCohesionWeight,
@@ -66,7 +66,7 @@ public class Terrain implements Krumflex, ScriptConvertible, Nodeable {
 	}
 
 	@Override
-	public Terrain getKrumflexFromIntensity(double intensity) {
+	public Terrain diluted(double intensity) {
 		Terrain terrain = new Terrain(this.getEnvironment());
 		terrain.setBrushDensity(this.getBrushDensity(), this.getBrushDensityWeight() * intensity);
 		terrain.setElevation(this.getElevation(), this.getElevationWeight() * intensity);

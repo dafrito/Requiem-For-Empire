@@ -1,4 +1,5 @@
 package com.dafrito.rfe.geom;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -6,10 +7,9 @@ import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Points;
 
-
-public class Gradient_Radial implements Gradient {
+public class Gradient_Radial<T extends GradientValue<T>> implements Gradient<T> {
 	private static final int polygonVertices = 4;
-	private Krumflex krumflex;
+	private T gradientValue;
 	private double exponent, radius;
 	private Point focus;
 
@@ -33,17 +33,17 @@ public class Gradient_Radial implements Gradient {
 	}
 
 	@Override
-	public Krumflex getKrumflex() {
-		return this.krumflex;
+	public T getGradientValue() {
+		return this.gradientValue;
 	}
 
 	@Override
-	public Krumflex getKrumflexAt(Point point) {
+	public T valueAt(Point point) {
 		double distance = Points.getDistance(this.getFocus(), point);
 		if (Math.abs(distance) > this.getRadius() || this.getExponent() == 0) {
-			return this.getKrumflex().getKrumflexFromIntensity(0.0d);
+			return this.getGradientValue().diluted(0.0d);
 		}
-		return this.getKrumflex().getKrumflexFromIntensity(Math.abs(Math.pow(distance / this.getRadius(), this.getExponent()) - 1.0d));
+		return this.getGradientValue().diluted(Math.abs(Math.pow(distance / this.getRadius(), this.getExponent()) - 1.0d));
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class Gradient_Radial implements Gradient {
 			assert Debugger.addNode("Entering sequence. i is at: " + i);
 			radius += precision * this.getRadius();
 			DiscreteRegion newRegion = new DiscreteRegion();
-			newRegion.setProperty(this.getKrumflex().getName(), this.getKrumflex().getKrumflexFromIntensity(i));
+			newRegion.setProperty(this.getGradientValue().getName(), this.getGradientValue().diluted(i));
 			for (int j = 0; j < Gradient_Radial.polygonVertices; j++) {
 				double radianOffset = ((Math.PI * 2) / polygonVertices) * j;
 				double longOffset = Math.cos(radianOffset) * radius;
@@ -101,7 +101,7 @@ public class Gradient_Radial implements Gradient {
 
 	// Gradient implementation
 	@Override
-	public void setKrumflex(Krumflex krumflex) {
-		this.krumflex = krumflex;
+	public void setGradientValue(T gradientValue) {
+		this.gradientValue = gradientValue;
 	}
 }
