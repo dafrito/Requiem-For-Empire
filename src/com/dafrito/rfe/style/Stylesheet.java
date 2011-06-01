@@ -1,12 +1,13 @@
 package com.dafrito.rfe.style;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import com.dafrito.rfe.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -17,7 +18,8 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.proxies.FauxTemplate;
 
-public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, ScriptConvertible {
+@Inspectable
+public class Stylesheet extends FauxTemplate implements ScriptValue, ScriptConvertible {
 	private final Map<StylesheetProperty, Object> styleElements = new EnumMap<StylesheetProperty, Object>(StylesheetProperty.class);
 	public static final String STYLESHEETSTRING = "Stylesheet";
 
@@ -59,10 +61,8 @@ public class Stylesheet extends FauxTemplate implements Nodeable, ScriptValue, S
 		return new Stylesheet(this.getEnvironment(), true);
 	}
 
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Anonymous stylesheet (" + this.styleElements.size() + " element(s))");
-		assert Debugger.addNode(this.styleElements.values());
-		assert Debugger.closeNode();
+	@Inspectable
+	public Map<StylesheetProperty, Object> getProperties() {
+		return Collections.unmodifiableMap(this.styleElements);
 	}
 }
