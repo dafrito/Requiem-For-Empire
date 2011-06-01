@@ -48,14 +48,13 @@ import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
 import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.style.StylesheetBorderElement;
-import com.dafrito.rfe.style.StylesheetColorElement;
-import com.dafrito.rfe.style.StylesheetProperty;
 import com.dafrito.rfe.style.StylesheetFontSizeElement;
 import com.dafrito.rfe.style.StylesheetHeightElement;
 import com.dafrito.rfe.style.StylesheetMarginElement;
 import com.dafrito.rfe.style.StylesheetPaddingElement;
 import com.dafrito.rfe.style.StylesheetPercentageHeightElement;
 import com.dafrito.rfe.style.StylesheetPercentageWidthElement;
+import com.dafrito.rfe.style.StylesheetProperty;
 import com.dafrito.rfe.style.StylesheetWidthElement;
 import com.dafrito.rfe.style.Stylesheets;
 
@@ -1298,20 +1297,20 @@ public class Parser {
 			}
 			key = key.toLowerCase();
 			if (key.equals("color")) {
-				StylesheetColorElement colorElem;
+				Color colorElem;
 				assert elements.get(offset) instanceof ScriptOperator;
 				assert ((ScriptOperator) elements.get(offset)).getType() == ScriptOperatorType.COLON;
 				offset++;
 				if (elements.get(offset) instanceof ScriptOperator && ((ScriptOperator) elements.get(offset)).getType() == ScriptOperatorType.POUNDSIGN) {
 					offset++;
 					if (elements.get(offset) instanceof ScriptLine) {
-						colorElem = new StylesheetColorElement("#" + ((ScriptLine) elements.get(offset)).getString());
+						colorElem = Stylesheets.getColor("#" + ((ScriptLine) elements.get(offset)).getString());
 					} else {
-						colorElem = new StylesheetColorElement("#" + ((ScriptValue_Numeric) elements.get(offset)).longValue());
+						colorElem = Stylesheets.getColor("#" + ((ScriptValue_Numeric) elements.get(offset)).longValue());
 					}
 
 				} else {
-					colorElem = new StylesheetColorElement(((ScriptLine) elements.get(offset)).getString());
+					colorElem = Stylesheets.getColor(((ScriptLine) elements.get(offset)).getString());
 				}
 				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Color stylesheet-element parsed", colorElem);
 				stylesheet.addElement(StylesheetProperty.COLOR, colorElem);

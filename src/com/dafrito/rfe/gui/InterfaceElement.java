@@ -17,7 +17,6 @@ import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
 import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.style.StylesheetBorderElement;
-import com.dafrito.rfe.style.StylesheetColorElement;
 import com.dafrito.rfe.style.StylesheetFontElement;
 import com.dafrito.rfe.style.StylesheetFontSizeElement;
 import com.dafrito.rfe.style.StylesheetFontStyleElement;
@@ -84,7 +83,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public Color getCurrentTextColor() {
-		return ((StylesheetColorElement) this.getStyleElement(StylesheetProperty.COLOR)).getColor();
+		return (Color) this.getStyleElement(StylesheetProperty.COLOR);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public enum StylesheetProperty {
 	COLOR("Text Color") {
 		@Override
 		public Object defaultValue() {
-			return new StylesheetColorElement(Color.white);
+			return Color.white;
 		}
 	},
 	BACKGROUNDCOLOR("Background Color") {
