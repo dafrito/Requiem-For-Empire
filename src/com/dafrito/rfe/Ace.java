@@ -6,6 +6,16 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Ace;
 
+/**
+ * Relate the efficiency of some {@link Asset} to represent some
+ * {@link Archetype}. For example, if the archetype is "combustible" than an
+ * asset with high efficiency is highly combustible. Expressing representation
+ * in floating-point terms lets us have situations degrade, such as having
+ * poorly combustible things still be combustible.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 @Inspectable
 public class Ace implements ScriptConvertible {
 	private Archetype archetype;
