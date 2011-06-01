@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Font;
 
 import com.dafrito.rfe.script.ScriptKeywordType;
+import com.dafrito.rfe.style.dimensions.StylesheetPercentageHeightElement;
+import com.dafrito.rfe.style.dimensions.StylesheetPercentageWidthElement;
 
 /**
  * Represents the set of stylesheet properties.

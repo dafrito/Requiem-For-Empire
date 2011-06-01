@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dafrito.rfe.style;
+package com.dafrito.rfe.style.dimensions;
 
 import com.dafrito.rfe.inspect.Inspectable;
 

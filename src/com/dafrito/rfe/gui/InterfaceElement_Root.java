@@ -20,10 +20,10 @@ import com.dafrito.rfe.gui.event.RiffInterface_MouseListener;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseUpEvent;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.style.Stylesheet;
-import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
-import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
-import com.dafrito.rfe.style.StylesheetMagnitude;
 import com.dafrito.rfe.style.StylesheetProperty;
+import com.dafrito.rfe.style.dimensions.StylesheetAbsoluteHeightElement;
+import com.dafrito.rfe.style.dimensions.StylesheetAbsoluteWidthElement;
+import com.dafrito.rfe.style.dimensions.StylesheetMagnitude;
 
 public class InterfaceElement_Root extends InterfaceElement implements Interface_Container {
 	private final JPanel drawingPanel;

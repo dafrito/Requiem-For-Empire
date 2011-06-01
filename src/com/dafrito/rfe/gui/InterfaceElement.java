@@ -13,17 +13,17 @@ import com.dafrito.rfe.script.ScriptKeywordType;
 import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.proxies.FauxTemplate_InterfaceElement;
 import com.dafrito.rfe.style.Stylesheet;
-import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
-import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.style.StylesheetBorderElement;
 import com.dafrito.rfe.style.StylesheetFontElement;
 import com.dafrito.rfe.style.StylesheetFontSizeElement;
 import com.dafrito.rfe.style.StylesheetFontStyleElement;
-import com.dafrito.rfe.style.StylesheetMagnitude;
 import com.dafrito.rfe.style.StylesheetMarginElement;
 import com.dafrito.rfe.style.StylesheetPaddingElement;
 import com.dafrito.rfe.style.StylesheetProperty;
+import com.dafrito.rfe.style.dimensions.StylesheetAbsoluteHeightElement;
+import com.dafrito.rfe.style.dimensions.StylesheetAbsoluteWidthElement;
+import com.dafrito.rfe.style.dimensions.StylesheetMagnitude;
 
 public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConvertible {
 	private Stylesheet classStylesheet, uniqueStylesheet;

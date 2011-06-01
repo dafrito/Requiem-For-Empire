@@ -44,18 +44,18 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_Scheduler;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrestrial;
 import com.dafrito.rfe.strings.Strings;
 import com.dafrito.rfe.style.Stylesheet;
-import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
-import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.style.StylesheetBorderElement;
 import com.dafrito.rfe.style.StylesheetFontSizeElement;
-import com.dafrito.rfe.style.StylesheetMagnitude;
 import com.dafrito.rfe.style.StylesheetMarginElement;
 import com.dafrito.rfe.style.StylesheetPaddingElement;
-import com.dafrito.rfe.style.StylesheetPercentageHeightElement;
-import com.dafrito.rfe.style.StylesheetPercentageWidthElement;
 import com.dafrito.rfe.style.StylesheetProperty;
 import com.dafrito.rfe.style.Stylesheets;
+import com.dafrito.rfe.style.dimensions.StylesheetAbsoluteHeightElement;
+import com.dafrito.rfe.style.dimensions.StylesheetAbsoluteWidthElement;
+import com.dafrito.rfe.style.dimensions.StylesheetMagnitude;
+import com.dafrito.rfe.style.dimensions.StylesheetPercentageHeightElement;
+import com.dafrito.rfe.style.dimensions.StylesheetPercentageWidthElement;
 
 public class Parser {
 	private static List<StylesheetParams> stylesheetParams = new LinkedList<StylesheetParams>();
