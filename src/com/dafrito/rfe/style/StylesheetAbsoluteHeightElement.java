@@ -3,30 +3,20 @@
  */
 package com.dafrito.rfe.style;
 
-import com.dafrito.rfe.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class StylesheetAbsoluteHeightElement extends StylesheetHeightElement implements Nodeable {
-	private Integer magnitude;
+/**
+ * A stylesheet element that represents absolute height.
+ * 
+ * @author Aaron Faanes
+ * @see StylesheetAbsoluteWidthElement
+ * @see StylesheetPercentageHeightElement
+ */
+@Inspectable
+public class StylesheetAbsoluteHeightElement extends StylesheetMagnitude<Integer> {
 
 	public StylesheetAbsoluteHeightElement(int magnitude) {
-		this.magnitude = new Integer(magnitude);
-	}
-
-	@Override
-	public Object getMagnitude() {
-		return this.magnitude;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Absolute Height Stylesheet-Element");
-		assert Debugger.addNode("Magnitude: " + this.magnitude);
-		assert Debugger.closeNode();
-	}
-
-	public void setMagnitude(int magnitude) {
-		this.magnitude = new Integer(magnitude);
+		super(magnitude);
 	}
 
 	@Override

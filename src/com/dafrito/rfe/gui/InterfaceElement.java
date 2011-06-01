@@ -20,11 +20,10 @@ import com.dafrito.rfe.style.StylesheetBorderElement;
 import com.dafrito.rfe.style.StylesheetFontElement;
 import com.dafrito.rfe.style.StylesheetFontSizeElement;
 import com.dafrito.rfe.style.StylesheetFontStyleElement;
-import com.dafrito.rfe.style.StylesheetHeightElement;
+import com.dafrito.rfe.style.StylesheetMagnitude;
 import com.dafrito.rfe.style.StylesheetMarginElement;
 import com.dafrito.rfe.style.StylesheetPaddingElement;
 import com.dafrito.rfe.style.StylesheetProperty;
-import com.dafrito.rfe.style.StylesheetWidthElement;
 
 public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConvertible {
 	private Stylesheet classStylesheet, uniqueStylesheet;
@@ -109,7 +108,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getInternalHeight() {
-		StylesheetHeightElement element = (StylesheetHeightElement) this.getStyleElement(StylesheetProperty.HEIGHT);
+		StylesheetMagnitude<?> element = (StylesheetMagnitude<?>) this.getStyleElement(StylesheetProperty.HEIGHT);
 		if (element instanceof StylesheetAbsoluteHeightElement) {
 			return ((Integer) element.getMagnitude()).intValue();
 		} else {
@@ -118,7 +117,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 	}
 
 	public int getInternalWidth() {
-		StylesheetWidthElement element = (StylesheetWidthElement) this.getStyleElement(StylesheetProperty.WIDTH);
+		StylesheetMagnitude<?> element = (StylesheetMagnitude<?>) this.getStyleElement(StylesheetProperty.WIDTH);
 		if (element instanceof StylesheetAbsoluteWidthElement) {
 			return ((Integer) element.getMagnitude()).intValue();
 		} else {

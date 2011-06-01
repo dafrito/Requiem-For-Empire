@@ -49,13 +49,12 @@ import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.style.StylesheetBorderElement;
 import com.dafrito.rfe.style.StylesheetFontSizeElement;
-import com.dafrito.rfe.style.StylesheetHeightElement;
+import com.dafrito.rfe.style.StylesheetMagnitude;
 import com.dafrito.rfe.style.StylesheetMarginElement;
 import com.dafrito.rfe.style.StylesheetPaddingElement;
 import com.dafrito.rfe.style.StylesheetPercentageHeightElement;
 import com.dafrito.rfe.style.StylesheetPercentageWidthElement;
 import com.dafrito.rfe.style.StylesheetProperty;
-import com.dafrito.rfe.style.StylesheetWidthElement;
 import com.dafrito.rfe.style.Stylesheets;
 
 public class Parser {
@@ -1332,7 +1331,7 @@ public class Parser {
 				assert elements.get(offset) instanceof ScriptOperator;
 				assert ((ScriptOperator) elements.get(offset)).getType() == ScriptOperatorType.COLON;
 				offset++;
-				StylesheetWidthElement widthElem;
+				StylesheetMagnitude<?> widthElem;
 				if (elements.get(offset + 1) instanceof ScriptOperator && ((ScriptOperator) elements.get(offset + 1)).getType() == ScriptOperatorType.MODULUS) {
 					widthElem = new StylesheetPercentageWidthElement(((ScriptValue_Numeric) elements.get(offset)).doubleValue() / 100);
 					offset++;
@@ -1349,7 +1348,7 @@ public class Parser {
 				assert elements.get(offset) instanceof ScriptOperator;
 				assert ((ScriptOperator) elements.get(offset)).getType() == ScriptOperatorType.COLON;
 				offset++;
-				StylesheetHeightElement heightElem;
+				StylesheetMagnitude<?> heightElem;
 				if (elements.get(offset + 1) instanceof ScriptOperator && ((ScriptOperator) elements.get(offset + 1)).getType() == ScriptOperatorType.MODULUS) {
 					heightElem = new StylesheetPercentageHeightElement(((ScriptValue_Numeric) elements.get(offset)).doubleValue() / 100);
 					offset++;

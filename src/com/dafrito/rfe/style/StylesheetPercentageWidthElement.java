@@ -3,28 +3,20 @@
  */
 package com.dafrito.rfe.style;
 
-import com.dafrito.rfe.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class StylesheetPercentageWidthElement extends StylesheetWidthElement implements Nodeable {
-	private Double magnitude;
+/**
+ * A stylesheet element that represents a percentage width.
+ * 
+ * @author Aaron Faanes
+ * @see StylesheetAbsoluteWidthElement
+ * @see StylesheetPercentageHeightElement
+ */
+@Inspectable
+public class StylesheetPercentageWidthElement extends StylesheetMagnitude<Double> {
 
 	public StylesheetPercentageWidthElement(double magnitude) {
-		this.magnitude = new Double(magnitude);
-	}
-
-	@Override
-	public Object getMagnitude() {
-		return this.magnitude;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.addSnapNode("Percentage Width Stylesheet-Element", "Percentage: " + this.magnitude);
-	}
-
-	public void setMagnitude(double magnitude) {
-		this.magnitude = new Double(magnitude);
+		super(magnitude);
 	}
 
 	@Override

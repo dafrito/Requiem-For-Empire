@@ -22,9 +22,8 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.style.Stylesheet;
 import com.dafrito.rfe.style.StylesheetAbsoluteHeightElement;
 import com.dafrito.rfe.style.StylesheetAbsoluteWidthElement;
-import com.dafrito.rfe.style.StylesheetHeightElement;
+import com.dafrito.rfe.style.StylesheetMagnitude;
 import com.dafrito.rfe.style.StylesheetProperty;
-import com.dafrito.rfe.style.StylesheetWidthElement;
 
 public class InterfaceElement_Root extends InterfaceElement implements Interface_Container {
 	private final JPanel drawingPanel;
@@ -149,7 +148,7 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 
 	@Override
 	public int getInternalHeight() {
-		StylesheetHeightElement element = (StylesheetHeightElement) this.getStyleElement(StylesheetProperty.HEIGHT);
+		StylesheetMagnitude<?> element = (StylesheetMagnitude<?>) this.getStyleElement(StylesheetProperty.HEIGHT);
 		if (element instanceof StylesheetAbsoluteHeightElement) {
 			return ((Integer) element.getMagnitude()).intValue();
 		} else {
@@ -159,7 +158,7 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 
 	@Override
 	public int getInternalWidth() {
-		StylesheetWidthElement element = (StylesheetWidthElement) this.getStyleElement(StylesheetProperty.WIDTH);
+		StylesheetMagnitude<?> element = (StylesheetMagnitude<?>) this.getStyleElement(StylesheetProperty.WIDTH);
 		if (element instanceof StylesheetAbsoluteWidthElement) {
 			return ((Integer) element.getMagnitude()).intValue();
 		} else {
