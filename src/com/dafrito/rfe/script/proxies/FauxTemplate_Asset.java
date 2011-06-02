@@ -44,52 +44,45 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Executions", "Executing Asset Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
-		FauxTemplate_Asset template = (FauxTemplate_Asset) rawTemplate;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
-		if (name == null || name.equals("")) {
-			if (template == null) {
-				template = (FauxTemplate_Asset) this.createObject(ref, template);
-			}
-			template.getAsset().setLocation(Parser.getPoint(params.get(0)));
-			params.clear();
-		} else if (name.equals("setProperty")) {
-			if (params.size() == 2) {
-				template.getAsset().setProperty(Parser.getString(params.get(0)), params.get(1).getValue());
-				assert Debugger.closeNode();
+		try {
+			FauxTemplate_Asset template = (FauxTemplate_Asset) rawTemplate;
+			assert Debugger.addSnapNode("Template provided", template);
+			assert Debugger.addSnapNode("Parameters provided", params);
+			if (name == null || name.equals("")) {
+				if (template == null) {
+					template = (FauxTemplate_Asset) this.createObject(ref, template);
+				}
+				template.getAsset().setLocation(Parser.getPoint(params.get(0)));
+				params.clear();
+			} else if (name.equals("setProperty")) {
+				if (params.size() == 2) {
+					template.getAsset().setProperty(Parser.getString(params.get(0)), params.get(1).getValue());
+					return null;
+				}
+			} else if (name.equals("getProperty")) {
+				if (params.size() == 1) {
+					return (ScriptValue) ((ScriptConvertible) template.getAsset().getProperty(Parser.getString(params.get(0)))).convert();
+				}
+			} else if (name.equals("addAce")) {
+				template.getAsset().addAce(Parser.getAce(params.get(0)));
+				return null;
+			} else if (name.equals("getAces")) {
+				List<ScriptValue> list = new LinkedList<ScriptValue>();
+				for (Ace ace : template.getAsset().getAces()) {
+					list.add(Parser.getRiffAce(ace));
+				}
+				return Parser.getRiffList(this.getEnvironment(), list);
+			} else if (name.equals("getLocation")) {
+				assert template.getAsset().getLocation() != null : "Asset location is null!";
+				return Parser.getRiffPoint(this.getEnvironment(), template.getAsset().getLocation());
+			} else if (name.equals("setLocation")) {
+				template.getAsset().setLocation(Parser.getPoint(params.get(0)));
 				return null;
 			}
-		} else if (name.equals("getProperty")) {
-			if (params.size() == 1) {
-				ScriptValue value = (ScriptValue) ((ScriptConvertible) template.getAsset().getProperty(Parser.getString(params.get(0)))).convert();
-				assert Debugger.closeNode();
-				return value;
-			}
-		} else if (name.equals("addAce")) {
-			template.getAsset().addAce(Parser.getAce(params.get(0)));
+			return this.getExtendedFauxClass().execute(ref, name, params, template);
+		} finally {
 			assert Debugger.closeNode();
-			return null;
-		} else if (name.equals("getAces")) {
-			List<ScriptValue> list = new LinkedList<ScriptValue>();
-			for (Ace ace : template.getAsset().getAces()) {
-				list.add(Parser.getRiffAce(ace));
-			}
-			ScriptValue returning = Parser.getRiffList(this.getEnvironment(), list);
-			assert Debugger.closeNode();
-			return returning;
-		} else if (name.equals("getLocation")) {
-			assert template.getAsset().getLocation() != null : "Asset location is null!";
-			ScriptValue returning = Parser.getRiffPoint(this.getEnvironment(), template.getAsset().getLocation());
-			assert Debugger.closeNode();
-			return returning;
-		} else if (name.equals("setLocation")) {
-			template.getAsset().setLocation(Parser.getPoint(params.get(0)));
-			assert Debugger.closeNode();
-			return null;
 		}
-		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
-		return returning;
 	}
 
 	public Asset getAsset() {
