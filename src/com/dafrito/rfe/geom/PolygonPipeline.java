@@ -1,18 +1,25 @@
 package com.dafrito.rfe.geom;
+
 import java.util.List;
 
 import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.debug.Debugger;
 
-
 public class PolygonPipeline extends Thread {
-	private DiscreteRegion region;
-	private Terrestrial terrestrial;
 	public static final String POLYGONPIPELINESTRING = "Polygon Pipeline";
 	private static int threadNum = 0;
 
-	public PolygonPipeline(Terrestrial panel, DiscreteRegion region) {
+	private final DiscreteRegion region;
+	private final Terrestrial terrestrial;
+
+	public PolygonPipeline(final Terrestrial panel, final DiscreteRegion region) {
 		super(POLYGONPIPELINESTRING + " " + threadNum++);
+		if (panel == null) {
+			throw new NullPointerException("panel must not be null");
+		}
+		if (region == null) {
+			throw new NullPointerException("region must not be null");
+		}
 		this.terrestrial = panel;
 		this.region = region;
 	}
@@ -22,13 +29,9 @@ public class PolygonPipeline extends Thread {
 		Debugger.hitStopWatch();
 		assert Debugger.openNode("Polygon Pipeline Executions", "Executing Polygon Pipeline");
 		assert Debugger.addNode(this.region);
-		if (this.region == null) {
-			assert Debugger.closeNode("Region is null.");
-			return;
-		}
 		List<DiscreteRegion> polygonList = Polygons.convertPolyToConvex(this.region);
 		if (polygonList == null) {
-			assert Debugger.closeNode("Region is null.");
+			assert Debugger.closeNode("Region was degenerate");
 			return;
 		}
 		polygonList = Polygons.joinPolygons(polygonList);
