@@ -1108,10 +1108,16 @@ public class Polygons {
 		return region;
 	}
 
-	// Takes a collection of discrete regions and optimizes them one by one, returning the optimized polygon list at the end.
-	public static List<DiscreteRegion> optimizePolygons(Collection<DiscreteRegion> list) {
+	/**
+	 * Optimizes each {@link DiscreteRegion} in the specified collection.
+	 * 
+	 * @param regions
+	 *            the regions to optimize
+	 * @return a list of optimized regions
+	 */
+	public static List<DiscreteRegion> optimizePolygons(Collection<DiscreteRegion> regions) {
 		List<DiscreteRegion> polygons = new LinkedList<DiscreteRegion>();
-		for (DiscreteRegion region : list) {
+		for (DiscreteRegion region : regions) {
 			region = Polygons.optimizePolygon(region);
 			if (region == null) {
 				continue;
@@ -1121,7 +1127,23 @@ public class Polygons {
 		return polygons;
 	}
 
-	// Removes overlapping polygons and creates new ones with the characteristics of the previous two merged together.
+	/**
+	 * Removes overlapping polygons and creates new ones with the
+	 * characteristics of the previous two merged together.
+	 * <p>
+	 * These method parameters are a bit weird, due to the recursion. This
+	 * really should be a private method with a more-sensible public interface
+	 * method.
+	 * 
+	 * 
+	 * @param root
+	 *            the root node of the BSP tree
+	 * @param region
+	 *            the region that will be added to the BSP tree
+	 * @param recurse
+	 *            whether to recurse, optimizing any formed regions
+	 * @return the node of the created BSP tree
+	 */
 	public static DiscreteRegionBSPNode removeOverlappingPolygons(DiscreteRegionBSPNode root, DiscreteRegion region, boolean recurse) {
 		assert Debugger.openNode("Overlapping Polygon Removals", "Removing Overlapping Polygons");
 		if (region == null || root == null) {
