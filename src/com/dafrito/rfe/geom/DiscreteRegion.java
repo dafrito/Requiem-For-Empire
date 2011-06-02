@@ -77,18 +77,18 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_
 		return new Point_Euclidean(env, ax + bounds.getX() + width, ay + bounds.getY() + height, 0.0d);
 	}
 
-	private List<Point> points;
-	private Set<DiscreteRegion> neighbors;
-	private Map<DiscreteRegion, Integer> intersectionMap = new HashMap<DiscreteRegion, Integer>();
+	private final List<Point> points = new ArrayList<Point>();
+	private final Set<DiscreteRegion> neighbors = new HashSet<DiscreteRegion>();
+	private final Map<DiscreteRegion, Integer> intersectionMap = new HashMap<DiscreteRegion, Integer>();
 	private double leftExtreme, rightExtreme, topExtreme, bottomExtreme;
 	private Point midPoint, interiorPoint;
 	private int version;
 
 	private boolean isOptimized;
 
-	private Map<String, Object> properties;
+	private final Map<String, Object> properties = new HashMap<String, Object>();
 
-	private ScriptEnvironment environment;
+	private final ScriptEnvironment environment;
 
 	public DiscreteRegion() {
 		this((ScriptEnvironment) null);
@@ -97,15 +97,14 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_
 	public DiscreteRegion(DiscreteRegion otherRegion) {
 		assert Debugger.openNode("Discrete Region Creation", "Creating discrete region (Duplicating otherRegion)");
 		this.environment = otherRegion.getEnvironment();
-		this.neighbors = new HashSet<DiscreteRegion>();
-		this.points = new ArrayList<Point>(otherRegion.getPoints());
+		this.points.addAll(otherRegion.getPoints());
 		this.leftExtreme = otherRegion.getLeftExtreme();
 		this.rightExtreme = otherRegion.getRightExtreme();
 		this.topExtreme = otherRegion.getTopExtreme();
 		this.bottomExtreme = otherRegion.getBottomExtreme();
 		this.isOptimized = otherRegion.isOptimized();
 		this.version = otherRegion.getVersion();
-		this.properties = otherRegion.getProperties();
+		this.properties.putAll(otherRegion.getProperties());
 		assert Debugger.closeNode("Region created", this);
 	}
 
@@ -117,9 +116,6 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_
 			assert Debugger.addNode(env);
 		}
 		this.environment = env;
-		this.points = new ArrayList<Point>();
-		this.neighbors = new HashSet<DiscreteRegion>();
-		this.properties = new HashMap<String, Object>();
 		this.resetExtrema();
 		assert Debugger.closeNode("Region created", this);
 	}
@@ -127,9 +123,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_
 	public DiscreteRegion(ScriptEnvironment env, Map<String, Object> prop) {
 		assert Debugger.openNode("Discrete Region Creation", "Creating discrete region (Script environment and properties provided)");
 		this.environment = env;
-		this.points = new ArrayList<Point>();
-		this.neighbors = new HashSet<DiscreteRegion>();
-		this.properties = prop;
+		this.properties.putAll(prop);
 		assert Debugger.closeNode("Region created", this);
 	}
 
@@ -337,8 +331,8 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_
 	private void recalculateExtrema() {
 		assert Debugger.openNode("Extrema Recalculations", "Recalculating extrema");
 		this.resetExtrema();
-		for (int i = 0; i < this.points.size(); i++) {
-			this.testExtrema(this.points.get(i));
+		for (Point point : this.points) {
+			this.testExtrema(point);
 		}
 		assert Debugger.closeNode();
 	}
@@ -402,10 +396,11 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_
 		this.isOptimized = optimized;
 	}
 
-	public void setPointList(List<Point> pointList) {
+	public void setPointList(Collection<Point> pointList) {
 		assert Debugger.openNode("Setting this discrete region's point list to a provided one");
 		assert Debugger.addSnapNode("Old point list", this.points);
-		this.points = pointList;
+		this.points.clear();
+		this.points.addAll(pointList);
 		this.recalculateExtrema();
 		this.resetIntersectionMap();
 		assert Debugger.addSnapNode("New point list", this.points);
@@ -413,7 +408,8 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_
 	}
 
 	public void setProperties(Map<String, Object> prop) {
-		this.properties = prop;
+		this.properties.clear();
+		this.properties.putAll(prop);
 	}
 
 	public void setProperty(String name, Object prop) {
