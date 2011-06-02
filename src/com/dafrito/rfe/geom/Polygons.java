@@ -862,12 +862,28 @@ public class Polygons {
 		return struct;
 	}
 
-	// Returns the slope of these lines.
-	public static double getSlope(Point pointA, Point pointB) {
-		return (pointB.getY() - pointA.getY()) / (pointB.getX() - pointA.getX());
+	/**
+	 * Returns the slope of the line that passes through both specified points.
+	 * The line segment begins at {@code start} and is directed towards
+	 * {@code end}.
+	 * 
+	 * @param start
+	 *            the first point of the line
+	 * @param end
+	 *            the second point of the line
+	 * @return the slope of the line formed by the specified points
+	 */
+	public static double getSlope(Point start, Point end) {
+		return (end.getY() - start.getY()) / (end.getX() - start.getX());
 	}
 
-	// Tests if a polygon is convex.
+	/**
+	 * Tests if a polygon is convex.
+	 * 
+	 * @param region
+	 *            the tested region
+	 * @return {@code true} if the region is convex
+	 */
 	public static boolean isPolygonConvex(DiscreteRegion region) {
 		List<Point> pointList = region.getPoints();
 		Boolean myBool = null;
@@ -904,17 +920,23 @@ public class Polygons {
 		return true;
 	}
 
-	// Takes a list of convex, non-overlapping polygons, and joins them if they share a common border and their joined polygon is convex. This function
-	// returns this list, or the originalPolygon in a list if no polygons were joined.
-	public static List<DiscreteRegion> joinPolygons(List<DiscreteRegion> polyList) {
+	/**
+	 * Takes a list of convex, non-overlapping polygons, and joins them if they
+	 * share a common border and their joined polygon is convex.
+	 * 
+	 * @param originals
+	 *            the list of original convex polygons.
+	 * @return a list of convex polygons, joined where applicable
+	 */
+	public static List<DiscreteRegion> joinPolygons(List<DiscreteRegion> originals) {
 		List<DiscreteRegion> optimizedList = new LinkedList<DiscreteRegion>();
-		for (int i = 0; i < polyList.size(); i++) {
-			for (int j = 0; j < polyList.size(); j++) {
+		for (int i = 0; i < originals.size(); i++) {
+			for (int j = 0; j < originals.size(); j++) {
 				if (i == j) {
 					continue;
 				}
-				DiscreteRegion firstRegion = polyList.get(i);
-				DiscreteRegion secondRegion = polyList.get(j);
+				DiscreteRegion firstRegion = originals.get(i);
+				DiscreteRegion secondRegion = originals.get(j);
 				for (int q = 0; q < firstRegion.getPoints().size(); q++) {
 					for (int x = 0; x < secondRegion.getPoints().size(); x++) {
 						if (!firstRegion.getPoints().get(q).equals(secondRegion.getPoints().get(x)) && !firstRegion.getPoints().get((q + 1) % firstRegion.getPoints().size()).equals(secondRegion.getPoints().get(x))) {
@@ -960,15 +982,17 @@ public class Polygons {
 							continue;
 						}
 						optimizedList.add(testRegion);
-						polyList.remove(firstRegion);
-						polyList.remove(secondRegion);
-						optimizedList.addAll(polyList);
+						// XXX I would love to make originals be unmodified by this operation, but I can't guarantee
+						// these removals aren't necessary.
+						originals.remove(firstRegion);
+						originals.remove(secondRegion);
+						optimizedList.addAll(originals);
 						return Polygons.joinPolygons(optimizedList);
 					}
 				}
 			}
 		}
-		return polyList;
+		return originals;
 	}
 
 	/**
