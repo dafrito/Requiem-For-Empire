@@ -19,7 +19,10 @@ public class ExecutionThread extends Thread {
 	@Override
 	public void run() {
 		Debugger.hitStopWatch();
-		this.debugEnvironment.getEnvironment().execute();
-		Debugger.hitStopWatch();
+		try {
+			this.debugEnvironment.getEnvironment().execute();
+		} finally {
+			Debugger.hitStopWatch();
+		}
 	}
 }
