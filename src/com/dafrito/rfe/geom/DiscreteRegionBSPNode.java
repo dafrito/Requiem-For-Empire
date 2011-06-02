@@ -16,16 +16,18 @@ import com.dafrito.rfe.points.Points;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public class DiscreteRegionBSPNode implements Nodeable {
-	private Point pointA, pointB;
+	private final Point pointA;
+	private final Point pointB;
 	private DiscreteRegionBSPNode leftNode, rightNode;
-	private Set<DiscreteRegion> leftNeighbors;
-	private Set<DiscreteRegion> rightNeighbors;
-	private Set<DiscreteRegion> tempList;
-	private DiscreteRegionBSPNode root;
+	private final Set<DiscreteRegion> leftNeighbors = new HashSet<DiscreteRegion>();
+	private final Set<DiscreteRegion> rightNeighbors = new HashSet<DiscreteRegion>();
+	private final Set<DiscreteRegion> tempList = new HashSet<DiscreteRegion>();
+	private final DiscreteRegionBSPNode root;
 
 	public DiscreteRegionBSPNode(DiscreteRegion region) {
-		this(null, region.getPoints().get(0), region.getPoints().get(1));
 		this.root = this;
+		this.pointA = region.getPoints().get(0);
+		this.pointB = region.getPoints().get(1);
 		this.addRegion(region);
 	}
 
@@ -33,13 +35,6 @@ public class DiscreteRegionBSPNode implements Nodeable {
 		this.root = root;
 		this.pointA = pointA;
 		this.pointB = pointB;
-		this.leftNeighbors = new HashSet<DiscreteRegion>();
-		this.rightNeighbors = new HashSet<DiscreteRegion>();
-		this.tempList = new HashSet<DiscreteRegion>();
-	}
-
-	public void addLine(DiscreteRegion owner, Object pointA, Object pointB) {
-		this.addLine(owner, (Point) pointA, (Point) pointB);
 	}
 
 	public synchronized void addLine(DiscreteRegion owner, Point pointA, Point pointB) {
