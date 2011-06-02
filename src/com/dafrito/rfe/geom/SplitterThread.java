@@ -34,7 +34,7 @@ public class SplitterThread extends Thread {
 
 	@Override
 	public void run() {
-		Debugger.hitStopWatch(Thread.currentThread().getName());
+		Debugger.hitStopWatch();
 		assert Debugger.openNode("Splitter Thread Executions", "Executing Splitter Thread (" + this.regions.size() + " region(s))");
 		assert Debugger.addSnapNode("Regions (" + this.regions.size() + " region(s))", this.regions);
 		for (DiscreteRegion region : this.regions) {
@@ -65,6 +65,6 @@ public class SplitterThread extends Thread {
 		}
 		this.terrestrial.decrementOpenThreads();
 		assert Debugger.closeNode(this.root);
-		Debugger.hitStopWatch(Thread.currentThread().getName());
+		Debugger.hitStopWatch();
 	}
 }

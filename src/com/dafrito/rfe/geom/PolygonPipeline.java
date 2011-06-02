@@ -19,7 +19,7 @@ public class PolygonPipeline extends Thread {
 
 	@Override
 	public void run() {
-		Debugger.hitStopWatch(Thread.currentThread().getName());
+		Debugger.hitStopWatch();
 		assert Debugger.openNode("Polygon Pipeline Executions", "Executing Polygon Pipeline");
 		assert Debugger.addNode(this.region);
 		if (this.region == null) {
@@ -35,6 +35,6 @@ public class PolygonPipeline extends Thread {
 		polygonList = Polygons.optimizePolygons(polygonList);
 		this.terrestrial.addValidatedRegions(polygonList);
 		assert Debugger.closeNode();
-		Debugger.hitStopWatch(Thread.currentThread().getName());
+		Debugger.hitStopWatch();
 	}
 }

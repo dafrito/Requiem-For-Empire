@@ -23,7 +23,7 @@ public class CompileThread extends Thread {
 
 	@Override
 	public void run() {
-		Debugger.hitStopWatch(Thread.currentThread().getName());
+		Debugger.hitStopWatch();
 		this.debugEnvironment.getEnvironment().reset();
 		Parser.clearPreparseLists();
 		boolean quickflag = true;
@@ -43,7 +43,7 @@ public class CompileThread extends Thread {
 		if (exceptions.size() == 0) {
 			this.debugEnvironment.canExecute(true);
 			this.debugEnvironment.setStatus("All files compiled successfully.");
-			Debugger.hitStopWatch(Thread.currentThread().getName());
+			Debugger.hitStopWatch();
 			assert Debugger.addSnapNode("Compile successful", this.debugEnvironment.getEnvironment());
 			if (this.shouldExecute) {
 				ExecutionThread thread = new ExecutionThread(this.debugEnvironment);
@@ -52,7 +52,7 @@ public class CompileThread extends Thread {
 			//debugEnvironment.report();
 			return;
 		} else {
-			Debugger.hitStopWatch(Thread.currentThread().getName());
+			Debugger.hitStopWatch();
 			this.debugEnvironment.setStatus("One or more files had errors during compilation.");
 			this.debugEnvironment.addExceptions(exceptions);
 		}

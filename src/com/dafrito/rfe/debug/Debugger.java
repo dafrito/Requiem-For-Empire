@@ -220,6 +220,15 @@ public class Debugger {
 	private static final Map<String, Long> stopWatches = new HashMap<String, Long>();
 
 	/**
+	 * Hit a stopwatch named {@code Thread.currentThread().getName()}.
+	 * 
+	 * @see Debugger#hitStopWatch(String)
+	 */
+	public static void hitStopWatch() {
+		Debugger.hitStopWatch(Thread.currentThread().getName());
+	}
+
+	/**
 	 * Start or stop a stop watch.
 	 * 
 	 * @param name

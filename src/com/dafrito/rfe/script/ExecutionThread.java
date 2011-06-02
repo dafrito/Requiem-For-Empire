@@ -18,8 +18,8 @@ public class ExecutionThread extends Thread {
 
 	@Override
 	public void run() {
-		Debugger.hitStopWatch(Thread.currentThread().getName());
+		Debugger.hitStopWatch();
 		this.debugEnvironment.getEnvironment().execute();
-		Debugger.hitStopWatch(Thread.currentThread().getName());
+		Debugger.hitStopWatch();
 	}
 }
