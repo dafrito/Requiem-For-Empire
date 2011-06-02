@@ -29,10 +29,6 @@ public class DiscreteRegionBSPNode implements Nodeable {
 		this.addRegion(region);
 	}
 
-	public DiscreteRegionBSPNode(DiscreteRegionBSPNode root, Object a, Object b) {
-		this(root, (Point) a, (Point) b);
-	}
-
 	public DiscreteRegionBSPNode(DiscreteRegionBSPNode root, Point pointA, Point pointB) {
 		this.root = root;
 		this.pointA = pointA;
