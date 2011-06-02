@@ -20,6 +20,29 @@ import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.proxies.FauxTemplate_DiscreteRegion;
 
+/**
+ * A mutable, finite two-dimensional region of space.
+ * <p>
+ * Regions are mutable and they may be degenerate or invalid. Therefore, one
+ * must check for these conditions explicitly before working with regions.
+ * <p>
+ * This class has a lot of unnecessary state. I'd like to do a couple things to
+ * this class:
+ * <ul>
+ * <li>Remove any non-geometric state entirely, such as the uses of
+ * {@link ScriptEnvironment}, {@link Nodeable}, and the property map.
+ * <li>Ensure that regions are never invalid or degenerate. This doesn't
+ * necessarily mean they're convex.
+ * <li>Have a hierarchy of regions, based on characteristics. The lowest-level
+ * classes would essentially be a {@code Set<Point>}, and higher-level classes
+ * would add functionality (or optimizations) depending on their
+ * characteristics.
+ * <li>Investigate three-dimensional regions.
+ * </ul>
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_DiscreteRegion> {
 	public static void paint(Graphics2D g2d, DiscreteRegion transformedRegion, Rectangle bounds, boolean fill) {
 		assert Debugger.openNode("Discrete-Region Painting", "Painting Discrete Region");
