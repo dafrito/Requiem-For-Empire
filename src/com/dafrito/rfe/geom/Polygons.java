@@ -551,7 +551,7 @@ public class Polygons {
 					tangentFlag = true;
 				}
 			}
-			Point intersectPoint = createPoint(pointA, "(" + pointA.getName() + "," + pointB.getName() + ")+(" + testPointA.getName() + "," + testPointB.getName() + ")", pointA.getX(), yIntersection, 0.0f);
+			Point intersectPoint = createPoint(pointA, String.format("(%s, %s)+(%s, %s)", pointA.getName(), pointB.getName(), testPointA.getName(), testPointB.getName()), pointA.getX(), yIntersection, 0.0f);
 			IntersectionPoint point = new IntersectionPoint(intersectPoint, tangentFlag);
 			if (tangentFlag) {
 				assert Debugger.closeNode("These lines intersect, but only on a tangent: " + intersectPoint, point);
