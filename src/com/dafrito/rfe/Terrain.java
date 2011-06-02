@@ -7,7 +7,7 @@ import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrain;
 
-public class Terrain implements GradientValue<Terrain>, ScriptConvertible, Nodeable {
+public class Terrain implements GradientValue<Terrain>, ScriptConvertible<FauxTemplate_Terrain>, Nodeable {
 	private ScriptEnvironment environment;
 	private double brushDensity, waterDepth, temperature, groundCohesion, elevation;
 	private double brushDensityWeight, elevationWeight, groundCohesionWeight,
@@ -18,7 +18,7 @@ public class Terrain implements GradientValue<Terrain>, ScriptConvertible, Nodea
 	}
 
 	@Override
-	public Object convert() {
+	public FauxTemplate_Terrain convert() {
 		FauxTemplate_Terrain terrain = new FauxTemplate_Terrain(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_Terrain.TERRAINSTRING).getType());
 		terrain.setTerrain(this);
 		return terrain;

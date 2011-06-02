@@ -19,7 +19,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, ScriptConvertible {
+public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, ScriptConvertible<Terrain> {
 	public static final String TERRAINSTRING = "Terrain";
 	private Terrain terrain;
 
@@ -34,7 +34,7 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 
 	// Nodeable implementation
 	@Override
-	public Object convert() {
+	public Terrain convert() {
 		return this.terrain;
 	}
 

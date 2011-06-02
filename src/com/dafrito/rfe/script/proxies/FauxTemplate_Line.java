@@ -10,7 +10,6 @@ import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.Referenced;
-import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptFunction;
 import com.dafrito.rfe.script.ScriptKeywordType;
@@ -21,7 +20,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Line extends FauxTemplate implements ScriptConvertible, Nodeable {
+public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements Nodeable {
 	public static final String LINESTRING = "Line";
 	public Point pointA, pointB;
 
@@ -37,7 +36,7 @@ public class FauxTemplate_Line extends FauxTemplate implements ScriptConvertible
 
 	// ScriptConvertible and Nodeable implementations
 	@Override
-	public Object convert() {
+	public GraphicalElement_Line convert() {
 		return new GraphicalElement_Line(this.getEnvironment(), this.getPointA(), this.getPointB());
 	}
 

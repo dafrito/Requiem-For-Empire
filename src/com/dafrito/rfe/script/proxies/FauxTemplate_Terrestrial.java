@@ -20,7 +20,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConvertible, Nodeable {
+public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConvertible<Terrestrial>, Nodeable {
 	public static final String TERRESTRIALSTRING = "Terrestrial";
 	private Terrestrial terrestrial;
 
@@ -35,7 +35,7 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 
 	// Nodeable and ScriptConvertible implementations
 	@Override
-	public Object convert() {
+	public Terrestrial convert() {
 		return this.getTerrestrial();
 	}
 

@@ -8,7 +8,7 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_DivisionByZero;
 
-public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible, Nodeable {
+public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Number>, Nodeable {
 	// Static functions
 	public static boolean testNumericValueConversion(ScriptValueType base, ScriptValueType cast) {
 		// If type is a short or integer, all numeric types are valid (We implement all shorts as integers)
@@ -110,7 +110,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible, Node
 
 	// Overloaded Functions
 	@Override
-	public Object convert() {
+	public Number convert() {
 		return this.number;
 	}
 

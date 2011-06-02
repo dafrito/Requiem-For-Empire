@@ -105,12 +105,12 @@ public class Parser {
 
 	public static Object convert(ScriptEnvironment env, Object object) throws Exception_Nodeable {
 		if (object instanceof ScriptConvertible) {
-			return convert(env, (ScriptConvertible) object);
+			return convert(env, (ScriptConvertible<?>) object);
 		}
-		return convert(env, (ScriptConvertible) ((ScriptValue) object).getValue());
+		return convert(env, (ScriptConvertible<?>) ((ScriptValue) object).getValue());
 	}
 
-	public static Object convert(ScriptEnvironment env, ScriptConvertible object) throws Exception_Nodeable {
+	public static <T> T convert(ScriptEnvironment env, ScriptConvertible<T> object) throws Exception_Nodeable {
 		return object.convert();
 	}
 
@@ -450,7 +450,7 @@ public class Parser {
 	}
 
 	public static FauxTemplate_Asset getRiffAsset(ScriptEnvironment env, Asset asset) throws Exception_Nodeable {
-		return (FauxTemplate_Asset) convert(env, asset);
+		return convert(env, asset);
 	}
 
 	public static ScriptValue_Boolean getRiffBoolean(ScriptEnvironment env, boolean value) throws Exception_Nodeable {
@@ -466,7 +466,7 @@ public class Parser {
 	}
 
 	public static FauxTemplate_DiscreteRegion getRiffDiscreteRegion(ScriptEnvironment env, DiscreteRegion region) throws Exception_Nodeable {
-		return (FauxTemplate_DiscreteRegion) convert(env, region);
+		return convert(env, region);
 	}
 
 	public static ScriptValue_Numeric getRiffDouble(ScriptEnvironment env, double value) throws Exception_Nodeable {
@@ -474,7 +474,7 @@ public class Parser {
 	}
 
 	public static FauxTemplate_InterfaceElement getRiffElement(ScriptEnvironment env, InterfaceElement elem) throws Exception_Nodeable {
-		return (FauxTemplate_InterfaceElement) convert(env, elem);
+		return convert(env, elem);
 	}
 
 	public static ScriptValue_Numeric getRiffFloat(ScriptEnvironment env, float value) throws Exception_Nodeable {
@@ -498,7 +498,7 @@ public class Parser {
 	}
 
 	public static FauxTemplate_Path getRiffPath(ScriptEnvironment env, Point_Path path) throws Exception_Nodeable {
-		return (FauxTemplate_Path) convert(env, path);
+		return convert(env, path);
 	}
 
 	public static FauxTemplate_Point getRiffPoint(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
@@ -506,7 +506,7 @@ public class Parser {
 	}
 
 	public static FauxTemplate_Scheduler getRiffScheduler(ScriptEnvironment env, Scheduler scheduler) throws Exception_Nodeable {
-		return (FauxTemplate_Scheduler) convert(env, scheduler);
+		return convert(env, scheduler);
 	}
 
 	public static ScriptValue_Numeric getRiffShort(ScriptEnvironment env, short value) throws Exception_Nodeable {

@@ -15,7 +15,7 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Asset;
 
 @Inspectable
-public class Asset implements Nodeable, ScriptConvertible {
+public class Asset implements Nodeable, ScriptConvertible<FauxTemplate_Asset> {
 	private ScriptEnvironment environment;
 	private Map<String, Object> properties = new HashMap<String, Object>();
 	private Point location;
@@ -31,7 +31,7 @@ public class Asset implements Nodeable, ScriptConvertible {
 
 	// ScriptConvertible implementation
 	@Override
-	public Object convert() {
+	public FauxTemplate_Asset convert() {
 		FauxTemplate_Asset asset = new FauxTemplate_Asset(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_Asset.ASSETSTRING).getType());
 		asset.setAsset(this);
 		return asset;

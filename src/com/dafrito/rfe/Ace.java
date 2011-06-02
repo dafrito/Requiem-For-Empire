@@ -17,7 +17,7 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_Ace;
  * 
  */
 @Inspectable
-public class Ace implements ScriptConvertible {
+public class Ace implements ScriptConvertible<FauxTemplate_Ace> {
 	private Archetype archetype;
 	private double efficiency;
 	private ScriptEnvironment environment;
@@ -29,7 +29,7 @@ public class Ace implements ScriptConvertible {
 	}
 
 	@Override
-	public Object convert() {
+	public FauxTemplate_Ace convert() {
 		FauxTemplate_Ace ace = new FauxTemplate_Ace(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Ace.ACESTRING));
 		ace.setAce(this);
 		return ace;

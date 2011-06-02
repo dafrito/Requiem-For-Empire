@@ -8,7 +8,6 @@ import com.dafrito.rfe.gui.Interface;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.Referenced;
-import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptFunction;
 import com.dafrito.rfe.script.ScriptKeywordType;
@@ -19,7 +18,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Interface extends FauxTemplate implements Nodeable, ScriptConvertible {
+public class FauxTemplate_Interface extends FauxTemplate implements Nodeable {
 	public static final String INTERFACESTRING = "Interface";
 	private Interface riffInterface;
 

@@ -1,5 +1,6 @@
 package com.dafrito.rfe.script.proxies;
 
+import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,9 +21,9 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_InvalidColorRange;
 import com.dafrito.rfe.style.Stylesheets;
 
-public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertible, Nodeable {
+public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertible<Color>, Nodeable {
 	public static final String COLORSTRING = "Color";
-	private java.awt.Color color;
+	private Color color;
 
 	public FauxTemplate_Color(ScriptEnvironment env) {
 		super(env, ScriptValueType.createType(env, COLORSTRING), ScriptValueType.getObjectType(env), new LinkedList<ScriptValueType>(), false);
@@ -30,12 +31,12 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 
 	public FauxTemplate_Color(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.color = java.awt.Color.BLACK;
+		this.color = Color.BLACK;
 	}
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Object convert() {
+	public Color convert() {
 		return this.color;
 	}
 

@@ -6,7 +6,7 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IncomparableObjects;
 
-public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue, Nodeable {
+public class ScriptValue_Boolean implements ScriptConvertible<Boolean>, ScriptValue, Nodeable {
 	private boolean value;
 	private final ScriptEnvironment environment;
 
@@ -26,8 +26,8 @@ public class ScriptValue_Boolean implements ScriptConvertible, ScriptValue, Node
 
 	// Overloaded and miscellaneous functions
 	@Override
-	public Object convert() {
-		return new Boolean(this.value);
+	public Boolean convert() {
+		return Boolean.valueOf(this.value);
 	}
 
 	public boolean getBooleanValue() {

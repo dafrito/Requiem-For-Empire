@@ -20,7 +20,7 @@ import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.style.Stylesheet;
 
-public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodeable, ScriptConvertible {
+public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodeable, ScriptConvertible<InterfaceElement> {
 	public static final String INTERFACEELEMENTSTRING = "InterfaceElement";
 	private InterfaceElement element;
 
@@ -38,7 +38,7 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 
 	// Nodeable implementation
 	@Override
-	public Object convert() {
+	public InterfaceElement convert() {
 		return this.getElement();
 	}
 

@@ -11,7 +11,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Archetype;
 
 @Inspectable
-public class Archetype implements ScriptConvertible {
+public class Archetype implements ScriptConvertible<FauxTemplate_Archetype> {
 
 	private final String name;
 	private final List<Ace> parents = new ArrayList<Ace>();
@@ -48,7 +48,7 @@ public class Archetype implements ScriptConvertible {
 	}
 
 	@Override
-	public Object convert() {
+	public FauxTemplate_Archetype convert() {
 		FauxTemplate_Archetype archetype = new FauxTemplate_Archetype(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING));
 		archetype.setArchetype(this);
 		return archetype;

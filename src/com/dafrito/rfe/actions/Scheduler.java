@@ -60,7 +60,7 @@ class ScheduledEvent implements Comparable<ScheduledEvent>, Nodeable {
 	}
 }
 
-public class Scheduler implements ActionListener, ScriptConvertible, Nodeable {
+public class Scheduler implements ActionListener, ScriptConvertible<FauxTemplate_Scheduler>, Nodeable {
 	private Timer timer;
 	private ScriptTemplate_Abstract defaultListener;
 	private TreeSet<ScheduledEvent> events = new TreeSet<ScheduledEvent>();
@@ -117,7 +117,7 @@ public class Scheduler implements ActionListener, ScriptConvertible, Nodeable {
 	}
 
 	@Override
-	public Object convert() {
+	public FauxTemplate_Scheduler convert() {
 		FauxTemplate_Scheduler scheduler = new FauxTemplate_Scheduler(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scheduler.SCHEDULERSTRING));
 		scheduler.setScheduler(this);
 		return scheduler;

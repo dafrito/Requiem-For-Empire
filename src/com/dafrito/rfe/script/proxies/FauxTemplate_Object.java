@@ -17,7 +17,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_FunctionNotFound;
 
-public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertible, Nodeable {
+public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertible<FauxTemplate_Object>, Nodeable {
 	public static ScriptKeyword OBJECT;
 	public static final String OBJECTSTRING = "Object";
 
@@ -31,7 +31,7 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 
 	// ScriptConvertible and Nodeable implementations
 	@Override
-	public Object convert() {
+	public FauxTemplate_Object convert() {
 		return this;
 	}
 

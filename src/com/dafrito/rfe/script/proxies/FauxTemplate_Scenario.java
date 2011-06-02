@@ -20,7 +20,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, ScriptConvertible {
+public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, ScriptConvertible<Scenario> {
 	public static final String SCENARIOSTRING = "Scenario";
 	private Scenario scenario;
 
@@ -35,7 +35,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 
 	// Nodeable implementation
 	@Override
-	public Object convert() {
+	public Scenario convert() {
 		return this.scenario;
 	}
 

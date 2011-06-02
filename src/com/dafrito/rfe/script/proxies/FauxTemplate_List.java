@@ -19,7 +19,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible, Nodeable {
+public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible<List<ScriptValue>>, Nodeable {
 	public static final String LISTSTRING = "List";
 	private List<ScriptValue> list = new LinkedList<ScriptValue>();
 
@@ -33,7 +33,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 
 	// Convertible and Nodeable implementations
 	@Override
-	public Object convert() {
+	public List<ScriptValue> convert() {
 		return this.list;
 	}
 

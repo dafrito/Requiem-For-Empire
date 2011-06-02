@@ -20,7 +20,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement implements ScriptConvertible, Nodeable {
+public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement implements ScriptConvertible<DiscreteRegion>, Nodeable {
 	public static final String DISCRETEREGIONSTRING = "DiscreteRegion";
 	private DiscreteRegion region;
 
@@ -35,7 +35,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Object convert() {
+	public DiscreteRegion convert() {
 		return this.region;
 	}
 

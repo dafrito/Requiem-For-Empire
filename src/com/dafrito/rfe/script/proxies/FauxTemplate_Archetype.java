@@ -20,7 +20,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConvertible, Nodeable {
+public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConvertible<Archetype>, Nodeable {
 	public static final String ARCHETYPESTRING = "Archetype";
 	private Archetype archetype;
 
@@ -34,7 +34,7 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Object convert() {
+	public Archetype convert() {
 		return this.archetype;
 	}
 

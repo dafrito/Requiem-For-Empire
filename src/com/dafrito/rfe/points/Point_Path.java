@@ -12,7 +12,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Path;
 
-public class Point_Path extends Point implements ScriptConvertible, Nodeable {
+public class Point_Path extends Point implements ScriptConvertible<FauxTemplate_Path>, Nodeable {
 	private List<Point> points = new LinkedList<Point>();
 	private List<Double> movementCosts = new LinkedList<Double>();
 	private long startTime;
@@ -35,7 +35,7 @@ public class Point_Path extends Point implements ScriptConvertible, Nodeable {
 
 	// ScriptConvertible implementation
 	@Override
-	public Object convert() {
+	public FauxTemplate_Path convert() {
 		FauxTemplate_Path path = new FauxTemplate_Path(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Path.PATHSTRING));
 		path.setPoint(this);
 		return path;

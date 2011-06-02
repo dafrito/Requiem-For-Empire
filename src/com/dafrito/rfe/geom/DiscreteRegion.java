@@ -20,7 +20,7 @@ import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.proxies.FauxTemplate_DiscreteRegion;
 
-public class DiscreteRegion implements Nodeable, ScriptConvertible {
+public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_DiscreteRegion> {
 	public static void paint(Graphics2D g2d, DiscreteRegion transformedRegion, Rectangle bounds, boolean fill) {
 		assert Debugger.openNode("Discrete-Region Painting", "Painting Discrete Region");
 		assert Debugger.addNode(transformedRegion);
@@ -218,7 +218,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible {
 
 	// ScriptConvertible implementation
 	@Override
-	public Object convert() {
+	public FauxTemplate_DiscreteRegion convert() {
 		FauxTemplate_DiscreteRegion region = new FauxTemplate_DiscreteRegion(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING).getType());
 		region.setRegion(this);
 		return region;

@@ -19,7 +19,6 @@ import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.script.Parser;
-import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.ScriptTemplate_Abstract;
@@ -38,7 +37,7 @@ import com.dafrito.rfe.style.Stylesheet;
  * @author Aaron Faanes
  * @see FauxTemplate_RiffDali
  */
-public class InterfaceElement_Panel extends InterfaceElement implements Interface_Container, RiffInterface_MouseListener, Nodeable, ScriptConvertible {
+public class InterfaceElement_Panel extends InterfaceElement implements Interface_Container, RiffInterface_MouseListener, Nodeable {
 	private List<GraphicalElement> elements;
 	private Point_Euclidean offset;
 	private Terrestrial terrestrial;
@@ -77,7 +76,7 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 
 	// ScriptConvertible implementation
 	@Override
-	public Object convert() {
+	public FauxTemplate_Panel convert() {
 		FauxTemplate_Panel panel = new FauxTemplate_Panel(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Panel.PANELSTRING));
 		panel.setElement(this);
 		return panel;
@@ -159,14 +158,14 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 		assert Debugger.addNode("Zoom factor: " + this.offset.getZ());
 		try {
 			List<ScriptValue> params = new LinkedList<ScriptValue>();
-			params.add((ScriptValue) this.convert());
+			params.add(this.convert());
 			List<ScriptValue> regionList = new LinkedList<ScriptValue>();
 			List<ScriptValue> assetList = new LinkedList<ScriptValue>();
 			for (DiscreteRegion region : regions) {
-				regionList.add((ScriptValue) region.convert());
+				regionList.add(region.convert());
 				if (region.getProperty("Archetypes") != null) {
 					for (Asset asset : ((ArchetypeMapNode) region.getProperty("Archetypes")).getAllAssets()) {
-						assetList.add((ScriptValue) asset.convert());
+						assetList.add(asset.convert());
 					}
 				}
 			}

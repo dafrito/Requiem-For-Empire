@@ -5,7 +5,7 @@ import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
 
-public class ScriptValue_String implements ScriptValue, ScriptConvertible, Nodeable {
+public class ScriptValue_String implements ScriptValue, ScriptConvertible<String>, Nodeable {
 	private String value;
 	private final ScriptEnvironment environment;
 
@@ -25,8 +25,8 @@ public class ScriptValue_String implements ScriptValue, ScriptConvertible, Nodea
 
 	// Interface implementations
 	@Override
-	public Object convert() {
-		return new String(this.value);
+	public String convert() {
+		return this.value;
 	}
 
 	// Abstract-value implementation

@@ -20,7 +20,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertible, Nodeable {
+public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertible<Point>, Nodeable {
 	public static final String POINTSTRING = "Point";
 	public Point point;
 
@@ -39,7 +39,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 
 	// ScriptConvertible and Nodeable implementations
 	@Override
-	public Object convert() {
+	public Point convert() {
 		return this.point;
 	}
 

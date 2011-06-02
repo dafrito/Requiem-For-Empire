@@ -11,11 +11,10 @@ import com.dafrito.rfe.geom.RiffIntersectionPoint;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
-import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Line;
 
-public class GraphicalElement_Line extends InterfaceElement implements ScriptConvertible, Nodeable {
+public class GraphicalElement_Line extends InterfaceElement implements Nodeable {
 	private Point pointA, pointB;
 
 	public GraphicalElement_Line(ScriptEnvironment env, Point pointA, Point pointB) {
@@ -26,7 +25,7 @@ public class GraphicalElement_Line extends InterfaceElement implements ScriptCon
 
 	// ScriptConvertible and Nodeable implementations
 	@Override
-	public Object convert() {
+	public FauxTemplate_Line convert() {
 		FauxTemplate_Line line = new FauxTemplate_Line(this.getEnvironment());
 		line.setPointA(this.pointA);
 		line.setPointB(this.pointB);

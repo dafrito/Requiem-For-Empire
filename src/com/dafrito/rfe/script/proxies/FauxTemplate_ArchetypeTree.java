@@ -20,7 +20,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptConvertible, Nodeable {
+public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptConvertible<ArchetypeMapNode>, Nodeable {
 	public static final String ARCHETYPETREESTRING = "ArchetypeTree";
 	private ArchetypeMapNode tree;
 
@@ -34,7 +34,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Object convert() {
+	public ArchetypeMapNode convert() {
 		return this.tree;
 	}
 

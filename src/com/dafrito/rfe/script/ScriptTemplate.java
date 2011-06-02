@@ -14,7 +14,7 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IllegalAbstractObjec
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnimplementedFunction;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableAlreadyDefined;
 
-public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptValue, Nodeable, ScriptConvertible {
+public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 	public static ScriptTemplate createTemplate(ScriptEnvironment env, ScriptValueType type, ScriptValueType extended, List<ScriptValueType> interfaces, boolean isAbstract) {
 		return new ScriptTemplate(env, type, extended, interfaces, isAbstract);
 	}
@@ -143,12 +143,6 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		this.getEnvironment().addVariableToStack(name, value);
 		assert Debugger.closeNode();
 		return value;
-	}
-
-	// ScriptConvertible implementation
-	@Override
-	public Object convert() {
-		return this;
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertible, Nodeable {
+public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertible<Asset>, Nodeable {
 	public static final String ASSETSTRING = "Asset";
 	private Asset asset;
 
@@ -35,7 +35,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Object convert() {
+	public Asset convert() {
 		return this.asset;
 	}
 
@@ -61,7 +61,11 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 				}
 			} else if (name.equals("getProperty")) {
 				if (params.size() == 1) {
-					return (ScriptValue) ((ScriptConvertible) template.getAsset().getProperty(Parser.getString(params.get(0)))).convert();
+					Object property = template.getAsset().getProperty(Parser.getString(params.get(0)));
+					if (property instanceof ScriptConvertible<?>) {
+						return (ScriptValue) ((ScriptConvertible<?>) property).convert();
+					}
+					return (ScriptValue) property;
 				}
 			} else if (name.equals("addAce")) {
 				template.getAsset().addAce(Parser.getAce(params.get(0)));

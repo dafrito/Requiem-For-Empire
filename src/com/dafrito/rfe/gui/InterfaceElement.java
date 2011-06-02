@@ -25,7 +25,7 @@ import com.dafrito.rfe.style.dimensions.StylesheetAbsoluteHeightElement;
 import com.dafrito.rfe.style.dimensions.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.style.dimensions.StylesheetMagnitude;
 
-public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConvertible {
+public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConvertible<FauxTemplate_InterfaceElement> {
 	private Stylesheet classStylesheet, uniqueStylesheet;
 	private int xAnchor, yAnchor;
 	private Interface_Container parent;
@@ -47,7 +47,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 
 	// ScriptConvertible implementation
 	@Override
-	public Object convert() {
+	public FauxTemplate_InterfaceElement convert() {
 		FauxTemplate_InterfaceElement elem = new FauxTemplate_InterfaceElement(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING));
 		elem.setElement(this);
 		return elem;

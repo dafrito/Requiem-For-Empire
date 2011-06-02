@@ -19,7 +19,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible, Nodeable {
+public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<Ace>, Nodeable {
 	public static final String ACESTRING = "Ace";
 	private Ace ace;
 
@@ -33,7 +33,7 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible,
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Object convert() {
+	public Ace convert() {
 		return this.ace;
 	}
 

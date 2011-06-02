@@ -19,7 +19,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, ScriptConvertible {
+public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, ScriptConvertible<Scheduler> {
 	public static final String SCHEDULERSTRING = "Scheduler";
 	private Scheduler scheduler;
 
@@ -33,7 +33,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 
 	// Nodeable implementation
 	@Override
-	public Object convert() {
+	public Scheduler convert() {
 		return this.scheduler;
 	}
 

@@ -19,7 +19,7 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.proxies.FauxTemplate;
 
 @Inspectable
-public class Stylesheet extends FauxTemplate implements ScriptValue, ScriptConvertible {
+public class Stylesheet extends FauxTemplate implements ScriptValue, ScriptConvertible<Stylesheet> {
 	private final Map<StylesheetProperty, Object> styleElements = new EnumMap<StylesheetProperty, Object>(StylesheetProperty.class);
 	public static final String STYLESHEETSTRING = "Stylesheet";
 
@@ -41,7 +41,7 @@ public class Stylesheet extends FauxTemplate implements ScriptValue, ScriptConve
 
 	// ScriptConvertible implementation
 	@Override
-	public Object convert() {
+	public Stylesheet convert() {
 		return this;
 	}
 

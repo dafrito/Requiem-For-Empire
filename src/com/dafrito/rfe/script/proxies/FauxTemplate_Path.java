@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Path;
 import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.Referenced;
@@ -19,7 +20,7 @@ import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.ScriptValue_Faux;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 
-public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConvertible, Nodeable {
+public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConvertible<Point>, Nodeable {
 	public static final String PATHSTRING = "Path";
 
 	public FauxTemplate_Path(ScriptEnvironment env) {
@@ -32,7 +33,7 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Object convert() {
+	public Point convert() {
 		return this.getPoint();
 	}
 

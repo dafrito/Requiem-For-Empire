@@ -5,7 +5,7 @@ import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Point;
 
-public class Point_Euclidean extends Point implements ScriptConvertible {
+public class Point_Euclidean extends Point implements ScriptConvertible<FauxTemplate_Point> {
 
 	private final Vector3d point;
 
@@ -67,7 +67,7 @@ public class Point_Euclidean extends Point implements ScriptConvertible {
 
 	// ScriptConvertible implementation
 	@Override
-	public Object convert() {
+	public FauxTemplate_Point convert() {
 		FauxTemplate_Point point = new FauxTemplate_Point(this.getEnvironment());
 		point.setPoint(this);
 		return point;
