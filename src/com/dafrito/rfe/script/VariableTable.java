@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 class VariableTable implements Nodeable {
 	Stack<VariableStack> stacks = new Stack<VariableStack>();

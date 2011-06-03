@@ -5,7 +5,7 @@ package com.dafrito.rfe.actions;
 
 import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.script.ScriptTemplate_Abstract;
+import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 
 @Inspectable
 public class ScheduledEvent implements Comparable<ScheduledEvent> {

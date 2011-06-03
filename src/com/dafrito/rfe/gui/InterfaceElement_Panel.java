@@ -18,16 +18,16 @@ import com.dafrito.rfe.gui.event.RiffInterface_MouseListener;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;
-import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.ScriptExecutable_CallFunction;
-import com.dafrito.rfe.script.ScriptTemplate_Abstract;
-import com.dafrito.rfe.script.ScriptValue;
-import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
+import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Panel;
 import com.dafrito.rfe.script.proxies.FauxTemplate_RiffDali;
+import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
+import com.dafrito.rfe.script.values.ScriptValue;
+import com.dafrito.rfe.script.values.ScriptValueType;
 import com.dafrito.rfe.style.Stylesheet;
 
 /**

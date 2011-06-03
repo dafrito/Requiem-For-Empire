@@ -7,8 +7,8 @@ import java.util.List;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Archetype;
+import com.dafrito.rfe.script.values.ScriptValueType;
 
 @Inspectable
 public class Archetype implements ScriptConvertible<FauxTemplate_Archetype> {

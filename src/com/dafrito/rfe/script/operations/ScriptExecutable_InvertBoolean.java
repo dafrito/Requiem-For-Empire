@@ -1,0 +1,68 @@
+package com.dafrito.rfe.script.operations;
+
+import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.parsing.Referenced;
+import com.dafrito.rfe.script.parsing.ScriptElement;
+import com.dafrito.rfe.script.values.ScriptValue;
+import com.dafrito.rfe.script.values.ScriptValueType;
+import com.dafrito.rfe.script.values.ScriptValue_Boolean;
+
+public class ScriptExecutable_InvertBoolean extends ScriptElement implements ScriptExecutable, ScriptValue {
+	private ScriptExecutable value;
+
+	public ScriptExecutable_InvertBoolean(Referenced ref, ScriptExecutable value) {
+		super(ref);
+		this.value = value;
+	}
+
+	@Override
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+		return this.getValue().castToType(ref, type);
+	}
+
+	// ScriptExecutable implementation
+	@Override
+	public ScriptValue execute() throws Exception_Nodeable {
+		return new ScriptValue_Boolean(this.getEnvironment(), !((ScriptValue_Boolean) this.value.execute()).getBooleanValue());
+	}
+
+	// ScriptValue_Abstract implementation
+	@Override
+	public ScriptValueType getType() {
+		return ScriptValueType.BOOLEAN;
+	}
+
+	@Override
+	public ScriptValue getValue() throws Exception_Nodeable {
+		return this.execute();
+	}
+
+	@Override
+	public boolean isConvertibleTo(ScriptValueType type) {
+		return this.getType().equals(type);
+	}
+
+	@Override
+	public void nodificate() {
+		assert Debugger.openNode("Boolean Inverter");
+		super.nodificate();
+		assert Debugger.addSnapNode("Value", this.value);
+		assert Debugger.closeNode();
+	}
+
+	@Override
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+		return this.getValue().setValue(ref, value);
+	}
+
+	@Override
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+		return this.getValue().valuesCompare(ref, rhs);
+	}
+
+	@Override
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+		return this.getValue().valuesEqual(ref, rhs);
+	}
+}

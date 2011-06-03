@@ -5,9 +5,9 @@ import java.io.StringWriter;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.Referenced;
-import com.dafrito.rfe.script.ScriptElement;
 import com.dafrito.rfe.script.ScriptEnvironment;
+import com.dafrito.rfe.script.parsing.Referenced;
+import com.dafrito.rfe.script.parsing.ScriptElement;
 
 public class Exception_InternalError extends RuntimeException implements Nodeable {
 	/**

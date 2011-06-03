@@ -6,7 +6,7 @@ package com.dafrito.rfe.script.exceptions;
 import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.script.Referenced;
+import com.dafrito.rfe.script.parsing.Referenced;
 
 public class Exception_Nodeable_UnknownModifier extends Exception_Nodeable {
 	/**

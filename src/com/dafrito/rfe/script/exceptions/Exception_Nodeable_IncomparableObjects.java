@@ -4,8 +4,8 @@
 package com.dafrito.rfe.script.exceptions;
 
 import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.script.Referenced;
-import com.dafrito.rfe.script.ScriptValue;
+import com.dafrito.rfe.script.parsing.Referenced;
+import com.dafrito.rfe.script.values.ScriptValue;
 
 public class Exception_Nodeable_IncomparableObjects extends Exception_Nodeable {
 	/**

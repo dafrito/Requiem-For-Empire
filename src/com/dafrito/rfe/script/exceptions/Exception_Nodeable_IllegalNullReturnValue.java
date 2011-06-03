@@ -4,9 +4,9 @@
 package com.dafrito.rfe.script.exceptions;
 
 import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.ScriptFunction_Abstract;
+import com.dafrito.rfe.script.parsing.Referenced;
+import com.dafrito.rfe.script.values.ScriptFunction_Abstract;
 
 public class Exception_Nodeable_IllegalNullReturnValue extends Exception_Nodeable {
 	/**

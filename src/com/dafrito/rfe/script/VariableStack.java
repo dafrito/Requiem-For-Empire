@@ -9,6 +9,7 @@ import java.util.Stack;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 class VariableStack implements Nodeable {
 	private Stack<Map<String, ScriptValue_Variable>> nestedStacks = new Stack<Map<String, ScriptValue_Variable>>();

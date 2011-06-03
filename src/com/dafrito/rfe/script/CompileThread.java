@@ -8,6 +8,7 @@ import java.util.Vector;
 import com.dafrito.rfe.gui.debug.DebugEnvironment;
 import com.dafrito.rfe.gui.debug.Debug_ScriptElement;
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.script.parsing.Parser;
 
 public class CompileThread extends Thread {
 	private DebugEnvironment debugEnvironment;

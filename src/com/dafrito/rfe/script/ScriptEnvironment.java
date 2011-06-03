@@ -13,6 +13,8 @@ import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateAlreadyDefined;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableTypeAlreadyDefined;
+import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
+import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.proxies.FauxTemplate;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Ace;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Archetype;
@@ -38,6 +40,11 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_Scheduler;
 import com.dafrito.rfe.script.proxies.FauxTemplate_SchedulerListener;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrain;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrestrial;
+import com.dafrito.rfe.script.values.ScriptFunction_Abstract;
+import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
+import com.dafrito.rfe.script.values.ScriptValue;
+import com.dafrito.rfe.script.values.ScriptValueType;
+import com.dafrito.rfe.script.values.ScriptValue_Variable;
 import com.dafrito.rfe.style.Stylesheet;
 
 public class ScriptEnvironment implements Nodeable {

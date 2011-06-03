@@ -29,10 +29,10 @@ import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.CompoundEdit;
 
-import com.dafrito.rfe.script.Parser;
-import com.dafrito.rfe.script.ScriptLine;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.parsing.Parser;
+import com.dafrito.rfe.script.parsing.ScriptLine;
 import com.dafrito.rfe.strings.ExtensionFilter;
 
 

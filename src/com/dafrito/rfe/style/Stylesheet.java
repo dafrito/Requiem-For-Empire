@@ -8,15 +8,15 @@ import java.util.Map;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.ScriptTemplate;
-import com.dafrito.rfe.script.ScriptTemplate_Abstract;
-import com.dafrito.rfe.script.ScriptValue;
-import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.proxies.FauxTemplate;
+import com.dafrito.rfe.script.values.ScriptTemplate;
+import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
+import com.dafrito.rfe.script.values.ScriptValue;
+import com.dafrito.rfe.script.values.ScriptValueType;
 
 @Inspectable
 public class Stylesheet extends FauxTemplate implements ScriptValue, ScriptConvertible<Stylesheet> {

@@ -5,14 +5,14 @@ import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.ScriptFunction;
-import com.dafrito.rfe.script.ScriptTemplate;
-import com.dafrito.rfe.script.ScriptTemplate_Abstract;
-import com.dafrito.rfe.script.ScriptValue;
-import com.dafrito.rfe.script.ScriptValueType;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.parsing.Referenced;
+import com.dafrito.rfe.script.values.ScriptFunction;
+import com.dafrito.rfe.script.values.ScriptTemplate;
+import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
+import com.dafrito.rfe.script.values.ScriptValue;
+import com.dafrito.rfe.script.values.ScriptValueType;
 
 public class FauxTemplate_GraphicalElement extends FauxTemplate implements Nodeable {
 	public static final String GRAPHICALELEMENTSTRING = "GraphicalElement";

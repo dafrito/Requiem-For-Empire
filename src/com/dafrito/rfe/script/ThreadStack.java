@@ -9,6 +9,9 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.values.ScriptFunction_Abstract;
+import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
+import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 class ThreadStack implements Nodeable {
 	private VariableTable variableTable = new VariableTable();

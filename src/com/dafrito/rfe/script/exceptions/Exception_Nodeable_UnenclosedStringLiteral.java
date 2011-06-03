@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.script.Referenced;
+import com.dafrito.rfe.script.parsing.Referenced;
 
 public class Exception_Nodeable_UnenclosedStringLiteral extends Exception_Nodeable {
 	/**

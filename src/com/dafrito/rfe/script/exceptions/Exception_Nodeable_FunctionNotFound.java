@@ -6,9 +6,9 @@ package com.dafrito.rfe.script.exceptions;
 import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.script.Referenced;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.ScriptFunction;
+import com.dafrito.rfe.script.parsing.Referenced;
+import com.dafrito.rfe.script.values.ScriptFunction;
 
 public class Exception_Nodeable_FunctionNotFound extends Exception_Nodeable {
 	private static final long serialVersionUID = 4051248649703169850L;
