@@ -102,8 +102,8 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public void execute() {
+		assert Debugger.openNode("Executing Script-Environment (Default Run)");
 		try {
-			assert Debugger.openNode("Executing Script-Environment (Default Run)");
 			this.clearStacks();
 			for (ScriptTemplate_Abstract template : this.templates.values()) {
 				template.initialize();
@@ -122,7 +122,6 @@ public class ScriptEnvironment implements Nodeable {
 				}
 			}
 			if (templateNames.size() == 0) {
-				assert Debugger.closeNode();
 				JOptionPane.showMessageDialog(null, "No classes compiled are executable.", "No Executable Class", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -133,19 +132,16 @@ public class ScriptEnvironment implements Nodeable {
 				selection = templateNames.get(0);
 			}
 			if (selection == null) {
-				assert Debugger.closeNode();
 				return;
 			}
 			Debugger.getDebugger().setPriorityExecutingClass((String) selection);
 			assert Debugger.addNode(this);
 			ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate((String) selection), "main", params);
-			assert Debugger.ensureCurrentNode("Executing Script-Environment (Default Run)");
-			assert Debugger.closeNode();
 		} catch (Exception_Nodeable ex) {
 			Debugger.printException(ex);
-			assert Debugger.closeNodeTo("Executing Script-Environment (Default Run)");
 		} catch (Exception_InternalError ex) {
 			Debugger.printException(ex);
+		} finally {
 			assert Debugger.closeNodeTo("Executing Script-Environment (Default Run)");
 		}
 	}
