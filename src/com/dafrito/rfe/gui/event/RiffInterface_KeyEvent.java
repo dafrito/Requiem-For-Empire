@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.gui.event;
 
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
 public class RiffInterface_KeyEvent implements Nodeable, RiffInterface_Event {

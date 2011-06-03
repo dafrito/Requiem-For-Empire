@@ -5,7 +5,7 @@ package com.dafrito.rfe.script;
 
 import java.util.Stack;
 
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
 class VariableTable implements Nodeable {

@@ -1,4 +1,4 @@
-package com.dafrito.rfe.debug;
+package com.dafrito.rfe.gui.debug;
 
 import java.awt.GridLayout;
 import java.awt.Toolkit;

@@ -3,7 +3,7 @@ package com.dafrito.rfe.geom;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Points;
 

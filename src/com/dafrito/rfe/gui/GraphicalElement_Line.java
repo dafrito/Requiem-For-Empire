@@ -4,10 +4,10 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.List;
 
-import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.geom.Polygons;
 import com.dafrito.rfe.geom.RiffIntersectionPoint;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Euclidean;

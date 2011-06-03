@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import com.bluespot.swing.Components;
-import com.dafrito.rfe.debug.DebugEnvironment;
+import com.dafrito.rfe.gui.debug.DebugEnvironment;
 
 /**
  * Create a new editing environment.

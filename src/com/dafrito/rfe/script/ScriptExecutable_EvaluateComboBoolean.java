@@ -1,6 +1,6 @@
 package com.dafrito.rfe.script;
 
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;

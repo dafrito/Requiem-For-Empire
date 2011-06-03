@@ -12,7 +12,7 @@ import java.util.TreeSet;
 import javax.swing.Timer;
 
 import com.dafrito.rfe.Asset;
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.ScriptConvertible;

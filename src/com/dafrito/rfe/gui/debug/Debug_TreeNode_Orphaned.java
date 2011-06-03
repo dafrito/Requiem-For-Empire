@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dafrito.rfe.debug;
+package com.dafrito.rfe.gui.debug;
 
 import java.util.LinkedList;
 import java.util.List;

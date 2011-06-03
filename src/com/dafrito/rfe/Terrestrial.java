@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
-import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.geom.DiscreteRegionBSPNode;
 import com.dafrito.rfe.geom.PolygonPipeline;
 import com.dafrito.rfe.geom.Polygons;
 import com.dafrito.rfe.geom.SplitterThread;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.points.Point;
 import com.dafrito.rfe.points.Point_Path;
 import com.dafrito.rfe.points.Points;

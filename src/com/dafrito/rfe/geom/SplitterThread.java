@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.dafrito.rfe.Terrestrial;
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.Debugger;
 
 public class SplitterThread extends Thread {
 	private DiscreteRegionBSPNode root;

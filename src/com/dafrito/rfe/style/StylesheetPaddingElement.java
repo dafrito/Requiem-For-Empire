@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.style;
 
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
 public class StylesheetPaddingElement implements Nodeable {

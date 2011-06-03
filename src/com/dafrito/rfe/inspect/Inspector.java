@@ -1,7 +1,7 @@
 package com.dafrito.rfe.inspect;
 
-import com.dafrito.rfe.debug.DebugEnvironment;
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.DebugEnvironment;
+import com.dafrito.rfe.gui.debug.Debugger;
 
 /**
  * Allows inspection of arbitrary content.

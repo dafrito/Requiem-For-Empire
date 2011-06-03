@@ -3,8 +3,8 @@
  */
 package com.dafrito.rfe.gui.event;
 
-import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.gui.MouseButton;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
 public class RiffInterface_MouseUpEvent extends RiffInterface_MouseEvent implements Nodeable {

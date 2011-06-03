@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.Terrestrial;
-import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.geom.DiscreteRegion;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.Referenced;

@@ -1,7 +1,7 @@
 package com.dafrito.rfe;
 
-import com.dafrito.rfe.debug.Debugger;
 import com.dafrito.rfe.geom.GradientValue;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;

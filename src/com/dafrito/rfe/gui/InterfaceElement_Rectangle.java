@@ -3,7 +3,7 @@ package com.dafrito.rfe.gui;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.style.Stylesheet;

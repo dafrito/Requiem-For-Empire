@@ -3,8 +3,8 @@
  */
 package com.dafrito.rfe.script;
 
-import com.dafrito.rfe.debug.DebugEnvironment;
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.DebugEnvironment;
+import com.dafrito.rfe.gui.debug.Debugger;
 
 public class ExecutionThread extends Thread {
 	private DebugEnvironment debugEnvironment;

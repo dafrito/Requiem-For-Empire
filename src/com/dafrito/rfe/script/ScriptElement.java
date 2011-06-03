@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script;
 
-import com.dafrito.rfe.debug.DebugString;
-import com.dafrito.rfe.debug.Debugger;
+import com.dafrito.rfe.gui.debug.DebugString;
+import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Nodeable;
 
