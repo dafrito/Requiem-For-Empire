@@ -48,7 +48,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 
 	private final JTabbedPane tabbedPane = new JTabbedPane();
 	private final JTabbedPane filteredPanes = new JTabbedPane();
-	private final JLabel status = new JLabel("Ready");
+	private final JLabel status = new JLabel();
 
 	private final JMenuBar menuBar = new JMenuBar();
 
