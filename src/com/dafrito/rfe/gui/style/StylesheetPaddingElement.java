@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dafrito.rfe.style;
+package com.dafrito.rfe.gui.style;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;

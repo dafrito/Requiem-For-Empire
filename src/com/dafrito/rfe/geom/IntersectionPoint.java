@@ -1,8 +1,8 @@
 package com.dafrito.rfe.geom;
 
+import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.points.Point;
 
 public class IntersectionPoint implements Nodeable {
 	private Point point;

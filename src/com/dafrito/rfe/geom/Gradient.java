@@ -1,6 +1,6 @@
 package com.dafrito.rfe.geom;
 
-import com.dafrito.rfe.points.Point;
+import com.dafrito.rfe.geom.points.Point;
 
 public interface Gradient<T extends GradientValue<T>> {
 	public double getBottomExtreme();

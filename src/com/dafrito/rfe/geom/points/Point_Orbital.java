@@ -1,4 +1,4 @@
-package com.dafrito.rfe.points;
+package com.dafrito.rfe.geom.points;
 
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;

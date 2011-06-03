@@ -9,10 +9,10 @@ import java.util.Set;
 
 import com.dafrito.rfe.ArchetypeMapNode;
 import com.dafrito.rfe.Asset;
+import com.dafrito.rfe.geom.points.Point;
+import com.dafrito.rfe.geom.points.Points;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.points.Point;
-import com.dafrito.rfe.points.Points;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public class DiscreteRegionBSPNode implements Nodeable {

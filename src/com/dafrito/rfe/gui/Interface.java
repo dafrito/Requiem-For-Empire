@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import com.dafrito.rfe.geom.points.Points;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.event.KeyEvent_KeyDown;
 import com.dafrito.rfe.gui.event.KeyEvent_KeyUp;
@@ -33,7 +34,6 @@ import com.dafrito.rfe.gui.event.RiffInterface_DragEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_Event;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseDownEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseUpEvent;
-import com.dafrito.rfe.points.Points;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 

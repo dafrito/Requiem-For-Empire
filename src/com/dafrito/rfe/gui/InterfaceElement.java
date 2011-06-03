@@ -6,24 +6,24 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.gui.style.Stylesheet;
+import com.dafrito.rfe.gui.style.StylesheetBackgroundColorElement;
+import com.dafrito.rfe.gui.style.StylesheetBorderElement;
+import com.dafrito.rfe.gui.style.StylesheetFontElement;
+import com.dafrito.rfe.gui.style.StylesheetFontSizeElement;
+import com.dafrito.rfe.gui.style.StylesheetFontStyleElement;
+import com.dafrito.rfe.gui.style.StylesheetMarginElement;
+import com.dafrito.rfe.gui.style.StylesheetPaddingElement;
+import com.dafrito.rfe.gui.style.StylesheetProperty;
+import com.dafrito.rfe.gui.style.dimensions.StylesheetAbsoluteHeightElement;
+import com.dafrito.rfe.gui.style.dimensions.StylesheetAbsoluteWidthElement;
+import com.dafrito.rfe.gui.style.dimensions.StylesheetMagnitude;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.proxies.FauxTemplate_InterfaceElement;
 import com.dafrito.rfe.script.values.ScriptValueType;
-import com.dafrito.rfe.style.Stylesheet;
-import com.dafrito.rfe.style.StylesheetBackgroundColorElement;
-import com.dafrito.rfe.style.StylesheetBorderElement;
-import com.dafrito.rfe.style.StylesheetFontElement;
-import com.dafrito.rfe.style.StylesheetFontSizeElement;
-import com.dafrito.rfe.style.StylesheetFontStyleElement;
-import com.dafrito.rfe.style.StylesheetMarginElement;
-import com.dafrito.rfe.style.StylesheetPaddingElement;
-import com.dafrito.rfe.style.StylesheetProperty;
-import com.dafrito.rfe.style.dimensions.StylesheetAbsoluteHeightElement;
-import com.dafrito.rfe.style.dimensions.StylesheetAbsoluteWidthElement;
-import com.dafrito.rfe.style.dimensions.StylesheetMagnitude;
 
 public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConvertible<FauxTemplate_InterfaceElement> {
 	private Stylesheet classStylesheet, uniqueStylesheet;

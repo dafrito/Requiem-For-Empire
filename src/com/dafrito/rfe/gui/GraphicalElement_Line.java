@@ -7,10 +7,10 @@ import java.util.List;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.geom.Polygons;
 import com.dafrito.rfe.geom.RiffIntersectionPoint;
+import com.dafrito.rfe.geom.points.Point;
+import com.dafrito.rfe.geom.points.Point_Euclidean;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.points.Point;
-import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Line;
 

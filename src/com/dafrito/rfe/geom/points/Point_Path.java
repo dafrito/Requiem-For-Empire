@@ -1,4 +1,4 @@
-package com.dafrito.rfe.points;
+package com.dafrito.rfe.geom.points;
 
 import java.util.LinkedList;
 import java.util.List;

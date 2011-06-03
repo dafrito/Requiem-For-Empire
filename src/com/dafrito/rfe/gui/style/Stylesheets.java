@@ -1,4 +1,4 @@
-package com.dafrito.rfe.style;
+package com.dafrito.rfe.gui.style;
 
 import java.awt.Color;
 import java.awt.Font;

@@ -3,9 +3,9 @@ package com.dafrito.rfe.geom;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.geom.points.Point;
+import com.dafrito.rfe.geom.points.Points;
 import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.points.Point;
-import com.dafrito.rfe.points.Points;
 
 public class Gradient_Radial<T extends GradientValue<T>> implements Gradient<T> {
 	private static final int polygonVertices = 4;

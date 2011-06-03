@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
@@ -45,7 +46,6 @@ import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
-import com.dafrito.rfe.style.Stylesheet;
 
 public class ScriptEnvironment implements Nodeable {
 	private Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)

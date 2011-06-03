@@ -5,9 +5,9 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.style.Stylesheet;
 
 public class InterfaceElement_Label extends InterfaceElement implements Nodeable {
 	private String string;

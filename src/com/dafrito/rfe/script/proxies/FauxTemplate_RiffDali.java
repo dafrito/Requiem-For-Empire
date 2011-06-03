@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.gui.style.Stylesheets;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
@@ -16,7 +17,6 @@ import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 import com.dafrito.rfe.script.values.ScriptValue_Faux;
-import com.dafrito.rfe.style.Stylesheets;
 
 public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 	public static final String RIFFDALISTRING = "RiffDali";

@@ -6,6 +6,7 @@ import java.util.List;
 import com.dafrito.rfe.gui.InterfaceElement;
 import com.dafrito.rfe.gui.InterfaceElement_Panel;
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -19,7 +20,6 @@ import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 import com.dafrito.rfe.script.values.ScriptValue_Faux;
-import com.dafrito.rfe.style.Stylesheet;
 
 public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements ScriptConvertible<InterfaceElement>, Nodeable {
 	public static final String PANELSTRING = "Panel";

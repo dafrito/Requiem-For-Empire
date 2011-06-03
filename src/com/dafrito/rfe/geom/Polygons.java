@@ -8,11 +8,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.dafrito.rfe.geom.points.Point;
+import com.dafrito.rfe.geom.points.Point_Euclidean;
+import com.dafrito.rfe.geom.points.Point_Spherical;
+import com.dafrito.rfe.geom.points.Points;
 import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.points.Point;
-import com.dafrito.rfe.points.Point_Euclidean;
-import com.dafrito.rfe.points.Point_Spherical;
-import com.dafrito.rfe.points.Points;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class Polygons {

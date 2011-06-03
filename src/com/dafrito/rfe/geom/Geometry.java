@@ -8,8 +8,8 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import com.dafrito.rfe.Terrain;
-import com.dafrito.rfe.points.Point;
-import com.dafrito.rfe.points.Point_Euclidean;
+import com.dafrito.rfe.geom.points.Point;
+import com.dafrito.rfe.geom.points.Point_Euclidean;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 public final class Geometry {

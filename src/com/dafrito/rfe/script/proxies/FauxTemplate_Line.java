@@ -3,11 +3,11 @@ package com.dafrito.rfe.script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.geom.points.Point;
+import com.dafrito.rfe.geom.points.Point_Euclidean;
 import com.dafrito.rfe.gui.GraphicalElement_Line;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.points.Point;
-import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.parsing.Parser;

@@ -6,9 +6,9 @@ package com.dafrito.rfe.geom;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.points.Point;
 
 class PointSideStruct implements Nodeable {
 	private List<Point> left, right, indeterminates;

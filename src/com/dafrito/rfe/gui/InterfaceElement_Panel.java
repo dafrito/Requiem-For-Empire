@@ -11,13 +11,14 @@ import com.dafrito.rfe.ArchetypeMapNode;
 import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.geom.DiscreteRegion;
+import com.dafrito.rfe.geom.points.Point;
+import com.dafrito.rfe.geom.points.Point_Euclidean;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.event.RiffInterface_DragEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseListener;
+import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.points.Point;
-import com.dafrito.rfe.points.Point_Euclidean;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
@@ -28,7 +29,6 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_RiffDali;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
-import com.dafrito.rfe.style.Stylesheet;
 
 /**
  * A scriptable panel that draws {@link DiscreteRegion} and {@link Asset}

@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.dafrito.rfe.style;
+package com.dafrito.rfe.gui.style;
 
 import java.awt.Color;
 import java.awt.Font;
 
+import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageHeightElement;
+import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageWidthElement;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
-import com.dafrito.rfe.style.dimensions.StylesheetPercentageHeightElement;
-import com.dafrito.rfe.style.dimensions.StylesheetPercentageWidthElement;
 
 /**
  * Represents the set of stylesheet properties.

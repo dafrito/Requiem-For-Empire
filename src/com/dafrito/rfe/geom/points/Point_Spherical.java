@@ -1,4 +1,4 @@
-package com.dafrito.rfe.points;
+package com.dafrito.rfe.geom.points;
 
 import com.bluespot.geom.vectors.Vector3d;
 import com.dafrito.rfe.script.ScriptEnvironment;
