@@ -80,16 +80,24 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	 * A menu of actions that add, modify, and remove debug listeners.
 	 */
 	private final JMenu listenerMenu = new JMenu("Listener");
+	private final JMenuItem removeTab;
+	private final JMenuItem clearTab;
+	private final JMenuItem createListener;
+	private final JMenuItem renameTab;
+	private final JMenuItem addException;
+	private final JMenuItem addExceptionFromList;
+	private final JMenuItem addIgnore;
+	private final JMenuItem addIgnoreFromList;
+	private final JMenuItem removeException;
+	private final JMenuItem removeIgnore;
+	private final JMenuItem addAssertionFailure;
+	private final JMenuItem removeAssertionFailure;
+	private final JRadioButtonMenuItem exceptionsMode;
+	private final JRadioButtonMenuItem ignoreMode;
 
-	private JMenuItem removeTab, clearTab, createListener, renameTab;
-	private JMenuItem addException, addExceptionFromList, addIgnore, addIgnoreFromList,
-			removeException, removeIgnore;
-	private JMenuItem addAssertionFailure, removeAssertionFailure;
-	private JRadioButtonMenuItem exceptionsMode, ignoreMode;
-
-	private List<Debug_ScriptElement> scriptElements = new ArrayList<Debug_ScriptElement>();
+	private final List<Debug_ScriptElement> scriptElements = new ArrayList<Debug_ScriptElement>();
 	private Debug_Listener filtering;
-	private Map<String, List<Debug_Listener>> filteredOutputMap = new HashMap<String, List<Debug_Listener>>();
+	private final Map<String, List<Debug_Listener>> filteredOutputMap = new HashMap<String, List<Debug_Listener>>();
 	private String priorityExecutingClass;
 
 	private final Set<String> ignores = new HashSet<String>();
