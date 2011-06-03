@@ -24,19 +24,22 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Scheduler;
 
 class ScheduledEvent implements Comparable<ScheduledEvent>, Nodeable {
-	private Long time;
+	private long time;
 	private Asset asset;
 	private ScriptTemplate_Abstract listener;
 
-	public ScheduledEvent(long time, Asset asset, ScriptTemplate_Abstract listener) {
-		this.time = new Long(time);
+	public ScheduledEvent(final long time, final Asset asset, final ScriptTemplate_Abstract listener) {
+		this.time = time;
 		this.asset = asset;
 		this.listener = listener;
 	}
 
 	@Override
 	public int compareTo(ScheduledEvent o) {
-		return this.time.compareTo(o.getTime());
+		if (this.time > o.getTime()) {
+			return 1;
+		}
+		return this.time == o.getTime() ? 0 : -1;
 	}
 
 	public Asset getAsset() {
@@ -48,7 +51,7 @@ class ScheduledEvent implements Comparable<ScheduledEvent>, Nodeable {
 	}
 
 	public long getTime() {
-		return this.time.longValue();
+		return this.time;
 	}
 
 	@Override
