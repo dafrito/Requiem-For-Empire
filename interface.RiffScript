@@ -1,19 +1,20 @@
 class Number{
 	private double _value;
-	public Number(double value){
+	public Number(double value) {
 		_value=value;
 	}
-	public double getValue(){return _value;}
-	public void setValue(double value){_value=value;}
+	public double getValue() { return _value; }
+	public void setValue(double value) { _value=value; }
 }
-class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator{
+
+class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator {
 	private Scenario scenario;
 	private Point point;
 	private Point otherPoint;
 	private Terrestrial terrestrial;
-	static Stylesheet sheet{
-		border:1px solid gray;
-		margin:5px;
+	static Stylesheet sheet {
+		border: 1px solid gray;
+		margin: 5px;
 	}
 	public double evaluateMovementCost(DiscreteRegion region,Asset asset){
 		return 1.0d-((Terrain)region.getProperty("Terrain")).getBrushDensity();
