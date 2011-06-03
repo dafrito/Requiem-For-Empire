@@ -37,6 +37,12 @@ import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.strings.ExtensionFilter;
 
+/**
+ * An environment for running RFE programs.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public class DebugEnvironment extends JFrame implements ActionListener, ChangeListener {
 	private static final long serialVersionUID = -8190546125680224912L;
 
