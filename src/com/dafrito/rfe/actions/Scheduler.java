@@ -2,16 +2,18 @@ package com.dafrito.rfe.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.swing.Timer;
 
 import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.Parser;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -23,50 +25,11 @@ import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Scheduler;
 
-class ScheduledEvent implements Comparable<ScheduledEvent>, Nodeable {
-	private long time;
-	private Asset asset;
-	private ScriptTemplate_Abstract listener;
-
-	public ScheduledEvent(final long time, final Asset asset, final ScriptTemplate_Abstract listener) {
-		this.time = time;
-		this.asset = asset;
-		this.listener = listener;
-	}
-
-	@Override
-	public int compareTo(ScheduledEvent o) {
-		if (this.time > o.getTime()) {
-			return 1;
-		}
-		return this.time == o.getTime() ? 0 : -1;
-	}
-
-	public Asset getAsset() {
-		return this.asset;
-	}
-
-	public ScriptTemplate_Abstract getListener() {
-		return this.listener;
-	}
-
-	public long getTime() {
-		return this.time;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Scheduled Event (" + this.time + ")");
-		assert Debugger.addNode(this.asset);
-		assert Debugger.addSnapNode("Listener", this.listener);
-		assert Debugger.closeNode();
-	}
-}
-
-public class Scheduler implements ActionListener, ScriptConvertible<FauxTemplate_Scheduler>, Nodeable {
+@Inspectable
+public class Scheduler implements ActionListener, ScriptConvertible<FauxTemplate_Scheduler> {
 	private Timer timer;
 	private ScriptTemplate_Abstract defaultListener;
-	private TreeSet<ScheduledEvent> events = new TreeSet<ScheduledEvent>();
+	private SortedSet<ScheduledEvent> events = new TreeSet<ScheduledEvent>();
 	private List<ScheduledEvent> tempList = new LinkedList<ScheduledEvent>();
 	private ScriptEnvironment environment;
 	private long lastIteration = -1;
@@ -126,6 +89,17 @@ public class Scheduler implements ActionListener, ScriptConvertible<FauxTemplate
 		return scheduler;
 	}
 
+	@Inspectable
+	public long getLastIteration() {
+		return this.lastIteration;
+	}
+
+	@Inspectable
+	public double getCompression() {
+		return this.compression;
+	}
+
+	@Inspectable
 	public long getCurrentGameTime() {
 		return this.gameTime;
 	}
@@ -134,23 +108,18 @@ public class Scheduler implements ActionListener, ScriptConvertible<FauxTemplate
 		return System.currentTimeMillis();
 	}
 
+	@Inspectable
 	public ScriptTemplate_Abstract getDefaultListener() {
 		return this.defaultListener;
 	}
 
-	public ScriptEnvironment getEnvironment() {
-		return this.environment;
+	@Inspectable
+	public SortedSet<ScheduledEvent> getEvents() {
+		return Collections.unmodifiableSortedSet(this.events);
 	}
 
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Scheduler");
-		assert Debugger.addNode("Compression: " + this.compression);
-		assert Debugger.addNode("Game-Time (In seconds from start): " + this.gameTime);
-		assert Debugger.addNode("Last Iteration: " + this.lastIteration);
-		assert Debugger.addNode("Default listener: " + this.defaultListener);
-		assert Debugger.addSnapNode("Events (" + this.events.size() + " event(s))", this.events);
-		assert Debugger.closeNode();
+	public ScriptEnvironment getEnvironment() {
+		return this.environment;
 	}
 
 	public void schedule(long time, Asset asset, ScriptTemplate_Abstract listener) {
