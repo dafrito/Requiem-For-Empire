@@ -6,9 +6,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -38,8 +40,12 @@ import com.dafrito.rfe.strings.ExtensionFilter;
 public class DebugEnvironment extends JFrame implements ActionListener, ChangeListener {
 	private static final long serialVersionUID = -8190546125680224912L;
 
-	private JTabbedPane tabbedPane, filteredPanes;
-	private JLabel status;
+	private final JTabbedPane tabbedPane = new JTabbedPane();
+	private final JTabbedPane filteredPanes = new JTabbedPane();
+	private final JLabel status = new JLabel("Ready");
+
+	private final JMenuBar menuBar = new JMenuBar();
+
 	private final JMenuItem newFile = new JMenuItem("New", 'N');
 	private final JMenuItem openFile = new JMenuItem("Open...", 'O');
 	private final JMenuItem closeFile = new JMenuItem("Close");
@@ -49,19 +55,35 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	private final JMenuItem reset = new JMenuItem("Reset");
 	private final JMenuItem exit = new JMenuItem("Exit", 'X');
 
-	private JMenuItem compile, execute, compileAndRun;
-	private final JMenuItem undo;
-	private final JMenuItem redo;
+	/**
+	 * A menu that contains simple undo and redo actions.
+	 */
+	private final JMenu editMenu = new JMenu("Edit");
+	private final JMenuItem undo = new JMenuItem("Undo", 'U');
+	private final JMenuItem redo = new JMenuItem("Redo", 'R');
+
+	/**
+	 * A menu that contains script compilation and execution actions.
+	 */
+	private final JMenu parserMenu = new JMenu("Parser");
+	private final JMenuItem compile = new JMenuItem("Compile", 'C');
+	private final JMenuItem execute = new JMenuItem("Execute", 'X');
+	private final JMenuItem compileAndRun = new JMenuItem("Compile and Run", 'R');
+
+	/**
+	 * A menu of actions that add, modify, and remove debug listeners.
+	 */
+	private final JMenu listenerMenu = new JMenu("Listener");
+
 	private JMenuItem removeTab, clearTab, createListener, renameTab;
 	private JMenuItem addException, addExceptionFromList, addIgnore, addIgnoreFromList,
 			removeException, removeIgnore;
 	private JMenuItem addAssertionFailure, removeAssertionFailure;
 	private JRadioButtonMenuItem exceptionsMode, ignoreMode;
-	private JMenuBar menuBar;
-	private JMenu parserMenu, editMenu, listenerMenu;
-	private java.util.List<Debug_ScriptElement> scriptElements;
+
+	private List<Debug_ScriptElement> scriptElements = new ArrayList<Debug_ScriptElement>();
 	private Debug_Listener filtering;
-	private Map<String, java.util.List<Debug_Listener>> filteredOutputMap = new HashMap<String, java.util.List<Debug_Listener>>();
+	private Map<String, List<Debug_Listener>> filteredOutputMap = new HashMap<String, List<Debug_Listener>>();
 	private String priorityExecutingClass;
 
 	private final Set<String> ignores = new HashSet<String>();
@@ -85,14 +107,12 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.setSize(width, height);
 		Debugger.setDebugger(this);
 		this.populateKnownThreads();
-		this.scriptElements = new LinkedList<Debug_ScriptElement>();
 
 		this.getContentPane().setLayout(new BorderLayout());
-		this.getContentPane().add(this.status = new JLabel(" Ready"), BorderLayout.SOUTH);
-		this.getContentPane().add(this.tabbedPane = new JTabbedPane());
+		this.getContentPane().add(this.status, BorderLayout.SOUTH);
+		this.getContentPane().add(this.tabbedPane);
 		this.tabbedPane.addChangeListener(this);
 
-		this.menuBar = new JMenuBar();
 		this.setJMenuBar(this.menuBar);
 
 		JMenu fileMenu = new JMenu("File");
@@ -130,20 +150,18 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
 		this.exit.addActionListener(this);
 
-		this.editMenu = new JMenu("Edit");
 		this.menuBar.add(this.editMenu);
 		this.editMenu.setMnemonic('E');
-		this.editMenu.add(this.undo = new JMenuItem("Undo", 'U'));
+		this.editMenu.add(this.undo);
 		this.undo.addActionListener(this);
-		this.editMenu.add(this.redo = new JMenuItem("Redo", 'R'));
+		this.editMenu.add(this.redo);
 		this.redo.addActionListener(this);
 
-		this.parserMenu = new JMenu("Parser");
 		this.parserMenu.setMnemonic('P');
 		this.menuBar.add(this.parserMenu);
-		this.parserMenu.add(this.compile = new JMenuItem("Compile", 'C'));
-		this.parserMenu.add(this.execute = new JMenuItem("Execute", 'X'));
-		this.parserMenu.add(this.compileAndRun = new JMenuItem("Compile and Run", 'R'));
+		this.parserMenu.add(this.compile);
+		this.parserMenu.add(this.execute);
+		this.parserMenu.add(this.compileAndRun);
 		this.execute.setEnabled(false);
 
 		JMenu debugMenu = new JMenu("Debugger");
@@ -162,7 +180,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		debugMenu.add(this.addAssertionFailure = new JMenuItem("Add Assertion Failure"));
 		debugMenu.add(this.removeAssertionFailure = new JMenuItem("Remove Assertion Failure"));
 
-		this.listenerMenu = new JMenu("Listener");
 		this.menuBar.add(this.listenerMenu);
 		this.listenerMenu.setMnemonic('L');
 		this.listenerMenu.add(this.createListener = new JMenuItem("Create Listener...", 'C'));
@@ -175,7 +192,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		group.add(this.ignoreMode);
 		this.exceptionsMode.setSelected(true);
 		// Set up our debug spew and script tabs
-		this.tabbedPane.add("Debug Output", this.filteredPanes = new JTabbedPane());
+		this.tabbedPane.add("Debug Output", this.filteredPanes);
 		// Accelerators
 		this.clearTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
 		this.removeTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
@@ -340,7 +357,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		}
 	}
 
-	public void addExceptions(java.util.List<Exception> exceptions) {
+	public void addExceptions(List<Exception> exceptions) {
 		for (Exception rawEx : exceptions) {
 			if (rawEx instanceof Exception_Nodeable && !((Exception_Nodeable) rawEx).isAnonymous()) {
 				Exception_Nodeable ex = (Exception_Nodeable) rawEx;
@@ -407,7 +424,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		throw new Exception_InternalError("Script element not found: " + name);
 	}
 
-	public java.util.List<Debug_ScriptElement> getScriptElements() {
+	public List<Debug_ScriptElement> getScriptElements() {
 		return this.scriptElements;
 	}
 
