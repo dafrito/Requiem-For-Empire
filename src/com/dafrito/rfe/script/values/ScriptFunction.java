@@ -25,7 +25,7 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 		for (int i = 0; i < values.size(); i++) {
 			ScriptValue param = parameters.get(i);
 			if (param == null) {
-				throw new NullPointerException("parameer must not be null");
+				throw new NullPointerException("parameter must not be null");
 			}
 			ScriptValue value = values.get(i);
 			if (value != null && !value.isConvertibleTo(param.getType())) {
