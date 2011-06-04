@@ -160,25 +160,6 @@ public class ScriptValueType {
 		this.environment = env;
 	}
 
-	// Overloaded functions
-	@Override
-	public boolean equals(Object o) {
-		if (o == null) {
-			return false;
-		}
-		try {
-			if (o instanceof ScriptKeywordType) {
-				return ((ScriptKeywordType) o).getValueType() == this;
-			} else if (o instanceof String) {
-				return this.toString().equals(o);
-			} else {
-				return ((ScriptValueType) o).getType() == this.getType();
-			}
-		} catch (Exception_Nodeable ex) {
-			throw new Exception_InternalError("Failed value-type comparison", ex);
-		}
-	}
-
 	// Standard type-checking functions
 	// getBaseType is necessary because our extensions of ValueType overload it to provide their functionality with us
 	// still using just this getType
@@ -236,7 +217,37 @@ public class ScriptValueType {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj instanceof ScriptKeywordType) {
+			return this.getKeywordType() != null && this.getKeywordType().equals(obj);
+		}
+		if (obj instanceof String) {
+			return this.getName().equals(obj);
+		}
+		if (!(obj instanceof ScriptValueType)) {
+			return false;
+		}
+		try {
+			return ((ScriptValueType) obj).getType() == this.getType();
+		} catch (Exception_Nodeable e) {
+			throw new Exception_InternalError(this.getEnvironment(), e);
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		try {
+			return this.getType();
+		} catch (Exception_Nodeable e) {
+			throw new Exception_InternalError(this.getEnvironment(), e);
+		}
+	}
+
+	@Override
 	public String toString() {
-		return this.getName();
+		return String.format("ScriptValueType[%s]", this.getName());
 	}
 }
