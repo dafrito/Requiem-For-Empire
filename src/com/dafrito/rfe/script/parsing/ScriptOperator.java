@@ -5,10 +5,6 @@ import com.dafrito.rfe.inspect.Inspectable;
 @Inspectable
 public class ScriptOperator extends ScriptElement {
 
-	public static boolean isSemicolon(ScriptOperator op) {
-		return op.getType() == ScriptOperatorType.SEMICOLON;
-	}
-
 	private final ScriptOperatorType type;
 
 	public ScriptOperator(final ScriptLine line, final ScriptOperatorType type) {
