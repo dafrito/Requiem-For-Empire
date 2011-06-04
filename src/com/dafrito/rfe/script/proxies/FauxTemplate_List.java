@@ -80,7 +80,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing list faux template");
-		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType());
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
 		List<ScriptValue> fxnParams = FauxTemplate.createEmptyParamList();

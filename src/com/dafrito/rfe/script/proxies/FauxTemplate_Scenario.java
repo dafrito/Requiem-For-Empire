@@ -1,5 +1,6 @@
 package com.dafrito.rfe.script.proxies;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -95,22 +96,22 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing scenario faux template");
-		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING)));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
 		this.addConstructor(this.getType(), fxnParams);
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		this.addFauxFunction("getName", ScriptValueType.STRING, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getName", ScriptValueType.STRING, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
 		this.addFauxFunction("setName", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getTerrestrial", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING), ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getTerrestrial", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING), Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING)));
 		this.addFauxFunction("setTerrestrial", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getScheduler", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scheduler.SCHEDULERSTRING), ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getScheduler", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scheduler.SCHEDULERSTRING), Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
 		assert Debugger.closeNode();
 	}
 

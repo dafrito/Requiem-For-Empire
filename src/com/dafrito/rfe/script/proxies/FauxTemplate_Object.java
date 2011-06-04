@@ -60,7 +60,7 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing object faux template");
-		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType());
 		this.disableFullCreation();
 		assert Debugger.closeNode();
 	}

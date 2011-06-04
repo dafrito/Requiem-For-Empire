@@ -1,5 +1,6 @@
 package com.dafrito.rfe.script.proxies;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing point faux template");
-		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
@@ -100,9 +101,9 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 		this.addConstructor(this.getType(), fxnParams);
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		this.addFauxFunction("getX", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getY", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getZ", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getX", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getY", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getZ", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		this.addFauxFunction("setX", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);

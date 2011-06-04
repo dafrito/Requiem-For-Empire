@@ -1,5 +1,6 @@
 package com.dafrito.rfe.script.proxies;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -163,19 +164,19 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing terrain faux template");
-		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType());
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		this.addFauxFunction("getBrushDensityWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getElevationWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getGroundCohesionWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getTemperatureWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getWaterDepthWeight", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getBrushDensity", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getElevation", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getGroundCohesion", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getTemperature", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
-		this.addFauxFunction("getWaterDepth", ScriptValueType.DOUBLE, ScriptValueType.createEmptyParamList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getBrushDensityWeight", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getElevationWeight", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getGroundCohesionWeight", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getTemperatureWeight", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getWaterDepthWeight", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getBrushDensity", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getElevation", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getGroundCohesion", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getTemperature", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getWaterDepth", ScriptValueType.DOUBLE, Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
 		this.addFauxFunction("setBrushDensityWeight", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);

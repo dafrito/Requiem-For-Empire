@@ -99,7 +99,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing discrete region faux template");
-		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), this.getType()));
 		this.addConstructor(this.getType(), fxnParams);

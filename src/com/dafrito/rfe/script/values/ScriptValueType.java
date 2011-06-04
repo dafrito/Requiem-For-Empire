@@ -136,10 +136,6 @@ public class ScriptValueType {
 
 	private static int identifierSeed = 0;
 
-	public static List<ScriptValue> createEmptyParamList() {
-		return new LinkedList<ScriptValue>();
-	}
-
 	public static void initialize(ScriptEnvironment env) throws Exception_Nodeable {
 		env.addType(null, "void", ScriptValueType.VOID);
 		env.addType(null, "boolean", ScriptValueType.BOOLEAN);

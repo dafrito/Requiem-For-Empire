@@ -88,7 +88,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing scheduler faux template");
-		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType());
 		List<ScriptValue> params = new LinkedList<ScriptValue>();
 		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_SchedulerListener.SCHEDULERLISTENERSTRING)));
 		this.addConstructor(this.getType(), params);

@@ -1,5 +1,6 @@
 package com.dafrito.rfe.script.values;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 
 	public ScriptFunction(ScriptValueType returnType, List<ScriptValue> params, ScriptKeywordType permission, boolean isAbstract, boolean isStatic) {
 		this.type = returnType;
-		this.params = params;
+		this.params = new ArrayList<ScriptValue>(params);
 		this.permission = permission;
 		this.isAbstract = isAbstract;
 		this.isStatic = isStatic;

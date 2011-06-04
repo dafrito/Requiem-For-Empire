@@ -1,5 +1,7 @@
 package com.dafrito.rfe.script.proxies;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -103,7 +105,7 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing panel faux template");
-		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
 		this.addConstructor(this.getType(), fxnParams);
@@ -114,38 +116,37 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
 
-		fxnParams = ScriptValueType.createEmptyParamList();
+		fxnParams = new ArrayList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_GraphicalElement.GRAPHICALELEMENTSTRING)));
 		this.addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 
-		fxnParams = ScriptValueType.createEmptyParamList();
-		this.addFauxFunction("getTerrestrial", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
+		this.addFauxFunction("getTerrestrial", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING), Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
 
-		fxnParams = ScriptValueType.createEmptyParamList();
+		fxnParams.clear();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING)));
 		this.addFauxFunction("setTerrestrial", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 
-		fxnParams = ScriptValueType.createEmptyParamList();
+		fxnParams.clear();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_RiffDali.RIFFDALISTRING)));
 		this.addFauxFunction("setRiffDali", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 
-		fxnParams = ScriptValueType.createEmptyParamList();
+		fxnParams.clear();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING)));
 		this.addFauxFunction("drawRegion", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 
-		fxnParams = ScriptValueType.createEmptyParamList();
+		fxnParams.clear();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING)));
 		this.addFauxFunction("fillRegion", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 
-		fxnParams = ScriptValueType.createEmptyParamList();
+		fxnParams.clear();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING)));
 		this.addFauxFunction("drawTransformedRegion", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 
-		fxnParams = ScriptValueType.createEmptyParamList();
+		fxnParams.clear();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING)));
 		this.addFauxFunction("fillTransformedRegion", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 
-		fxnParams = ScriptValueType.createEmptyParamList();
+		fxnParams.clear();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Color.COLORSTRING)));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));

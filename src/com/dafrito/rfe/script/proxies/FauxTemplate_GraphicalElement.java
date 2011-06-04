@@ -47,7 +47,7 @@ public class FauxTemplate_GraphicalElement extends FauxTemplate implements Nodea
 	@Override
 	public void initialize() throws Exception_Nodeable {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing graphical element faux template");
-		this.addConstructor(this.getType(), ScriptValueType.createEmptyParamList());
+		this.addConstructor(this.getType());
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
 		assert Debugger.closeNode();

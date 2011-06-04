@@ -1,5 +1,6 @@
 package com.dafrito.rfe.script.proxies;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,6 +29,10 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 
 	public FauxTemplate(ScriptEnvironment env, ScriptValueType type, ScriptValueType extended, List<ScriptValueType> implemented, boolean isAbstract) {
 		super(env, type, extended, implemented, isAbstract);
+	}
+
+	public void addConstructor(ScriptValueType returnType, ScriptValue... params) throws Exception_Nodeable {
+		this.addConstructor(returnType, Arrays.asList(params));
 	}
 
 	public void addConstructor(ScriptValueType returnType, List<ScriptValue> params) throws Exception_Nodeable {
