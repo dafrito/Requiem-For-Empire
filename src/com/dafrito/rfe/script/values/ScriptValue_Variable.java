@@ -129,8 +129,12 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 				break;
 			case PROTECTED:
 				Debugger.addNode(CommonString.PERMISSIONPROTECTED);
+				break;
 			case PUBLIC:
 				Debugger.addNode(CommonString.PERMISSIONPUBLIC);
+				break;
+			default:
+				throw new AssertionError("Unexpected permission");
 			}
 		}
 		assert Debugger.closeNode();

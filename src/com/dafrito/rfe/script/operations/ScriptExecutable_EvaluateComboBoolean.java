@@ -2,7 +2,6 @@ package com.dafrito.rfe.script.operations;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -52,8 +51,9 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 			return new ScriptValue_Boolean(this.getEnvironment(), (lhs.getBooleanValue() && rhs.getBooleanValue()));
 		case OR:
 			return new ScriptValue_Boolean(this.getEnvironment(), (lhs.getBooleanValue() || rhs.getBooleanValue()));
+		default:
+			throw new AssertionError("Unexpected default");
 		}
-		throw new Exception_InternalError("Invalid default");
 	}
 
 	// ScriptValue_Abstract implementation

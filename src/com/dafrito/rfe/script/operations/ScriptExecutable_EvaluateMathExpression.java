@@ -78,6 +78,8 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 		case DIVIDE:
 			returning = new ScriptValue_Numeric(this.getEnvironment(), left.divide(this, right));
 			break;
+		default:
+			throw new AssertionError("Unexpected default");
 		}
 		assert Debugger.closeNode();
 		return returning;

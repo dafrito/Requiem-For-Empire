@@ -187,8 +187,12 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 				break;
 			case PROTECTED:
 				Debugger.addNode(CommonString.PERMISSIONPROTECTED);
+				break;
 			case PUBLIC:
 				Debugger.addNode(CommonString.PERMISSIONPUBLIC);
+				break;
+			default:
+				throw new AssertionError("Unexpected permission");
 			}
 		}
 		assert Debugger.addNode("Abstract: " + this.isAbstract);
