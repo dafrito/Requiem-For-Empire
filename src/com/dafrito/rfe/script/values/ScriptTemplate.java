@@ -216,7 +216,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		assert Debugger.openNode("Object Function Retrievals", "Retrieving Function from Object (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
 		assert Debugger.addSnapNode("Current template", this);
 		List<ScriptFunction_Abstract> list = this.functions.get(name);
-		if (list != null && list.size() > 0) {
+		if (list != null && !list.isEmpty()) {
 			assert Debugger.addSnapNode("Functions found", list);
 			for (ScriptFunction_Abstract function : list) {
 				if (function.areParametersConvertible(params)) {
