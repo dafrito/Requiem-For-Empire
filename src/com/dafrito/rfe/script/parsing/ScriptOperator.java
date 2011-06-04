@@ -1,48 +1,48 @@
 package com.dafrito.rfe.script.parsing;
 
-import com.dafrito.rfe.gui.debug.CommonString;
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class ScriptOperator extends ScriptElement implements Nodeable {
+@Inspectable
+public class ScriptOperator extends ScriptElement {
+
 	public static boolean isSemicolon(ScriptOperator op) {
 		return op.getType() == ScriptOperatorType.SEMICOLON;
 	}
 
 	private final ScriptOperatorType type;
 
-	public ScriptOperator(ScriptLine line, ScriptOperatorType type) {
+	public ScriptOperator(final ScriptLine line, final ScriptOperatorType type) {
 		super(line);
 		this.type = type;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof ScriptOperatorType) {
-			return this.getType().equals(o);
-		}
-		if (!(o instanceof ScriptOperator)) {
-			return false;
-		}
-		return this.getType() == ((ScriptOperator) o).getType();
+	@Inspectable
+	public ScriptOperatorType getType() {
+		return this.type;
 	}
 
 	public String getName() {
 		return this.getType().toString();
 	}
 
-	public ScriptOperatorType getType() {
-		return this.type;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof ScriptOperator)) {
+			return false;
+		}
+		return this.getType().equals(((ScriptOperator) obj).getType());
 	}
 
 	@Override
-	public void nodificate() {
-		assert Debugger.openNode(CommonString.SCRIPTOPERATOR.getText() + this.getName());
-		assert Debugger.closeNode();
+	public int hashCode() {
+		return this.getType().hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return this.type.toString();
+		return String.format("ScriptOperator[%s]", this.type.toString());
 	}
 }
