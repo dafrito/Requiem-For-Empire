@@ -13,17 +13,6 @@ public class ScriptKeyword extends ScriptElement {
 		this.type = type;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof ScriptValueType) {
-			return ((ScriptValueType) o) == this.getValueType();
-		} else if (o instanceof ScriptKeywordType) {
-			return ((ScriptKeywordType) o) == this.getType();
-		} else {
-			return ((ScriptKeyword) o).getType() == this.type;
-		}
-	}
-
 	@Inspectable
 	public ScriptKeywordType getType() {
 		return this.type;
@@ -31,6 +20,30 @@ public class ScriptKeyword extends ScriptElement {
 
 	public ScriptValueType getValueType() {
 		return this.getType().getValueType();
+	}
+
+	// XXX This equals implementation is buggy since it's not transitive. 
+	// I'm not sure how to fix it yet, so I'm just leaving it as-is.
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj instanceof ScriptValueType) {
+			return this.getValueType().equals(obj);
+		}
+		if (obj instanceof ScriptKeywordType) {
+			return this.getType().equals(obj);
+		}
+		if (!(obj instanceof ScriptKeyword)) {
+			return false;
+		}
+		return ((ScriptKeyword) obj).getType().equals(this.type);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.getType().hashCode();
 	}
 
 	@Override
