@@ -11,7 +11,6 @@ public abstract class Action implements Comparable<Action> {
 		return this.getName().compareTo(obj.getName());
 	}
 
-	// XXX This shouldn't use #toString; it should use a different method
 	@Override
 	public boolean equals(Object obj) {
 		return this.getName().equals(((Action) obj).getName());
