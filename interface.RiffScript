@@ -1,16 +1,20 @@
-class Number{
+class Number {
 	private double _value;
 
 	public Number(double value) {
 		_value=value;
 	}
 
-	public double getValue() { return _value; }
+	public double getValue() {
+		return _value;
+	}
 
-	public void setValue(double value) { _value=value; }
+	public void setValue(double value) {
+		_value = value;
+	}
 }
 
-class InitialBenchmark extends RiffDali implements SchedulerListener,MovementEvaluator {
+class InitialBenchmark extends RiffDali implements SchedulerListener, MovementEvaluator {
 	private Scenario scenario;
 	private Point point;
 	private Point otherPoint;
@@ -21,125 +25,128 @@ class InitialBenchmark extends RiffDali implements SchedulerListener,MovementEva
 		margin: 5px;
 	}
 
-	public InitialBenchmark(){
-		Panel panel=new Panel(sheet);
-		terrestrial=new Terrestrial(1000);
+	public InitialBenchmark() {
+		Panel panel = new Panel(sheet);
+		terrestrial = new Terrestrial(1000);
 		panel.setRiffDali(this);
 		panel.setTerrestrial(terrestrial);
 		
-		// first region
-		DiscreteRegion region=new DiscreteRegion();
+		// First region
+		DiscreteRegion region = new DiscreteRegion();
 		setupFirst(region);
-		Asset asset=new Asset(point=region.getCenter());
-		asset.addAce(new Ace(new Archetype("Base"),1.0d));
-		asset.setProperty("Foo",new Number(0));
+		Asset asset = new Asset(point = region.getCenter());
+		asset.addAce(new Ace(new Archetype("Base"), 1.0d));
+		asset.setProperty("Foo", new Number(0));
 		region.addAsset(asset);
 				
-		// second region		
-		region=new DiscreteRegion();
+		// Second region
+		region = new DiscreteRegion();
 		setupSecond(region);
 		
-		// third region
-		region=new DiscreteRegion();
+		// Third region
+		region = new DiscreteRegion();
 		setupThird(region);
-		otherPoint=region.getCenter();
+		otherPoint = region.getCenter();
 
-		scenario=new Scenario(terrestrial,"The Benchmark.");
+		scenario = new Scenario(terrestrial, "Initial Benchmark");
 		scenario.getScheduler().setDefaultListener(this);
 		Path path;
-		asset.setLocation(path=terrestrial.getPath(scenario,this,asset,point,otherPoint));
-		scenario.getScheduler().schedule(path.getTotalTime(),asset);
+		asset.setLocation(path = terrestrial.getPath(scenario, this, asset, point, otherPoint));
+		scenario.getScheduler().schedule(path.getTotalTime(), asset);
 		scenario.getScheduler().start();
-		Interface superPanel=new Interface();
+		Interface superPanel = new Interface();
 		superPanel.add(panel);
 	}
 
 	private void setupFirst(DiscreteRegion region) {
-		region.add(new Point(0,0,0));
-		region.add(new Point(200,0,0));
-		region.add(new Point(200,50,0));
-		region.add(new Point(0,50,0));
-		Terrain terrain=new Terrain();
-		terrain.setBrushDensity(0.1d,1.0d);
-		terrain.setElevation(0.5d,1.0d);
-		terrain.setGroundCohesion(1.0d,1.0d);
-		terrain.setTemperature(25.0d,1.0d);
-		terrain.setWaterDepth(0.0d,1.0d);
-		region.setProperty("Terrain",terrain);
+		region.add(new Point(0, 0, 0));
+		region.add(new Point(200, 0, 0));
+		region.add(new Point(200, 50, 0));
+		region.add(new Point(0, 50, 0));
+		Terrain terrain = new Terrain();
+		terrain.setBrushDensity(0.1d, 1.0d);
+		terrain.setElevation(0.5d, 1.0d);
+		terrain.setGroundCohesion(1.0d, 1.0d);
+		terrain.setTemperature(25.0d, 1.0d);
+		terrain.setWaterDepth(0.0d, 1.0d);
+		region.setProperty("Terrain", terrain);
 		terrestrial.add(region);
 	}
 
 	private void setupSecond(DiscreteRegion region) {
-		region.add(new Point(25,0,0));
-		region.add(new Point(150,0,0));
-		region.add(new Point(150,-50,0));
-		region.add(new Point(25,-50,0));
+		region.add(new Point(25, 0, 0));
+		region.add(new Point(150, 0, 0));
+		region.add(new Point(150, -50, 0));
+		region.add(new Point(25, -50, 0));
 		Terrain terrain=new Terrain();
-		terrain.setBrushDensity(0.5d,1.0d);
-		terrain.setElevation(0.4d,1.0d);
-		terrain.setGroundCohesion(0.8d,1.0d);
-		terrain.setTemperature(23.0d,1.0d);
-		terrain.setWaterDepth(0.0d,1.0d);
-		region.setProperty("Terrain",terrain);
+		terrain.setBrushDensity(0.5d, 1.0d);
+		terrain.setElevation(0.4d, 1.0d);
+		terrain.setGroundCohesion(0.8d, 1.0d);
+		terrain.setTemperature(23.0d, 1.0d);
+		terrain.setWaterDepth(0.0d, 1.0d);
+		region.setProperty("Terrain", terrain);
 		terrestrial.add(region);
 	}
 
 	private void setupThird(DiscreteRegion region) {
-		region.add(new Point(150,-100,0));
-		region.add(new Point(200,-100,0));
-		region.add(new Point(200,0,0));
-		region.add(new Point(150,0,0));
-		Terrain terrain=new Terrain();
-		terrain.setBrushDensity(0.9d,1.0d);
-		terrain.setElevation(0.6d,1.0d);
-		terrain.setGroundCohesion(0.8d,1.0d);
-		terrain.setTemperature(23.0d,1.0d);
-		terrain.setWaterDepth(0.0d,1.0d);
-		region.setProperty("Terrain",terrain);
+		region.add(new Point(150, -100, 0));
+		region.add(new Point(200, -100, 0));
+		region.add(new Point(200, 0, 0));
+		region.add(new Point(150, 0, 0));
+		Terrain terrain = new Terrain();
+		terrain.setBrushDensity(0.9d, 1.0d);
+		terrain.setElevation(0.6d, 1.0d);
+		terrain.setGroundCohesion(0.8d, 1.0d);
+		terrain.setTemperature(23.0d, 1.0d);
+		terrain.setWaterDepth(0.0d, 1.0d);
+		region.setProperty("Terrain", terrain);
 		terrestrial.add(region);
 	}
 
-	public double evaluateMovementCost(DiscreteRegion region,Asset asset){
-		return 1.0d-((Terrain)region.getProperty("Terrain")).getBrushDensity();
+	public double evaluateMovementCost(DiscreteRegion region, Asset asset) {
+		return 1.0d - region.getProperty("Terrain").getBrushDensity();
 	}
 
-	public Scenario getScenario(){return scenario;}
+	public Scenario getScenario() {
+		return scenario;
+	}
 
-	public void iterate(long diff,Asset asset){
-		((Number)asset.getProperty("Foo")).setValue(((Number)asset.getProperty("Foo")).getValue()+1);
+	public void iterate(long diff,Asset asset) {
+		asset.getProperty("Foo").setValue(asset.getProperty("Foo").getValue() + 1);
 		Path path;
-		if(0==((Number)asset.getProperty("Foo")).getValue()%2){
-			asset.setLocation(path=terrestrial.getPath(scenario,this,asset,point,otherPoint));
-		}else{
-			asset.setLocation(path=terrestrial.getPath(scenario,this,asset,otherPoint,point));
+		if (0 == asset.getProperty("Foo").getValue() % 2) {
+			path = terrestrial.getPath(scenario, this, asset, point, otherPoint);
+		} else {
+			path = terrestrial.getPath(scenario, this, asset, otherPoint, point);
 		}
+		asset.setLocation(path);
 		scenario.getScheduler().schedule(path.getTotalTime(),asset);
 	}
 
-	public void paintPanel(Panel panel,List regions,List assets){
-		for(int i=0;i<regions.size();i++){
-			DiscreteRegion region=(DiscreteRegion)regions.get(i);
-			Terrain terrain=region.getProperty("Terrain");
-			if(terrain!=null){
-				float brush=(float)terrain.getBrushDensity();
-				region.setProperty("Color",new Color(1.0f-brush,.5f+(.5f*brush),0.0f));
-			}else{
-				region.setProperty("Color",new Color(0.1f,1.0f-0.7f,0.2f));
+	public void paintPanel(Panel panel,List regions,List assets) {
+		for (int i = 0; i < regions.size(); i++){
+			DiscreteRegion region = regions.get(i);
+			Terrain terrain = region.getProperty("Terrain");
+			if (terrain != null) {
+				float brush = terrain.getBrushDensity();
+				region.setProperty("Color", new Color(1.0f-brush, .5f+(.5f*brush), 0.0f));
+			} else {
+				region.setProperty("Color", new Color(0.1f, 1.0f-0.7f, 0.2f));
 			}
 			panel.fillRegion(region);
 		}
-		for(int i=0;i<regions.size();i++){
-			DiscreteRegion region=(DiscreteRegion)regions.get(i);
+		for (int i = 0; i < regions.size(); i++) {
+			DiscreteRegion region = regions.get(i);
 			region.setProperty("BorderColor",new Color(255,255,255));
 			panel.drawRegion(region);
 		}
-		for(int i=0;i<assets.size();i++){
-			Ace ace=(Ace)((Asset)assets.get(i)).getAces().get(0);
-			panel.drawString(ace.getArchetype().getName(),new Color("white"),((Asset)assets.get(i)).getLocation());
+		for (int i = 0; i < assets.size(); i++) {
+			Ace ace=assets.get(i).getAces().get(0);
+			panel.drawString(ace.getArchetype().getName(), new Color("white"), assets.get(i).getLocation());
 		}
 	}
 
-	public static void main(){
+	public static void main() {
 		new InitialBenchmark();
 	}
 }
