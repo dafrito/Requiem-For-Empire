@@ -114,7 +114,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.knownThreads.add(SplitterThread.SPLITTERTHREADSTRING);
 	}
 
-	private ScriptEnvironment environment;
+	private ScriptEnvironment scriptEnvironment;
 
 	public DebugEnvironment(int width, int height) {
 		super("RFE Debugger");
@@ -244,7 +244,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 				this.addReferenced(new Debug_ScriptElement(this, file));
 			}
 		}
-		this.environment = new ScriptEnvironment();
 	}
 
 	// Listeners
@@ -361,12 +360,13 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		} else if (event.getSource().equals(this.redo)) {
 			this.scriptElements.get(this.tabbedPane.getSelectedIndex() - 1).redo();
 		} else if (event.getSource().equals(this.compile) || event.getSource().equals(this.compileAndRun)) {
+			this.scriptEnvironment = new ScriptEnvironment();
 			this.setStatus("Compiling...");
 			this.execute.setEnabled(false);
-			CompileThread thread = new CompileThread(this, event.getActionCommand().equals("Compile and Run"));
+			CompileThread thread = new CompileThread(this, this.scriptEnvironment, event.getActionCommand().equals("Compile and Run"));
 			thread.start();
 		} else if (event.getSource().equals(this.execute)) {
-			ExecutionThread thread = new ExecutionThread(this);
+			ExecutionThread thread = new ExecutionThread(this.scriptEnvironment);
 			thread.start();
 		}
 	}
@@ -415,10 +415,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	public void focusOnOutput(Debug_Listener output) {
 		assert output != null;
 		this.filteredPanes.setSelectedIndex(this.filteredPanes.indexOfComponent(output));
-	}
-
-	public ScriptEnvironment getEnvironment() {
-		return this.environment;
 	}
 
 	public Debug_Listener getFilteringOutput() {

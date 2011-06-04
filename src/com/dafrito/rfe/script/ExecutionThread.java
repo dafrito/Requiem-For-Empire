@@ -3,24 +3,23 @@
  */
 package com.dafrito.rfe.script;
 
-import com.dafrito.rfe.gui.debug.DebugEnvironment;
 import com.dafrito.rfe.gui.debug.Debugger;
 
 public class ExecutionThread extends Thread {
-	private DebugEnvironment debugEnvironment;
+	private ScriptEnvironment scriptEnvironment;
 	public static final String EXECUTIONTHREADSTRING = "Script Execution";
 	private static int threadNum = 0;
 
-	public ExecutionThread(DebugEnvironment debugEnv) {
+	public ExecutionThread(ScriptEnvironment env) {
 		super(EXECUTIONTHREADSTRING + " " + threadNum++);
-		this.debugEnvironment = debugEnv;
+		this.scriptEnvironment = env;
 	};
 
 	@Override
 	public void run() {
 		Debugger.hitStopWatch();
 		try {
-			this.debugEnvironment.getEnvironment().execute();
+			this.scriptEnvironment.execute();
 		} finally {
 			Debugger.hitStopWatch();
 		}

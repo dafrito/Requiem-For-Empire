@@ -11,27 +11,29 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.parsing.Parser;
 
 public class CompileThread extends Thread {
-	private DebugEnvironment debugEnvironment;
+	private final DebugEnvironment debugEnvironment;
 	private boolean shouldExecute;
+	private final ScriptEnvironment scriptEnvironment;
 	public static final String COMPILETHREADSTRING = "Compilation";
 	private static int threadNum = 0;
 
-	public CompileThread(DebugEnvironment debugEnv, boolean shouldExecute) {
+	public CompileThread(DebugEnvironment debugEnv, ScriptEnvironment scriptEnv, boolean shouldExecute) {
 		super(COMPILETHREADSTRING + " " + threadNum++);
 		this.debugEnvironment = debugEnv;
+		this.scriptEnvironment = scriptEnv;
 		this.shouldExecute = shouldExecute;
 	}
 
 	@Override
 	public void run() {
 		Debugger.hitStopWatch();
-		this.debugEnvironment.getEnvironment().reset();
+		this.scriptEnvironment.reset();
 		Parser.clearPreparseLists();
 		boolean quickflag = true;
 		for (int i = 0; i < this.debugEnvironment.getScriptElements().size(); i++) {
 			Debug_ScriptElement element = this.debugEnvironment.getScriptElements().get(i);
 			element.saveFile();
-			if (!element.compile()) {
+			if (!element.compile(this.scriptEnvironment)) {
 				quickflag = false;
 				this.debugEnvironment.setTitleAt(i + 1, element.getName());
 			}
@@ -40,14 +42,14 @@ public class CompileThread extends Thread {
 			this.debugEnvironment.setStatus("One or more files had errors during compilation.");
 			return;
 		}
-		Vector<Exception> exceptions = Parser.parseElements(this.debugEnvironment.getEnvironment());
+		Vector<Exception> exceptions = Parser.parseElements(this.scriptEnvironment);
 		if (exceptions.size() == 0) {
 			this.debugEnvironment.canExecute(true);
 			this.debugEnvironment.setStatus("All files compiled successfully.");
 			Debugger.hitStopWatch();
-			assert Debugger.addSnapNode("Compile successful", this.debugEnvironment.getEnvironment());
+			assert Debugger.addSnapNode("Compile successful", this.scriptEnvironment);
 			if (this.shouldExecute) {
-				ExecutionThread thread = new ExecutionThread(this.debugEnvironment);
+				ExecutionThread thread = new ExecutionThread(this.scriptEnvironment);
 				thread.start();
 			}
 			//debugEnvironment.report();

@@ -29,12 +29,12 @@ import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.CompoundEdit;
 
+import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.ScriptLine;
 import com.dafrito.rfe.strings.ExtensionFilter;
-
 
 public class Debug_ScriptElement extends JPanel implements UndoableEditListener, ListSelectionListener, ComponentListener, MouseListener {
 	/**
@@ -111,19 +111,19 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 		return this.saveFile();
 	}
 
-	public boolean compile() {
+	public boolean compile(ScriptEnvironment env) {
 		String text = this.textArea.getText();
 		String[] stringArray = text.split("\n");
 		java.util.List<Object> strings = new LinkedList<Object>();
 		for (int i = 0; i < stringArray.length; i++) {
-			strings.add(new ScriptLine(this.debugger.getEnvironment(), this.getFilename(), i + 1, stringArray[i]));
+			strings.add(new ScriptLine(env, this.getFilename(), i + 1, stringArray[i]));
 		}
 		this.width = this.getWidth();
 		this.splitPane.setRightComponent(new JScrollPane(this.errors = new JList()));
 		this.splitPane.setDividerLocation(this.getWidth() - 200);
 		this.errors.addListSelectionListener(this);
 		this.errors.addMouseListener(this);
-		this.exceptions = Parser.preparseFile(this.debugger.getEnvironment(), this.getFilename(), strings);
+		this.exceptions = Parser.preparseFile(env, this.getFilename(), strings);
 		this.displayedExceptions = new Vector<String>();
 		if (this.exceptions.size() == 0) {
 			this.errors.setBorder(BorderFactory.createTitledBorder("Compiled Successfully"));
