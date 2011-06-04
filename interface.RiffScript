@@ -2,7 +2,7 @@ class Number {
 	private double _value;
 
 	public Number(double value) {
-		_value=value;
+		_value = value;
 	}
 
 	public double getValue() {
@@ -147,7 +147,7 @@ class InitialBenchmark extends RiffDali implements SchedulerListener, MovementEv
 			panel.drawRegion(region);
 		}
 		for (int i = 0; i < assets.size(); i++) {
-			Ace ace=assets.get(i).getAces().get(0);
+			Ace ace = assets.get(i).getAces().get(0);
 			panel.drawString(ace.getArchetype().getName(), new Color("white"), assets.get(i).getLocation());
 		}
 	}
