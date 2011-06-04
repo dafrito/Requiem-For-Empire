@@ -189,8 +189,8 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public void initialize() {
+		assert Debugger.openNode("Initializing Script Environment");
 		try {
-			assert Debugger.openNode("Initializing Script Environment");
 			// Internal variables
 			ScriptValueType.initialize(this);
 			// Faux object templates
@@ -244,10 +244,10 @@ public class ScriptEnvironment implements Nodeable {
 			this.addType(null, FauxTemplate_Ace.ACESTRING, template);
 			template = new FauxTemplate_ArchetypeTree(this);
 			this.addType(null, FauxTemplate_ArchetypeTree.ARCHETYPETREESTRING, template);
-			assert Debugger.closeNode();
 		} catch (Exception_Nodeable ex) {
-			assert Debugger.closeNodeTo("Initializing Script Environment");
 			throw new Exception_InternalError("Exception occurred during script initialization: " + ex);
+		} finally {
+			assert Debugger.closeNodeTo("Initializing Script Environment");
 		}
 	}
 
