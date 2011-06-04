@@ -18,7 +18,7 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	private ScriptElement reference;
 
 	public ScriptExecutable_RetrieveVariable(Referenced ref, ScriptValue template, String name, ScriptValueType type) throws Exception_Nodeable {
-		super(ref.getEnvironment(), type, null);
+		super(ref.getEnvironment(), type, ScriptKeywordType.PRIVATE);
 		this.reference = ref.getDebugReference();
 		this.name = name;
 		this.template = template;

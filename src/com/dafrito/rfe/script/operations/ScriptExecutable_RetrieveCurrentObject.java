@@ -15,7 +15,7 @@ public class ScriptExecutable_RetrieveCurrentObject extends ScriptValue_Variable
 	private ScriptElement reference;
 
 	public ScriptExecutable_RetrieveCurrentObject(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
-		super(ref.getEnvironment(), type, null);
+		super(ref.getEnvironment(), type, ScriptKeywordType.PRIVATE);
 		this.reference = ref.getDebugReference();
 	}
 

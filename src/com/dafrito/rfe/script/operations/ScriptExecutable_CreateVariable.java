@@ -17,7 +17,7 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 	private ScriptElement reference;
 
 	public ScriptExecutable_CreateVariable(Referenced ref, ScriptValueType type, String name, ScriptKeywordType permission) throws Exception_Nodeable {
-		super(ref.getEnvironment(), type, null);
+		super(ref.getEnvironment(), type, permission);
 		this.reference = ref.getDebugReference();
 		this.name = name;
 		this.permission = permission;
