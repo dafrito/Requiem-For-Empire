@@ -62,7 +62,6 @@ public class ScriptExecutable_AssignValue extends ScriptElement implements Scrip
 	@Override
 	public void nodificate() {
 		assert Debugger.openNode("Assignment Script Expression");
-		super.nodificate();
 		assert Debugger.addSnapNode("Left variable", this.variable);
 		assert Debugger.addSnapNode("Right value", this.value);
 		assert Debugger.closeNode();

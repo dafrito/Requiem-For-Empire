@@ -1,6 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -8,7 +9,7 @@ import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 import com.dafrito.rfe.script.values.ScriptValue_Boolean;
 
-public class ScriptExecutable_InvertBoolean extends ScriptElement implements ScriptExecutable, ScriptValue {
+public class ScriptExecutable_InvertBoolean extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
 	private ScriptExecutable value;
 
 	public ScriptExecutable_InvertBoolean(Referenced ref, ScriptExecutable value) {
@@ -46,7 +47,6 @@ public class ScriptExecutable_InvertBoolean extends ScriptElement implements Scr
 	@Override
 	public void nodificate() {
 		assert Debugger.openNode("Boolean Inverter");
-		super.nodificate();
 		assert Debugger.addSnapNode("Value", this.value);
 		assert Debugger.closeNode();
 	}

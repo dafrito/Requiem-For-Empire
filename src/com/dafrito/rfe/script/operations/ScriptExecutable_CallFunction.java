@@ -126,11 +126,9 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
-	// Nodeable implementation
 	@Override
 	public void nodificate() {
 		assert Debugger.openNode("Function Call (" + ScriptFunction.getDisplayableFunctionName(this.functionName) + ")");
-		super.nodificate();
 		assert Debugger.addSnapNode("Parameters", this.params);
 		assert Debugger.closeNode();
 	}

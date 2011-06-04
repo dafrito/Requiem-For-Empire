@@ -69,7 +69,6 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	@Override
 	public void nodificate() {
 		assert Debugger.openNode("Combo Boolean Expression");
-		super.nodificate();
 		assert Debugger.addSnapNode("Left side", this.lhs);
 		assert Debugger.addSnapNode("Right side", this.rhs);
 		assert Debugger.closeNode();

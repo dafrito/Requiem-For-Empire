@@ -145,7 +145,6 @@ public class ScriptKeyword extends ScriptElement implements Nodeable {
 	@Override
 	public void nodificate() {
 		assert Debugger.openNode("ScriptKeyword (" + this.getType() + ")");
-		super.nodificate();
 		assert Debugger.closeNode();
 	}
 

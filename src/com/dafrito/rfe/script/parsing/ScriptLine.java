@@ -28,7 +28,6 @@ public class ScriptLine extends ScriptElement implements Nodeable {
 	@Override
 	public void nodificate() {
 		assert Debugger.openNode(Debugger.getString(DebugString.SCRIPTLINE) + this.string);
-		super.nodificate();
 		assert Debugger.closeNode();
 	}
 

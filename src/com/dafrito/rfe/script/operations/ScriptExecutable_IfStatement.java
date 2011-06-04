@@ -3,6 +3,7 @@ package com.dafrito.rfe.script.operations;
 import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -10,7 +11,7 @@ import com.dafrito.rfe.script.values.Returnable;
 import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValue_Boolean;
 
-public class ScriptExecutable_IfStatement extends ScriptElement implements ScriptExecutable, Returnable {
+public class ScriptExecutable_IfStatement extends ScriptElement implements ScriptExecutable, Returnable, Nodeable {
 	private ScriptValue testingValue;
 	private List<ScriptExecutable> expressions;
 	private ScriptExecutable_IfStatement elseStatement;

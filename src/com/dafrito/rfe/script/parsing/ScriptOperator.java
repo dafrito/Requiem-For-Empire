@@ -38,7 +38,6 @@ public class ScriptOperator extends ScriptElement implements Nodeable {
 	@Override
 	public void nodificate() {
 		assert Debugger.openNode(Debugger.getString(DebugString.SCRIPTOPERATOR) + this.getName());
-		super.nodificate();
 		assert Debugger.closeNode();
 	}
 

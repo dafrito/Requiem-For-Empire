@@ -108,7 +108,6 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	@Override
 	public void nodificate() {
 		assert Debugger.openNode("Unparsed Script-Function (" + ScriptFunction.getDisplayableFunctionName(this.name) + ")");
-		super.nodificate();
 		assert Debugger.addNode("Static: " + this.isStatic);
 		assert Debugger.addSnapNode("Body", this.body);
 		assert Debugger.closeNode();

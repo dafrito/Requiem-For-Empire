@@ -1,24 +1,18 @@
 package com.dafrito.rfe.script.parsing;
 
-import com.dafrito.rfe.gui.debug.DebugString;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 @Inspectable
-public class ScriptElement implements Nodeable, Referenced {
+public class ScriptElement implements Referenced {
 	private final ScriptEnvironment environment;
 	private final int lineNumber, originalLineOffset, length;
 	private final String original, filename;
 
-	public ScriptElement() {
-		this.environment = null;
-		this.filename = "";
-		this.original = "";
-		this.lineNumber = -1;
-		this.length = -1;
-		this.originalLineOffset = 0;
+	private static ScriptElement DUMMY = new ScriptElement(null, "", -1, "", -1);
+
+	public static ScriptElement dummy() {
+		return DUMMY;
 	}
 
 	public ScriptElement(Referenced element) {
@@ -107,11 +101,10 @@ public class ScriptElement implements Nodeable, Referenced {
 	}
 
 	@Override
-	public void nodificate() {
+	public String toString() {
 		if (this.getLineNumber() == -1) {
-			assert Debugger.addNode("ScriptElement: No information provided");
-			return;
+			return "ScriptElement: No information provided";
 		}
-		assert Debugger.addSnapNode("ScriptElement (" + this.getFilename() + " @ " + this.getLineNumber() + ")", Debugger.getString(DebugString.ORIGINALSTRING) + this.getOriginalString() + "'");
+		return String.format("ScriptElement[%s@%d]=\"%s\"", this.getFilename(), this.getLineNumber(), this.getOriginalString().substring(0, 20));
 	}
 }

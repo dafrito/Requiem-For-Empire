@@ -50,11 +50,9 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 		return ScriptValueType.isConvertibleTo(this.getEnvironment(), this.getType(), type);
 	}
 
-	// Nodeable implementation
 	@Override
 	public void nodificate() {
 		assert Debugger.openNode("Script Cast Expression (To type: " + this.getType() + ")");
-		super.nodificate();
 		assert Debugger.addSnapNode("Cast Expression", this.castExpression);
 		assert Debugger.closeNode();
 	}

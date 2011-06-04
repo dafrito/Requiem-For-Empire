@@ -1,6 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
@@ -11,7 +12,7 @@ import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 import com.dafrito.rfe.script.values.ScriptValue_Boolean;
 
-public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements ScriptExecutable, ScriptValue {
+public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
 	private ScriptValue lhs, rhs;
 	private ScriptOperatorType comparison;
 
@@ -92,7 +93,6 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 	@Override
 	public void nodificate() {
 		assert Debugger.openNode("Boolean Expression (" + this.comparison + ")");
-		super.nodificate();
 		assert Debugger.addSnapNode("Left hand", this.lhs);
 		assert Debugger.addSnapNode("Right hand", this.rhs);
 		assert Debugger.closeNode();
