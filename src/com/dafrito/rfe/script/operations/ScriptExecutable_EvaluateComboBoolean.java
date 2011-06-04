@@ -14,13 +14,19 @@ import com.dafrito.rfe.script.values.ScriptValue_Boolean;
 
 public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement implements ScriptValue, ScriptExecutable, Nodeable {
 	private ScriptValue lhs, rhs;
-	private ScriptOperatorType operator;
+	private final ScriptOperatorType operator;
 
 	public ScriptExecutable_EvaluateComboBoolean(Referenced ref, ScriptValue lhs, ScriptValue rhs, ScriptOperatorType operator) {
 		super(ref);
 		this.lhs = lhs;
 		this.rhs = rhs;
 		this.operator = operator;
+		if (this.operator == null) {
+			throw new NullPointerException("operator must not be null");
+		}
+		if (this.operator != ScriptOperatorType.AND && this.operator != ScriptOperatorType.OR) {
+			throw new IllegalArgumentException("operator must be AND or OR");
+		}
 	}
 
 	@Override

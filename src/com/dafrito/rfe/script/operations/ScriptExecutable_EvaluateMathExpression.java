@@ -14,7 +14,7 @@ import com.dafrito.rfe.script.values.ScriptValue_Numeric;
 
 public class ScriptExecutable_EvaluateMathExpression extends ScriptElement implements ScriptValue, ScriptExecutable, Nodeable {
 	private ScriptValue lhs, rhs;
-	private ScriptOperatorType operator;
+	private final ScriptOperatorType operator;
 	private ScriptValueType type;
 
 	public ScriptExecutable_EvaluateMathExpression(Referenced ref, ScriptValue lhs, ScriptValue rhs, ScriptOperatorType expressionType) {
@@ -23,6 +23,16 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 		this.lhs = lhs;
 		this.rhs = rhs;
 		this.operator = expressionType;
+		switch (this.operator) {
+		case PLUS:
+		case MINUS:
+		case MODULUS:
+		case MULTIPLY:
+		case DIVIDE:
+			break;
+		default:
+			throw new IllegalArgumentException("Operator must be a arithmetic operator");
+		}
 	}
 
 	@Override

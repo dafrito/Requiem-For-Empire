@@ -76,6 +76,17 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 		this.type = returnType;
 		this.params = new ArrayList<ScriptValue>(params);
 		this.permission = permission;
+		if (this.permission == null) {
+			throw new NullPointerException("permission must not be null");
+		}
+		switch (this.permission) {
+		case PRIVATE:
+		case PROTECTED:
+		case PUBLIC:
+			break;
+		default:
+			throw new IllegalArgumentException("Permission must be PUBLIC, PROTECTED, or PRIVATE");
+		}
 		this.isAbstract = isAbstract;
 		this.isStatic = isStatic;
 	}

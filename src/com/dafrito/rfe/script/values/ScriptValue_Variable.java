@@ -50,6 +50,17 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 	public ScriptValue_Variable(ScriptEnvironment env, ScriptValueType type, ScriptValue value, ScriptKeywordType permission) throws Exception_Nodeable {
 		this.environment = env;
 		this.permission = permission;
+		if (this.permission == null) {
+			throw new NullPointerException("permission must not be null");
+		}
+		switch (this.permission) {
+		case PRIVATE:
+		case PROTECTED:
+		case PUBLIC:
+			break;
+		default:
+			throw new IllegalArgumentException("Permission must be PUBLIC, PROTECTED, or PRIVATE");
+		}
 		this.type = type;
 		if (value == null) {
 			this.value = createUninitializedObject(env, type);
