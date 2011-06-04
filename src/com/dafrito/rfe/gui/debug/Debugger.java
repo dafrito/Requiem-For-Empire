@@ -79,10 +79,10 @@ public class Debugger {
 			}
 			return true;
 		}
-		if (o instanceof Iterable) {
+		if (o instanceof Iterable<?>) {
 			return addCollectionNode((Iterable<?>) o);
 		}
-		if (o instanceof Map) {
+		if (o instanceof Map<?, ?>) {
 			return addMapNode((Map<?, ?>) o);
 		}
 		getDebugInspector().addNode(new Debug_TreeNode(group, o));

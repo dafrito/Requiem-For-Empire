@@ -134,7 +134,7 @@ public class Parser {
 	}
 
 	public static Object convert(ScriptEnvironment env, Object object) throws Exception_Nodeable {
-		if (object instanceof ScriptConvertible) {
+		if (object instanceof ScriptConvertible<?>) {
 			return convert(env, (ScriptConvertible<?>) object);
 		}
 		return convert(env, (ScriptConvertible<?>) ((ScriptValue) object).getValue());

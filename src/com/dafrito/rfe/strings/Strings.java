@@ -61,7 +61,7 @@ public final class Strings {
 			Object obj = iter.next();
 			string += "\n" + value + ". " + tab(nestedVal);
 			value++;
-			if (obj instanceof Collection) {
+			if (obj instanceof Collection<?>) {
 				string += "Nested list:" + displayList((Collection<?>) obj, singular, plural, nestedVal + 1);
 			} else {
 				string += obj;
