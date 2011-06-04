@@ -1,26 +1,33 @@
 class Number{
 	private double _value;
+
 	public Number(double value) {
 		_value=value;
 	}
+
 	public double getValue() { return _value; }
+
 	public void setValue(double value) { _value=value; }
 }
 
-class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator {
+class InitialBenchmark extends RiffDali implements SchedulerListener,MovementEvaluator {
 	private Scenario scenario;
 	private Point point;
 	private Point otherPoint;
 	private Terrestrial terrestrial;
+
 	static Stylesheet sheet {
 		border: 1px solid gray;
 		margin: 5px;
 	}
+
 	public double evaluateMovementCost(DiscreteRegion region,Asset asset){
 		return 1.0d-((Terrain)region.getProperty("Terrain")).getBrushDensity();
 	}
+
 	public Scenario getScenario(){return scenario;}
-	public NubBaseOne(){
+
+	public InitialBenchmark(){
 		Panel panel=new Panel(sheet);
 		terrestrial=new Terrestrial(1000);
 		panel.setRiffDali(this);
@@ -85,6 +92,7 @@ class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator
 		Interface superPanel=new Interface();
 		superPanel.add(panel);
 	}
+
 	public void iterate(long diff,Asset asset){
 		((Number)asset.getProperty("Foo")).setValue(((Number)asset.getProperty("Foo")).getValue()+1);
 		Path path;
@@ -95,6 +103,7 @@ class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator
 		}
 		scenario.getScheduler().schedule(path.getTotalTime(),asset);
 	}
+
 	public void paintPanel(Panel panel,List regions,List assets){
 		for(int i=0;i<regions.size();i++){
 			DiscreteRegion region=(DiscreteRegion)regions.get(i);
@@ -117,7 +126,8 @@ class NubBaseOne extends RiffDali implements SchedulerListener,MovementEvaluator
 			panel.drawString(ace.getArchetype().getName(),new Color("white"),((Asset)assets.get(i)).getLocation());
 		}
 	}
+
 	public static void main(){
-		new NubBaseOne();
+		new InitialBenchmark();
 	}
 }
