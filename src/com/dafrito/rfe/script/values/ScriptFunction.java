@@ -13,18 +13,23 @@ import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 
 public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
-	public static boolean areParametersConvertible(List<ScriptValue> source, List<ScriptValue> list) {
+	public static boolean areParametersConvertible(List<ScriptValue> parameters, List<ScriptValue> values) {
 		assert Debugger.openNode("Parameter-Convertibility Tests", "Parameter-Convertibility Test");
 		assert Debugger.addNode("Keys must be convertible to their function-param socket counterpart.");
-		assert Debugger.addSnapNode("Function-Parameter Sockets", source);
-		assert Debugger.addSnapNode("Parameter Keys", list);
-		if (list.size() != source.size()) {
-			assert Debugger.closeNode("Parameter sizes do not match (" + list.size() + " and " + source.size() + ")");
+		assert Debugger.addSnapNode("Function-Parameter Sockets", parameters);
+		assert Debugger.addSnapNode("Parameter Keys", values);
+		if (values.size() != parameters.size()) {
+			assert Debugger.closeNode("Parameter sizes do not match (" + values.size() + " and " + parameters.size() + ")");
 			return false;
 		}
-		for (int i = 0; i < list.size(); i++) {
-			if (!list.get(i).isConvertibleTo(source.get(i).getType())) {
-				assert Debugger.closeNode("Parameters are not equal (" + source.get(i).getType() + " and " + list.get(i).getType() + ")");
+		for (int i = 0; i < values.size(); i++) {
+			ScriptValue param = parameters.get(i);
+			if (param == null) {
+				throw new NullPointerException("parameer must not be null");
+			}
+			ScriptValue value = values.get(i);
+			if (value != null && !value.isConvertibleTo(param.getType())) {
+				assert Debugger.closeNode("Parameters are not equal (" + param.getType() + " and " + value.getType() + ")");
 				return false;
 			}
 		}
