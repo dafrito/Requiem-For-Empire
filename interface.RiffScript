@@ -21,11 +21,38 @@ class InitialBenchmark extends RiffDali implements SchedulerListener,MovementEva
 		margin: 5px;
 	}
 
-	public double evaluateMovementCost(DiscreteRegion region,Asset asset){
-		return 1.0d-((Terrain)region.getProperty("Terrain")).getBrushDensity();
-	}
+	public InitialBenchmark(){
+		Panel panel=new Panel(sheet);
+		terrestrial=new Terrestrial(1000);
+		panel.setRiffDali(this);
+		panel.setTerrestrial(terrestrial);
+		
+		// first region
+		DiscreteRegion region=new DiscreteRegion();
+		setupFirst(region);
+		Asset asset=new Asset(point=region.getCenter());
+		asset.addAce(new Ace(new Archetype("Base"),1.0d));
+		asset.setProperty("Foo",new Number(0));
+		region.addAsset(asset);
+				
+		// second region		
+		region=new DiscreteRegion();
+		setupSecond(region);
+		
+		// third region
+		region=new DiscreteRegion();
+		setupThird(region);
+		otherPoint=region.getCenter();
 
-	public Scenario getScenario(){return scenario;}
+		scenario=new Scenario(terrestrial,"The Benchmark.");
+		scenario.getScheduler().setDefaultListener(this);
+		Path path;
+		asset.setLocation(path=terrestrial.getPath(scenario,this,asset,point,otherPoint));
+		scenario.getScheduler().schedule(path.getTotalTime(),asset);
+		scenario.getScheduler().start();
+		Interface superPanel=new Interface();
+		superPanel.add(panel);
+	}
 
 	private void setupFirst(DiscreteRegion region) {
 		region.add(new Point(0,0,0));
@@ -72,38 +99,11 @@ class InitialBenchmark extends RiffDali implements SchedulerListener,MovementEva
 		terrestrial.add(region);
 	}
 
-	public InitialBenchmark(){
-		Panel panel=new Panel(sheet);
-		terrestrial=new Terrestrial(1000);
-		panel.setRiffDali(this);
-		panel.setTerrestrial(terrestrial);
-		
-		// first region
-		DiscreteRegion region=new DiscreteRegion();
-		setupFirst(region);
-		Asset asset=new Asset(point=region.getCenter());
-		asset.addAce(new Ace(new Archetype("Base"),1.0d));
-		asset.setProperty("Foo",new Number(0));
-		region.addAsset(asset);
-				
-		// second region		
-		region=new DiscreteRegion();
-		setupSecond(region);
-		
-		// third region
-		region=new DiscreteRegion();
-		setupThird(region);
-		otherPoint=region.getCenter();
-
-		scenario=new Scenario(terrestrial,"The Benchmark.");
-		scenario.getScheduler().setDefaultListener(this);
-		Path path;
-		asset.setLocation(path=terrestrial.getPath(scenario,this,asset,point,otherPoint));
-		scenario.getScheduler().schedule(path.getTotalTime(),asset);
-		scenario.getScheduler().start();
-		Interface superPanel=new Interface();
-		superPanel.add(panel);
+	public double evaluateMovementCost(DiscreteRegion region,Asset asset){
+		return 1.0d-((Terrain)region.getProperty("Terrain")).getBrushDensity();
 	}
+
+	public Scenario getScenario(){return scenario;}
 
 	public void iterate(long diff,Asset asset){
 		((Number)asset.getProperty("Foo")).setValue(((Number)asset.getProperty("Foo")).getValue()+1);
