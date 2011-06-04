@@ -1,6 +1,6 @@
 package com.dafrito.rfe.script.values;
 
-import com.dafrito.rfe.gui.debug.DebugString;
+import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
@@ -313,19 +313,19 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 	public void nodificate() {
 		switch (this.getType().getKeywordType()) {
 		case SHORT:
-			assert Debugger.openNode(DebugString.NUMERICSCRIPTVALUESHORT);
+			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUESHORT);
 			break;
 		case INT:
-			assert Debugger.openNode(DebugString.NUMERICSCRIPTVALUEINT);
+			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUEINT);
 			break;
 		case LONG:
-			assert Debugger.openNode(DebugString.NUMERICSCRIPTVALUELONG);
+			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUELONG);
 			break;
 		case FLOAT:
-			assert Debugger.openNode(DebugString.NUMERICSCRIPTVALUEFLOAT);
+			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUEFLOAT);
 			break;
 		case DOUBLE:
-			assert Debugger.openNode(DebugString.NUMERICSCRIPTVALUEDOUBLE);
+			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUEDOUBLE);
 			break;
 		default:
 			throw new Exception_InternalError("Invalid default");

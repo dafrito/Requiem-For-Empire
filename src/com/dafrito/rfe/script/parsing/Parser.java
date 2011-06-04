@@ -19,7 +19,7 @@ import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Point_Path;
 import com.dafrito.rfe.gui.GraphicalElement;
 import com.dafrito.rfe.gui.InterfaceElement;
-import com.dafrito.rfe.gui.debug.DebugString;
+import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.gui.style.StylesheetBackgroundColorElement;
@@ -154,7 +154,7 @@ public class Parser {
 
 	public static List<Object> createGroupings(List<Object> stringList, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) throws Exception_Nodeable {
 		assert Debugger.openNode("Character-Group Parsing", "Creating Groupings (Syntax: " + openChar + "..." + closingChar + " )");
-		assert Debugger.addSnapNode(DebugString.ELEMENTS, stringList);
+		assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
 		assert Debugger.addNode("Allowed to Recurse: " + recurse);
 		stringList = removeSingleLineGroupings(stringList, openChar, closingChar, type, recurse);
 		boolean foundGroup = false;
@@ -993,7 +993,7 @@ public class Parser {
 		try {
 			clearPreparseLists();
 			assert Debugger.openNode("File Parsing", "Parsing file (" + filename + ")");
-			assert Debugger.addSnapNode(DebugString.ELEMENTS, stringList);
+			assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
 			preparseElements(env, preparseList(stringList));
 			parseElements(env);
 			assert Debugger.addSnapNode("Parsed successfully", env);
@@ -1012,7 +1012,7 @@ public class Parser {
 
 	public static ScriptExecutable parseFlowElement(ScriptEnvironment env, List<Object> list, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.openNode("Flow Element Parsing", "Parsing Flow Element");
-		assert Debugger.addSnapNode(DebugString.ELEMENTS, list);
+		assert Debugger.addSnapNode(CommonString.ELEMENTS, list);
 		for (int i = 0; i < list.size(); i++) {
 			Object obj = list.get(i);
 			if (obj instanceof ScriptExecutable) {
@@ -1279,7 +1279,7 @@ public class Parser {
 
 	public static List<ScriptValue> parseParamGroup(ScriptEnvironment env, List<Object> elementsList, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.openNode("Parameter-Group Parsing", "Parsing Parameter-Group (" + elementsList.size() + " element(s) in group)");
-		assert Debugger.addSnapNode(DebugString.ELEMENTS, elementsList);
+		assert Debugger.addSnapNode(CommonString.ELEMENTS, elementsList);
 		Iterator<Object> iter = elementsList.iterator();
 		List<ScriptValue> groupList = new LinkedList<ScriptValue>();
 		List<Object> currentParamList = new LinkedList<Object>();
@@ -1535,7 +1535,7 @@ public class Parser {
 	// Object-oriented parsing functions
 	public static void preparseElements(ScriptEnvironment env, List<Object> lineList) throws Exception_Nodeable {
 		assert Debugger.openNode("Preparsing Elements", "Preparsing Elements (" + lineList.size() + " element(s))");
-		assert Debugger.addSnapNode(DebugString.ELEMENTS, lineList);
+		assert Debugger.addSnapNode(CommonString.ELEMENTS, lineList);
 		List<Object> modifiers = new LinkedList<Object>();
 		for (int i = 0; i < lineList.size(); i++) {
 			Referenced element = (Referenced) lineList.get(i);
@@ -1593,7 +1593,7 @@ public class Parser {
 		Vector<Exception> exceptions = new Vector<Exception>();
 		try {
 			assert Debugger.openNode("File Preparsing", "Preparsing file (" + filename + ")");
-			assert Debugger.addSnapNode(DebugString.ELEMENTS, stringList);
+			assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
 			preparseElements(env, preparseList(stringList));
 			assert Debugger.closeNode("Preparsed successfully");
 		} catch (Exception_Nodeable ex) {
@@ -1871,7 +1871,7 @@ public class Parser {
 
 	public static List<Object> removeEmptyScriptLines(List<Object> list) {
 		assert Debugger.openNode("Empty Script-Line Removals", "Empty Script-Line Removal");
-		assert Debugger.addSnapNode(DebugString.ELEMENTS, list);
+		assert Debugger.addSnapNode(CommonString.ELEMENTS, list);
 		int q = 0;
 		for (int i = 0; i < list.size(); i++) {
 			Object element = list.get(i);

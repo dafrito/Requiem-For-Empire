@@ -169,10 +169,6 @@ public class Debugger {
 		return true;
 	}
 
-	public static String getString(DebugString value) {
-		return Debug_TreeNode.getPrecached(value).toString();
-	}
-
 	public static boolean isResetting() {
 		return getDebugger().isResetting();
 	}

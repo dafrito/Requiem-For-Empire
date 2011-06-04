@@ -23,10 +23,11 @@ public class Debug_TreeNode implements MutableTreeNode {
 	private static Vector<Object> cacheData = new Vector<Object>();
 	private static Vector<Incrementor> cacheDataRepetitions = new Vector<Incrementor>();
 	private static java.util.Map<Object, Integer> cacheMap = new HashMap<Object, Integer>();
-	public static java.util.Map<DebugString, Object> precacheData = new EnumMap<DebugString, Object>(DebugString.class);
+
+	private static java.util.Map<CommonString, Object> precacheData = new EnumMap<CommonString, Object>(CommonString.class);
 
 	static {
-		for (DebugString str : DebugString.values()) {
+		for (CommonString str : CommonString.values()) {
 			precacheData.put(str, str.getText());
 		}
 	}
@@ -39,10 +40,6 @@ public class Debug_TreeNode implements MutableTreeNode {
 		Collections.sort(cacheElements);
 		Collections.reverse(cacheElements);
 		return cacheElements;
-	}
-
-	public static Object getPrecached(DebugString key) {
-		return precacheData.get(key);
 	}
 
 	public static void report() {
@@ -71,7 +68,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 		this.unique = unique;
 		assert data != null;
 		if (group != null) {
-			if (group instanceof DebugString) {
+			if (group instanceof CommonString) {
 				this.groupCode = group;
 			} else if (group instanceof Integer) {
 				this.groupCode = group;
@@ -87,7 +84,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 		} else {
 			this.groupCode = null;
 		}
-		if (data instanceof DebugString) {
+		if (data instanceof CommonString) {
 			this.dataCode = data;
 		} else if (data instanceof Integer) {
 			this.dataCode = data;

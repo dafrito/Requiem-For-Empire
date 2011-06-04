@@ -36,7 +36,7 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 	public Debug_Tree(Debug_Filter filter) {
 		this.filter = filter;
 		this.setLayout(new GridLayout(1, 0));
-		this.add(this.tree = new JTree(new DefaultTreeModel(this.currentNode = new Debug_TreeNode(DebugString.OUTPUTTREE))));
+		this.add(this.tree = new JTree(new DefaultTreeModel(this.currentNode = new Debug_TreeNode(CommonString.OUTPUTTREE))));
 		this.popup = new JPopupMenu();
 		this.popup.add(this.copySelectedNodeData = new JMenuItem("Copy Selected"));
 		this.popup.add(this.copySelectedNodeGroup = new JMenuItem("Copy Selected's Group"));
@@ -182,7 +182,7 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 	}
 
 	public void reset() {
-		((DefaultTreeModel) this.tree.getModel()).setRoot(this.currentNode = new Debug_TreeNode(DebugString.OUTPUTTREE));
+		((DefaultTreeModel) this.tree.getModel()).setRoot(this.currentNode = new Debug_TreeNode(CommonString.OUTPUTTREE));
 	}
 
 	public void setAsCurrent(Debug_TreeNode node) {

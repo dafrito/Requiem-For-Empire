@@ -3,7 +3,7 @@ package com.dafrito.rfe.script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.DebugString;
+import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
@@ -111,7 +111,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 			assert Debugger.openNode("List Faux Template (" + this.list.size() + " element(s))");
 		}
 		super.nodificate();
-		assert Debugger.addSnapNode(DebugString.ELEMENTS, this.list);
+		assert Debugger.addSnapNode(CommonString.ELEMENTS, this.list);
 		assert Debugger.closeNode();
 	}
 

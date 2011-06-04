@@ -3,7 +3,13 @@
  */
 package com.dafrito.rfe.gui.debug;
 
-public enum DebugString {
+/**
+ * A collection of commonly used strings, cached for memory performance.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
+public enum CommonString {
 	ELEMENTS("Elements"),
 	SCRIPTGROUPPARENTHETICAL("Script Group (parenthetical)"),
 	SCRIPTGROUPCURLY("Script Group (curly)"),
@@ -24,10 +30,15 @@ public enum DebugString {
 
 	private final String text;
 
-	private DebugString(String text) {
+	private CommonString(String text) {
 		this.text = text;
 	}
 
+	/**
+	 * Return the cached string.
+	 * 
+	 * @return the cached string
+	 */
 	public String getText() {
 		return this.text;
 	}

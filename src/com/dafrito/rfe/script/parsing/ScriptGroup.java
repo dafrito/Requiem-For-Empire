@@ -2,7 +2,7 @@ package com.dafrito.rfe.script.parsing;
 
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.DebugString;
+import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
@@ -33,15 +33,15 @@ public class ScriptGroup extends ScriptElement implements Nodeable {
 	public void nodificate() {
 		switch (this.type) {
 		case curly:
-			assert Debugger.openNode(DebugString.SCRIPTGROUPCURLY);
+			assert Debugger.openNode(CommonString.SCRIPTGROUPCURLY);
 			break;
 		case parenthetical:
-			assert Debugger.openNode(DebugString.SCRIPTGROUPPARENTHETICAL);
+			assert Debugger.openNode(CommonString.SCRIPTGROUPPARENTHETICAL);
 			break;
 		default:
 			throw new Exception_InternalError("Invalid default");
 		}
-		assert Debugger.addSnapNode(DebugString.ELEMENTS, this.elements);
+		assert Debugger.addSnapNode(CommonString.ELEMENTS, this.elements);
 		assert Debugger.closeNode();
 	}
 

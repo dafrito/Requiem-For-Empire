@@ -8,7 +8,6 @@ import com.dafrito.rfe.script.values.ScriptValueType;
 public class ScriptKeyword extends ScriptElement {
 	private final ScriptKeywordType type;
 
-	// Constructors
 	public ScriptKeyword(Referenced ref, ScriptKeywordType type) throws Exception_Nodeable {
 		super(ref);
 		this.type = type;

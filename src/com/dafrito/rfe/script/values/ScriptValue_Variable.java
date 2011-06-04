@@ -1,6 +1,6 @@
 package com.dafrito.rfe.script.values;
 
-import com.dafrito.rfe.gui.debug.DebugString;
+import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -107,19 +107,19 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 		if (this.value != null) {
 			assert Debugger.addSnapNode("Referenced element (" + this.value.getType() + ")", this.value);
 		} else {
-			assert Debugger.addNode(DebugString.REFERENCEDELEMENTNULL);
+			assert Debugger.addNode(CommonString.REFERENCEDELEMENTNULL);
 		}
 		if (this.permission == null) {
-			Debugger.addNode(DebugString.PERMISSIONNULL);
+			Debugger.addNode(CommonString.PERMISSIONNULL);
 		} else {
 			switch (this.permission) {
 			case PRIVATE:
-				assert Debugger.addNode(DebugString.PERMISSIONPRIVATE);
+				assert Debugger.addNode(CommonString.PERMISSIONPRIVATE);
 				break;
 			case PROTECTED:
-				Debugger.addNode(DebugString.PERMISSIONPROTECTED);
+				Debugger.addNode(CommonString.PERMISSIONPROTECTED);
 			case PUBLIC:
-				Debugger.addNode(DebugString.PERMISSIONPUBLIC);
+				Debugger.addNode(CommonString.PERMISSIONPUBLIC);
 			}
 		}
 		assert Debugger.closeNode();

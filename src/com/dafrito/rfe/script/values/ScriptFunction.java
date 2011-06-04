@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.DebugString;
+import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
@@ -168,16 +168,16 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 			assert Debugger.addSnapNode("Expressions: " + this.expressions.size() + " expression(s)", this.expressions);
 		}
 		if (this.permission == null) {
-			Debugger.addNode(DebugString.PERMISSIONNULL);
+			Debugger.addNode(CommonString.PERMISSIONNULL);
 		} else {
 			switch (this.permission) {
 			case PRIVATE:
-				assert Debugger.addNode(DebugString.PERMISSIONPRIVATE);
+				assert Debugger.addNode(CommonString.PERMISSIONPRIVATE);
 				break;
 			case PROTECTED:
-				Debugger.addNode(DebugString.PERMISSIONPROTECTED);
+				Debugger.addNode(CommonString.PERMISSIONPROTECTED);
 			case PUBLIC:
-				Debugger.addNode(DebugString.PERMISSIONPUBLIC);
+				Debugger.addNode(CommonString.PERMISSIONPUBLIC);
 			}
 		}
 		assert Debugger.addNode("Abstract: " + this.isAbstract);

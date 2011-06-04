@@ -1,6 +1,6 @@
 package com.dafrito.rfe.script.parsing;
 
-import com.dafrito.rfe.gui.debug.DebugString;
+import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
@@ -37,7 +37,7 @@ public class ScriptOperator extends ScriptElement implements Nodeable {
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode(Debugger.getString(DebugString.SCRIPTOPERATOR) + this.getName());
+		assert Debugger.openNode(CommonString.SCRIPTOPERATOR.getText() + this.getName());
 		assert Debugger.closeNode();
 	}
 

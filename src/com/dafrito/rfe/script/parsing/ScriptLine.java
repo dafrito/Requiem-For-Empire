@@ -1,6 +1,6 @@
 package com.dafrito.rfe.script.parsing;
 
-import com.dafrito.rfe.gui.debug.DebugString;
+import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Nodeable;
@@ -27,7 +27,7 @@ public class ScriptLine extends ScriptElement implements Nodeable {
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode(Debugger.getString(DebugString.SCRIPTLINE) + this.string);
+		assert Debugger.openNode(CommonString.SCRIPTLINE.getText() + this.string);
 		assert Debugger.closeNode();
 	}
 
