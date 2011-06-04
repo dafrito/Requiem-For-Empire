@@ -13,6 +13,12 @@ public abstract class Action implements Comparable<Action> {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Action)) {
+			return false;
+		}
 		return this.getName().equals(((Action) obj).getName());
 	}
 
