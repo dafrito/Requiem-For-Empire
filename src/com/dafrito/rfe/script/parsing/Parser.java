@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Vector;
 
 import com.dafrito.rfe.Ace;
@@ -288,18 +289,24 @@ public class Parser {
 	}
 
 	public static List<Object> extractKeywords(List<Object> lineList) throws Exception_Nodeable {
-		for (int i = 0; i < lineList.size(); i++) {
-			if (lineList.get(i) instanceof ScriptGroup) {
-				((ScriptGroup) lineList.get(i)).setElements(extractKeywords(((ScriptGroup) lineList.get(i)).getElements()));
+		ListIterator<Object> iter = lineList.listIterator();
+		while (iter.hasNext()) {
+			Object line = iter.next();
+			if (line instanceof ScriptGroup) {
+				ScriptGroup group = (ScriptGroup) line;
+				group.setElements(extractKeywords(group.getElements()));
 				continue;
 			}
-			if (!(lineList.get(i) instanceof ScriptLine)) {
+			if (!(line instanceof ScriptLine)) {
 				continue;
 			}
-			if (!ScriptKeywordType.UNKNOWN.equals(ScriptKeyword.getType(((ScriptLine) lineList.get(i)).getString()))) {
-				lineList.add(i, new ScriptKeyword((Referenced) lineList.get(i), ScriptKeyword.getType(((ScriptLine) lineList.get(i)).getString())));
-				lineList.remove(i + 1);
+			ScriptLine scriptLine = (ScriptLine) line;
+			ScriptKeywordType keyword = ScriptKeywordType.fromCanonical(scriptLine.getString());
+			if (keyword == null) {
+				continue;
 			}
+			iter.remove();
+			iter.add(new ScriptKeyword(scriptLine, keyword));
 		}
 		return lineList;
 	}

@@ -1,12 +1,9 @@
 package com.dafrito.rfe.script.values;
-import java.util.LinkedList;
-import java.util.List;
 
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.parsing.Referenced;
-import com.dafrito.rfe.script.parsing.ScriptKeyword;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Object;
 
@@ -167,7 +164,7 @@ public class ScriptValueType {
 		}
 		try {
 			if (o instanceof ScriptKeywordType) {
-				return ScriptKeyword.getValueType((ScriptKeywordType) o).getType() == this.getType();
+				return ((ScriptKeywordType) o).getValueType() == this;
 			} else if (o instanceof String) {
 				return this.toString().equals(o);
 			} else {
