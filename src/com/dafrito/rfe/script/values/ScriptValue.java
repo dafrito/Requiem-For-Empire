@@ -7,7 +7,6 @@ import com.dafrito.rfe.script.parsing.Referenced;
 public interface ScriptValue {
 	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable;
 
-	// ScriptValue_Abstract implementation
 	public ScriptEnvironment getEnvironment();
 
 	public ScriptValueType getType();
