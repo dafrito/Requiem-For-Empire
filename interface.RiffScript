@@ -156,3 +156,5 @@ class InitialBenchmark extends RiffDali implements SchedulerListener, MovementEv
 		new InitialBenchmark();
 	}
 }
+
+// vim: set ft=java :
