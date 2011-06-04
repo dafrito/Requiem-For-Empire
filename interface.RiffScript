@@ -27,14 +27,7 @@ class InitialBenchmark extends RiffDali implements SchedulerListener,MovementEva
 
 	public Scenario getScenario(){return scenario;}
 
-	public InitialBenchmark(){
-		Panel panel=new Panel(sheet);
-		terrestrial=new Terrestrial(1000);
-		panel.setRiffDali(this);
-		panel.setTerrestrial(terrestrial);
-		
-		// first region
-		DiscreteRegion region=new DiscreteRegion();
+	private void setupFirst(DiscreteRegion region) {
 		region.add(new Point(0,0,0));
 		region.add(new Point(200,0,0));
 		region.add(new Point(200,50,0));
@@ -47,18 +40,14 @@ class InitialBenchmark extends RiffDali implements SchedulerListener,MovementEva
 		terrain.setWaterDepth(0.0d,1.0d);
 		region.setProperty("Terrain",terrain);
 		terrestrial.add(region);
-		Asset asset=new Asset(point=region.getCenter());
-		asset.addAce(new Ace(new Archetype("Base"),1.0d));
-		asset.setProperty("Foo",new Number(0));
-		region.addAsset(asset);
-				
-		// second region		
-		region=new DiscreteRegion();
+	}
+
+	private void setupSecond(DiscreteRegion region) {
 		region.add(new Point(25,0,0));
 		region.add(new Point(150,0,0));
 		region.add(new Point(150,-50,0));
 		region.add(new Point(25,-50,0));
-		terrain=new Terrain();
+		Terrain terrain=new Terrain();
 		terrain.setBrushDensity(0.5d,1.0d);
 		terrain.setElevation(0.4d,1.0d);
 		terrain.setGroundCohesion(0.8d,1.0d);
@@ -66,22 +55,45 @@ class InitialBenchmark extends RiffDali implements SchedulerListener,MovementEva
 		terrain.setWaterDepth(0.0d,1.0d);
 		region.setProperty("Terrain",terrain);
 		terrestrial.add(region);
-		
-		// third region
-		region=new DiscreteRegion();
+	}
+
+	private void setupThird(DiscreteRegion region) {
 		region.add(new Point(150,-100,0));
 		region.add(new Point(200,-100,0));
 		region.add(new Point(200,0,0));
 		region.add(new Point(150,0,0));
-		terrain=new Terrain();
+		Terrain terrain=new Terrain();
 		terrain.setBrushDensity(0.9d,1.0d);
 		terrain.setElevation(0.6d,1.0d);
 		terrain.setGroundCohesion(0.8d,1.0d);
 		terrain.setTemperature(23.0d,1.0d);
 		terrain.setWaterDepth(0.0d,1.0d);
 		region.setProperty("Terrain",terrain);
-		otherPoint=region.getCenter();
 		terrestrial.add(region);
+	}
+
+	public InitialBenchmark(){
+		Panel panel=new Panel(sheet);
+		terrestrial=new Terrestrial(1000);
+		panel.setRiffDali(this);
+		panel.setTerrestrial(terrestrial);
+		
+		// first region
+		DiscreteRegion region=new DiscreteRegion();
+		setupFirst(region);
+		Asset asset=new Asset(point=region.getCenter());
+		asset.addAce(new Ace(new Archetype("Base"),1.0d));
+		asset.setProperty("Foo",new Number(0));
+		region.addAsset(asset);
+				
+		// second region		
+		region=new DiscreteRegion();
+		setupSecond(region);
+		
+		// third region
+		region=new DiscreteRegion();
+		setupThird(region);
+		otherPoint=region.getCenter();
 
 		scenario=new Scenario(terrestrial,"The Benchmark.");
 		scenario.getScheduler().setDefaultListener(this);
