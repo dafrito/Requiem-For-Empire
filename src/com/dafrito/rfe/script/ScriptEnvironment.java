@@ -1,5 +1,7 @@
 package com.dafrito.rfe.script;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -114,20 +116,20 @@ public class ScriptEnvironment implements Nodeable {
 			for (ScriptTemplate_Abstract template : this.templates.values()) {
 				template.initialize();
 			}
-			List<ScriptValue> params = new LinkedList<ScriptValue>();
+			List<ScriptValue> params = Collections.emptyList();
 			if (Debugger.getDebugger().getPriorityExecutingClass() != null) {
 				if (this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()) != null && this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()).getFunction("main", params) != null) {
 					ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()), "main", params);
 					return;
 				}
 			}
-			List<String> templateNames = new LinkedList<String>();
+			List<String> templateNames = new ArrayList<String>();
 			for (Map.Entry<String, ScriptTemplate_Abstract> entry : this.templates.entrySet()) {
 				if (entry.getValue().getFunction("main", params) != null) {
 					templateNames.add(entry.getKey());
 				}
 			}
-			if (templateNames.size() == 0) {
+			if (templateNames.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "No classes compiled are executable.", "No Executable Class", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
