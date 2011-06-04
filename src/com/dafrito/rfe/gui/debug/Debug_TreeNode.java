@@ -147,6 +147,11 @@ public class Debug_TreeNode implements MutableTreeNode {
 		return this.unique == ((Debug_TreeNode) o).getUnique();
 	}
 
+	@Override
+	public int hashCode() {
+		return this.unique;
+	}
+
 	public Debug_TreeNode filterByData(DefaultListModel data) {
 		if (!this.isRoot()) {
 			return this.getRoot().filterByData(data);
