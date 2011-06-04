@@ -59,47 +59,53 @@ class InitialBenchmark extends RiffDali implements SchedulerListener, MovementEv
 	}
 
 	private void setupFirst(DiscreteRegion region) {
-		region.add(new Point(0, 0, 0));
-		region.add(new Point(200, 0, 0));
+		region.add(new Point(0,    0, 0));
+		region.add(new Point(200,  0, 0));
 		region.add(new Point(200, 50, 0));
-		region.add(new Point(0, 50, 0));
+		region.add(new Point(0,   50, 0));
+
 		Terrain terrain = new Terrain();
-		terrain.setBrushDensity(0.1d, 1.0d);
-		terrain.setElevation(0.5d, 1.0d);
-		terrain.setGroundCohesion(1.0d, 1.0d);
-		terrain.setTemperature(25.0d, 1.0d);
-		terrain.setWaterDepth(0.0d, 1.0d);
+		terrain.setBrushDensity(   0.1d, 1.0d);
+		terrain.setElevation(      0.5d, 1.0d);
+		terrain.setGroundCohesion( 1.0d, 1.0d);
+		terrain.setTemperature(   25.0d, 1.0d);
+		terrain.setWaterDepth(     0.0d, 1.0d);
 		region.setProperty("Terrain", terrain);
+
 		terrestrial.add(region);
 	}
 
 	private void setupSecond(DiscreteRegion region) {
-		region.add(new Point(25, 0, 0));
-		region.add(new Point(150, 0, 0));
+		region.add(new Point(25,    0, 0));
+		region.add(new Point(150,   0, 0));
 		region.add(new Point(150, -50, 0));
-		region.add(new Point(25, -50, 0));
-		Terrain terrain=new Terrain();
-		terrain.setBrushDensity(0.5d, 1.0d);
-		terrain.setElevation(0.4d, 1.0d);
-		terrain.setGroundCohesion(0.8d, 1.0d);
-		terrain.setTemperature(23.0d, 1.0d);
-		terrain.setWaterDepth(0.0d, 1.0d);
+		region.add(new Point(25,  -50, 0));
+
+		Terrain terrain = new Terrain();
+		terrain.setBrushDensity(   0.5d, 1.0d);
+		terrain.setElevation(      0.4d, 1.0d);
+		terrain.setGroundCohesion( 0.8d, 1.0d);
+		terrain.setTemperature(   23.0d, 1.0d);
+		terrain.setWaterDepth(     0.0d, 1.0d);
 		region.setProperty("Terrain", terrain);
+
 		terrestrial.add(region);
 	}
 
 	private void setupThird(DiscreteRegion region) {
 		region.add(new Point(150, -100, 0));
 		region.add(new Point(200, -100, 0));
-		region.add(new Point(200, 0, 0));
-		region.add(new Point(150, 0, 0));
+		region.add(new Point(200,    0, 0));
+		region.add(new Point(150,    0, 0));
+
 		Terrain terrain = new Terrain();
-		terrain.setBrushDensity(0.9d, 1.0d);
-		terrain.setElevation(0.6d, 1.0d);
-		terrain.setGroundCohesion(0.8d, 1.0d);
-		terrain.setTemperature(23.0d, 1.0d);
-		terrain.setWaterDepth(0.0d, 1.0d);
+		terrain.setBrushDensity(   0.9d, 1.0d);
+		terrain.setElevation(      0.6d, 1.0d);
+		terrain.setGroundCohesion( 0.8d, 1.0d);
+		terrain.setTemperature(   23.0d, 1.0d);
+		terrain.setWaterDepth(     0.0d, 1.0d);
 		region.setProperty("Terrain", terrain);
+
 		terrestrial.add(region);
 	}
 
