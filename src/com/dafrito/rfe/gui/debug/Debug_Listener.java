@@ -211,8 +211,9 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 			listener = this.createListener();
 			if (listener == null) {
 				JOptionPane.showMessageDialog(null, "No filtering output defined.", "Undefined Filter", JOptionPane.WARNING_MESSAGE);
+			} else {
+				listener.setFiltering(true);
 			}
-			listener.setFiltering(true);
 			return;
 		}
 		Object[] array = null;

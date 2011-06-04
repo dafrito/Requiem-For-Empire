@@ -1608,15 +1608,16 @@ public class Parser {
 		return exceptions;
 	}
 
-	public static ScriptExecutable_ParseFunction preparseFunction(ScriptEnvironment env, ScriptTemplate_Abstract object, List<Object> modifiers, ScriptGroup paramGroup, ScriptGroup body, String name) throws Exception_Nodeable {
+	public static ScriptExecutable_ParseFunction preparseFunction(ScriptEnvironment env, final ScriptTemplate_Abstract object, List<Object> modifiers, ScriptGroup paramGroup, ScriptGroup body, String name) throws Exception_Nodeable {
 		if (name.equals("")) {
 			assert Debugger.openNode("Preparsing Functions", "Preparsing Function (constructor)");
 		} else {
 			assert Debugger.openNode("Preparsing Functions", "Preparsing Function (" + name + ")");
 		}
-		if (object != null) {
-			assert Debugger.addSnapNode("Reference Template", object);
+		if (object == null) {
+			throw new NullPointerException("object must not be null");
 		}
+		assert Debugger.addSnapNode("Reference Template", object);
 		assert Debugger.addSnapNode("Modifiers", modifiers);
 		assert Debugger.addSnapNode("Parameters", paramGroup);
 		assert Debugger.addSnapNode("Body", body);

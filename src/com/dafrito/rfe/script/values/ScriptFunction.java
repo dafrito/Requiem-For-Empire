@@ -188,7 +188,7 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 
 	@Override
 	public void setReturnValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
-		if (value == null && this.getReturnType().equals(ScriptKeywordType.VOID)) {
+		if (this.getReturnType().equals(ScriptKeywordType.VOID)) {
 			return;
 		}
 		assert Debugger.openNode("Setting Return-Value");

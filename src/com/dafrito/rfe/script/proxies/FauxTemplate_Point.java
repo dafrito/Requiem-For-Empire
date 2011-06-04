@@ -53,7 +53,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 		ScriptValue returning = null;
 		assert Debugger.addSnapNode("Template provided", template);
 		assert Debugger.addSnapNode("Parameters provided", params);
-		if (name == null || name.equals("")) {
+		if (name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Point) this.createObject(ref, template);
 			}
