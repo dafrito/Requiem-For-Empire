@@ -8,14 +8,14 @@ import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Object;
 
 public class ScriptValueType {
-	public static ScriptValueType VOID = new ScriptValueType(null);
-	public static ScriptValueType BOOLEAN = new ScriptValueType(null);
-	public static ScriptValueType SHORT = new ScriptValueType(null);
-	public static ScriptValueType INT = new ScriptValueType(null);
-	public static ScriptValueType LONG = new ScriptValueType(null);
-	public static ScriptValueType FLOAT = new ScriptValueType(null);
-	public static ScriptValueType DOUBLE = new ScriptValueType(null);
-	public static ScriptValueType STRING = new ScriptValueType(null);
+	public static ScriptValueType VOID = new ScriptValueType();
+	public static ScriptValueType BOOLEAN = new ScriptValueType();
+	public static ScriptValueType SHORT = new ScriptValueType();
+	public static ScriptValueType INT = new ScriptValueType();
+	public static ScriptValueType LONG = new ScriptValueType();
+	public static ScriptValueType FLOAT = new ScriptValueType();
+	public static ScriptValueType DOUBLE = new ScriptValueType();
+	public static ScriptValueType STRING = new ScriptValueType();
 
 	public static ScriptValueType createType(Referenced ref, String type) {
 		return new ScriptValueType_StringDeferrer(ref, type);
@@ -145,6 +145,10 @@ public class ScriptValueType {
 	}
 
 	private final ScriptEnvironment environment;
+
+	public ScriptValueType() {
+		this(null);
+	}
 
 	public ScriptValueType(ScriptEnvironment env) {
 		this.type = identifierSeed++;
