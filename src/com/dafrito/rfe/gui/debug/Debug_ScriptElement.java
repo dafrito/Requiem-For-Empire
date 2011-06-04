@@ -1,4 +1,5 @@
 package com.dafrito.rfe.gui.debug;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
