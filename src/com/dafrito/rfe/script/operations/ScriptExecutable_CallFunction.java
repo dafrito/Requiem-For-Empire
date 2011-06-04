@@ -34,10 +34,10 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 		}
 		// Convert our values of questionable nestingness down to pure values
 		List<ScriptValue> baseList = new ArrayList<ScriptValue>();
-		if (params != null && params.size() > 0) {
+		if (params != null && !params.isEmpty()) {
 			assert Debugger.openNode("Getting parameters' core values");
-			for (int i = 0; i < params.size(); i++) {
-				baseList.add(params.get(i).getValue());
+			for (ScriptValue param : params) {
+				baseList.add(param.getValue());
 			}
 			assert Debugger.closeNode("Core value params", baseList);
 		}
