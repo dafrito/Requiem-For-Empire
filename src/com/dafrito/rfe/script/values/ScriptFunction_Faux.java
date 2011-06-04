@@ -1,6 +1,5 @@
 package com.dafrito.rfe.script.values;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
@@ -29,7 +28,7 @@ public class ScriptFunction_Faux extends ScriptFunction implements ScriptFunctio
 	}
 
 	@Override
-	public void addExpressions(Collection<ScriptExecutable> list) throws Exception_Nodeable {
+	public void addExpressions(List<ScriptExecutable> list) throws Exception_Nodeable {
 		throw new Exception_InternalError("Invalid call in faux function");
 	}
 

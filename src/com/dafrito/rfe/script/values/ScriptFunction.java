@@ -1,7 +1,6 @@
 package com.dafrito.rfe.script.values;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -98,7 +97,7 @@ public class ScriptFunction implements Nodeable, ScriptFunction_Abstract {
 	}
 
 	@Override
-	public void addExpressions(Collection<ScriptExecutable> list) throws Exception_Nodeable {
+	public void addExpressions(List<ScriptExecutable> list) throws Exception_Nodeable {
 		for (ScriptExecutable exec : list) {
 			this.addExpression(exec);
 		}

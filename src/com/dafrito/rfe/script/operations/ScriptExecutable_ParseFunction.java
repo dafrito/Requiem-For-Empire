@@ -1,6 +1,5 @@
 package com.dafrito.rfe.script.operations;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
@@ -41,7 +40,7 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	}
 
 	@Override
-	public void addExpressions(Collection<ScriptExecutable> list) throws Exception_Nodeable {
+	public void addExpressions(List<ScriptExecutable> list) throws Exception_Nodeable {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 

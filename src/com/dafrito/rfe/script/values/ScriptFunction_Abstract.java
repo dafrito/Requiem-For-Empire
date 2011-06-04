@@ -1,5 +1,5 @@
 package com.dafrito.rfe.script.values;
-import java.util.Collection;
+
 import java.util.List;
 
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
@@ -10,7 +10,7 @@ import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 public interface ScriptFunction_Abstract {
 	public void addExpression(ScriptExecutable exp) throws Exception_Nodeable;
 
-	public void addExpressions(Collection<ScriptExecutable> list) throws Exception_Nodeable;
+	public void addExpressions(List<ScriptExecutable> list) throws Exception_Nodeable;
 
 	public boolean areParametersConvertible(List<ScriptValue> list);
 
