@@ -6,7 +6,7 @@ public class RiffActions {
 	private static Map<String, Action> actions = new HashMap<String, Action>(); // String ActionName, Action
 
 	public static void addAction(Action action) {
-		RiffActions.actions.put(action.toString(), action);
+		RiffActions.actions.put(action.getName(), action);
 	}
 
 	public static Action getAction(String actionName) {
