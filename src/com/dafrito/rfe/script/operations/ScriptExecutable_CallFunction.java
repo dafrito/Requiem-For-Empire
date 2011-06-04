@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
@@ -33,7 +33,7 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 			assert Debugger.closeNode("Core value", object);
 		}
 		// Convert our values of questionable nestingness down to pure values
-		Vector<ScriptValue> baseList = new Vector<ScriptValue>();
+		List<ScriptValue> baseList = new ArrayList<ScriptValue>();
 		if (params != null && params.size() > 0) {
 			assert Debugger.openNode("Getting parameters' core values");
 			for (int i = 0; i < params.size(); i++) {

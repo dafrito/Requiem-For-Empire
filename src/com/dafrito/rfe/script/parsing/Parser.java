@@ -1,12 +1,12 @@
 package com.dafrito.rfe.script.parsing;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Vector;
 
 import com.dafrito.rfe.Ace;
 import com.dafrito.rfe.Archetype;
@@ -621,8 +621,8 @@ public class Parser {
 		return statementBodyList;
 	}
 
-	public static Vector<Exception> parseElements(ScriptEnvironment env) {
-		Vector<Exception> exceptions = new Vector<Exception>();
+	public static List<Exception> parseElements(ScriptEnvironment env) {
+		List<Exception> exceptions = new ArrayList<Exception>();
 		try {
 			assert Debugger.openNode("Element Parsing", "Parsing Elements");
 			List<ScriptTemplate_Abstract> queuedTemplates = new LinkedList<ScriptTemplate_Abstract>();
@@ -988,8 +988,8 @@ public class Parser {
 		throw new Exception_InternalError(env, "Defaulted in parseExpression");
 	}
 
-	public static Vector<Exception> parseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
-		Vector<Exception> exceptions = new Vector<Exception>();
+	public static List<Exception> parseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
+		List<Exception> exceptions = new ArrayList<Exception>();
 		try {
 			clearPreparseLists();
 			assert Debugger.openNode("File Parsing", "Parsing file (" + filename + ")");
@@ -1589,8 +1589,8 @@ public class Parser {
 		assert Debugger.closeNode();
 	}
 
-	public static Vector<Exception> preparseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
-		Vector<Exception> exceptions = new Vector<Exception>();
+	public static List<Exception> preparseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
+		List<Exception> exceptions = new ArrayList<Exception>();
 		try {
 			assert Debugger.openNode("File Preparsing", "Preparsing file (" + filename + ")");
 			assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);

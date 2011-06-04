@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script;
 
-import java.util.Vector;
+import java.util.List;
 
 import com.dafrito.rfe.gui.debug.DebugEnvironment;
 import com.dafrito.rfe.gui.debug.Debug_ScriptElement;
@@ -42,7 +42,7 @@ public class CompileThread extends Thread {
 			this.debugEnvironment.setStatus("One or more files had errors during compilation.");
 			return;
 		}
-		Vector<Exception> exceptions = Parser.parseElements(this.scriptEnvironment);
+		List<Exception> exceptions = Parser.parseElements(this.scriptEnvironment);
 		if (exceptions.size() == 0) {
 			this.debugEnvironment.canExecute(true);
 			this.debugEnvironment.setStatus("All files compiled successfully.");

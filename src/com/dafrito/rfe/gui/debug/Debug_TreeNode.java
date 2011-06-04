@@ -1,5 +1,6 @@
 package com.dafrito.rfe.gui.debug;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Enumeration;
@@ -7,7 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.tree.MutableTreeNode;
@@ -20,11 +21,11 @@ import com.dafrito.rfe.strings.NamedTreePath;
 
 public class Debug_TreeNode implements MutableTreeNode {
 	private static int identifier = 0;
-	private static Vector<Object> cacheData = new Vector<Object>();
-	private static Vector<Incrementor> cacheDataRepetitions = new Vector<Incrementor>();
-	private static java.util.Map<Object, Integer> cacheMap = new HashMap<Object, Integer>();
+	private static List<Object> cacheData = new ArrayList<Object>();
+	private static List<Incrementor> cacheDataRepetitions = new ArrayList<Incrementor>();
+	private static Map<Object, Integer> cacheMap = new HashMap<Object, Integer>();
 
-	private static java.util.Map<CommonString, Object> precacheData = new EnumMap<CommonString, Object>(CommonString.class);
+	private static Map<CommonString, Object> precacheData = new EnumMap<CommonString, Object>(CommonString.class);
 
 	static {
 		for (CommonString str : CommonString.values()) {

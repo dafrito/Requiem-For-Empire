@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -606,7 +605,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			}
 			String threadName = Thread.currentThread().getName();
 			if (filteredOutputMap.get(threadName) == null || filteredOutputMap.get(threadName).isEmpty()) {
-				filteredOutputMap.put(threadName, new Vector<Debug_Listener>());
+				filteredOutputMap.put(threadName, new ArrayList<Debug_Listener>());
 				filteredOutputMap.get(threadName).add(new Debug_Listener(threadName, DebugEnvironment.this, null, threadName));
 				filteredPanes.add(threadName, filteredOutputMap.get(threadName).get(0));
 			}

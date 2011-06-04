@@ -11,9 +11,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
@@ -52,8 +53,8 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	private JList errors;
 	private JSplitPane splitPane;
 	private int width;
-	private Vector<Exception> exceptions;
-	private Vector<String> displayedExceptions;
+	private List<Exception> exceptions;
+	private List<String> displayedExceptions;
 	private String prefix = "";
 
 	public Debug_ScriptElement(DebugEnvironment debugger) {
@@ -79,7 +80,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	public void addException(Exception exception) {
 		this.exceptions.add(exception);
 		this.prefix = "X ";
-		this.errors.setListData(this.displayedExceptions);
+		this.errors.setListData(this.displayedExceptions.toArray());
 		this.errors.setBorder(BorderFactory.createTitledBorder(this.getFilename() + "(" + this.exceptions.size() + " error(s))"));
 		if (exception instanceof Exception_Nodeable) {
 			this.displayedExceptions.add(((Exception_Nodeable) exception).getName());
@@ -124,7 +125,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 		this.errors.addListSelectionListener(this);
 		this.errors.addMouseListener(this);
 		this.exceptions = Parser.preparseFile(env, this.getFilename(), strings);
-		this.displayedExceptions = new Vector<String>();
+		this.displayedExceptions = new ArrayList<String>();
 		if (this.exceptions.size() == 0) {
 			this.errors.setBorder(BorderFactory.createTitledBorder("Compiled Successfully"));
 			this.prefix = "";
@@ -139,7 +140,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 					this.displayedExceptions.add(ex.getMessage());
 				}
 			}
-			this.errors.setListData(this.displayedExceptions);
+			this.errors.setListData(this.displayedExceptions.toArray());
 			this.errors.setBorder(BorderFactory.createTitledBorder(this.getName() + "(" + this.exceptions.size() + " error(s))"));
 			this.prefix = "X ";
 			return false;
