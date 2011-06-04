@@ -1,39 +1,50 @@
 package com.dafrito.rfe.geom;
 
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class IntersectionPoint implements Nodeable {
-	private Point point;
-	private boolean isTangent;
+@Inspectable
+public class IntersectionPoint {
+	private final Point point;
+	private final boolean isTangent;
 
-	public IntersectionPoint(Point point, boolean isTangent) {
+	public IntersectionPoint(final Point point, final boolean isTangent) {
 		this.isTangent = isTangent;
 		this.point = point;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof IntersectionPoint)) {
-			return false;
-		}
-		return this.getPoint().equals(((IntersectionPoint) o).getPoint());
-	}
-
+	@Inspectable
 	public Point getPoint() {
 		return this.point;
 	}
 
+	@Inspectable
 	public boolean isTangent() {
 		return this.isTangent;
 	}
 
 	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Intersection Point");
-		assert Debugger.addNode("Point: " + this.point);
-		assert Debugger.addNode("Tangent: " + this.isTangent);
-		assert Debugger.closeNode();
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof IntersectionPoint)) {
+			return false;
+		}
+		IntersectionPoint other = (IntersectionPoint) obj;
+		return this.getPoint().equals(other.getPoint()) &&
+				this.isTangent() == other.isTangent();
+	}
+
+	@Override
+	public int hashCode() {
+		int result = this.isTangent() ? 31 : 19;
+		result = 31 * result + this.getPoint().hashCode();
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Intersection%s@%s", this.isTangent() ? "[tangent]" : "", this.getPoint());
 	}
 }

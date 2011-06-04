@@ -66,4 +66,9 @@ public class Archetype implements ScriptConvertible<FauxTemplate_Archetype> {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+
 }
