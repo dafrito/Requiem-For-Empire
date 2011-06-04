@@ -914,6 +914,8 @@ public class Parser {
 						assert Debugger.addSnapNode("Expression Parsing", "Auto-mathematicator parsed", returnValue);
 						return returnValue;
 					}
+				default:
+					throw new IllegalArgumentException("Unexpected operator:" + obj);
 				}
 			}
 			// Placeholder object creation, function calls, right-side variables
