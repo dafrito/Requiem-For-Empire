@@ -9,14 +9,14 @@ import com.dafrito.rfe.inspect.Inspectable;
 @Inspectable
 public class RiffIntersectionPoint {
 	private final Point intersection;
-	private final int location;
+	private final int listOffset;
 
-	public RiffIntersectionPoint(final Point intersection, final int location) {
+	public RiffIntersectionPoint(final Point intersection, final int listOffset) {
 		if (intersection == null) {
 			throw new NullPointerException("intersection must not be null");
 		}
 		this.intersection = intersection;
-		this.location = location;
+		this.listOffset = listOffset;
 	}
 
 	@Inspectable
@@ -25,8 +25,8 @@ public class RiffIntersectionPoint {
 	}
 
 	@Inspectable
-	public int getLocation() {
-		return this.location;
+	public int getListOffset() {
+		return this.listOffset;
 	}
 
 	@Override
@@ -39,19 +39,19 @@ public class RiffIntersectionPoint {
 		}
 		RiffIntersectionPoint other = (RiffIntersectionPoint) obj;
 		return this.getIntersection().equals(other.getIntersection()) &&
-				this.getLocation() == other.getLocation();
+				this.getListOffset() == other.getListOffset();
 	}
 
 	@Override
 	public int hashCode() {
 		int result = 13;
 		result = 31 * result + this.getIntersection().hashCode();
-		result = 31 * result + this.getLocation();
+		result = 31 * result + this.getListOffset();
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("RiffIntersectionPoint[%s]@%s", this.getLocation(), this.getIntersection());
+		return String.format("RiffIntersectionPoint[%s]@%s", this.getListOffset(), this.getIntersection());
 	}
 }

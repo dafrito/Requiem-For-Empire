@@ -1320,21 +1320,21 @@ public class Polygons {
 		assert Debugger.addSnapNode("Valid intersections found, so creating new polygon.", intersectedList);
 		DiscreteRegion newRegion = new DiscreteRegion(otherRegion.getEnvironment(), otherRegion.getProperties());
 		newRegion.addPoint(intersectedList.get(0).getIntersection());
-		for (int q = Math.min(intersectedList.get(0).getLocation(), intersectedList.get(1).getLocation()); q < Math.max(intersectedList.get(0).getLocation(), intersectedList.get(1).getLocation()); q++) {
+		for (int q = Math.min(intersectedList.get(0).getListOffset(), intersectedList.get(1).getListOffset()); q < Math.max(intersectedList.get(0).getListOffset(), intersectedList.get(1).getListOffset()); q++) {
 			newRegion.addPoint(otherRegionPoints.get(q + 1));
 		}
 		newRegion.addPoint(intersectedList.get(1).getIntersection());
 		assert Debugger.addSnapNode("New region formed.", newRegion);
-		if (intersectedList.get(0).getLocation() < intersectedList.get(1).getLocation()) {
-			otherRegion.addPointAt(intersectedList.get(0).getLocation() + 1, intersectedList.get(0).getIntersection());
-			otherRegion.addPointAt(intersectedList.get(1).getLocation() + 2, intersectedList.get(1).getIntersection());
+		if (intersectedList.get(0).getListOffset() < intersectedList.get(1).getListOffset()) {
+			otherRegion.addPointAt(intersectedList.get(0).getListOffset() + 1, intersectedList.get(0).getIntersection());
+			otherRegion.addPointAt(intersectedList.get(1).getListOffset() + 2, intersectedList.get(1).getIntersection());
 		} else {
-			otherRegion.addPointAt(intersectedList.get(1).getLocation() + 1, intersectedList.get(0).getIntersection());
-			otherRegion.addPointAt(intersectedList.get(0).getLocation() + 2, intersectedList.get(1).getIntersection());
+			otherRegion.addPointAt(intersectedList.get(1).getListOffset() + 1, intersectedList.get(0).getIntersection());
+			otherRegion.addPointAt(intersectedList.get(0).getListOffset() + 2, intersectedList.get(1).getIntersection());
 		}
 		assert Debugger.addSnapNode("Old region after intersect-point addition", otherRegion);
-		for (int q = Math.min(intersectedList.get(0).getLocation(), intersectedList.get(1).getLocation()); q < Math.max(intersectedList.get(0).getLocation(), intersectedList.get(1).getLocation()); q++) {
-			otherRegion.removePoint((2 + Math.min(intersectedList.get(0).getLocation(), intersectedList.get(1).getLocation())) % otherRegion.getPoints().size());
+		for (int q = Math.min(intersectedList.get(0).getListOffset(), intersectedList.get(1).getListOffset()); q < Math.max(intersectedList.get(0).getListOffset(), intersectedList.get(1).getListOffset()); q++) {
+			otherRegion.removePoint((2 + Math.min(intersectedList.get(0).getListOffset(), intersectedList.get(1).getListOffset())) % otherRegion.getPoints().size());
 			assert Debugger.addSnapNode("Point-Removals", "Current State", otherRegion);
 		}
 		assert Debugger.addSnapNode("Old region", otherRegion);
