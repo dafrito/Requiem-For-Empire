@@ -51,15 +51,15 @@ class PointSideStruct implements Nodeable {
 	}
 
 	public List<Point> getIndeterminates() {
-		return this.indeterminates;
+		return Collections.unmodifiableList(this.indeterminates);
 	}
 
 	public List<Point> getLeftPoints() {
-		return this.left;
+		return Collections.unmodifiableList(this.left);
 	}
 
 	public List<Point> getRightPoints() {
-		return this.right;
+		return Collections.unmodifiableList(this.right);
 	}
 
 	public boolean hasIndeterminates() {
