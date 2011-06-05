@@ -41,8 +41,14 @@ public class RiffIntersectionPoint {
 	}
 
 	@Override
+	public int hashCode() {
+		int result = 13;
+		result = 31 * result + this.getIntersection().hashCode();
+		return result;
+	}
+
+	@Override
 	public String toString() {
 		return String.format("RiffIntersectionPoint[%s]@%s", this.getLocation(), this.getIntersection());
 	}
-
 }
