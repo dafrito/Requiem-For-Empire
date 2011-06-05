@@ -11,7 +11,9 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
 class PointSideStruct implements Nodeable {
-	private List<Point> left, right, indeterminates;
+	private final List<Point> left;
+	private final List<Point> right;
+	private final List<Point> indeterminates;
 	double leftWeight, rightWeight;
 
 	public PointSideStruct() {
