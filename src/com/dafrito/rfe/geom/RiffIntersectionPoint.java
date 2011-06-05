@@ -36,4 +36,10 @@ public class RiffIntersectionPoint {
 		}
 		return this.getIntersection().equals(((RiffIntersectionPoint) o).getIntersection());
 	}
+
+	@Override
+	public String toString() {
+		return String.format("RiffIntersectionPoint[%s]@%s", this.getLocation(), this.getIntersection());
+	}
+
 }
