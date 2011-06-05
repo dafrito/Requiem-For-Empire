@@ -67,19 +67,19 @@ class PointSideStruct implements Nodeable {
 	}
 
 	public boolean isColinear() {
-		return this.left.size() == 0 && this.right.size() == 0;
+		return this.left.isEmpty() && this.right.isEmpty();
 	}
 
 	public boolean isGreaterThan() {
-		return this.left.size() == 0 && this.right.size() != 0;
+		return this.left.isEmpty() && !this.right.isEmpty();
 	}
 
 	public boolean isLessThan() {
-		return this.left.size() != 0 && this.right.size() == 0;
+		return !this.left.isEmpty() && this.right.isEmpty();
 	}
 
 	public boolean isStraddling() {
-		return this.left.size() != 0 && this.right.size() != 0;
+		return !this.left.isEmpty() && !this.right.isEmpty();
 	}
 
 	@Override
