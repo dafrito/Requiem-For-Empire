@@ -3,7 +3,8 @@
  */
 package com.dafrito.rfe.geom;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.dafrito.rfe.geom.points.Point;
@@ -17,15 +18,22 @@ class PointSideStruct implements Nodeable {
 	double leftWeight, rightWeight;
 
 	public PointSideStruct() {
-		this.left = new LinkedList<Point>();
-		this.right = new LinkedList<Point>();
-		this.indeterminates = new LinkedList<Point>();
+		this(Collections.<Point> emptyList(), Collections.<Point> emptyList(), Collections.<Point> emptyList());
 	}
 
-	public PointSideStruct(List<Point> left, List<Point> right, List<Point> indet) {
-		this.left = left;
-		this.right = right;
-		this.indeterminates = indet;
+	public PointSideStruct(final List<Point> left, final List<Point> right, final List<Point> indet) {
+		if (left == null) {
+			throw new NullPointerException("list must not be null");
+		}
+		this.left = new ArrayList<Point>(left);
+		if (right == null) {
+			throw new NullPointerException("right must not be null");
+		}
+		this.right = new ArrayList<Point>(right);
+		if (indet == null) {
+			throw new NullPointerException("indet must not be null");
+		}
+		this.indeterminates = new ArrayList<Point>(indet);
 	}
 
 	public void addIndeterminate(Point point) {
