@@ -38,13 +38,15 @@ public class RiffIntersectionPoint {
 			return false;
 		}
 		RiffIntersectionPoint other = (RiffIntersectionPoint) obj;
-		return this.getIntersection().equals(other.getIntersection());
+		return this.getIntersection().equals(other.getIntersection()) &&
+				this.getLocation() == other.getLocation();
 	}
 
 	@Override
 	public int hashCode() {
 		int result = 13;
 		result = 31 * result + this.getIntersection().hashCode();
+		result = 31 * result + this.getLocation();
 		return result;
 	}
 
