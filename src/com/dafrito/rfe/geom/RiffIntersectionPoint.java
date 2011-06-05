@@ -8,17 +8,17 @@ import com.dafrito.rfe.inspect.Inspectable;
 
 @Inspectable
 public class RiffIntersectionPoint {
-	private final Point intersect;
+	private final Point intersection;
 	private final int location;
 
-	public RiffIntersectionPoint(final Point intersect, final int location) {
-		this.intersect = intersect;
+	public RiffIntersectionPoint(final Point intersection, final int location) {
+		this.intersection = intersection;
 		this.location = location;
 	}
 
 	@Inspectable
 	public Point getIntersection() {
-		return this.intersect;
+		return this.intersection;
 	}
 
 	@Inspectable
