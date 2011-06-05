@@ -12,6 +12,9 @@ public class RiffIntersectionPoint {
 	private final int location;
 
 	public RiffIntersectionPoint(final Point intersection, final int location) {
+		if (intersection == null) {
+			throw new NullPointerException("intersection must not be null");
+		}
 		this.intersection = intersection;
 		this.location = location;
 	}
