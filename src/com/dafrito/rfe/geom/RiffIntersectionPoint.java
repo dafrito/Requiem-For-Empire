@@ -8,10 +8,10 @@ import com.dafrito.rfe.inspect.Inspectable;
 
 @Inspectable
 public class RiffIntersectionPoint {
-	private Point intersect;
-	private int location;
+	private final Point intersect;
+	private final int location;
 
-	public RiffIntersectionPoint(Point intersect, int location) {
+	public RiffIntersectionPoint(final Point intersect, final int location) {
 		this.intersect = intersect;
 		this.location = location;
 	}
@@ -33,5 +33,4 @@ public class RiffIntersectionPoint {
 		}
 		return this.getIntersection().equals(((RiffIntersectionPoint) o).getIntersection());
 	}
-
 }
