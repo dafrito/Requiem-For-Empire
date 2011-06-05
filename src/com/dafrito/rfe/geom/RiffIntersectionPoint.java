@@ -4,10 +4,10 @@
 package com.dafrito.rfe.geom;
 
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class RiffIntersectionPoint implements Nodeable {
+@Inspectable
+public class RiffIntersectionPoint {
 	private Point intersect;
 	private int location;
 
@@ -16,20 +16,14 @@ public class RiffIntersectionPoint implements Nodeable {
 		this.location = location;
 	}
 
+	@Inspectable
 	public Point getIntersection() {
 		return this.intersect;
 	}
 
+	@Inspectable
 	public int getLocation() {
 		return this.location;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Intersection-Point Struct");
-		assert Debugger.addNode("Intersection-Point: " + this.intersect);
-		assert Debugger.addNode("Point-list offset of intersection: " + this.location);
-		assert Debugger.closeNode();
 	}
 
 	@Override
