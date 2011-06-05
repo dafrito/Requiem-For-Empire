@@ -8,14 +8,14 @@ import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Object;
 
 public class ScriptValueType {
-	public static ScriptValueType VOID = new ScriptValueType();
-	public static ScriptValueType BOOLEAN = new ScriptValueType();
-	public static ScriptValueType SHORT = new ScriptValueType();
-	public static ScriptValueType INT = new ScriptValueType();
-	public static ScriptValueType LONG = new ScriptValueType();
-	public static ScriptValueType FLOAT = new ScriptValueType();
-	public static ScriptValueType DOUBLE = new ScriptValueType();
-	public static ScriptValueType STRING = new ScriptValueType();
+	public static final ScriptValueType VOID = new ScriptValueType();
+	public static final ScriptValueType BOOLEAN = new ScriptValueType();
+	public static final ScriptValueType SHORT = new ScriptValueType();
+	public static final ScriptValueType INT = new ScriptValueType();
+	public static final ScriptValueType LONG = new ScriptValueType();
+	public static final ScriptValueType FLOAT = new ScriptValueType();
+	public static final ScriptValueType DOUBLE = new ScriptValueType();
+	public static final ScriptValueType STRING = new ScriptValueType();
 
 	public static ScriptValueType createType(Referenced ref, String type) {
 		return new ScriptValueType_StringDeferrer(ref, type);
