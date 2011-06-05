@@ -37,7 +37,8 @@ public class RiffIntersectionPoint {
 		if (!(obj instanceof RiffIntersectionPoint)) {
 			return false;
 		}
-		return this.getIntersection().equals(((RiffIntersectionPoint) obj).getIntersection());
+		RiffIntersectionPoint other = (RiffIntersectionPoint) obj;
+		return this.getIntersection().equals(other.getIntersection());
 	}
 
 	@Override
