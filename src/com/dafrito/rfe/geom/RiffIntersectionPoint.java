@@ -30,11 +30,11 @@ public class RiffIntersectionPoint {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof RiffIntersectionPoint)) {
+	public boolean equals(Object obj) {
+		if (!(obj instanceof RiffIntersectionPoint)) {
 			return false;
 		}
-		return this.getIntersection().equals(((RiffIntersectionPoint) o).getIntersection());
+		return this.getIntersection().equals(((RiffIntersectionPoint) obj).getIntersection());
 	}
 
 	@Override
