@@ -16,14 +16,6 @@ public class RiffIntersectionPoint implements Nodeable {
 		this.location = location;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof RiffIntersectionPoint)) {
-			return false;
-		}
-		return this.getIntersection().equals(((RiffIntersectionPoint) o).getIntersection());
-	}
-
 	public Point getIntersection() {
 		return this.intersect;
 	}
@@ -39,4 +31,13 @@ public class RiffIntersectionPoint implements Nodeable {
 		assert Debugger.addNode("Point-list offset of intersection: " + this.location);
 		assert Debugger.closeNode();
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof RiffIntersectionPoint)) {
+			return false;
+		}
+		return this.getIntersection().equals(((RiffIntersectionPoint) o).getIntersection());
+	}
+
 }
