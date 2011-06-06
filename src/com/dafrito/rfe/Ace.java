@@ -1,10 +1,6 @@
 package com.dafrito.rfe;
 
 import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.script.ScriptConvertible;
-import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.proxies.FauxTemplate_Ace;
-import com.dafrito.rfe.script.values.ScriptValueType;
 
 /**
  * Relate the efficiency of some {@link Asset} to represent some
@@ -17,20 +13,13 @@ import com.dafrito.rfe.script.values.ScriptValueType;
  * 
  */
 @Inspectable
-public class Ace implements ScriptConvertible<FauxTemplate_Ace> {
+public class Ace {
 	private Archetype archetype;
 	private double efficiency;
 
 	public Ace(Archetype archetype, double efficiency) {
 		this.archetype = archetype;
 		this.efficiency = efficiency;
-	}
-
-	@Override
-	public FauxTemplate_Ace convert(ScriptEnvironment env) {
-		FauxTemplate_Ace ace = new FauxTemplate_Ace(env, ScriptValueType.createType(env, FauxTemplate_Ace.ACESTRING));
-		ace.setAce(this);
-		return ace;
 	}
 
 	@Inspectable

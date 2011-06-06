@@ -477,8 +477,10 @@ public class Parser {
 	}
 
 	// Engine->Script Conversion functions
-	public static FauxTemplate_Ace getRiffAce(Object obj) throws Exception_Nodeable {
-		return (FauxTemplate_Ace) convert(null, obj);
+	public static FauxTemplate_Ace getRiffAce(ScriptEnvironment env, Ace ace) throws Exception_Nodeable {
+		FauxTemplate_Ace wrappedAce = new FauxTemplate_Ace(env, ScriptValueType.createType(env, FauxTemplate_Ace.ACESTRING));
+		wrappedAce.setAce(ace);
+		return wrappedAce;
 	}
 
 	public static FauxTemplate_Archetype getRiffArchetype(Object obj) throws Exception_Nodeable {
