@@ -16,14 +16,9 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_Asset;
 
 @Inspectable
 public class Asset implements Nodeable, ScriptConvertible<FauxTemplate_Asset> {
-	private ScriptEnvironment environment;
 	private Map<String, Object> properties = new HashMap<String, Object>();
 	private Point location;
 	private List<Ace> aces = new LinkedList<Ace>();
-
-	public Asset(ScriptEnvironment environment) {
-		this.environment = environment;
-	}
 
 	public void addAce(Ace ace) {
 		this.aces.add(ace);
@@ -32,7 +27,7 @@ public class Asset implements Nodeable, ScriptConvertible<FauxTemplate_Asset> {
 	// ScriptConvertible implementation
 	@Override
 	public FauxTemplate_Asset convert(ScriptEnvironment env) {
-		FauxTemplate_Asset asset = new FauxTemplate_Asset(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_Asset.ASSETSTRING).getType());
+		FauxTemplate_Asset asset = new FauxTemplate_Asset(env, env.getTemplate(FauxTemplate_Asset.ASSETSTRING).getType());
 		asset.setAsset(this);
 		return asset;
 	}
@@ -40,10 +35,6 @@ public class Asset implements Nodeable, ScriptConvertible<FauxTemplate_Asset> {
 	@Inspectable
 	public List<Ace> getAces() {
 		return Collections.unmodifiableList(this.aces);
-	}
-
-	public ScriptEnvironment getEnvironment() {
-		return this.environment;
 	}
 
 	@Inspectable

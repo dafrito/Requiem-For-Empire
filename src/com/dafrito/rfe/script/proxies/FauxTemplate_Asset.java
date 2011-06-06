@@ -30,7 +30,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 
 	public FauxTemplate_Asset(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.asset = new Asset(env);
+		this.asset = new Asset();
 	}
 
 	// Nodeable and ScriptConvertible interfaces
