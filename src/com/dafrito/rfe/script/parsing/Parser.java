@@ -460,8 +460,8 @@ public class Parser {
 		return ((FauxTemplate_List) getCoreValue(obj)).getList();
 	}
 
-	public static Long getLong(Object obj) throws Exception_Nodeable {
-		return (Long) convert(null, ((ScriptValue) obj).castToType(null, ScriptValueType.LONG));
+	public static Long getLong(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Long) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.LONG));
 	}
 
 	public static Number getNumber(Object obj) throws Exception_Nodeable {
