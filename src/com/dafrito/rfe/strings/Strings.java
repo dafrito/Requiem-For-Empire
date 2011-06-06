@@ -25,7 +25,7 @@ public final class Strings {
 			ext = s.substring(i + 1).toLowerCase();
 		}
 		if (ext == null) {
-			ext = new String("");
+			ext = "";
 		}
 		return ext;
 	}
@@ -37,7 +37,7 @@ public final class Strings {
 
 	// Helper Function.
 	public static String displayList(Collection<?> list, String singular) {
-		return displayList(list, singular, new String(singular + "s"));
+		return displayList(list, singular, singular + "s");
 	}
 
 	public static String displayList(Collection<?> list, String singular, String plural) {
@@ -46,7 +46,7 @@ public final class Strings {
 
 	// Takes a list and returns a string containing its contents in a readable form.
 	public static String displayList(Collection<?> list, String singular, String plural, int nestedVal) {
-		String string = new String();
+		String string = "";
 		if (list == null || list.isEmpty()) {
 			string += "\n" + tab(nestedVal) + "This list is empty.";
 			return string;
@@ -71,7 +71,7 @@ public final class Strings {
 	}
 
 	public static String displayList(Object[] array) {
-		String string = new String();
+		String string = "";
 		if (array.length == 0) {
 			string += "\nThis list is empty.";
 			return string;
@@ -88,7 +88,7 @@ public final class Strings {
 
 	// Returns a string with a ASCII border around the baseString. The border consists of the character provided by printChar.
 	public static String printBorder(String baseString, String printChar) {
-		String string = new String();
+		String string = "";
 		for (int i = baseString.length() + 2; i > 0; i--) {
 			string += printChar;
 		}
@@ -102,7 +102,7 @@ public final class Strings {
 
 	// Prints a symbol n times.
 	public static String printLine(String symbol, int times) {
-		String string = new String();
+		String string = "";
 		for (int i = 0; i < times; i++) {
 			string += symbol;
 		}
@@ -112,7 +112,7 @@ public final class Strings {
 
 	// Takes a string and creates a new string with a underline beneath the string provided. The underline is formed by a string of the printChar the length of the baseString.
 	public static String printUnderline(String baseString, String printChar) {
-		String string = new String(baseString + "\n");
+		String string = baseString + "\n";
 		for (int i = baseString.length(); i > 0; i--) {
 			string += printChar;
 		}
@@ -125,7 +125,7 @@ public final class Strings {
 	}
 
 	public static String tab(int val, String tab) {
-		String string = new String();
+		String string = "";
 		for (int i = 0; i < val; i++) {
 			string += tab;
 		}
@@ -137,7 +137,7 @@ public final class Strings {
 		if (stream == null) {
 			return null;
 		}
-		String string = new String();
+		String string = "";
 		try {
 			while (true) {
 				int inputNum = stream.read();
