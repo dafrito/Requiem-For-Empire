@@ -87,7 +87,7 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("drawString")) {
-			template.getPanel().drawString(Parser.getString(params.get(0)), Parser.getColor(params.get(1)), Parser.getPoint(params.get(2)));
+			template.getPanel().drawString(Parser.getString(params.get(0)), Parser.getColor(this.getEnvironment(), params.get(1)), Parser.getPoint(params.get(2)));
 			assert Debugger.closeNode();
 			return null;
 		}

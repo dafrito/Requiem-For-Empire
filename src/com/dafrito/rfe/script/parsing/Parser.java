@@ -423,8 +423,8 @@ public class Parser {
 		return (Boolean) convert(env, obj);
 	}
 
-	public static Color getColor(Object obj) throws Exception_Nodeable {
-		return (Color) convert(null, obj);
+	public static Color getColor(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Color) convert(env, obj);
 	}
 
 	// Conversion assistance functions
