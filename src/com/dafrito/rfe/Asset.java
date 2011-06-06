@@ -10,26 +10,15 @@ import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.ScriptConvertible;
-import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.proxies.FauxTemplate_Asset;
 
 @Inspectable
-public class Asset implements Nodeable, ScriptConvertible<FauxTemplate_Asset> {
+public class Asset implements Nodeable {
 	private Map<String, Object> properties = new HashMap<String, Object>();
 	private Point location;
 	private List<Ace> aces = new LinkedList<Ace>();
 
 	public void addAce(Ace ace) {
 		this.aces.add(ace);
-	}
-
-	// ScriptConvertible implementation
-	@Override
-	public FauxTemplate_Asset convert(ScriptEnvironment env) {
-		FauxTemplate_Asset asset = new FauxTemplate_Asset(env, env.getTemplate(FauxTemplate_Asset.ASSETSTRING).getType());
-		asset.setAsset(this);
-		return asset;
 	}
 
 	@Inspectable

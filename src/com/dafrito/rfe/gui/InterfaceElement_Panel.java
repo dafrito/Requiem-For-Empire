@@ -165,7 +165,7 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 				regionList.add(region.convert(this.getEnvironment()));
 				if (region.getProperty("Archetypes") != null) {
 					for (Asset asset : ((ArchetypeMapNode) region.getProperty("Archetypes")).getAllAssets()) {
-						assetList.add(asset.convert(this.getEnvironment()));
+						assetList.add(Parser.getRiffAsset(this.getEnvironment(), asset));
 					}
 				}
 			}

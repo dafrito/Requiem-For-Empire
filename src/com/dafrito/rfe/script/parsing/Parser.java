@@ -491,7 +491,9 @@ public class Parser {
 	}
 
 	public static FauxTemplate_Asset getRiffAsset(ScriptEnvironment env, Asset asset) throws Exception_Nodeable {
-		return convert(env, asset);
+		FauxTemplate_Asset wrapped = new FauxTemplate_Asset(env, env.getTemplate(FauxTemplate_Asset.ASSETSTRING).getType());
+		wrapped.setAsset(asset);
+		return wrapped;
 	}
 
 	public static ScriptValue_Boolean getRiffBoolean(ScriptEnvironment env, boolean value) throws Exception_Nodeable {
