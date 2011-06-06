@@ -45,7 +45,7 @@ public final class Strings {
 	}
 
 	// Takes a list and returns a string containing its contents in a readable form.
-	public static String displayList(Collection<?> list, String singular, String plural, int nestedVal) {
+	private static String displayList(Collection<?> list, String singular, String plural, int nestedVal) {
 		String string = "";
 		if (list == null || list.isEmpty()) {
 			string += "\n" + tab(nestedVal) + "This list is empty.";
