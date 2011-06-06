@@ -57,7 +57,7 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 			assert Debugger.closeNode();
 			return template;
 		} else if (name.equals("add")) {
-			DiscreteRegion region = Parser.getDiscreteRegion(params.get(0));
+			DiscreteRegion region = Parser.getDiscreteRegion(this.getEnvironment(), params.get(0));
 			assert Debugger.addSnapNode("Adding discrete region to terrestrial", region);
 			template.getTerrestrial().add(region);
 			assert Debugger.closeNode();

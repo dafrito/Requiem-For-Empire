@@ -432,8 +432,8 @@ public class Parser {
 		return ((ScriptValue) obj).getValue();
 	}
 
-	public static DiscreteRegion getDiscreteRegion(Object obj) throws Exception_Nodeable {
-		return (DiscreteRegion) convert(null, obj);
+	public static DiscreteRegion getDiscreteRegion(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (DiscreteRegion) convert(env, obj);
 	}
 
 	public static Double getDouble(Object obj) throws Exception_Nodeable {

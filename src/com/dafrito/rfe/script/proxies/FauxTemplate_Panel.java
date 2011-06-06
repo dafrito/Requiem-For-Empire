@@ -71,19 +71,19 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("drawRegion")) {
-			template.getPanel().drawRegion(Parser.getDiscreteRegion(params.get(0)));
+			template.getPanel().drawRegion(Parser.getDiscreteRegion(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("fillRegion")) {
-			template.getPanel().fillRegion(Parser.getDiscreteRegion(params.get(0)));
+			template.getPanel().fillRegion(Parser.getDiscreteRegion(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("drawTransformedRegion")) {
-			template.getPanel().drawTransformedRegion(Parser.getDiscreteRegion(params.get(0)));
+			template.getPanel().drawTransformedRegion(Parser.getDiscreteRegion(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("fillTransformedRegion")) {
-			template.getPanel().fillTransformedRegion(Parser.getDiscreteRegion(params.get(0)));
+			template.getPanel().fillTransformedRegion(Parser.getDiscreteRegion(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("drawString")) {
