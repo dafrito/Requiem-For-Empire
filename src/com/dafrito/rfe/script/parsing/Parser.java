@@ -557,7 +557,9 @@ public class Parser {
 	}
 
 	public static FauxTemplate_Scheduler getRiffScheduler(ScriptEnvironment env, Scheduler scheduler) throws Exception_Nodeable {
-		return convert(env, scheduler);
+		FauxTemplate_Scheduler wrapped = new FauxTemplate_Scheduler(env, ScriptValueType.createType(env, FauxTemplate_Scheduler.SCHEDULERSTRING));
+		wrapped.setScheduler(scheduler);
+		return wrapped;
 	}
 
 	public static ScriptValue_Numeric getRiffShort(ScriptEnvironment env, short value) throws Exception_Nodeable {

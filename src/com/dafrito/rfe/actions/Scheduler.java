@@ -14,19 +14,16 @@ import javax.swing.Timer;
 import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.parsing.Parser;
-import com.dafrito.rfe.script.proxies.FauxTemplate_Scheduler;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
-import com.dafrito.rfe.script.values.ScriptValueType;
 
 @Inspectable
-public class Scheduler implements ActionListener, ScriptConvertible<FauxTemplate_Scheduler> {
+public class Scheduler implements ActionListener {
 	private Timer timer;
 	private ScriptTemplate_Abstract defaultListener;
 	private SortedSet<ScheduledEvent> events = new TreeSet<ScheduledEvent>();
@@ -80,13 +77,6 @@ public class Scheduler implements ActionListener, ScriptConvertible<FauxTemplate
 		} catch (Exception_Nodeable exception) {
 			throw new Exception_InternalError(this.getEnvironment(), exception);
 		}
-	}
-
-	@Override
-	public FauxTemplate_Scheduler convert(ScriptEnvironment env) {
-		FauxTemplate_Scheduler scheduler = new FauxTemplate_Scheduler(env, ScriptValueType.createType(env, FauxTemplate_Scheduler.SCHEDULERSTRING));
-		scheduler.setScheduler(this);
-		return scheduler;
 	}
 
 	@Inspectable
