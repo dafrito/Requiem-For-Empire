@@ -1,11 +1,9 @@
 package com.dafrito.rfe.geom.points;
 
 import com.bluespot.geom.vectors.Vector3d;
-import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.proxies.FauxTemplate_Point;
 
-public class Point_Euclidean extends Point implements ScriptConvertible<FauxTemplate_Point> {
+public class Point_Euclidean extends Point {
 
 	private final Vector3d point;
 
@@ -63,14 +61,6 @@ public class Point_Euclidean extends Point implements ScriptConvertible<FauxTemp
 
 	public void addZ(double offset) {
 		this.point.addZ(offset);
-	}
-
-	// ScriptConvertible implementation
-	@Override
-	public FauxTemplate_Point convert(ScriptEnvironment env) {
-		FauxTemplate_Point point = new FauxTemplate_Point(this.getEnvironment());
-		point.setPoint(this);
-		return point;
 	}
 
 	@Override

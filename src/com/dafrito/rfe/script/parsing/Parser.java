@@ -550,8 +550,10 @@ public class Parser {
 		return wrapped;
 	}
 
-	public static FauxTemplate_Point getRiffPoint(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
-		return (FauxTemplate_Point) convert(env, obj);
+	public static FauxTemplate_Point getRiffPoint(ScriptEnvironment env, Point point) throws Exception_Nodeable {
+		FauxTemplate_Point wrapped = new FauxTemplate_Point(env);
+		wrapped.setPoint(point);
+		return wrapped;
 	}
 
 	public static FauxTemplate_Scheduler getRiffScheduler(ScriptEnvironment env, Scheduler scheduler) throws Exception_Nodeable {
