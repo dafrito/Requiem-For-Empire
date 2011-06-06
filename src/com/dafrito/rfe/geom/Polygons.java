@@ -84,57 +84,61 @@ public class Polygons {
 	// Confirms that the line formed by the two points is an interior line.
 	public static boolean confirmInteriorLine(Point pointA, Point pointB, DiscreteRegion region) {
 		List<Point> pointList = region.getPoints();
-		assert Debugger.printDebug("Polygon/confirmInteriorLine", "(confirmInteriorLine)\nConfirming interior line with these points: " + pointA + ", " + pointB);
-		assert Debugger.printDebug("Polygon/confirmInteriorLine/data", "Region: " + region);
-		assert Debugger.printDebug("Polygon/confirmInteriorLine", "Testing for intersections.");
+		assert Debugger.openNode("ConfirmInteriorLine", "Confirming interior line with these points: " + pointA + ", " + pointB);
+		assert Debugger.addSnapNode("Region", region);
+		assert Debugger.addNode("Testing for intersections.");
 		for (int i = 0; i < pointList.size(); i++) {
 			Point testPointA = pointList.get(i);
 			Point testPointB = pointList.get((i + 1) % pointList.size());
 			if ((testPointA.equals(pointA) && testPointB.equals(pointB)) || (testPointA.equals(pointB) && testPointB.equals(pointA))) {
+				assert Debugger.closeNode();
 				return false;
 			}
 			IntersectionPoint intersect = Polygons.getIntersection(pointA, pointB, testPointA, testPointB);
 			if (intersect != null && !intersect.isTangent()) {
-				assert Debugger.printDebug("Polygon/confirmInteriorLine", "Testing line intersected the polygon, returning false.");
-				assert Debugger.printDebug("Polygon/confirmInteriorLine/data", "Failing line: " + testPointA + ", " + testPointB);
-				assert Debugger.printDebug("Polygon/confirmInteriorLine/data", "(/confirmInteriorLine)");
+				assert Debugger.addNode("Testing line intersected the polygon, returning false.");
+				assert Debugger.closeNode("Failing line: " + testPointA + ", " + testPointB);
 				return false;
 			}
 		}
-		assert Debugger.printDebug("Polygon/confirmInteriorLine", "Checking for crosses.");
+		assert Debugger.addNode("Checking for crosses.");
 		int crosses = Polygons.getCrosses(pointA.getX() + (pointB.getX() - pointA.getX()) / 2, pointA.getY() + (pointB.getY() - pointA.getY()) / 2, region);
 		if (crosses == 0 || crosses % 2 == 0) {
-			assert Debugger.printDebug("Polygon/confirmInteriorLine", "Cross-test failed, returning false.\n(/confirmInteriorLine)");
+			assert Debugger.closeNode("Cross-test failed, returning false.");
 			return false;
 		}
-		assert Debugger.printDebug("Polygon/confirmInteriorLine", "Interior line confirmed, returning true.\n(/confirmInteriorLine)");
+		assert Debugger.closeNode("Interior line confirmed, returning true.");
 		return true;
 	}
 
 	// This process converts a concave polygon to a list of convex polygons.
 	public static List<DiscreteRegion> convertPolyToConvex(DiscreteRegion originalRegion) {
-		assert Debugger.printDebug("Polygon/convertPolyToConvex", "Attempting to convert this polygon into its convex parts...");
-		assert Debugger.printDebug("Polygon/convertPolyToConvex", originalRegion);
+		assert Debugger.openNode("Polygon-to-convex conversions", "Attempting to convert this region into convex parts...");
+		assert Debugger.addSnapNode("Region", originalRegion);
 		DiscreteRegion region = Polygons.optimizePolygon(originalRegion);
-		assert Debugger.printDebug("Polygon/convertPolyToConvex", "Optimized region: " + region);
+		assert Debugger.addSnapNode("Optimized region", region);
 		if (region == null) {
 			return null;
 		}
 		List<DiscreteRegion> convexPolygons = new LinkedList<DiscreteRegion>();
 		if (Polygons.isPolygonConvex(region) == true) {
-			assert Debugger.printDebug("Polygon/convertPolyToConvex", "This polygon is convex, so adding it to the list and returning.");
+			assert Debugger.closeNode("This polygon is convex, so adding it to the list and returning.");
 			convexPolygons.add(region);
 			return convexPolygons;
 		}
-		assert Debugger.printDebug("Polygon/convertPolyToConvex", "This polygon is concave. Attempting to subdivide...");
+		assert Debugger.addNode("This polygon is concave. Attempting to subdivide...");
 		DiscreteRegion testRegion;
 		List<Point> pointList = region.getPoints();
 		for (int i = 0; i < pointList.size(); i++) {
 			boolean alreadyCreated = false;
-			assert Debugger.printDebug("Polygon/convertPolyToConvex", "Attempting to form a triangle from these points:");
-			assert Debugger.printDebug("Polygon/convertPolyToConvex", "First point: " + pointList.get(i) + ", Second Point: " + pointList.get((i + 1) % pointList.size()) + ", Third point: " + pointList.get((i + 2) % pointList.size()));
+			assert Debugger.openNode("Triangle Formations", "Attempting to form a triangle from these points");
+			assert Debugger.openNode("Points");
+			assert Debugger.addSnapNode("First point", pointList.get(i));
+			assert Debugger.addSnapNode("Second point", pointList.get((i + 1) % pointList.size()));
+			assert Debugger.addSnapNode("Third point", pointList.get((i + 2) % pointList.size()));
+			assert Debugger.closeNode(); // Node: Points
 			if (Polygons.confirmInteriorLine(pointList.get(i), pointList.get((i + 2) % pointList.size()), region) == false) {
-				assert Debugger.printDebug("Polygon/convertPolyToConvex", "Failed interior-line test.");
+				assert Debugger.closeNode("Failed interior-line test."); // Node: Triangle Formations
 				continue;
 			}
 			testRegion = new DiscreteRegion(region.getEnvironment(), region.getProperties());
@@ -148,16 +152,18 @@ public class Polygons {
 				}
 			}
 			if (alreadyCreated) {
-				assert Debugger.printDebug("Polygon/convertPolyToConvex", "Polygon already created.");
+				assert Debugger.closeNode("Polygon already created."); // Node: Triangle Formations
 				continue;
 			}
-			assert Debugger.printDebug("Polygon/convertPolyToConvex", "Removing this point: " + pointList.get((i + 1) % pointList.size()));
+			assert Debugger.addSnapNode("Removing this point", pointList.get((i + 1) % pointList.size()));
 			region.removePoint(pointList.get((i + 1) % pointList.size()));
-			assert Debugger.printDebug("Polygon/convertPolyToConvex", "Yielding the new triangle and this remaining region: " + region);
+			assert Debugger.addSnapNode("Yielding the new triangle and this remaining region: ", region);
 			convexPolygons.add(testRegion);
 			convexPolygons.addAll(Polygons.convertPolyToConvex(region));
+			assert Debugger.closeNode(); // Node: Triangle Formations
 			break;
 		}
+		assert Debugger.closeNode(); // Node: Convex conversions
 		return convexPolygons;
 	}
 
