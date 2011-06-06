@@ -464,8 +464,8 @@ public class Parser {
 		return (Long) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.LONG));
 	}
 
-	public static Number getNumber(Object obj) throws Exception_Nodeable {
-		return (Number) convert(null, obj);
+	public static Number getNumber(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Number) convert(env, obj);
 	}
 
 	public static Object getObject(Object obj) throws Exception_Nodeable {
