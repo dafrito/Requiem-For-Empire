@@ -1340,8 +1340,8 @@ public final class Parser {
 
 	public static List<Exception> preparseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
 		List<Exception> exceptions = new ArrayList<Exception>();
+		assert Debugger.openNode("File Preparsing", "Preparsing file (" + filename + ")");
 		try {
-			assert Debugger.openNode("File Preparsing", "Preparsing file (" + filename + ")");
 			assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
 			preparseElements(env, preparseList(stringList));
 			assert Debugger.addNode("Preparsed successfully");
