@@ -567,8 +567,8 @@ public class Parser {
 		return (Scenario) convert(env, obj);
 	}
 
-	public static Scheduler getScheduler(Object obj) throws Exception_Nodeable {
-		return (Scheduler) convert(null, obj);
+	public static Scheduler getScheduler(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Scheduler) convert(env, obj);
 	}
 
 	public static ScriptTemplate_Abstract getSchedulerListener(Object obj) throws Exception_Nodeable {
