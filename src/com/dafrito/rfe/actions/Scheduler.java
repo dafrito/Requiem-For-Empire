@@ -83,7 +83,7 @@ public class Scheduler implements ActionListener, ScriptConvertible<FauxTemplate
 	}
 
 	@Override
-	public FauxTemplate_Scheduler convert() {
+	public FauxTemplate_Scheduler convert(ScriptEnvironment env) {
 		FauxTemplate_Scheduler scheduler = new FauxTemplate_Scheduler(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scheduler.SCHEDULERSTRING));
 		scheduler.setScheduler(this);
 		return scheduler;

@@ -35,7 +35,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Asset convert() {
+	public Asset convert(ScriptEnvironment env) {
 		return this.asset;
 	}
 
@@ -63,7 +63,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 				if (params.size() == 1) {
 					Object property = template.getAsset().getProperty(Parser.getString(params.get(0)));
 					if (property instanceof ScriptConvertible<?>) {
-						return (ScriptValue) ((ScriptConvertible<?>) property).convert();
+						return (ScriptValue) ((ScriptConvertible<?>) property).convert(this.getEnvironment());
 					}
 					return (ScriptValue) property;
 				}

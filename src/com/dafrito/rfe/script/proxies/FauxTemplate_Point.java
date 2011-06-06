@@ -40,7 +40,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 
 	// ScriptConvertible and Nodeable implementations
 	@Override
-	public Point convert() {
+	public Point convert(ScriptEnvironment env) {
 		return this.point;
 	}
 

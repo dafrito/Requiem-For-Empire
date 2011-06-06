@@ -33,7 +33,7 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Point convert() {
+	public Point convert(ScriptEnvironment env) {
 		return this.getPoint();
 	}
 

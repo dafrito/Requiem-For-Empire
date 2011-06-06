@@ -18,7 +18,7 @@ public class Terrain implements GradientValue<Terrain>, ScriptConvertible<FauxTe
 	}
 
 	@Override
-	public FauxTemplate_Terrain convert() {
+	public FauxTemplate_Terrain convert(ScriptEnvironment env) {
 		FauxTemplate_Terrain terrain = new FauxTemplate_Terrain(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_Terrain.TERRAINSTRING).getType());
 		terrain.setTerrain(this);
 		return terrain;

@@ -11,5 +11,5 @@ package com.dafrito.rfe.script;
  *            the type of the converted object
  */
 public interface ScriptConvertible<T> {
-	public T convert();
+	public T convert(ScriptEnvironment env);
 }

@@ -67,7 +67,7 @@ public class Point_Euclidean extends Point implements ScriptConvertible<FauxTemp
 
 	// ScriptConvertible implementation
 	@Override
-	public FauxTemplate_Point convert() {
+	public FauxTemplate_Point convert(ScriptEnvironment env) {
 		FauxTemplate_Point point = new FauxTemplate_Point(this.getEnvironment());
 		point.setPoint(this);
 		return point;

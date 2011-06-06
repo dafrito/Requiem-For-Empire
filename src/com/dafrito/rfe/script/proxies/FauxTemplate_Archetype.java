@@ -34,7 +34,7 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Archetype convert() {
+	public Archetype convert(ScriptEnvironment env) {
 		return this.archetype;
 	}
 

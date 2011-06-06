@@ -33,7 +33,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 
 	// Nodeable implementation
 	@Override
-	public Scheduler convert() {
+	public Scheduler convert(ScriptEnvironment env) {
 		return this.scheduler;
 	}
 

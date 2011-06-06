@@ -31,7 +31,7 @@ public class Asset implements Nodeable, ScriptConvertible<FauxTemplate_Asset> {
 
 	// ScriptConvertible implementation
 	@Override
-	public FauxTemplate_Asset convert() {
+	public FauxTemplate_Asset convert(ScriptEnvironment env) {
 		FauxTemplate_Asset asset = new FauxTemplate_Asset(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_Asset.ASSETSTRING).getType());
 		asset.setAsset(this);
 		return asset;

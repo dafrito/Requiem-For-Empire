@@ -41,7 +41,7 @@ public class Stylesheet extends FauxTemplate implements ScriptValue, ScriptConve
 
 	// ScriptConvertible implementation
 	@Override
-	public Stylesheet convert() {
+	public Stylesheet convert(ScriptEnvironment env) {
 		return this;
 	}
 

@@ -33,7 +33,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 
 	// Convertible and Nodeable implementations
 	@Override
-	public List<ScriptValue> convert() {
+	public List<ScriptValue> convert(ScriptEnvironment env) {
 		return this.list;
 	}
 

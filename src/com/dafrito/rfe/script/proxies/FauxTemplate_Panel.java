@@ -37,7 +37,7 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 
 	// Nodeable and ScriptConvertible implementations
 	@Override
-	public InterfaceElement convert() {
+	public InterfaceElement convert(ScriptEnvironment env) {
 		return this.getElement();
 	}
 

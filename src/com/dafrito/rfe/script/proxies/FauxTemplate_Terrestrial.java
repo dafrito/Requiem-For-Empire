@@ -36,7 +36,7 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 
 	// Nodeable and ScriptConvertible implementations
 	@Override
-	public Terrestrial convert() {
+	public Terrestrial convert(ScriptEnvironment env) {
 		return this.getTerrestrial();
 	}
 

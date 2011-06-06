@@ -35,7 +35,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public DiscreteRegion convert() {
+	public DiscreteRegion convert(ScriptEnvironment env) {
 		return this.region;
 	}
 

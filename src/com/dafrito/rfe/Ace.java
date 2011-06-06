@@ -29,7 +29,7 @@ public class Ace implements ScriptConvertible<FauxTemplate_Ace> {
 	}
 
 	@Override
-	public FauxTemplate_Ace convert() {
+	public FauxTemplate_Ace convert(ScriptEnvironment env) {
 		FauxTemplate_Ace ace = new FauxTemplate_Ace(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Ace.ACESTRING));
 		ace.setAce(this);
 		return ace;

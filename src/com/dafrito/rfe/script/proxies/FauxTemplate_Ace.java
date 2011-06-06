@@ -33,7 +33,7 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Ace convert() {
+	public Ace convert(ScriptEnvironment env) {
 		return this.ace;
 	}
 

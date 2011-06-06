@@ -141,7 +141,7 @@ public class Parser {
 	}
 
 	public static <T> T convert(ScriptEnvironment env, ScriptConvertible<T> object) throws Exception_Nodeable {
-		return object.convert();
+		return object.convert(env);
 	}
 
 	public static Object convert(ScriptEnvironment env, short num) throws Exception_Nodeable {

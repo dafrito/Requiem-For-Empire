@@ -28,7 +28,7 @@ public class ScriptValue_String implements ScriptValue, ScriptConvertible<String
 
 	// Interface implementations
 	@Override
-	public String convert() {
+	public String convert(ScriptEnvironment env) {
 		return this.value;
 	}
 

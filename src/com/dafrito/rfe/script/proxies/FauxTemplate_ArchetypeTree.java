@@ -34,7 +34,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public ArchetypeMapNode convert() {
+	public ArchetypeMapNode convert(ScriptEnvironment env) {
 		return this.tree;
 	}
 

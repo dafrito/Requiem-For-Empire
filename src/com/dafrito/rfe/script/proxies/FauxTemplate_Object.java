@@ -31,7 +31,7 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 
 	// ScriptConvertible and Nodeable implementations
 	@Override
-	public FauxTemplate_Object convert() {
+	public FauxTemplate_Object convert(ScriptEnvironment env) {
 		return this;
 	}
 

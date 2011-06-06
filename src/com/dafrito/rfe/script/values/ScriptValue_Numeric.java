@@ -114,7 +114,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 
 	// Overloaded Functions
 	@Override
-	public Number convert() {
+	public Number convert(ScriptEnvironment env) {
 		return this.number;
 	}
 

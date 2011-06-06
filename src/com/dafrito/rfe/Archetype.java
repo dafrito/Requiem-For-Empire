@@ -48,7 +48,7 @@ public class Archetype implements ScriptConvertible<FauxTemplate_Archetype> {
 	}
 
 	@Override
-	public FauxTemplate_Archetype convert() {
+	public FauxTemplate_Archetype convert(ScriptEnvironment env) {
 		FauxTemplate_Archetype archetype = new FauxTemplate_Archetype(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING));
 		archetype.setArchetype(this);
 		return archetype;

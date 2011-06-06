@@ -36,7 +36,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 
 	// Nodeable and ScriptConvertible interfaces
 	@Override
-	public Color convert() {
+	public Color convert(ScriptEnvironment env) {
 		return this.color;
 	}
 

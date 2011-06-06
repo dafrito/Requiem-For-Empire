@@ -25,7 +25,7 @@ public class GraphicalElement_Line extends InterfaceElement implements Nodeable 
 
 	// ScriptConvertible and Nodeable implementations
 	@Override
-	public FauxTemplate_Line convert() {
+	public FauxTemplate_Line convert(ScriptEnvironment env) {
 		FauxTemplate_Line line = new FauxTemplate_Line(this.getEnvironment());
 		line.setPointA(this.pointA);
 		line.setPointB(this.pointB);

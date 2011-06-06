@@ -36,7 +36,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 
 	// Nodeable implementation
 	@Override
-	public Scenario convert() {
+	public Scenario convert(ScriptEnvironment env) {
 		return this.scenario;
 	}
 

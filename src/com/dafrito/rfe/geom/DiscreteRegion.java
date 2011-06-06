@@ -235,7 +235,7 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_
 
 	// ScriptConvertible implementation
 	@Override
-	public FauxTemplate_DiscreteRegion convert() {
+	public FauxTemplate_DiscreteRegion convert(ScriptEnvironment env) {
 		FauxTemplate_DiscreteRegion region = new FauxTemplate_DiscreteRegion(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING).getType());
 		region.setRegion(this);
 		return region;

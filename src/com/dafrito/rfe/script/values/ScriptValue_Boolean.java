@@ -29,7 +29,7 @@ public class ScriptValue_Boolean implements ScriptConvertible<Boolean>, ScriptVa
 
 	// Overloaded and miscellaneous functions
 	@Override
-	public Boolean convert() {
+	public Boolean convert(ScriptEnvironment env) {
 		return Boolean.valueOf(this.value);
 	}
 

@@ -47,7 +47,7 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 
 	// ScriptConvertible implementation
 	@Override
-	public FauxTemplate_InterfaceElement convert() {
+	public FauxTemplate_InterfaceElement convert(ScriptEnvironment env) {
 		FauxTemplate_InterfaceElement elem = new FauxTemplate_InterfaceElement(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING));
 		elem.setElement(this);
 		return elem;

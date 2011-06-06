@@ -35,7 +35,7 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 
 	// Nodeable implementation
 	@Override
-	public Terrain convert() {
+	public Terrain convert(ScriptEnvironment env) {
 		return this.terrain;
 	}
 

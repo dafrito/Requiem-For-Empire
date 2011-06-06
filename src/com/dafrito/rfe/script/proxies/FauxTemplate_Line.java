@@ -36,7 +36,7 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 
 	// ScriptConvertible and Nodeable implementations
 	@Override
-	public GraphicalElement_Line convert() {
+	public GraphicalElement_Line convert(ScriptEnvironment env) {
 		return new GraphicalElement_Line(this.getEnvironment(), this.getPointA(), this.getPointB());
 	}
 

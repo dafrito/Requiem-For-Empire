@@ -76,7 +76,7 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 
 	// ScriptConvertible implementation
 	@Override
-	public FauxTemplate_Panel convert() {
+	public FauxTemplate_Panel convert(ScriptEnvironment env) {
 		FauxTemplate_Panel panel = new FauxTemplate_Panel(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Panel.PANELSTRING));
 		panel.setElement(this);
 		return panel;
@@ -158,14 +158,14 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 		assert Debugger.addNode("Zoom factor: " + this.offset.getZ());
 		try {
 			List<ScriptValue> params = new LinkedList<ScriptValue>();
-			params.add(this.convert());
+			params.add(this.convert(this.getEnvironment()));
 			List<ScriptValue> regionList = new LinkedList<ScriptValue>();
 			List<ScriptValue> assetList = new LinkedList<ScriptValue>();
 			for (DiscreteRegion region : regions) {
-				regionList.add(region.convert());
+				regionList.add(region.convert(this.getEnvironment()));
 				if (region.getProperty("Archetypes") != null) {
 					for (Asset asset : ((ArchetypeMapNode) region.getProperty("Archetypes")).getAllAssets()) {
-						assetList.add(asset.convert());
+						assetList.add(asset.convert(this.getEnvironment()));
 					}
 				}
 			}

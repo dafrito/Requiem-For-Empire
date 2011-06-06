@@ -35,7 +35,7 @@ public class Point_Path extends Point implements ScriptConvertible<FauxTemplate_
 
 	// ScriptConvertible implementation
 	@Override
-	public FauxTemplate_Path convert() {
+	public FauxTemplate_Path convert(ScriptEnvironment env) {
 		FauxTemplate_Path path = new FauxTemplate_Path(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Path.PATHSTRING));
 		path.setPoint(this);
 		return path;

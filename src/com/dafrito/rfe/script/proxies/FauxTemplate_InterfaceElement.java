@@ -38,7 +38,7 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 
 	// Nodeable implementation
 	@Override
-	public InterfaceElement convert() {
+	public InterfaceElement convert(ScriptEnvironment env) {
 		return this.getElement();
 	}
 
