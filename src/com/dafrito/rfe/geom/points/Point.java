@@ -1,6 +1,5 @@
 package com.dafrito.rfe.geom.points;
 
-import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public abstract class Point {
@@ -11,24 +10,17 @@ public abstract class Point {
 	public static Point createPoint(Point reference, double x, double y, double z) {
 		switch (reference.getSystem()) {
 		case EUCLIDEAN:
-			return new Point_Euclidean(reference.getEnvironment(), x, y, z);
+			return new Point_Euclidean(x, y, z);
 		case SPHERICAL:
-			return new Point_Spherical(reference.getEnvironment(), x, y, z);
+			return new Point_Spherical(x, y, z);
 		}
 		throw new Exception_InternalError("Invalid default");
 	}
 
 	private String name;
 
-	private ScriptEnvironment environment;
-
-	public Point(ScriptEnvironment env, String name) {
-		this.environment = env;
+	public Point(String name) {
 		this.name = name;
-	}
-
-	public ScriptEnvironment getEnvironment() {
-		return this.environment;
 	}
 
 	public String getName() {

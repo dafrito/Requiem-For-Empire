@@ -173,9 +173,9 @@ public class Polygons {
 
 	public static Point createPoint(Point referencePoint, String name, double x, double y, double z) {
 		if (referencePoint instanceof Point_Euclidean) {
-			return new Point_Euclidean(referencePoint.getEnvironment(), name, x, y, 0.0d);
+			return new Point_Euclidean(name, x, y, 0.0d);
 		}
-		return new Point_Spherical(referencePoint.getEnvironment(), name, x, y, 0.0d);
+		return new Point_Spherical(name, x, y, 0.0d);
 	}
 
 	// Using the two given points to create a line, it returns a list of the distribution of points from the polygon. 
@@ -1421,10 +1421,10 @@ public class Polygons {
 
 	public static DiscreteRegion convertToRegion(ScriptEnvironment env, Rectangle rect) {
 		DiscreteRegion region = new DiscreteRegion();
-		region.addPoint(new Point_Euclidean(env, rect.getX(), rect.getY(), 0.0d));
-		region.addPoint(new Point_Euclidean(env, rect.getX(), rect.getY() + rect.getHeight(), 0.0d));
-		region.addPoint(new Point_Euclidean(env, rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight(), 0.0d));
-		region.addPoint(new Point_Euclidean(env, rect.getX() + rect.getWidth(), rect.getY(), 0.0d));
+		region.addPoint(new Point_Euclidean(rect.getX(), rect.getY(), 0.0d));
+		region.addPoint(new Point_Euclidean(rect.getX(), rect.getY() + rect.getHeight(), 0.0d));
+		region.addPoint(new Point_Euclidean(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight(), 0.0d));
+		region.addPoint(new Point_Euclidean(rect.getX() + rect.getWidth(), rect.getY(), 0.0d));
 		Polygons.optimizePolygon(region);
 		return region;
 	}

@@ -74,7 +74,7 @@ public class Terrestrial implements Serializable {
 			}
 		}
 		assert Debugger.openNode("Pathfinding", "Getting path (" + currentPoint + " to " + destinationPoint + ")");
-		Point_Path path = new Point_Path(env, scenario);
+		Point_Path path = new Point_Path(scenario);
 		DiscreteRegion startingRegion;
 		assert this.getTree() != null : "BSP Tree is null!";
 		DiscreteRegion currentRegion = startingRegion = this.getTree().getRegion(currentPoint);

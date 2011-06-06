@@ -20,7 +20,7 @@ public final class Geometry {
 
 	// Converts a Java-point to a RiffPoint
 	public static Point convertPointToEuclidean(ScriptEnvironment env, java.awt.Point point) {
-		return new Point_Euclidean(env, point.getX(), point.getY(), 0);
+		return new Point_Euclidean(point.getX(), point.getY(), 0);
 	}
 
 	public static Color getDiscreteRegionColor(DiscreteRegion region) {

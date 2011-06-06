@@ -39,10 +39,6 @@ public class Archetype {
 
 	@Override
 	public boolean equals(Object o) {
-		// XXX This implementation is invalid, since we consider equal strings equal to us.
-		if (o instanceof String) {
-			return this.name.equals(o);
-		}
 		if (o instanceof Archetype) {
 			return this.name.equals(((Archetype) o).getName());
 		}

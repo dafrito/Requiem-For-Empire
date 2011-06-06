@@ -95,7 +95,7 @@ public class DiscreteRegion implements Nodeable {
 			ax = ax * Math.pow(2, offset.getZ());
 			ay = ay * Math.pow(2, offset.getZ());
 		}
-		return new Point_Euclidean(env, ax + bounds.getX() + width, ay + bounds.getY() + height, 0.0d);
+		return new Point_Euclidean(ax + bounds.getX() + width, ay + bounds.getY() + height, 0.0d);
 	}
 
 	private final List<Point> points = new ArrayList<Point>();

@@ -1,7 +1,6 @@
 package com.dafrito.rfe.geom.points;
 
 import com.bluespot.geom.vectors.Vector3d;
-import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class Point_Spherical extends Point {
 	private static final double LATITUDEMAXIMUM = 180;
@@ -9,12 +8,12 @@ public class Point_Spherical extends Point {
 
 	private final Vector3d point;
 
-	public Point_Spherical(ScriptEnvironment env, double longitude, double latitude, double magnitude) {
-		this(env, null, longitude, latitude, magnitude);
+	public Point_Spherical(double longitude, double latitude, double magnitude) {
+		this(null, longitude, latitude, magnitude);
 	}
 
-	public Point_Spherical(ScriptEnvironment env, String name, double longitude, double latitude, double magnitude) {
-		super(env, name);
+	public Point_Spherical(String name, double longitude, double latitude, double magnitude) {
+		super(name);
 		this.point = Vector3d.mutable(longitude, latitude, magnitude);
 	}
 

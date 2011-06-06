@@ -30,8 +30,8 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 
 	public FauxTemplate_Line(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.pointA = new Point_Euclidean(this.getEnvironment(), 0, 0, 0);
-		this.pointB = new Point_Euclidean(this.getEnvironment(), 0, 0, 0);
+		this.pointA = new Point_Euclidean(0, 0, 0);
+		this.pointB = new Point_Euclidean(0, 0, 0);
 	}
 
 	// ScriptConvertible and Nodeable implementations
@@ -59,8 +59,8 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 				template.setPointB(Parser.getPoint(this.getEnvironment(), params.get(1)));
 				break;
 			case 4:
-				template.setPointA(new Point_Euclidean(this.getEnvironment(), Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue(), Parser.getDouble(this.getEnvironment(), params.get(1)).doubleValue(), 0));
-				template.setPointB(new Point_Euclidean(this.getEnvironment(), Parser.getDouble(this.getEnvironment(), params.get(2)).doubleValue(), Parser.getDouble(this.getEnvironment(), params.get(3)).doubleValue(), 0));
+				template.setPointA(new Point_Euclidean(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue(), Parser.getDouble(this.getEnvironment(), params.get(1)).doubleValue(), 0));
+				template.setPointB(new Point_Euclidean(Parser.getDouble(this.getEnvironment(), params.get(2)).doubleValue(), Parser.getDouble(this.getEnvironment(), params.get(3)).doubleValue(), 0));
 			}
 			params.clear();
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);

@@ -6,7 +6,6 @@ import java.util.List;
 import com.dafrito.rfe.Scenario;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public class Point_Path extends Point implements Nodeable {
@@ -15,12 +14,12 @@ public class Point_Path extends Point implements Nodeable {
 	private long startTime;
 	private Scenario scenario;
 
-	public Point_Path(ScriptEnvironment env, Scenario scenario) {
-		this(env, null, scenario);
+	public Point_Path(Scenario scenario) {
+		this(null, scenario);
 	}
 
-	public Point_Path(ScriptEnvironment env, String name, Scenario scenario) {
-		super(env, null);
+	public Point_Path(String name, Scenario scenario) {
+		super(null);
 		this.scenario = scenario;
 		this.setStartTime(this.scenario.getGameTime());
 	}

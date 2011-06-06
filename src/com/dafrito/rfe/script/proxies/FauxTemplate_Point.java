@@ -31,7 +31,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 
 	public FauxTemplate_Point(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.point = new Point_Euclidean(env, 0, 0, 0);
+		this.point = new Point_Euclidean(0, 0, 0);
 	}
 
 	public FauxTemplate_Point(ScriptEnvironment env, ScriptValueType type, ScriptValueType extended, List<ScriptValueType> implemented, boolean isAbstract) {

@@ -1,6 +1,5 @@
 package com.dafrito.rfe.geom.points;
 
-import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public class Point_Orbital extends Point {
@@ -10,8 +9,8 @@ public class Point_Orbital extends Point {
 	private double yaw, pitch, roll;
 
 	// Constructors
-	public Point_Orbital(ScriptEnvironment env, String name) {
-		super(env, name);
+	public Point_Orbital(String name) {
+		super(name);
 	}
 
 	public double getApoapsis() {

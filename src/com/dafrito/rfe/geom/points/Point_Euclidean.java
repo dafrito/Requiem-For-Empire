@@ -1,18 +1,17 @@
 package com.dafrito.rfe.geom.points;
 
 import com.bluespot.geom.vectors.Vector3d;
-import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class Point_Euclidean extends Point {
 
 	private final Vector3d point;
 
-	public Point_Euclidean(ScriptEnvironment env, double x, double y, double z) {
-		this(env, null, x, y, z);
+	public Point_Euclidean(double x, double y, double z) {
+		this(null, x, y, z);
 	}
 
-	public Point_Euclidean(ScriptEnvironment env, String name, double x, double y, double z) {
-		super(env, name);
+	public Point_Euclidean(String name, double x, double y, double z) {
+		super(name);
 		point = Vector3d.mutable(x, y, z);
 	}
 

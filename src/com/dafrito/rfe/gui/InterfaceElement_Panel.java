@@ -47,7 +47,7 @@ public class InterfaceElement_Panel extends InterfaceElement implements ScriptCo
 
 	public InterfaceElement_Panel(ScriptEnvironment env, Stylesheet uniqueStyle, Stylesheet classStyle) {
 		super(env, uniqueStyle, classStyle);
-		this.offset = new Point_Euclidean(env, 0, 0, 0);
+		this.offset = new Point_Euclidean(0, 0, 0);
 		this.elements = new LinkedList<GraphicalElement>();
 		this.dali = env.getTemplate(FauxTemplate_RiffDali.RIFFDALISTRING);
 	}
