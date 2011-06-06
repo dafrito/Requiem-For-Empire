@@ -1421,20 +1421,23 @@ public class Polygons {
 	}
 
 	public static boolean testforRegionPointSideIntersection(DiscreteRegion region, DiscreteRegion otherRegion) {
-		assert Debugger.printDebug("Polygon/testforRegionPointSideIntersection", "(testforRegionPointSideIntersection)Testing for point-side intersection between these two regions.");
-		assert Debugger.printDebug("Polygon/testforRegionPointSideIntersection/data", "Region: " + region);
-		assert Debugger.printDebug("Polygon/testforRegionPointSideIntersection/data", "OtherRegion: " + otherRegion);
+		assert Debugger.openNode("Point-Side Intersection Tests", "Testing for point-side intersection between these two regions.");
+		assert Debugger.addSnapNode("Region A", region);
+		assert Debugger.addSnapNode("Region B", otherRegion);
 		List<Point> regionList = region.getPoints();
-		assert Debugger.printDebug("Polygon/testforRegionPointSideIntersection", "Beginning line-by-line point-side check.");
+		assert Debugger.addNode("Beginning line-by-line point-side check.");
 		for (int i = 0; i < regionList.size(); i++) {
 			PointSideStruct struct = Polygons.getPointSideList(otherRegion, regionList.get(i), regionList.get((i + 1) % regionList.size()));
 			if (struct.isGreaterThan()) {
-				assert Debugger.printDebug("Polygon/testforRegionPointSideIntersection", "This line guarantees a pass of the point-side test, returning false. Line: " + regionList.get(i) + ", " + regionList.get((i + 1) % regionList.size()));
-				assert Debugger.printDebug("Polygon/testforRegionPointSideIntersection", "(/testForRegionPointSideIntersection)");
+				assert Debugger.openNode("Qualifying line found");
+				assert Debugger.addSnapNode("Point A", regionList.get(i));
+				assert Debugger.addSnapNode("Point B", regionList.get((i + 1) % regionList.size()));
+				assert Debugger.closeNode();
+				assert Debugger.closeNode("This line guarantees a pass of the point-side test, returning false.");
 				return false;
 			}
 		}
-		assert Debugger.printDebug("Polygon/testforRegionPointSideIntersection", "These polygons may intersect, returning true.\n(/testForRegionPointSideIntersection)");
+		assert Debugger.closeNode("These polygons may intersect, returning true.");
 		return true;
 	}
 
