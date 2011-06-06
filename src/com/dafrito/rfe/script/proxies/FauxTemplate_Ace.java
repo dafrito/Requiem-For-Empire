@@ -60,7 +60,7 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getArchetype")) {
-			ScriptValue returning = Parser.getRiffArchetype(template.getAce().getArchetype());
+			ScriptValue returning = Parser.getRiffArchetype(this.getEnvironment(), template.getAce().getArchetype());
 			assert Debugger.closeNode();
 			return returning;
 		}

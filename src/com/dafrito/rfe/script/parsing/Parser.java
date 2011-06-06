@@ -483,8 +483,8 @@ public class Parser {
 		return wrappedAce;
 	}
 
-	public static FauxTemplate_Archetype getRiffArchetype(Object obj) throws Exception_Nodeable {
-		return (FauxTemplate_Archetype) convert(null, obj);
+	public static FauxTemplate_Archetype getRiffArchetype(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (FauxTemplate_Archetype) convert(env, obj);
 	}
 
 	public static FauxTemplate_Asset getRiffAsset(ScriptEnvironment env, Asset asset) throws Exception_Nodeable {
