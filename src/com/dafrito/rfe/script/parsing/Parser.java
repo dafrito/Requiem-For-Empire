@@ -419,8 +419,8 @@ public class Parser {
 		return (Asset) convert(env, obj);
 	}
 
-	public static Boolean getBoolean(Object obj) throws Exception_Nodeable {
-		return (Boolean) convert(null, obj);
+	public static Boolean getBoolean(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Boolean) convert(env, obj);
 	}
 
 	public static Color getColor(Object obj) throws Exception_Nodeable {
