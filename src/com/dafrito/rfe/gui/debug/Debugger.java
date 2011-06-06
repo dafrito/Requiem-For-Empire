@@ -162,11 +162,6 @@ public class Debugger {
 		return true;
 	}
 
-	public static boolean closeNodeTo(Object string) {
-		getDebugInspector().closeNodeTo(string);
-		return true;
-	}
-
 	public static boolean isResetting() {
 		return getDebugger().isResetting();
 	}

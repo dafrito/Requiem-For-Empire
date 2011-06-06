@@ -153,7 +153,7 @@ public class ScriptEnvironment implements Nodeable {
 		} catch (Exception_InternalError ex) {
 			Debugger.printException(ex);
 		} finally {
-			assert Debugger.closeNodeTo("Executing Script-Environment (Default Run)");
+			assert Debugger.closeNode();
 		}
 	}
 
@@ -250,7 +250,7 @@ public class ScriptEnvironment implements Nodeable {
 		} catch (Exception_Nodeable ex) {
 			throw new Exception_InternalError("Exception occurred during script initialization: " + ex);
 		} finally {
-			assert Debugger.closeNodeTo("Initializing Script Environment");
+			assert Debugger.closeNode();
 		}
 	}
 

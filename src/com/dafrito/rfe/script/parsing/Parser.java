@@ -375,7 +375,7 @@ public final class Parser {
 			Debugger.printException(ex);
 			exceptions.add(ex);
 		} finally {
-			assert Debugger.closeNodeTo("Parsing Elements");
+			assert Debugger.closeNode();
 		}
 		return exceptions;
 	}
@@ -1316,7 +1316,7 @@ public final class Parser {
 			Debugger.printException(ex);
 			exceptions.add(ex);
 		} finally {
-			assert Debugger.closeNodeTo("Preparsing file (" + filename + ")");
+			assert Debugger.closeNode();
 		}
 		return exceptions;
 	}

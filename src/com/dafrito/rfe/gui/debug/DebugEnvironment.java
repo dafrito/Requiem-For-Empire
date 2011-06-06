@@ -674,17 +674,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			}
 		}
 
-		public void closeNodeTo(Object string) {
-			if (isIgnoringThisThread()) {
-				return;
-			}
-			for (Debug_Listener listener : filteredOutputMap.get(Thread.currentThread().getName())) {
-				while (listener.getTreePanel().getFilter().isListening() && !listener.getTreePanel().getCurrentNode().getData().equals(string)) {
-					listener.getTreePanel().closeNode();
-				}
-			}
-		}
-
 		public boolean ensureCurrentNode(Object obj) {
 			if (!reset.isEnabled()) {
 				return true;
