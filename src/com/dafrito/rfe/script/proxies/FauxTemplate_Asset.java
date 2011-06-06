@@ -56,12 +56,12 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 				params.clear();
 			} else if (name.equals("setProperty")) {
 				if (params.size() == 2) {
-					template.getAsset().setProperty(Parser.getString(params.get(0)), params.get(1).getValue());
+					template.getAsset().setProperty(Parser.getString(this.getEnvironment(), params.get(0)), params.get(1).getValue());
 					return null;
 				}
 			} else if (name.equals("getProperty")) {
 				if (params.size() == 1) {
-					Object property = template.getAsset().getProperty(Parser.getString(params.get(0)));
+					Object property = template.getAsset().getProperty(Parser.getString(this.getEnvironment(), params.get(0)));
 					if (property instanceof ScriptConvertible<?>) {
 						return (ScriptValue) ((ScriptConvertible<?>) property).convert(this.getEnvironment());
 					}

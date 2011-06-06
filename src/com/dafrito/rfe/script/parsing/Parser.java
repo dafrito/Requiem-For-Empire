@@ -580,8 +580,8 @@ public class Parser {
 	}
 
 	// Script->Engine conversion functions
-	public static String getString(Object obj) throws Exception_Nodeable {
-		return (String) convert(null, obj);
+	public static String getString(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (String) convert(env, obj);
 	}
 
 	public static Stylesheet getStylesheet(Object obj) throws Exception_Nodeable {

@@ -70,13 +70,13 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 			return null;
 		} else if (name.equals("setProperty")) {
 			if (params.size() == 2) {
-				template.getRegion().setProperty(Parser.getString(params.get(0)), Parser.getObject(this.getEnvironment(), params.get(1)));
+				template.getRegion().setProperty(Parser.getString(this.getEnvironment(), params.get(0)), Parser.getObject(this.getEnvironment(), params.get(1)));
 				assert Debugger.closeNode();
 				return null;
 			}
 		} else if (name.equals("getProperty")) {
 			if (params.size() == 1) {
-				ScriptValue returning = (ScriptValue) Parser.convert(this.getEnvironment(), template.getRegion().getProperty(Parser.getString(params.get(0))));
+				ScriptValue returning = (ScriptValue) Parser.convert(this.getEnvironment(), template.getRegion().getProperty(Parser.getString(this.getEnvironment(), params.get(0))));
 				assert Debugger.addSnapNode("Retrieved property", returning);
 				assert Debugger.closeNode();
 				return returning;

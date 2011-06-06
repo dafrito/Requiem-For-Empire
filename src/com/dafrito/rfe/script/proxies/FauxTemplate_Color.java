@@ -54,7 +54,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 				template = (FauxTemplate_Color) this.createObject(ref, template);
 			}
 			if (params.size() == 1) {
-				template.setColor(Stylesheets.getColor(Parser.getString(params.get(0))));
+				template.setColor(Stylesheets.getColor(Parser.getString(this.getEnvironment(), params.get(0))));
 			} else if (params.size() == 3) {
 				if (params.get(0).isConvertibleTo(ScriptValueType.INT)) {
 					int r, g, b;
@@ -133,7 +133,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setColor")) {
-			template.setColor(Stylesheets.getColor(Parser.getString(params.get(0))));
+			template.setColor(Stylesheets.getColor(Parser.getString(this.getEnvironment(), params.get(0))));
 			assert Debugger.closeNode();
 			return null;
 		}

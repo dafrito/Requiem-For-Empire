@@ -46,12 +46,12 @@ public class FauxTemplate_Label extends FauxTemplate_InterfaceElement implements
 			}
 			String label = "";
 			if (params.size() > 0) {
-				label = Parser.getString(params.get(params.size() - 1));
+				label = Parser.getString(this.getEnvironment(), params.get(params.size() - 1));
 				params.remove(params.size() - 1);
 			}
 			template.getLabel().setString(label);
 		} else if (name.equals("setString")) {
-			template.getLabel().setString(Parser.getString(params.get(0)));
+			template.getLabel().setString(Parser.getString(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getString")) {
