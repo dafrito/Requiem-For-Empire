@@ -1384,30 +1384,39 @@ public class Polygons {
 	}
 
 	public static boolean testForColinearity(Point pointA, Point pointB, Point testPointA, Point testPointB) {
-		assert Debugger.printDebug("Polygon/testForColinearity", "(testForColinearity)");
-		assert Debugger.printDebug("Polygon/testForColinearity/data", "Testing these points for colinearity: " + pointA + ", " + pointB);
-		assert Debugger.printDebug("Polygon/testForColinearity/data", "Against these points: " + testPointA + ", " + testPointB);
+		assert Debugger.openNode("Colinearity Tests", "Testing for colinearity");
+		assert Debugger.openNode("Lines", "First Line");
+		assert Debugger.addSnapNode("Point A", pointA);
+		assert Debugger.addSnapNode("Point B", pointB);
+		assert Debugger.closeNode();
+		assert Debugger.openNode("Lines", "Test Line");
+		assert Debugger.addSnapNode("Test Point A", testPointA);
+		assert Debugger.addSnapNode("Test Point B", testPointB);
+		assert Debugger.closeNode();
 		if ((pointA.equals(testPointA) && pointB.equals(testPointB)) || (pointA.equals(testPointB) && pointB.equals(testPointA))) {
+			assert Debugger.closeNode("Lines are equal, returning true.");
 			return true;
 		}
 		if (!Polygons.areSlopesEqual(pointA, pointB, testPointA, testPointB)) {
-			assert Debugger.printDebug("Polygon/testForColinearity/heavyDebug", "Slopes are not equal, so returning false.\n(/testForColinearity)");
+			assert Debugger.closeNode("Slopes are not equal, so returning false.");
 			return false;
 		}
-		assert Debugger.printDebug("Polygon/testForColinearity", "Slopes are equal, so beginning point-slope test.");
-		assert Debugger.printDebug("Polygon/testForColinearity/data", "First point-slope test: " + (Polygons.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY()));
-		assert Debugger.printDebug("Polygon/testForColinearity/data", "Expected value: " + testPointA.getY());
-		if (!Points.areEqual(Point.System.EUCLIDEAN, Polygons.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY(), testPointA.getY())) {
-			assert Debugger.printDebug("Polygon/testForColinearity/heavyDebug", "First point failed point-slope test, so returning false.\n(/testForColinearity)");
+		assert Debugger.addNode("Slopes are equal, so beginning point-slope test.");
+		double pointSlopeTest = Polygons.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY();
+		assert Debugger.addNode("First point-slope test: " + pointSlopeTest);
+		assert Debugger.addNode("Expected value: " + testPointA.getY());
+		if (!Points.areEqual(Point.System.EUCLIDEAN, pointSlopeTest, testPointA.getY())) {
+			assert Debugger.closeNode("First point failed point-slope test, so returning false.");
 			return false;
 		}
-		assert Debugger.printDebug("Polygon/testForColinearity/data", "Second point-slope test: " + (Polygons.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY()));
-		assert Debugger.printDebug("Polygon/testForColinearity/data", "Expected value: " + testPointB.getY());
+		pointSlopeTest = Polygons.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY();
+		assert Debugger.addNode("Second point-slope test: " + pointSlopeTest);
+		assert Debugger.addNode("Expected value: " + testPointB.getY());
 		if (!Points.areEqual(Point.System.EUCLIDEAN, Polygons.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY(), testPointB.getY())) {
-			assert Debugger.printDebug("Polygon/testForColinearity/heavyDebug", "Second point failed point-slope test, so returning false.\n(/testForColinearity)");
+			assert Debugger.closeNode("Second point failed point-slope test, so returning false.");
 			return false;
 		}
-		assert Debugger.printDebug("Polygon/testForColinearity", "They are colinear.\n(/testForColinearity)");
+		assert Debugger.closeNode("They are colinear.");
 		return true;
 	}
 
