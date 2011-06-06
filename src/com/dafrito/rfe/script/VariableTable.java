@@ -3,14 +3,15 @@
  */
 package com.dafrito.rfe.script;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 class VariableTable implements Nodeable {
-	Stack<VariableStack> stacks = new Stack<VariableStack>();
+	Deque<VariableStack> stacks = new ArrayDeque<VariableStack>();
 
 	public synchronized void addVariable(String name, ScriptValue_Variable variable) {
 		this.stacks.peek().addVariable(name, variable);
@@ -24,7 +25,7 @@ class VariableTable implements Nodeable {
 		this.stacks.push(new VariableStack());
 	}
 
-	public Stack<VariableStack> getStacks() {
+	public Deque<VariableStack> getStacks() {
 		return this.stacks;
 	}
 

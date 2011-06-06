@@ -3,7 +3,8 @@
  */
 package com.dafrito.rfe.script;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
@@ -15,8 +16,8 @@ import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 class ThreadStack implements Nodeable {
 	private VariableTable variableTable = new VariableTable();
-	private Stack<ScriptTemplate_Abstract> objectStack = new Stack<ScriptTemplate_Abstract>(); // Stack of called objects
-	private Stack<ScriptFunction> functionStack = new Stack<ScriptFunction>(); // Stack of called functions
+	private Deque<ScriptTemplate_Abstract> objectStack = new ArrayDeque<ScriptTemplate_Abstract>(); // Stack of called objects
+	private Deque<ScriptFunction> functionStack = new ArrayDeque<ScriptFunction>(); // Stack of called functions
 
 	public synchronized void addVariable(String name, ScriptValue_Variable variable) {
 		if (variable == null) {

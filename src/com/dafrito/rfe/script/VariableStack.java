@@ -3,16 +3,17 @@
  */
 package com.dafrito.rfe.script;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 class VariableStack implements Nodeable {
-	private Stack<Map<String, ScriptValue_Variable>> nestedStacks = new Stack<Map<String, ScriptValue_Variable>>();
+	private Deque<Map<String, ScriptValue_Variable>> nestedStacks = new ArrayDeque<Map<String, ScriptValue_Variable>>();
 
 	public VariableStack() {
 		this.nestedStacks.push(new HashMap<String, ScriptValue_Variable>());
