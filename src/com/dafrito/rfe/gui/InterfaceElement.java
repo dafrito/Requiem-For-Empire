@@ -19,13 +19,10 @@ import com.dafrito.rfe.gui.style.dimensions.StylesheetAbsoluteHeightElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetMagnitude;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
-import com.dafrito.rfe.script.proxies.FauxTemplate_InterfaceElement;
-import com.dafrito.rfe.script.values.ScriptValueType;
 
-public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConvertible<FauxTemplate_InterfaceElement> {
+public class InterfaceElement implements Nodeable, GraphicalElement {
 	private Stylesheet classStylesheet, uniqueStylesheet;
 	private int xAnchor, yAnchor;
 	private Interface_Container parent;
@@ -43,14 +40,6 @@ public class InterfaceElement implements Nodeable, GraphicalElement, ScriptConve
 
 	public void addYAnchor(int addingAmount) {
 		this.yAnchor += addingAmount;
-	}
-
-	// ScriptConvertible implementation
-	@Override
-	public FauxTemplate_InterfaceElement convert(ScriptEnvironment env) {
-		FauxTemplate_InterfaceElement elem = new FauxTemplate_InterfaceElement(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING));
-		elem.setElement(this);
-		return elem;
 	}
 
 	public Color getBackgroundColor() {

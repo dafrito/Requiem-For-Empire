@@ -519,7 +519,9 @@ public class Parser {
 	}
 
 	public static FauxTemplate_InterfaceElement getRiffElement(ScriptEnvironment env, InterfaceElement elem) throws Exception_Nodeable {
-		return convert(env, elem);
+		FauxTemplate_InterfaceElement wrapped = new FauxTemplate_InterfaceElement(env, ScriptValueType.createType(env, FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING));
+		wrapped.setElement(elem);
+		return wrapped;
 	}
 
 	public static ScriptValue_Numeric getRiffFloat(ScriptEnvironment env, float value) throws Exception_Nodeable {

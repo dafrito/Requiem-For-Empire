@@ -19,6 +19,7 @@ import com.dafrito.rfe.gui.event.RiffInterface_MouseEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseListener;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
@@ -37,7 +38,7 @@ import com.dafrito.rfe.script.values.ScriptValueType;
  * @author Aaron Faanes
  * @see FauxTemplate_RiffDali
  */
-public class InterfaceElement_Panel extends InterfaceElement implements Interface_Container, RiffInterface_MouseListener, Nodeable {
+public class InterfaceElement_Panel extends InterfaceElement implements ScriptConvertible<FauxTemplate_Panel>, Interface_Container, RiffInterface_MouseListener, Nodeable {
 	private List<GraphicalElement> elements;
 	private Point_Euclidean offset;
 	private Terrestrial terrestrial;

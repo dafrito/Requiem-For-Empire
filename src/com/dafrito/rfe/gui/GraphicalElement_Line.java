@@ -11,10 +11,11 @@ import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Point_Euclidean;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Line;
 
-public class GraphicalElement_Line extends InterfaceElement implements Nodeable {
+public class GraphicalElement_Line extends InterfaceElement implements Nodeable, ScriptConvertible<FauxTemplate_Line> {
 	private Point pointA, pointB;
 
 	public GraphicalElement_Line(ScriptEnvironment env, Point pointA, Point pointB) {
