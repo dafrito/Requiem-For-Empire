@@ -163,7 +163,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 			object = this.instantiateTemplate();
 		}
 		assert Debugger.addNode(object);
-		this.getEnvironment().advanceStack(object, null);
+		this.getEnvironment().advanceStack(object, NoopScriptFunction.instance());
 		if (this.preconstructors.size() > 0) {
 			assert Debugger.openNode("Calling preconstructor expressions (" + this.preconstructors.size() + " expression(s))");
 			if (!object.isConstructing()) {
@@ -314,7 +314,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 				}
 			}
 		}
-		this.getEnvironment().advanceStack(this, null);
+		this.getEnvironment().advanceStack(this, NoopScriptFunction.instance());
 		this.setConstructing(true);
 		assert Debugger.openNode("Executing preconstructors (" + this.templatePreconstructors.size() + " preconstructor(s))");
 		for (ScriptExecutable exec : this.templatePreconstructors) {
@@ -329,7 +329,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	@Override
 	public void initializeFunctions(Referenced ref) throws Exception_Nodeable {
 		assert Debugger.openNode("Unparsed Member-Function Initialization", "Initializing Unparsed Member Functions (" + this.getType() + ")");
-		this.getEnvironment().advanceStack(this, null);
+		this.getEnvironment().advanceStack(this, NoopScriptFunction.instance());
 		assert Debugger.openNode("Adding static member-variables");
 		for (ScriptExecutable exec : this.templatePreconstructors) {
 			if (exec instanceof ScriptExecutable_CreateVariable) {

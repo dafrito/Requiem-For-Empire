@@ -77,6 +77,7 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_Point;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Scheduler;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrain;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrestrial;
+import com.dafrito.rfe.script.values.NoopScriptFunction;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
 import com.dafrito.rfe.script.values.ScriptFunction;
 import com.dafrito.rfe.script.values.ScriptFunction_Constructor;
@@ -1806,7 +1807,7 @@ public class Parser {
 		}
 		ScriptTemplate_Abstract template = ScriptTemplate.createTemplate(ref.getEnvironment(), ScriptValueType.createType(ref, className), ScriptValueType.createType(ref, extendedClass), implemented, false);
 		template.setConstructing(true);
-		env.advanceStack(template, null);
+		env.advanceStack(template, NoopScriptFunction.instance());
 		List<Object> elements = new LinkedList<Object>();
 		boolean stylesheet = false;
 		for (int i = 0; i < list.size(); i++) {

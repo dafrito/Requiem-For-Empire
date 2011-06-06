@@ -99,6 +99,9 @@ public class ScriptEnvironment implements Nodeable {
 
 	// Stack functions
 	public void advanceStack(ScriptTemplate_Abstract template, ScriptFunction fxn) throws Exception_Nodeable {
+		if (fxn == null) {
+			throw new NullPointerException("fxn must not be null");
+		}
 		if (this.threads.get(Thread.currentThread().getName()) == null) {
 			this.threads.put(Thread.currentThread().getName(), new ThreadStack());
 		}
