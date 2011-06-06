@@ -444,8 +444,8 @@ public class Parser {
 		return (InterfaceElement) convert(env, obj);
 	}
 
-	public static Float getFloat(Object obj) throws Exception_Nodeable {
-		return (Float) convert(null, ((ScriptValue) obj).castToType(null, ScriptValueType.FLOAT));
+	public static Float getFloat(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Float) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.FLOAT));
 	}
 
 	public static GraphicalElement getGraphicalElement(Object obj) throws Exception_Nodeable {

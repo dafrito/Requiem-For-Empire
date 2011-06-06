@@ -74,9 +74,9 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 				} else {
 					;
 					float r, g, b;
-					r = Parser.getFloat(params.get(0));
-					g = Parser.getFloat(params.get(1));
-					b = Parser.getFloat(params.get(2));
+					r = Parser.getFloat(this.getEnvironment(), params.get(0));
+					g = Parser.getFloat(this.getEnvironment(), params.get(1));
+					b = Parser.getFloat(this.getEnvironment(), params.get(2));
 					if (r < 0.0d || r > 1.0d) {
 						throw new Exception_Nodeable_InvalidColorRange(this, new Float(r));
 					}
@@ -105,7 +105,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 		} else if (name.equals("setRed")) {
 			int value = 0;
 			if (params.get(0).getType().equals(ScriptValueType.FLOAT)) {
-				value = (int) (Parser.getFloat(params.get(0)) * 255.0d);
+				value = (int) (Parser.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
 			} else {
 				value = Parser.getInteger(params.get(0));
 			}
@@ -115,7 +115,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 		} else if (name.equals("setGreen")) {
 			int value = 0;
 			if (params.get(0).getType().equals(ScriptValueType.FLOAT)) {
-				value = (int) (Parser.getFloat(params.get(0)) * 255.0d);
+				value = (int) (Parser.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
 			} else {
 				value = Parser.getInteger(params.get(0));
 			}
@@ -125,7 +125,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 		} else if (name.equals("setBlue")) {
 			int value = 0;
 			if (params.get(0).getType().equals(ScriptValueType.FLOAT)) {
-				value = (int) (Parser.getFloat(params.get(0)) * 255.0d);
+				value = (int) (Parser.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
 			} else {
 				value = Parser.getInteger(params.get(0));
 			}
