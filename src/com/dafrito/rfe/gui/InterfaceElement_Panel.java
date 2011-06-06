@@ -162,7 +162,7 @@ public class InterfaceElement_Panel extends InterfaceElement implements Interfac
 			List<ScriptValue> regionList = new LinkedList<ScriptValue>();
 			List<ScriptValue> assetList = new LinkedList<ScriptValue>();
 			for (DiscreteRegion region : regions) {
-				regionList.add(region.convert(this.getEnvironment()));
+				regionList.add(Parser.getRiffDiscreteRegion(this.getEnvironment(), region));
 				if (region.getProperty("Archetypes") != null) {
 					for (Asset asset : ((ArchetypeMapNode) region.getProperty("Archetypes")).getAllAssets()) {
 						assetList.add(Parser.getRiffAsset(this.getEnvironment(), asset));

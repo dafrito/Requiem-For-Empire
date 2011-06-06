@@ -509,7 +509,9 @@ public class Parser {
 	}
 
 	public static FauxTemplate_DiscreteRegion getRiffDiscreteRegion(ScriptEnvironment env, DiscreteRegion region) throws Exception_Nodeable {
-		return convert(env, region);
+		FauxTemplate_DiscreteRegion wrapped = new FauxTemplate_DiscreteRegion(env, env.getTemplate(FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING).getType());
+		wrapped.setRegion(region);
+		return wrapped;
 	}
 
 	public static ScriptValue_Numeric getRiffDouble(ScriptEnvironment env, double value) throws Exception_Nodeable {

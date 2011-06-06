@@ -16,9 +16,7 @@ import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Point_Euclidean;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.proxies.FauxTemplate_DiscreteRegion;
 
 /**
  * A mutable, finite two-dimensional region of space.
@@ -43,7 +41,7 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_DiscreteRegion;
  * @author Aaron Faanes
  * 
  */
-public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_DiscreteRegion> {
+public class DiscreteRegion implements Nodeable {
 	public static void paint(Graphics2D g2d, DiscreteRegion transformedRegion, Rectangle bounds, boolean fill) {
 		assert Debugger.openNode("Discrete-Region Painting", "Painting Discrete Region");
 		assert Debugger.addNode(transformedRegion);
@@ -231,14 +229,6 @@ public class DiscreteRegion implements Nodeable, ScriptConvertible<FauxTemplate_
 			assert Debugger.closeNode("Region's version differs from our saved version, returning false.");
 			return false;
 		}
-	}
-
-	// ScriptConvertible implementation
-	@Override
-	public FauxTemplate_DiscreteRegion convert(ScriptEnvironment env) {
-		FauxTemplate_DiscreteRegion region = new FauxTemplate_DiscreteRegion(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING).getType());
-		region.setRegion(this);
-		return region;
 	}
 
 	@Override
