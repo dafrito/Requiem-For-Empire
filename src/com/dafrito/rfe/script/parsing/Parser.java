@@ -575,8 +575,8 @@ public class Parser {
 		return (ScriptTemplate_Abstract) getCoreValue(obj);
 	}
 
-	public static Short getShort(Object obj) throws Exception_Nodeable {
-		return (Short) convert(null, ((ScriptValue) obj).castToType(null, ScriptValueType.SHORT));
+	public static Short getShort(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Short) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.SHORT));
 	}
 
 	// Script->Engine conversion functions
