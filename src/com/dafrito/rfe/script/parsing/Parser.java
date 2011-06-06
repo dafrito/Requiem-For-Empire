@@ -440,8 +440,8 @@ public class Parser {
 		return (Double) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.DOUBLE));
 	}
 
-	public static InterfaceElement getElement(Object obj) throws Exception_Nodeable {
-		return (InterfaceElement) convert(null, obj);
+	public static InterfaceElement getElement(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (InterfaceElement) convert(env, obj);
 	}
 
 	public static Float getFloat(Object obj) throws Exception_Nodeable {

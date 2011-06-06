@@ -47,7 +47,7 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable {
 			assert Debugger.closeNode();
 			return template;
 		} else if (name.equals("add")) {
-			template.getInterface().getRoot().add(Parser.getElement(params.get(0)));
+			template.getInterface().getRoot().add(Parser.getElement(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getRoot")) {
