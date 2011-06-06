@@ -3,22 +3,13 @@ package com.dafrito.rfe;
 import com.dafrito.rfe.geom.GradientValue;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.proxies.FauxTemplate_Terrain;
 
-public class Terrain implements GradientValue<Terrain>, ScriptConvertible<FauxTemplate_Terrain>, Nodeable {
+public class Terrain implements GradientValue<Terrain>, Nodeable {
 	private ScriptEnvironment environment;
 	private double brushDensity, waterDepth, temperature, groundCohesion, elevation;
 	private double brushDensityWeight, elevationWeight, groundCohesionWeight,
 			temperatureWeight, waterDepthWeight;
-
-	@Override
-	public FauxTemplate_Terrain convert(ScriptEnvironment env) {
-		FauxTemplate_Terrain terrain = new FauxTemplate_Terrain(env, env.getTemplate(FauxTemplate_Terrain.TERRAINSTRING).getType());
-		terrain.setTerrain(this);
-		return terrain;
-	}
 
 	public void duplicate(Terrain otherTerrain) {
 		this.brushDensity = otherTerrain.getBrushDensity();

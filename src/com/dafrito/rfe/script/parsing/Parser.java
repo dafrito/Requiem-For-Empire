@@ -12,6 +12,7 @@ import com.dafrito.rfe.Ace;
 import com.dafrito.rfe.Archetype;
 import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.Scenario;
+import com.dafrito.rfe.Terrain;
 import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.actions.Scheduler;
 import com.dafrito.rfe.geom.DiscreteRegion;
@@ -72,6 +73,7 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_Object;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Path;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Point;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Scheduler;
+import com.dafrito.rfe.script.proxies.FauxTemplate_Terrain;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrestrial;
 import com.dafrito.rfe.script.values.ScriptFunction;
 import com.dafrito.rfe.script.values.ScriptFunction_Abstract;
@@ -137,6 +139,16 @@ public class Parser {
 		}
 		if (object instanceof ScriptConvertible<?>) {
 			return convert(env, (ScriptConvertible<?>) object);
+		}
+		if (object instanceof Terrain) {
+			// XXX This is a serious hack. Our RiffScript uses a getProperty(String):Object that returns
+			// a terrain. Unfortunately, we don't have a way to wrap objects of arbitrary type; we need to
+			// know the type at compile-time. As a result, we end up defaulting in this method.
+			//
+			// It turns out that the property returned is a terrain, so my "fix" is to explicitly check for
+			// terrains here and convert them properly. Ordinarily, this wouldn't be sufficient, but I have
+			// plans for a much better system of conversion that will fix this issue.
+			return getRiffTerrain(env, (Terrain) object);
 		}
 		return convert(env, (ScriptConvertible<?>) ((ScriptValue) object).getValue());
 	}
@@ -572,6 +584,12 @@ public class Parser {
 
 	public static Stylesheet getRiffStylesheet(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
 		return (Stylesheet) convert(env, obj);
+	}
+
+	public static FauxTemplate_Terrain getRiffTerrain(ScriptEnvironment env, Terrain terrain) throws Exception_Nodeable {
+		FauxTemplate_Terrain wrapped = new FauxTemplate_Terrain(env, ScriptValueType.createType(env, FauxTemplate_Terrain.TERRAINSTRING));
+		wrapped.setTerrain(terrain);
+		return wrapped;
 	}
 
 	public static FauxTemplate_Terrestrial getRiffTerrestrial(ScriptEnvironment env, Terrestrial terrestrial) throws Exception_Nodeable {
