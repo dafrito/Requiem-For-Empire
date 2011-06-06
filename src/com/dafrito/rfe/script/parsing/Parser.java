@@ -407,8 +407,8 @@ public class Parser {
 		return lineList;
 	}
 
-	public static Ace getAce(Object obj) throws Exception_Nodeable {
-		return (Ace) convert(null, obj);
+	public static Ace getAce(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Ace) convert(env, obj);
 	}
 
 	public static Archetype getArchetype(Object obj) throws Exception_Nodeable {

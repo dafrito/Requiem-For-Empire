@@ -68,7 +68,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 					return (ScriptValue) property;
 				}
 			} else if (name.equals("addAce")) {
-				template.getAsset().addAce(Parser.getAce(params.get(0)));
+				template.getAsset().addAce(Parser.getAce(this.getEnvironment(), params.get(0)));
 				return null;
 			} else if (name.equals("getAces")) {
 				List<ScriptValue> list = new LinkedList<ScriptValue>();
