@@ -31,7 +31,7 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 
 	public FauxTemplate_Terrestrial(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.setTerrestrial(new Terrestrial(env, 1));
+		this.setTerrestrial(new Terrestrial(1));
 	}
 
 	// Nodeable and ScriptConvertible implementations
@@ -53,7 +53,7 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 			if (template == null) {
 				template = (FauxTemplate_Terrestrial) this.createObject(ref, template);
 			}
-			template.setTerrestrial(new Terrestrial(this.getEnvironment(), Parser.getDouble(params.get(0))));
+			template.setTerrestrial(new Terrestrial(Parser.getDouble(params.get(0))));
 			assert Debugger.closeNode();
 			return template;
 		} else if (name.equals("add")) {

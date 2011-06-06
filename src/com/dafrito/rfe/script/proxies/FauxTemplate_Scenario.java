@@ -31,7 +31,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 
 	public FauxTemplate_Scenario(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.scenario = new Scenario(env, new Terrestrial(env, 1), "Scenario");
+		this.scenario = new Scenario(env, new Terrestrial(1), "Scenario");
 	}
 
 	// Nodeable implementation
