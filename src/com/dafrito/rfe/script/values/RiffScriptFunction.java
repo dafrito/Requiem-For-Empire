@@ -129,12 +129,10 @@ public class RiffScriptFunction implements Nodeable, ScriptFunction {
 			exec.execute();
 			if (exec instanceof Returnable && ((Returnable) exec).shouldReturn()) {
 				this.setReturnValue(exec.getDebugReference(), ((Returnable) exec).getReturnValue());
-				assert Debugger.ensureCurrentNode("Executing Function Expressions (" + this.expressions.size() + " expressions)");
 				assert Debugger.closeNode();
 				return;
 			}
 		}
-		assert Debugger.ensureCurrentNode(currNode);
 		assert Debugger.closeNode();
 	}
 

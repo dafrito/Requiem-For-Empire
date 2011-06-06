@@ -674,22 +674,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			}
 		}
 
-		public boolean ensureCurrentNode(Object obj) {
-			if (!reset.isEnabled()) {
-				return true;
-			}
-			if (isInExceptionsMode() && !exceptions.contains(Thread.currentThread().getName())) {
-				return true;
-			}
-			if (ignores.contains(Thread.currentThread().getName())) {
-				return true;
-			}
-			if (!getUnfilteredCurrentNode().getData().equals(obj)) {
-				throw new AssertionError(String.format("Unexpected current node: expected %s, got %s", obj, getUnfilteredCurrentNode().getData()));
-			}
-			return true;
-		}
-
 		public Debug_TreeNode getLastNodeAdded() {
 			return getUnfilteredOutput().getTreePanel().getLastNodeAdded();
 		}

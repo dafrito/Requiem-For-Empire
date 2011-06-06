@@ -134,10 +134,6 @@ public class Debugger {
 		return true;
 	}
 
-	public static boolean ensureCurrentNode(Object string) {
-		return getDebugInspector().ensureCurrentNode(string);
-	}
-
 	public static Debug_TreeNode getLastNodeAdded() {
 		return getDebugInspector().getLastNodeAdded();
 	}
