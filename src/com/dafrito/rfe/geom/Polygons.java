@@ -802,18 +802,24 @@ public class Polygons {
 	}
 
 	public static Point getMinimumPointBetweenLine(Point pointA, Point pointB, Point source) {
-		assert Debugger.printDebug("Polygon/getMinimumPointBetweenLine", "(getMinimumPointBetweenLine)");
-		assert Debugger.printDebug("Polygon/getMinimumPointBetweenLine/data", "Sourcepoint: " + source + ", Points: " + pointA + ", " + pointB);
+		assert Debugger.openNode("Minimum Point Searches", "Getting minimum point");
+		assert Debugger.addSnapNode("Source", source);
+		assert Debugger.addSnapNode("Point A", pointA);
+		assert Debugger.addSnapNode("Point B", pointB);
 		if (pointA.equals(pointB)) {
-			assert Debugger.printDebug("Polygon/getMinimumPointBetweenLine", "PointA is equal to PointB, returning pointA.\n(/getMinimumPointBetweenLine)");
+			assert Debugger.closeNode("PointA is equal to PointB, returning pointA.");
 			return pointA;
 		}
 		double omegaValue = ((source.getX() - pointA.getX()) * (pointB.getX() - pointA.getX()) + (source.getY() - pointA.getY()) * (pointB.getY() - pointA.getY())) / Math.pow(Points.getDistance(pointA, pointB), 2);
 		double xValue = pointA.getX() + omegaValue * (pointB.getX() - pointA.getX());
 		double yValue = pointA.getY() + omegaValue * (pointB.getY() - pointA.getY());
 		Point minimumPoint = createPoint(pointA, null, xValue, yValue, 0.0d);
-		assert Debugger.printDebug("Polygon/getMinimumPointBetweenLine", "Point yielded: " + minimumPoint);
-		return Polygons.findMiddlePoint(pointA, pointB, minimumPoint);
+		assert Debugger.addSnapNode("Yielded point", minimumPoint);
+		try {
+			return Polygons.findMiddlePoint(pointA, pointB, minimumPoint);
+		} finally {
+			assert Debugger.closeNode();
+		}
 	}
 
 	public static PointSideStruct getPointSideList(DiscreteRegion region, Point testPoint) {
