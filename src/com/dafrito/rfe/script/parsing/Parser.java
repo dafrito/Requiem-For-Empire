@@ -545,7 +545,9 @@ public class Parser {
 	}
 
 	public static FauxTemplate_Path getRiffPath(ScriptEnvironment env, Point_Path path) throws Exception_Nodeable {
-		return convert(env, path);
+		FauxTemplate_Path wrapped = new FauxTemplate_Path(env, ScriptValueType.createType(env, FauxTemplate_Path.PATHSTRING));
+		wrapped.setPoint(path);
+		return wrapped;
 	}
 
 	public static FauxTemplate_Point getRiffPoint(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
