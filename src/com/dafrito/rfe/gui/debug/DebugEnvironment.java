@@ -484,11 +484,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		return !this.reset.isEnabled();
 	}
 
-	// Deprecated, deprecated, deprecated...
-	public boolean printDebug(String category, Object obj) {
-		return true;
-	}
-
 	public void removeListenerListener(Debug_Listener listener) {
 		this.filteredPanes.removeTabAt(this.filteredPanes.getSelectedIndex());
 		this.filteredOutputMap.get(listener.getThreadName()).remove(listener);

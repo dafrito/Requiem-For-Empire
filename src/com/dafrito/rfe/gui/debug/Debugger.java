@@ -3,7 +3,6 @@
  */
 package com.dafrito.rfe.gui.debug;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,7 +13,6 @@ import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.inspect.NodeableInspector;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.strings.Strings;
 
 public class Debugger {
 	private static DebugEnvironment debugger;
@@ -171,25 +169,6 @@ public class Debugger {
 
 	public static boolean isResetting() {
 		return getDebugger().isResetting();
-	}
-
-	public static boolean printDebug(String category) {
-		String slash = "";
-		int offset = 0;
-		if (category.charAt(0) == '/') {
-			slash = "/";
-			offset++;
-		}
-		String[] categoryArray = category.split("/");
-		return printDebug(category, "(" + slash + categoryArray[1 + offset] + ":" + categoryArray[0 + offset] + ")");
-	}
-
-	public static boolean printDebug(String category, Collection<?> list) {
-		return printDebug(category, Strings.displayList(list));
-	}
-
-	public static boolean printDebug(String category, Object obj) {
-		return getDebugger().printDebug(category, obj);
 	}
 
 	public static void printException(Exception ex) {
