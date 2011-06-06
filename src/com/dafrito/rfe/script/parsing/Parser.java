@@ -472,8 +472,8 @@ public class Parser {
 		return convert(env, obj);
 	}
 
-	public static Point getPoint(Object obj) throws Exception_Nodeable {
-		return (Point) convert(null, obj);
+	public static Point getPoint(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Point) convert(env, obj);
 	}
 
 	// Engine->Script Conversion functions

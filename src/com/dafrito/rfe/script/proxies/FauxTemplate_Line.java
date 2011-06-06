@@ -55,8 +55,8 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 			}
 			switch (params.size()) {
 			case 2:
-				template.setPointA(Parser.getPoint(params.get(0)));
-				template.setPointB(Parser.getPoint(params.get(1)));
+				template.setPointA(Parser.getPoint(this.getEnvironment(), params.get(0)));
+				template.setPointB(Parser.getPoint(this.getEnvironment(), params.get(1)));
 				break;
 			case 4:
 				template.setPointA(new Point_Euclidean(this.getEnvironment(), Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue(), Parser.getDouble(this.getEnvironment(), params.get(1)).doubleValue(), 0));
@@ -87,9 +87,9 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 		} else if (name.equals("getPointB")) {
 			returning = Parser.getRiffPoint(this.getEnvironment(), template.getPointB());
 		} else if (name.equals("setPointA")) {
-			template.setPointA(Parser.getPoint(params.get(0)));
+			template.setPointA(Parser.getPoint(this.getEnvironment(), params.get(0)));
 		} else if (name.equals("setPointB")) {
-			template.setPointB(Parser.getPoint(params.get(0)));
+			template.setPointB(Parser.getPoint(this.getEnvironment(), params.get(0)));
 		} else {
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		}

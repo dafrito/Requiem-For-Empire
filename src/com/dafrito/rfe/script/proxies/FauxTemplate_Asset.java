@@ -52,7 +52,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 				if (template == null) {
 					template = (FauxTemplate_Asset) this.createObject(ref, template);
 				}
-				template.getAsset().setLocation(Parser.getPoint(params.get(0)));
+				template.getAsset().setLocation(Parser.getPoint(this.getEnvironment(), params.get(0)));
 				params.clear();
 			} else if (name.equals("setProperty")) {
 				if (params.size() == 2) {
@@ -80,7 +80,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 				assert template.getAsset().getLocation() != null : "Asset location is null!";
 				return Parser.getRiffPoint(this.getEnvironment(), template.getAsset().getLocation());
 			} else if (name.equals("setLocation")) {
-				template.getAsset().setLocation(Parser.getPoint(params.get(0)));
+				template.getAsset().setLocation(Parser.getPoint(this.getEnvironment(), params.get(0)));
 				return null;
 			}
 			return this.getExtendedFauxClass().execute(ref, name, params, template);

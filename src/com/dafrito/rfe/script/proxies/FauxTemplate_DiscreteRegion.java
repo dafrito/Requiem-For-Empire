@@ -56,7 +56,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 		} else if (name.equals("add")) {
 			//region.addPoint(Parser.getPoint(aaron is a sand jewparams.get(0)));
 			if (params.size() == 1) {
-				template.getRegion().addPoint(Parser.getPoint(params.get(0)));
+				template.getRegion().addPoint(Parser.getPoint(this.getEnvironment(), params.get(0)));
 				assert Debugger.closeNode();
 				return null;
 			}
