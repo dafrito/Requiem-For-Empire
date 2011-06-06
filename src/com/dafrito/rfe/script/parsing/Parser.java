@@ -357,8 +357,8 @@ public final class Parser {
 
 	public static List<Exception> parseElements(ScriptEnvironment env) {
 		List<Exception> exceptions = new ArrayList<Exception>();
+		assert Debugger.openNode("Element Parsing", "Parsing Elements");
 		try {
-			assert Debugger.openNode("Element Parsing", "Parsing Elements");
 			List<ScriptTemplate_Abstract> queuedTemplates = new LinkedList<ScriptTemplate_Abstract>();
 			for (TemplateParams params : classParams) {
 				ScriptTemplate_Abstract template = preparseTemplate(params.getDebugReference(), env, params.getModifiers(), params.getBody(), params.getName());
@@ -368,15 +368,14 @@ public final class Parser {
 			for (int i = 0; i < queuedTemplates.size(); i++) {
 				queuedTemplates.get(i).initializeFunctions(classParams.get(i).getDebugReference());
 			}
-			assert Debugger.closeNode();
 		} catch (Exception_Nodeable ex) {
 			Debugger.printException(ex);
-			assert Debugger.closeNodeTo("Parsing Elements");
 			exceptions.add(ex);
 		} catch (Exception_InternalError ex) {
 			Debugger.printException(ex);
-			assert Debugger.closeNodeTo("Parsing Elements");
 			exceptions.add(ex);
+		} finally {
+			assert Debugger.closeNodeTo("Parsing Elements");
 		}
 		return exceptions;
 	}
