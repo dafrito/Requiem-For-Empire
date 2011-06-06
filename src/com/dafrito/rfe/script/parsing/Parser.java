@@ -555,8 +555,8 @@ public class Parser {
 		return (ScriptValue_String) convert(env, value);
 	}
 
-	public static Stylesheet getRiffStylesheet(Object obj) throws Exception_Nodeable {
-		return (Stylesheet) convert(null, obj);
+	public static Stylesheet getRiffStylesheet(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Stylesheet) convert(env, obj);
 	}
 
 	public static FauxTemplate_Terrestrial getRiffTerrestrial(ScriptEnvironment env, Terrestrial terrestrial) throws Exception_Nodeable {
