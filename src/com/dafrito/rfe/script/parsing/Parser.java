@@ -88,11 +88,9 @@ import com.dafrito.rfe.script.values.ScriptValue_Variable;
 import com.dafrito.rfe.strings.Strings;
 
 public class Parser {
-	private static List<StylesheetParams> stylesheetParams = new LinkedList<StylesheetParams>();
 	private static List<TemplateParams> classParams = new LinkedList<TemplateParams>();
 
 	public static void clearPreparseLists() {
-		stylesheetParams.clear();
 		classParams.clear();
 	}
 
