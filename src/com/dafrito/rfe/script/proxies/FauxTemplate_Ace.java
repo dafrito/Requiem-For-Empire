@@ -49,7 +49,7 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<
 			if (template == null) {
 				template = (FauxTemplate_Ace) this.createObject(ref, template);
 			}
-			template.setAce(new Ace(this.getEnvironment(), Parser.getArchetype(params.get(0)), Parser.getDouble(params.get(1))));
+			template.setAce(new Ace(Parser.getArchetype(params.get(0)), Parser.getDouble(params.get(1))));
 			params.clear();
 		} else if (name.equals("setEfficiency")) {
 			template.getAce().setEfficiency(Parser.getDouble(params.get(0)));

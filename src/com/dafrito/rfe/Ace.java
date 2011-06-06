@@ -20,17 +20,15 @@ import com.dafrito.rfe.script.values.ScriptValueType;
 public class Ace implements ScriptConvertible<FauxTemplate_Ace> {
 	private Archetype archetype;
 	private double efficiency;
-	private ScriptEnvironment environment;
 
-	public Ace(ScriptEnvironment env, Archetype archetype, double efficiency) {
-		this.environment = env;
+	public Ace(Archetype archetype, double efficiency) {
 		this.archetype = archetype;
 		this.efficiency = efficiency;
 	}
 
 	@Override
 	public FauxTemplate_Ace convert(ScriptEnvironment env) {
-		FauxTemplate_Ace ace = new FauxTemplate_Ace(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Ace.ACESTRING));
+		FauxTemplate_Ace ace = new FauxTemplate_Ace(env, ScriptValueType.createType(env, FauxTemplate_Ace.ACESTRING));
 		ace.setAce(this);
 		return ace;
 	}
@@ -43,10 +41,6 @@ public class Ace implements ScriptConvertible<FauxTemplate_Ace> {
 	@Inspectable
 	public double getEfficiency() {
 		return this.efficiency;
-	}
-
-	public ScriptEnvironment getEnvironment() {
-		return this.environment;
 	}
 
 	public void setEfficiency(double efficiency) {
