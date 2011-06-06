@@ -1303,21 +1303,24 @@ public class Polygons {
 	}
 
 	public static void snapVertices(List<DiscreteRegion> polygons, DiscreteRegion region) {
-		assert Debugger.printDebug("Polygon/snapVertices", "(snapVertices)\nTesting for snappable vertices.");
-		assert Debugger.printDebug("Polygon/snapVertices/data", "Region to be snapped: " + region);
+		assert Debugger.openNode("Testing for snappable vertices.");
+		assert Debugger.addSnapNode("Region to be snapped", region);
 		List<Point> regionPoints = region.getPoints();
 		for (int i = 0; i < polygons.size(); i++) {
 			List<Point> pointList = polygons.get(i).getPoints();
 			for (int k = 0; k < pointList.size(); k++) {
 				for (int l = 0; l < regionPoints.size(); l++) {
 					if (pointList.get(k).equals(regionPoints.get(l))) {
-						assert Debugger.printDebug("Polygon/snapVertices", "Equality found. Correct vertex: " + pointList.get(k) + ", vertex-to-be-snapped: " + regionPoints.get(l));
+						assert Debugger.openNode("Equality found");
+						assert Debugger.addSnapNode("Correct point", pointList.get(k));
+						assert Debugger.addSnapNode("Point to be snapped", regionPoints.get(l));
 						regionPoints.get(l).setPosition(pointList.get(k));
+						assert Debugger.closeNode();
 					}
 				}
 			}
 		}
-		assert Debugger.printDebug("Polygon/snapVertices", "(/snapVertices)");
+		assert Debugger.closeNode();
 	}
 
 	public static DiscreteRegion splitPolygonUsingEdge(DiscreteRegion otherRegion, Point pointA, Point pointB, boolean hyperPlane) {
