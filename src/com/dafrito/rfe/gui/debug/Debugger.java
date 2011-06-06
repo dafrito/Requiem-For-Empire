@@ -134,10 +134,6 @@ public class Debugger {
 		return true;
 	}
 
-	public static Debug_TreeNode getLastNodeAdded() {
-		return getDebugInspector().getLastNodeAdded();
-	}
-
 	public static boolean closeNode() {
 		if (getDebugger().isIgnoringThisThread()) {
 			return true;
