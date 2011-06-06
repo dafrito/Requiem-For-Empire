@@ -43,7 +43,7 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_Scheduler;
 import com.dafrito.rfe.script.proxies.FauxTemplate_SchedulerListener;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrain;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrestrial;
-import com.dafrito.rfe.script.values.ScriptFunction_Abstract;
+import com.dafrito.rfe.script.values.ScriptFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
@@ -98,7 +98,7 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	// Stack functions
-	public void advanceStack(ScriptTemplate_Abstract template, ScriptFunction_Abstract fxn) throws Exception_Nodeable {
+	public void advanceStack(ScriptTemplate_Abstract template, ScriptFunction fxn) throws Exception_Nodeable {
 		if (this.threads.get(Thread.currentThread().getName()) == null) {
 			this.threads.put(Thread.currentThread().getName(), new ThreadStack());
 		}
@@ -154,7 +154,7 @@ public class ScriptEnvironment implements Nodeable {
 		}
 	}
 
-	public ScriptFunction_Abstract getCurrentFunction() {
+	public ScriptFunction getCurrentFunction() {
 		return this.threads.get(Thread.currentThread().getName()).getCurrentFunction();
 	}
 

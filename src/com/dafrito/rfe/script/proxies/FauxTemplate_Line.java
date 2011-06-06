@@ -13,7 +13,7 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
-import com.dafrito.rfe.script.values.ScriptFunction;
+import com.dafrito.rfe.script.values.RiffScriptFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
@@ -44,7 +44,7 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
-		assert Debugger.openNode("Faux Template Executions", "Executing Line Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Debugger.openNode("Faux Template Executions", "Executing Line Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Line template = (FauxTemplate_Line) rawTemplate;
 		ScriptValue returning = null;
 		assert Debugger.addSnapNode("Template provided", template);

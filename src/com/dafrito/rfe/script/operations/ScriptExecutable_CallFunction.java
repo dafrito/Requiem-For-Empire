@@ -12,8 +12,8 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable_FunctionNotFound;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IllegalNullReturnValue;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
+import com.dafrito.rfe.script.values.RiffScriptFunction;
 import com.dafrito.rfe.script.values.ScriptFunction;
-import com.dafrito.rfe.script.values.ScriptFunction_Abstract;
 import com.dafrito.rfe.script.values.ScriptFunction_Faux;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
@@ -21,7 +21,7 @@ import com.dafrito.rfe.script.values.ScriptValueType;
 
 public class ScriptExecutable_CallFunction extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
 	public static ScriptValue callFunction(ScriptEnvironment env, Referenced ref, ScriptValue object, String name, List<ScriptValue> params) throws Exception_Nodeable {
-		assert Debugger.openNode("Function Calls", "Calling Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Debugger.openNode("Function Calls", "Calling Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		assert Debugger.openNode("Function Call Details");
 		// Get our object
 		if (object == null) {
@@ -42,7 +42,7 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 			assert Debugger.closeNode("Core value params", baseList);
 		}
 		// Get our function
-		ScriptFunction_Abstract function = ((ScriptTemplate_Abstract) object).getFunction(name, baseList);
+		ScriptFunction function = ((ScriptTemplate_Abstract) object).getFunction(name, baseList);
 		ScriptTemplate_Abstract functionTemplate = ((ScriptTemplate_Abstract) object).getFunctionTemplate(function);
 		if (function == null) {
 			if (ref == null) {
@@ -128,7 +128,7 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Function Call (" + ScriptFunction.getDisplayableFunctionName(this.functionName) + ")");
+		assert Debugger.openNode("Function Call (" + RiffScriptFunction.getDisplayableFunctionName(this.functionName) + ")");
 		assert Debugger.addSnapNode("Parameters", this.params);
 		assert Debugger.closeNode();
 	}

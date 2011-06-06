@@ -9,14 +9,14 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.values.ScriptFunction_Abstract;
+import com.dafrito.rfe.script.values.ScriptFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 class ThreadStack implements Nodeable {
 	private VariableTable variableTable = new VariableTable();
 	private Stack<ScriptTemplate_Abstract> objectStack = new Stack<ScriptTemplate_Abstract>(); // Stack of called objects
-	private Stack<ScriptFunction_Abstract> functionStack = new Stack<ScriptFunction_Abstract>(); // Stack of called functions
+	private Stack<ScriptFunction> functionStack = new Stack<ScriptFunction>(); // Stack of called functions
 
 	public synchronized void addVariable(String name, ScriptValue_Variable variable) {
 		if (variable == null) {
@@ -34,7 +34,7 @@ class ThreadStack implements Nodeable {
 		this.variableTable.advanceNestedStack();
 	}
 
-	public synchronized void advanceStack(ScriptTemplate_Abstract template, ScriptFunction_Abstract fxn) throws Exception_Nodeable {
+	public synchronized void advanceStack(ScriptTemplate_Abstract template, ScriptFunction fxn) throws Exception_Nodeable {
 		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Stack (Stack size before advance: " + this.functionStack.size() + ")");
 		assert (this.functionStack.size() == this.objectStack.size()) && (this.objectStack.size() == this.variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + this.functionStack.size() + " Object-stack: " + this.objectStack.size() + " Variable-stack: " + this.variableTable.getStacks().size();
 		if (template != null) {
@@ -54,7 +54,7 @@ class ThreadStack implements Nodeable {
 		assert Debugger.closeNode();
 	}
 
-	public synchronized ScriptFunction_Abstract getCurrentFunction() {
+	public synchronized ScriptFunction getCurrentFunction() {
 		if (this.functionStack.size() == 0) {
 			throw new Exception_InternalError("No call stack");
 		}

@@ -19,7 +19,7 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public void addFunction(Referenced ref, String name, ScriptFunction_Abstract function) throws Exception_Nodeable {
+	public void addFunction(Referenced ref, String name, ScriptFunction function) throws Exception_Nodeable {
 		this.getTemplate().addFunction(ref, name, function);
 	}
 
@@ -60,17 +60,17 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public ScriptFunction_Abstract getFunction(String name, List<ScriptValue> params) {
+	public ScriptFunction getFunction(String name, List<ScriptValue> params) {
 		return this.getTemplate().getFunction(name, params);
 	}
 
 	@Override
-	public List<ScriptFunction_Abstract> getFunctions() {
+	public List<ScriptFunction> getFunctions() {
 		return this.getTemplate().getFunctions();
 	}
 
 	@Override
-	public ScriptTemplate_Abstract getFunctionTemplate(ScriptFunction_Abstract fxn) {
+	public ScriptTemplate_Abstract getFunctionTemplate(ScriptFunction fxn) {
 		return this.getTemplate().getFunctionTemplate(fxn);
 	}
 

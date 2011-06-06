@@ -8,7 +8,7 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
-import com.dafrito.rfe.script.values.ScriptFunction;
+import com.dafrito.rfe.script.values.RiffScriptFunction;
 
 public class Exception_Nodeable_FunctionNotFound extends Exception_Nodeable {
 	private static final long serialVersionUID = 4051248649703169850L;
@@ -33,12 +33,12 @@ public class Exception_Nodeable_FunctionNotFound extends Exception_Nodeable {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addNode("The function, " + ScriptFunction.getDisplayableFunctionName(this.name) + ", was not found");
+		assert Debugger.addNode("The function, " + RiffScriptFunction.getDisplayableFunctionName(this.name) + ", was not found");
 	}
 
 	@Override
 	public String getName() {
-		return "Function not found (" + ScriptFunction.getDisplayableFunctionName(this.name) + ")";
+		return "Function not found (" + RiffScriptFunction.getDisplayableFunctionName(this.name) + ")";
 	}
 
 	public List<?> getParams() {

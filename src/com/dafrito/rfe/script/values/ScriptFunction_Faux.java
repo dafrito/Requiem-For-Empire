@@ -11,7 +11,7 @@ import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.proxies.FauxTemplate;
 
-public class ScriptFunction_Faux extends ScriptFunction implements ScriptFunction_Abstract, Nodeable {
+public class ScriptFunction_Faux extends RiffScriptFunction implements ScriptFunction, Nodeable {
 	private FauxTemplate fauxTemplate;
 	private ScriptTemplate_Abstract object;
 	private String name;
@@ -46,7 +46,7 @@ public class ScriptFunction_Faux extends ScriptFunction implements ScriptFunctio
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Faux Script-Function (" + ScriptFunction.getDisplayableFunctionName(this.name) + ")");
+		assert Debugger.openNode("Faux Script-Function (" + RiffScriptFunction.getDisplayableFunctionName(this.name) + ")");
 		super.nodificate();
 		assert Debugger.addNode("Faux Template Type: " + this.fauxTemplate.getType());
 		assert Debugger.closeNode();

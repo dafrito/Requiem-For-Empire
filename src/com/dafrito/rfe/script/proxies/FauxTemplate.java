@@ -11,7 +11,7 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
-import com.dafrito.rfe.script.values.ScriptFunction;
+import com.dafrito.rfe.script.values.RiffScriptFunction;
 import com.dafrito.rfe.script.values.ScriptFunction_Faux;
 import com.dafrito.rfe.script.values.ScriptTemplate;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
@@ -51,7 +51,7 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
-		assert Debugger.openNode("Faux Template Executions", "Executing INSERTFAUXTEMPLATENAMEHERE Faux Template Function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Debugger.openNode("Faux Template Executions", "Executing INSERTFAUXTEMPLATENAMEHERE Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_InterfaceElement template = (FauxTemplate_InterfaceElement) rawTemplate;
 		assert Debugger.addSnapNode("Template provided", template);
 		assert Debugger.addSnapNode("Parameters provided", params);

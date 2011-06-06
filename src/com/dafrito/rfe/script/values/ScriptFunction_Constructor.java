@@ -8,7 +8,7 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 
-public class ScriptFunction_Constructor extends ScriptFunction {
+public class ScriptFunction_Constructor extends RiffScriptFunction {
 	private ScriptEnvironment environment;
 
 	public ScriptFunction_Constructor(ScriptValueType returnType, List<ScriptValue> paramList, ScriptKeywordType permission) {

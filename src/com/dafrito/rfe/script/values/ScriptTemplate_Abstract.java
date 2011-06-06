@@ -30,7 +30,7 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 		this.interfaces = interfaces;
 	}
 
-	public abstract void addFunction(Referenced ref, String name, ScriptFunction_Abstract function) throws Exception_Nodeable;
+	public abstract void addFunction(Referenced ref, String name, ScriptFunction function) throws Exception_Nodeable;
 
 	public abstract void addPreconstructorExpression(ScriptExecutable exec) throws Exception_Nodeable;
 
@@ -68,11 +68,11 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 		return this.getEnvironment().getTemplate(this.extended);
 	}
 
-	public abstract ScriptFunction_Abstract getFunction(String name, List<ScriptValue> params);
+	public abstract ScriptFunction getFunction(String name, List<ScriptValue> params);
 
-	public abstract List<ScriptFunction_Abstract> getFunctions();
+	public abstract List<ScriptFunction> getFunctions();
 
-	public abstract ScriptTemplate_Abstract getFunctionTemplate(ScriptFunction_Abstract fxn);
+	public abstract ScriptTemplate_Abstract getFunctionTemplate(ScriptFunction fxn);
 
 	public List<ScriptValueType> getInterfaces() {
 		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {

@@ -5,7 +5,7 @@ package com.dafrito.rfe.script.exceptions;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.parsing.Referenced;
-import com.dafrito.rfe.script.values.ScriptFunction;
+import com.dafrito.rfe.script.values.RiffScriptFunction;
 
 public class Exception_Nodeable_FunctionAlreadyDefined extends Exception_Nodeable {
 	/**
@@ -21,11 +21,11 @@ public class Exception_Nodeable_FunctionAlreadyDefined extends Exception_Nodeabl
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addNode("The function, " + ScriptFunction.getDisplayableFunctionName(this.name) + ", is already defined");
+		assert Debugger.addNode("The function, " + RiffScriptFunction.getDisplayableFunctionName(this.name) + ", is already defined");
 	}
 
 	@Override
 	public String getName() {
-		return "Function Already Defined (" + ScriptFunction.getDisplayableFunctionName(this.name) + ")";
+		return "Function Already Defined (" + RiffScriptFunction.getDisplayableFunctionName(this.name) + ")";
 	}
 }

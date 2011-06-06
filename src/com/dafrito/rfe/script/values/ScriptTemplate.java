@@ -27,7 +27,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		return new ScriptTemplate(env, type, extended, interfaces, isAbstract);
 	}
 
-	protected Map<String, List<ScriptFunction_Abstract>> functions;
+	protected Map<String, List<ScriptFunction>> functions;
 	protected Map<String, ScriptValue_Variable> variables;
 	private boolean isObject, isAbstract;
 	private boolean isConstructing, fullCreation;
@@ -49,7 +49,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		this.fullCreation = true;
 		this.isObject = false;
 		this.variables = new HashMap<String, ScriptValue_Variable>();
-		this.functions = new HashMap<String, List<ScriptFunction_Abstract>>();
+		this.functions = new HashMap<String, List<ScriptFunction>>();
 		this.templatePreconstructors = new LinkedList<ScriptExecutable>();
 		this.preconstructors = new LinkedList<ScriptExecutable>();
 		this.extended = extended;
@@ -61,12 +61,12 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public void addFunction(Referenced ref, String name, ScriptFunction_Abstract function) throws Exception_Nodeable {
+	public void addFunction(Referenced ref, String name, ScriptFunction function) throws Exception_Nodeable {
 		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
 			this.getEnvironment().getTemplate(this.getType()).addFunction(ref, name, function);
 			return;
 		}
-		assert Debugger.openNode("Object Function Additions", "Adding Function to Object (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Debugger.openNode("Object Function Additions", "Adding Function to Object (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		assert Debugger.addNode(this);
 		assert Debugger.addNode(function);
 		if (!this.isFullCreation() && (name == null || name.equals(""))) {
@@ -74,9 +74,9 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 			return;
 		}
 		if (this.functions.get(name) != null) {
-			List<ScriptFunction_Abstract> list = this.functions.get(name);
+			List<ScriptFunction> list = this.functions.get(name);
 			if (function.isAbstract()) {
-				for (ScriptFunction_Abstract currentFxn : list) {
+				for (ScriptFunction currentFxn : list) {
 					// It's an abstract function and we implement it, so return.
 					if (function.areParametersEqual(currentFxn.getParameters())) {
 						assert Debugger.closeNode("The template has this abstract function implemented.");
@@ -85,7 +85,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 				}
 			} else {
 				for (int i = 0; i < list.size(); i++) {
-					ScriptFunction_Abstract currentFxn = list.get(i);
+					ScriptFunction currentFxn = list.get(i);
 					// We already implement this function, so return.
 					if (function.areParametersEqual(currentFxn.getParameters())) {
 						if (currentFxn instanceof ScriptExecutable_ParseFunction) {
@@ -102,7 +102,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 				return;
 			}
 		}
-		this.functions.put(name, new LinkedList<ScriptFunction_Abstract>());
+		this.functions.put(name, new LinkedList<ScriptFunction>());
 		this.functions.get(name).add(function);
 		assert Debugger.closeNode("Function was successfully added", this);
 	}
@@ -190,7 +190,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		}
 		object.setConstructing(false);
 		if (object.getFunctions() != null) {
-			for (ScriptFunction_Abstract function : object.getFunctions()) {
+			for (ScriptFunction function : object.getFunctions()) {
 				if (function.isAbstract()) {
 					throw new Exception_Nodeable_AbstractFunctionNotImplemented(ref, object, function);
 				}
@@ -209,23 +209,23 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public ScriptFunction_Abstract getFunction(String name, List<ScriptValue> params) {
+	public ScriptFunction getFunction(String name, List<ScriptValue> params) {
 		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
 			return this.getEnvironment().getTemplate(this.getType()).getFunction(name, params);
 		}
-		assert Debugger.openNode("Object Function Retrievals", "Retrieving Function from Object (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Debugger.openNode("Object Function Retrievals", "Retrieving Function from Object (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		assert Debugger.addSnapNode("Current template", this);
-		List<ScriptFunction_Abstract> list = this.functions.get(name);
+		List<ScriptFunction> list = this.functions.get(name);
 		if (list != null && !list.isEmpty()) {
 			assert Debugger.addSnapNode("Functions found", list);
-			for (ScriptFunction_Abstract function : list) {
+			for (ScriptFunction function : list) {
 				if (function.areParametersConvertible(params)) {
 					assert Debugger.closeNode("Params match, returning function", function);
 					return function;
 				}
 			}
 		}
-		ScriptFunction_Abstract fxn = null;
+		ScriptFunction fxn = null;
 		if (this.getExtendedClass() != null) {
 			fxn = this.getExtendedClass().getFunction(name, params);
 		}
@@ -238,23 +238,23 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public List<ScriptFunction_Abstract> getFunctions() {
+	public List<ScriptFunction> getFunctions() {
 		if (this.functions == null) {
 			return null;
 		}
-		List<ScriptFunction_Abstract> functions = new LinkedList<ScriptFunction_Abstract>();
-		for (List<ScriptFunction_Abstract> fxnList : this.functions.values()) {
+		List<ScriptFunction> functions = new LinkedList<ScriptFunction>();
+		for (List<ScriptFunction> fxnList : this.functions.values()) {
 			functions.addAll(fxnList);
 		}
 		return functions;
 	}
 
 	@Override
-	public ScriptTemplate_Abstract getFunctionTemplate(ScriptFunction_Abstract fxn) {
+	public ScriptTemplate_Abstract getFunctionTemplate(ScriptFunction fxn) {
 		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
 			return this.getEnvironment().getTemplate(this.getType()).getFunctionTemplate(fxn);
 		}
-		for (List<ScriptFunction_Abstract> fxns : this.functions.values()) {
+		for (List<ScriptFunction> fxns : this.functions.values()) {
 			if (fxns.contains(fxn)) {
 				return this;
 			}
@@ -304,8 +304,8 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		}
 		assert Debugger.openNode("Template Initializations", "Initializing Template (" + this.getType() + ")");
 		if (!this.isAbstract()) {
-			for (Map.Entry<String, List<ScriptFunction_Abstract>> entry : this.functions.entrySet()) {
-				List<ScriptFunction_Abstract> functions = entry.getValue();
+			for (Map.Entry<String, List<ScriptFunction>> entry : this.functions.entrySet()) {
+				List<ScriptFunction> functions = entry.getValue();
 				for (int i = 0; i < functions.size(); i++) {
 					if (functions.get(i).isAbstract()) {
 						// We don't implement it, so fail.
@@ -340,8 +340,8 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		}
 		assert Debugger.closeNode();
 		List<Object> deleteList = new LinkedList<Object>();
-		for (Map.Entry<String, List<ScriptFunction_Abstract>> entry : this.functions.entrySet()) {
-			List<ScriptFunction_Abstract> functions = entry.getValue();
+		for (Map.Entry<String, List<ScriptFunction>> entry : this.functions.entrySet()) {
+			List<ScriptFunction> functions = entry.getValue();
 			for (int i = 0; i < functions.size(); i++) {
 				if (functions.get(i) instanceof ScriptExecutable_ParseFunction) {
 					ScriptExecutable_ParseFunction fxn = (ScriptExecutable_ParseFunction) functions.get(i);
@@ -366,7 +366,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 						}
 					}
 					assert Debugger.closeNode();
-					ScriptFunction_Abstract function = Parser.parseFunction(fxn, this.getType());
+					ScriptFunction function = Parser.parseFunction(fxn, this.getType());
 					assert Debugger.addSnapNode("Adding function to this template", function);
 					functions.add(i, function);
 					this.getEnvironment().retreatNestedStack();
@@ -427,8 +427,8 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		}
 		if (this.functions != null && this.functions.size() > 0) {
 			assert Debugger.openNode("Functions (" + this.functions.size() + " function(s))");
-			for (Map.Entry<String, List<ScriptFunction_Abstract>> entry : this.functions.entrySet()) {
-				assert Debugger.addSnapNode(ScriptFunction.getDisplayableFunctionName(entry.getKey()), entry.getValue());
+			for (Map.Entry<String, List<ScriptFunction>> entry : this.functions.entrySet()) {
+				assert Debugger.addSnapNode(RiffScriptFunction.getDisplayableFunctionName(entry.getKey()), entry.getValue());
 			}
 			assert Debugger.closeNode();
 		}

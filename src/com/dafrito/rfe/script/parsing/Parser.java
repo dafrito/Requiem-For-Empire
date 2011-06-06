@@ -77,8 +77,8 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_Point;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Scheduler;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrain;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Terrestrial;
+import com.dafrito.rfe.script.values.RiffScriptFunction;
 import com.dafrito.rfe.script.values.ScriptFunction;
-import com.dafrito.rfe.script.values.ScriptFunction_Abstract;
 import com.dafrito.rfe.script.values.ScriptFunction_Constructor;
 import com.dafrito.rfe.script.values.ScriptTemplate;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
@@ -1135,13 +1135,13 @@ public class Parser {
 		throw new Exception_Nodeable_UnexpectedType(env, list.get(0), "Keyword");
 	}
 
-	public static ScriptFunction_Abstract parseFunction(ScriptExecutable_ParseFunction function, ScriptValueType type) throws Exception_Nodeable {
-		assert Debugger.openNode("Parsing Functions", "Parsing Function (" + ScriptFunction.getDisplayableFunctionName(function.getName()) + ")");
-		ScriptFunction_Abstract fxn;
+	public static ScriptFunction parseFunction(ScriptExecutable_ParseFunction function, ScriptValueType type) throws Exception_Nodeable {
+		assert Debugger.openNode("Parsing Functions", "Parsing Function (" + RiffScriptFunction.getDisplayableFunctionName(function.getName()) + ")");
+		ScriptFunction fxn;
 		if (function.getName() == null || function.getName().equals("")) {
 			fxn = new ScriptFunction_Constructor(function.getReturnType(), function.getParameters(), function.getPermission());
 		} else {
-			fxn = new ScriptFunction(function.getReturnType(), function.getParameters(), function.getPermission(), function.isAbstract(), function.isStatic());
+			fxn = new RiffScriptFunction(function.getReturnType(), function.getParameters(), function.getPermission(), function.isAbstract(), function.isStatic());
 		}
 		fxn.addExpressions(parseBodyList(function.getEnvironment(), function.getBody().getElements(), type));
 		assert Debugger.closeNode();

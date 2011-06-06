@@ -9,7 +9,7 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
-import com.dafrito.rfe.script.values.ScriptFunction;
+import com.dafrito.rfe.script.values.RiffScriptFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
@@ -31,7 +31,7 @@ public class FauxTemplate_MovementEvaluator extends FauxTemplate implements Node
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
-		assert Debugger.openNode("Faux Template Executions", "Executing movement evaluator faux template function (" + ScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Debugger.openNode("Faux Template Executions", "Executing movement evaluator faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		assert Debugger.addSnapNode("Template provided", rawTemplate);
 		assert Debugger.addSnapNode("Parameters provided", params);
 		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, rawTemplate);

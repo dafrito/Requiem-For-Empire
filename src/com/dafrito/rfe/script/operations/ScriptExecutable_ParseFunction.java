@@ -10,12 +10,12 @@ import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
 import com.dafrito.rfe.script.parsing.ScriptGroup;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
+import com.dafrito.rfe.script.values.RiffScriptFunction;
 import com.dafrito.rfe.script.values.ScriptFunction;
-import com.dafrito.rfe.script.values.ScriptFunction_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 
-public class ScriptExecutable_ParseFunction extends ScriptElement implements ScriptFunction_Abstract, ScriptExecutable, Nodeable {
+public class ScriptExecutable_ParseFunction extends ScriptElement implements ScriptFunction, ScriptExecutable, Nodeable {
 	private boolean isStatic, isAbstract;
 	private ScriptGroup body;
 	private String name;
@@ -46,12 +46,12 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 
 	@Override
 	public boolean areParametersConvertible(List<ScriptValue> list) {
-		return ScriptFunction.areParametersConvertible(this.getParameters(), list);
+		return RiffScriptFunction.areParametersConvertible(this.getParameters(), list);
 	}
 
 	@Override
 	public boolean areParametersEqual(List<ScriptValue> list) {
-		return ScriptFunction.areParametersEqual(this.getParameters(), list);
+		return RiffScriptFunction.areParametersEqual(this.getParameters(), list);
 	}
 
 	// ScriptExecutable implementation
@@ -106,7 +106,7 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Unparsed Script-Function (" + ScriptFunction.getDisplayableFunctionName(this.name) + ")");
+		assert Debugger.openNode("Unparsed Script-Function (" + RiffScriptFunction.getDisplayableFunctionName(this.name) + ")");
 		assert Debugger.addNode("Static: " + this.isStatic);
 		assert Debugger.addSnapNode("Body", this.body);
 		assert Debugger.closeNode();
