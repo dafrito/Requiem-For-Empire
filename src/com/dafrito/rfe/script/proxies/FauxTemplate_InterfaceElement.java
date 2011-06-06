@@ -7,10 +7,10 @@ import com.dafrito.rfe.gui.InterfaceElement;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -67,19 +67,19 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 				break;
 			}
 		} else if (name.equals("getUniqueStylesheet")) {
-			returning = Parser.getRiffStylesheet(this.getEnvironment(), template.getElement().getUniqueStylesheet());
+			returning = Conversions.getRiffStylesheet(this.getEnvironment(), template.getElement().getUniqueStylesheet());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getClassStylesheet")) {
-			returning = Parser.getRiffStylesheet(this.getEnvironment(), template.getElement().getClassStylesheet());
+			returning = Conversions.getRiffStylesheet(this.getEnvironment(), template.getElement().getClassStylesheet());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setUniqueStylesheet")) {
-			template.getElement().setUniqueStylesheet(Parser.getStylesheet(this.getEnvironment(), params.get(0)));
+			template.getElement().setUniqueStylesheet(Conversions.getStylesheet(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setClassStylesheet")) {
-			template.getElement().setClassStylesheet(Parser.getStylesheet(this.getEnvironment(), params.get(0)));
+			template.getElement().setClassStylesheet(Conversions.getStylesheet(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		}

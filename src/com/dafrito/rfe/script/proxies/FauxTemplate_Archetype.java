@@ -7,10 +7,10 @@ import com.dafrito.rfe.Ace;
 import com.dafrito.rfe.Archetype;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -50,24 +50,24 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 			if (template == null) {
 				template = (FauxTemplate_Archetype) this.createObject(ref, template);
 			}
-			template.setArchetype(new Archetype(Parser.getString(this.getEnvironment(), params.get(0))));
+			template.setArchetype(new Archetype(Conversions.getString(this.getEnvironment(), params.get(0))));
 			params.clear();
 		} else if (name.equals("addParent")) {
-			template.getArchetype().addParent(Parser.getAce(this.getEnvironment(), params.get(0)));
+			template.getArchetype().addParent(Conversions.getAce(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getName")) {
-			ScriptValue returning = Parser.getRiffString(this.getEnvironment(), template.getArchetype().getName());
+			ScriptValue returning = Conversions.getRiffString(this.getEnvironment(), template.getArchetype().getName());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getParents")) {
 			List<ScriptValue> parents = new LinkedList<ScriptValue>();
 			for (Ace parent : template.getArchetype().getParents()) {
-				parents.add(Parser.getRiffAce(this.getEnvironment(), parent));
+				parents.add(Conversions.getRiffAce(this.getEnvironment(), parent));
 			}
 			// This getRiffList line might not be necessary; it used to have a variable
 			// assigned to it, but it was never used.
-			Parser.getRiffList(this.getEnvironment(), parents);
+			Conversions.getRiffList(this.getEnvironment(), parents);
 			assert Debugger.closeNode();
 			return null;
 		}

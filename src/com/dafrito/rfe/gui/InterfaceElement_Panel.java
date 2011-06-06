@@ -19,12 +19,12 @@ import com.dafrito.rfe.gui.event.RiffInterface_MouseEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseListener;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Panel;
 import com.dafrito.rfe.script.proxies.FauxTemplate_RiffDali;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
@@ -163,15 +163,15 @@ public class InterfaceElement_Panel extends InterfaceElement implements ScriptCo
 			List<ScriptValue> regionList = new LinkedList<ScriptValue>();
 			List<ScriptValue> assetList = new LinkedList<ScriptValue>();
 			for (DiscreteRegion region : regions) {
-				regionList.add(Parser.getRiffDiscreteRegion(this.getEnvironment(), region));
+				regionList.add(Conversions.getRiffDiscreteRegion(this.getEnvironment(), region));
 				if (region.getProperty("Archetypes") != null) {
 					for (Asset asset : ((ArchetypeMapNode) region.getProperty("Archetypes")).getAllAssets()) {
-						assetList.add(Parser.getRiffAsset(this.getEnvironment(), asset));
+						assetList.add(Conversions.getRiffAsset(this.getEnvironment(), asset));
 					}
 				}
 			}
-			params.add(Parser.getRiffList(this.getEnvironment(), regionList));
-			params.add(Parser.getRiffList(this.getEnvironment(), assetList));
+			params.add(Conversions.getRiffList(this.getEnvironment(), regionList));
+			params.add(Conversions.getRiffList(this.getEnvironment(), assetList));
 			if (this.dali != null) {
 				ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, this.dali, "paintPanel", params);
 			}

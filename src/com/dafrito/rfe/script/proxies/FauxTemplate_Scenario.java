@@ -8,10 +8,10 @@ import com.dafrito.rfe.Scenario;
 import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -55,30 +55,30 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 			}
 			switch (params.size()) {
 			case 2:
-				template.getScenario().setTerrestrial(Parser.getTerrestrial(this.getEnvironment(), params.get(0)));
-				template.getScenario().setName(Parser.getString(this.getEnvironment(), params.get(1)));
+				template.getScenario().setTerrestrial(Conversions.getTerrestrial(this.getEnvironment(), params.get(0)));
+				template.getScenario().setName(Conversions.getString(this.getEnvironment(), params.get(1)));
 			case 0:
 				assert Debugger.closeNode();
 				return template;
 			}
 		} else if (name.equals("getName")) {
-			returning = Parser.getRiffString(ref.getEnvironment(), template.getScenario().getName());
+			returning = Conversions.getRiffString(ref.getEnvironment(), template.getScenario().getName());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setName")) {
-			template.getScenario().setName(Parser.getString(this.getEnvironment(), params.get(0)));
+			template.getScenario().setName(Conversions.getString(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getTerrestrial")) {
-			returning = Parser.getRiffTerrestrial(ref.getEnvironment(), template.getScenario().getTerrestrial());
+			returning = Conversions.getRiffTerrestrial(ref.getEnvironment(), template.getScenario().getTerrestrial());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setTerrestrial")) {
-			template.getScenario().setTerrestrial(Parser.getTerrestrial(this.getEnvironment(), params.get(0)));
+			template.getScenario().setTerrestrial(Conversions.getTerrestrial(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getScheduler")) {
-			returning = Parser.getRiffScheduler(this.getEnvironment(), template.getScenario().getScheduler());
+			returning = Conversions.getRiffScheduler(this.getEnvironment(), template.getScenario().getScheduler());
 			assert Debugger.closeNode();
 			return returning;
 		}

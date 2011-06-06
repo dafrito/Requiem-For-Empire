@@ -8,10 +8,10 @@ import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -53,17 +53,17 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 			if (template == null) {
 				template = (FauxTemplate_Terrestrial) this.createObject(ref, template);
 			}
-			template.setTerrestrial(new Terrestrial(Parser.getDouble(this.getEnvironment(), params.get(0))));
+			template.setTerrestrial(new Terrestrial(Conversions.getDouble(this.getEnvironment(), params.get(0))));
 			assert Debugger.closeNode();
 			return template;
 		} else if (name.equals("add")) {
-			DiscreteRegion region = Parser.getDiscreteRegion(this.getEnvironment(), params.get(0));
+			DiscreteRegion region = Conversions.getDiscreteRegion(this.getEnvironment(), params.get(0));
 			assert Debugger.addSnapNode("Adding discrete region to terrestrial", region);
 			template.getTerrestrial().add(region);
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getPath")) {
-			returning = Parser.getRiffPath(this.getEnvironment(), template.getTerrestrial().getPath(this.getEnvironment(), Parser.getScenario(this.getEnvironment(), params.get(0)), Parser.getTemplate(params.get(1)), Parser.getAsset(this.getEnvironment(), params.get(2)), Parser.getPoint(this.getEnvironment(), params.get(3)), Parser.getPoint(this.getEnvironment(), params.get(4))));
+			returning = Conversions.getRiffPath(this.getEnvironment(), template.getTerrestrial().getPath(this.getEnvironment(), Conversions.getScenario(this.getEnvironment(), params.get(0)), Conversions.getTemplate(params.get(1)), Conversions.getAsset(this.getEnvironment(), params.get(2)), Conversions.getPoint(this.getEnvironment(), params.get(3)), Conversions.getPoint(this.getEnvironment(), params.get(4))));
 			assert Debugger.closeNode();
 			return returning;
 		}

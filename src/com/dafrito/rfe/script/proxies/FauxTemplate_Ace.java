@@ -6,10 +6,10 @@ import java.util.List;
 import com.dafrito.rfe.Ace;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -49,18 +49,18 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<
 			if (template == null) {
 				template = (FauxTemplate_Ace) this.createObject(ref, template);
 			}
-			template.setAce(new Ace(Parser.getArchetype(this.getEnvironment(), params.get(0)), Parser.getDouble(this.getEnvironment(), params.get(1))));
+			template.setAce(new Ace(Conversions.getArchetype(this.getEnvironment(), params.get(0)), Conversions.getDouble(this.getEnvironment(), params.get(1))));
 			params.clear();
 		} else if (name.equals("setEfficiency")) {
-			template.getAce().setEfficiency(Parser.getDouble(this.getEnvironment(), params.get(0)));
+			template.getAce().setEfficiency(Conversions.getDouble(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getEfficiency")) {
-			ScriptValue returning = Parser.getRiffDouble(this.getEnvironment(), template.getAce().getEfficiency());
+			ScriptValue returning = Conversions.getRiffDouble(this.getEnvironment(), template.getAce().getEfficiency());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getArchetype")) {
-			ScriptValue returning = Parser.getRiffArchetype(this.getEnvironment(), template.getAce().getArchetype());
+			ScriptValue returning = Conversions.getRiffArchetype(this.getEnvironment(), template.getAce().getArchetype());
 			assert Debugger.closeNode();
 			return returning;
 		}

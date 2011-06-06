@@ -7,9 +7,9 @@ import com.dafrito.rfe.gui.InterfaceElement_Label;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -46,16 +46,16 @@ public class FauxTemplate_Label extends FauxTemplate_InterfaceElement implements
 			}
 			String label = "";
 			if (params.size() > 0) {
-				label = Parser.getString(this.getEnvironment(), params.get(params.size() - 1));
+				label = Conversions.getString(this.getEnvironment(), params.get(params.size() - 1));
 				params.remove(params.size() - 1);
 			}
 			template.getLabel().setString(label);
 		} else if (name.equals("setString")) {
-			template.getLabel().setString(Parser.getString(this.getEnvironment(), params.get(0)));
+			template.getLabel().setString(Conversions.getString(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getString")) {
-			returning = Parser.getRiffString(this.getEnvironment(), template.getLabel().getString());
+			returning = Conversions.getRiffString(this.getEnvironment(), template.getLabel().getString());
 			assert Debugger.closeNode();
 			return returning;
 		}

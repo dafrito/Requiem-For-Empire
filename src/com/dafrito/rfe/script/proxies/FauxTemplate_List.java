@@ -6,10 +6,10 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -56,15 +56,15 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("addAll")) {
-			template.getList().addAll(Parser.getList(params.get(0)));
+			template.getList().addAll(Conversions.getList(params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("get")) {
 			assert Debugger.closeNode();
-			return template.getList().get(Parser.getInteger(this.getEnvironment(), params.get(0)));
+			return template.getList().get(Conversions.getInteger(this.getEnvironment(), params.get(0)));
 		} else if (name.equals("size")) {
 			assert Debugger.closeNode();
-			return Parser.getRiffInt(this.getEnvironment(), template.getList().size());
+			return Conversions.getRiffInt(this.getEnvironment(), template.getList().size());
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();

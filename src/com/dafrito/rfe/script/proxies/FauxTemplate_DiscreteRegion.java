@@ -7,10 +7,10 @@ import com.dafrito.rfe.ArchetypeMapNode;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -56,33 +56,33 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 		} else if (name.equals("add")) {
 			//region.addPoint(Parser.getPoint(aaron is a sand jewparams.get(0)));
 			if (params.size() == 1) {
-				template.getRegion().addPoint(Parser.getPoint(this.getEnvironment(), params.get(0)));
+				template.getRegion().addPoint(Conversions.getPoint(this.getEnvironment(), params.get(0)));
 				assert Debugger.closeNode();
 				return null;
 			}
 		} else if (name.equals("addAsset")) {
 			if (template.getRegion().getProperty("Archetypes") == null) {
-				template.getRegion().setProperty("Archetypes", ArchetypeMapNode.createTree(Parser.getAsset(this.getEnvironment(), params.get(0))));
+				template.getRegion().setProperty("Archetypes", ArchetypeMapNode.createTree(Conversions.getAsset(this.getEnvironment(), params.get(0))));
 			} else {
-				((ArchetypeMapNode) template.getRegion().getProperty("Archetypes")).addAsset(Parser.getAsset(this.getEnvironment(), params.get(0)));
+				((ArchetypeMapNode) template.getRegion().getProperty("Archetypes")).addAsset(Conversions.getAsset(this.getEnvironment(), params.get(0)));
 			}
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setProperty")) {
 			if (params.size() == 2) {
-				template.getRegion().setProperty(Parser.getString(this.getEnvironment(), params.get(0)), Parser.getObject(this.getEnvironment(), params.get(1)));
+				template.getRegion().setProperty(Conversions.getString(this.getEnvironment(), params.get(0)), Conversions.getObject(this.getEnvironment(), params.get(1)));
 				assert Debugger.closeNode();
 				return null;
 			}
 		} else if (name.equals("getProperty")) {
 			if (params.size() == 1) {
-				ScriptValue returning = (ScriptValue) Parser.convert(this.getEnvironment(), template.getRegion().getProperty(Parser.getString(this.getEnvironment(), params.get(0))));
+				ScriptValue returning = (ScriptValue) Conversions.convert(this.getEnvironment(), template.getRegion().getProperty(Conversions.getString(this.getEnvironment(), params.get(0))));
 				assert Debugger.addSnapNode("Retrieved property", returning);
 				assert Debugger.closeNode();
 				return returning;
 			}
 		} else if (name.equals("getCenter")) {
-			ScriptValue returning = Parser.getRiffPoint(this.getEnvironment(), template.getRegion().getCenter());
+			ScriptValue returning = Conversions.getRiffPoint(this.getEnvironment(), template.getRegion().getCenter());
 			assert Debugger.closeNode();
 			return returning;
 		}

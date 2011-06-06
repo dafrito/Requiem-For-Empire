@@ -14,11 +14,11 @@ import javax.swing.Timer;
 import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
 
@@ -62,8 +62,8 @@ public class Scheduler implements ActionListener {
 						listener = this.getDefaultListener();
 					}
 					params.clear();
-					params.add(Parser.getRiffLong(this.getEnvironment(), differential));
-					params.add(Parser.getRiffAsset(this.getEnvironment(), event.getAsset()));
+					params.add(Conversions.getRiffLong(this.getEnvironment(), differential));
+					params.add(Conversions.getRiffAsset(this.getEnvironment(), event.getAsset()));
 					ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, listener, "iterate", params);
 					assert Debugger.closeNode();
 					iter.remove();

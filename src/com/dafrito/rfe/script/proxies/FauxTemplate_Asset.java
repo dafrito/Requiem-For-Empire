@@ -7,10 +7,10 @@ import com.dafrito.rfe.Ace;
 import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -52,35 +52,35 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 				if (template == null) {
 					template = (FauxTemplate_Asset) this.createObject(ref, template);
 				}
-				template.getAsset().setLocation(Parser.getPoint(this.getEnvironment(), params.get(0)));
+				template.getAsset().setLocation(Conversions.getPoint(this.getEnvironment(), params.get(0)));
 				params.clear();
 			} else if (name.equals("setProperty")) {
 				if (params.size() == 2) {
-					template.getAsset().setProperty(Parser.getString(this.getEnvironment(), params.get(0)), params.get(1).getValue());
+					template.getAsset().setProperty(Conversions.getString(this.getEnvironment(), params.get(0)), params.get(1).getValue());
 					return null;
 				}
 			} else if (name.equals("getProperty")) {
 				if (params.size() == 1) {
-					Object property = template.getAsset().getProperty(Parser.getString(this.getEnvironment(), params.get(0)));
+					Object property = template.getAsset().getProperty(Conversions.getString(this.getEnvironment(), params.get(0)));
 					if (property instanceof ScriptConvertible<?>) {
 						return (ScriptValue) ((ScriptConvertible<?>) property).convert(this.getEnvironment());
 					}
 					return (ScriptValue) property;
 				}
 			} else if (name.equals("addAce")) {
-				template.getAsset().addAce(Parser.getAce(this.getEnvironment(), params.get(0)));
+				template.getAsset().addAce(Conversions.getAce(this.getEnvironment(), params.get(0)));
 				return null;
 			} else if (name.equals("getAces")) {
 				List<ScriptValue> list = new LinkedList<ScriptValue>();
 				for (Ace ace : template.getAsset().getAces()) {
-					list.add(Parser.getRiffAce(this.getEnvironment(), ace));
+					list.add(Conversions.getRiffAce(this.getEnvironment(), ace));
 				}
-				return Parser.getRiffList(this.getEnvironment(), list);
+				return Conversions.getRiffList(this.getEnvironment(), list);
 			} else if (name.equals("getLocation")) {
 				assert template.getAsset().getLocation() != null : "Asset location is null!";
-				return Parser.getRiffPoint(this.getEnvironment(), template.getAsset().getLocation());
+				return Conversions.getRiffPoint(this.getEnvironment(), template.getAsset().getLocation());
 			} else if (name.equals("setLocation")) {
-				template.getAsset().setLocation(Parser.getPoint(this.getEnvironment(), params.get(0)));
+				template.getAsset().setLocation(Conversions.getPoint(this.getEnvironment(), params.get(0)));
 				return null;
 			}
 			return this.getExtendedFauxClass().execute(ref, name, params, template);

@@ -8,10 +8,10 @@ import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Point_Euclidean;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -58,25 +58,25 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 				template = (FauxTemplate_Point) this.createObject(ref, template);
 			}
 			if (params.size() == 3) {
-				template.getPoint().setX(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
-				template.getPoint().setY(Parser.getDouble(this.getEnvironment(), params.get(1)).doubleValue());
-				template.getPoint().setZ(Parser.getDouble(this.getEnvironment(), params.get(2)).doubleValue());
+				template.getPoint().setX(Conversions.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
+				template.getPoint().setY(Conversions.getDouble(this.getEnvironment(), params.get(1)).doubleValue());
+				template.getPoint().setZ(Conversions.getDouble(this.getEnvironment(), params.get(2)).doubleValue());
 			}
 			params.clear();
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		}
 		if (name.equals("getX")) {
-			returning = Parser.getRiffDouble(this.getEnvironment(), (template).getPoint().getX());
+			returning = Conversions.getRiffDouble(this.getEnvironment(), (template).getPoint().getX());
 		} else if (name.equals("getY")) {
-			returning = Parser.getRiffDouble(this.getEnvironment(), (template).getPoint().getY());
+			returning = Conversions.getRiffDouble(this.getEnvironment(), (template).getPoint().getY());
 		} else if (name.equals("getZ")) {
-			returning = Parser.getRiffDouble(this.getEnvironment(), (template).getPoint().getZ());
+			returning = Conversions.getRiffDouble(this.getEnvironment(), (template).getPoint().getZ());
 		} else if (name.equals("setX")) {
-			(template).getPoint().setX(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
+			(template).getPoint().setX(Conversions.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("setY")) {
-			(template).getPoint().setY(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
+			(template).getPoint().setY(Conversions.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("setZ")) {
-			(template).getPoint().setZ(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
+			(template).getPoint().setZ(Conversions.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else {
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		}

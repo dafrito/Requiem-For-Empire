@@ -7,10 +7,10 @@ import com.dafrito.rfe.ArchetypeMapNode;
 import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -50,18 +50,18 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 			if (template == null) {
 				template = (FauxTemplate_ArchetypeTree) this.createObject(ref, template);
 			}
-			template.setTree(new ArchetypeMapNode(Parser.getArchetype(this.getEnvironment(), params.get(0))));
+			template.setTree(new ArchetypeMapNode(Conversions.getArchetype(this.getEnvironment(), params.get(0))));
 			params.clear();
 		} else if (name.equals("addAsset")) {
-			template.getTree().addAsset(Parser.getAsset(this.getEnvironment(), params.get(0)));
+			template.getTree().addAsset(Conversions.getAsset(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getAssetsOfType")) {
 			List<ScriptValue> assets = new LinkedList<ScriptValue>();
-			for (Asset asset : template.getTree().getAssetsOfType(Parser.getArchetype(this.getEnvironment(), params.get(0)))) {
-				assets.add(Parser.getRiffAsset(this.getEnvironment(), asset));
+			for (Asset asset : template.getTree().getAssetsOfType(Conversions.getArchetype(this.getEnvironment(), params.get(0)))) {
+				assets.add(Conversions.getRiffAsset(this.getEnvironment(), asset));
 			}
-			ScriptValue returning = Parser.getRiffList(this.getEnvironment(), assets);
+			ScriptValue returning = Conversions.getRiffList(this.getEnvironment(), assets);
 			assert Debugger.closeNode();
 			return returning;
 		}

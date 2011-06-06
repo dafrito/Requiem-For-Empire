@@ -6,10 +6,10 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheets;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -34,9 +34,9 @@ public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 		assert Debugger.addSnapNode("Template provided", rawTemplate);
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name.equals("parseColor")) {
-			returning = Parser.getRiffColor(this.getEnvironment(), Stylesheets.getColor(Parser.getString(this.getEnvironment(), params.get(0))));
+			returning = Conversions.getRiffColor(this.getEnvironment(), Stylesheets.getColor(Conversions.getString(this.getEnvironment(), params.get(0))));
 		} else if (name.equals("paintPanel")) {
-			List<ScriptValue> list = Parser.getList(params.get(1));
+			List<ScriptValue> list = Conversions.getList(params.get(1));
 			List<ScriptValue> paramList = new LinkedList<ScriptValue>();
 			for (ScriptValue value : list) {
 				paramList.clear();

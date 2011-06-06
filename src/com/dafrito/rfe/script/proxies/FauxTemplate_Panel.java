@@ -10,10 +10,10 @@ import com.dafrito.rfe.gui.InterfaceElement_Panel;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -55,39 +55,39 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 				template = (FauxTemplate_Panel) this.createObject(ref, template);
 			}
 		} else if (name.equals("add")) {
-			template.getPanel().add(Parser.getGraphicalElement(this.getEnvironment(), params.get(0)));
+			template.getPanel().add(Conversions.getGraphicalElement(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getTerrestrial")) {
-			returning = Parser.getRiffTerrestrial(ref.getEnvironment(), template.getPanel().getTerrestrial());
+			returning = Conversions.getRiffTerrestrial(ref.getEnvironment(), template.getPanel().getTerrestrial());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setTerrestrial")) {
-			template.getPanel().setTerrestrial(Parser.getTerrestrial(this.getEnvironment(), params.get(0)));
+			template.getPanel().setTerrestrial(Conversions.getTerrestrial(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setRiffDali")) {
-			template.getPanel().setRiffDali(Parser.getTemplate(params.get(0)));
+			template.getPanel().setRiffDali(Conversions.getTemplate(params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("drawRegion")) {
-			template.getPanel().drawRegion(Parser.getDiscreteRegion(this.getEnvironment(), params.get(0)));
+			template.getPanel().drawRegion(Conversions.getDiscreteRegion(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("fillRegion")) {
-			template.getPanel().fillRegion(Parser.getDiscreteRegion(this.getEnvironment(), params.get(0)));
+			template.getPanel().fillRegion(Conversions.getDiscreteRegion(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("drawTransformedRegion")) {
-			template.getPanel().drawTransformedRegion(Parser.getDiscreteRegion(this.getEnvironment(), params.get(0)));
+			template.getPanel().drawTransformedRegion(Conversions.getDiscreteRegion(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("fillTransformedRegion")) {
-			template.getPanel().fillTransformedRegion(Parser.getDiscreteRegion(this.getEnvironment(), params.get(0)));
+			template.getPanel().fillTransformedRegion(Conversions.getDiscreteRegion(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("drawString")) {
-			template.getPanel().drawString(Parser.getString(this.getEnvironment(), params.get(0)), Parser.getColor(this.getEnvironment(), params.get(1)), Parser.getPoint(this.getEnvironment(), params.get(2)));
+			template.getPanel().drawString(Conversions.getString(this.getEnvironment(), params.get(0)), Conversions.getColor(this.getEnvironment(), params.get(1)), Conversions.getPoint(this.getEnvironment(), params.get(2)));
 			assert Debugger.closeNode();
 			return null;
 		}

@@ -7,10 +7,10 @@ import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Point_Path;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -50,11 +50,11 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 				template = (FauxTemplate_Path) this.createObject(ref, template);
 			}
 			if (params.size() == 1) {
-				((Point_Path) template.getPoint()).setScenario(Parser.getScenario(this.getEnvironment(), params.get(0)));
+				((Point_Path) template.getPoint()).setScenario(Conversions.getScenario(this.getEnvironment(), params.get(0)));
 			}
 			params.clear();
 		} else if (name.equals("getTotalTime")) {
-			ScriptValue returning = Parser.getRiffLong(this.getEnvironment(), ((Point_Path) template.getPoint()).getTotalTime());
+			ScriptValue returning = Conversions.getRiffLong(this.getEnvironment(), ((Point_Path) template.getPoint()).getTotalTime());
 			assert Debugger.closeNode();
 			return returning;
 		}

@@ -7,11 +7,11 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheets;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_InvalidColorRange;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -54,13 +54,13 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 				template = (FauxTemplate_Color) this.createObject(ref, template);
 			}
 			if (params.size() == 1) {
-				template.setColor(Stylesheets.getColor(Parser.getString(this.getEnvironment(), params.get(0))));
+				template.setColor(Stylesheets.getColor(Conversions.getString(this.getEnvironment(), params.get(0))));
 			} else if (params.size() == 3) {
 				if (params.get(0).isConvertibleTo(ScriptValueType.INT)) {
 					int r, g, b;
-					r = Parser.getInteger(this.getEnvironment(), params.get(0));
-					g = Parser.getInteger(this.getEnvironment(), params.get(1));
-					b = Parser.getInteger(this.getEnvironment(), params.get(2));
+					r = Conversions.getInteger(this.getEnvironment(), params.get(0));
+					g = Conversions.getInteger(this.getEnvironment(), params.get(1));
+					b = Conversions.getInteger(this.getEnvironment(), params.get(2));
 					if (r < 0 || r > 255) {
 						throw new Exception_Nodeable_InvalidColorRange(this, new Integer(r));
 					}
@@ -74,9 +74,9 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 				} else {
 					;
 					float r, g, b;
-					r = Parser.getFloat(this.getEnvironment(), params.get(0));
-					g = Parser.getFloat(this.getEnvironment(), params.get(1));
-					b = Parser.getFloat(this.getEnvironment(), params.get(2));
+					r = Conversions.getFloat(this.getEnvironment(), params.get(0));
+					g = Conversions.getFloat(this.getEnvironment(), params.get(1));
+					b = Conversions.getFloat(this.getEnvironment(), params.get(2));
 					if (r < 0.0d || r > 1.0d) {
 						throw new Exception_Nodeable_InvalidColorRange(this, new Float(r));
 					}
@@ -91,23 +91,23 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			}
 			params.clear();
 		} else if (name.equals("getRed")) {
-			returning = Parser.getRiffInt(this.getEnvironment(), template.getColor().getRed());
+			returning = Conversions.getRiffInt(this.getEnvironment(), template.getColor().getRed());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getGreen")) {
-			returning = Parser.getRiffInt(this.getEnvironment(), template.getColor().getGreen());
+			returning = Conversions.getRiffInt(this.getEnvironment(), template.getColor().getGreen());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getBlue")) {
-			returning = Parser.getRiffInt(this.getEnvironment(), template.getColor().getBlue());
+			returning = Conversions.getRiffInt(this.getEnvironment(), template.getColor().getBlue());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setRed")) {
 			int value = 0;
 			if (params.get(0).getType().equals(ScriptValueType.FLOAT)) {
-				value = (int) (Parser.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
+				value = (int) (Conversions.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
 			} else {
-				value = Parser.getInteger(this.getEnvironment(), params.get(0));
+				value = Conversions.getInteger(this.getEnvironment(), params.get(0));
 			}
 			template.setColor(new java.awt.Color(value, template.getColor().getGreen(), template.getColor().getBlue()));
 			assert Debugger.closeNode();
@@ -115,9 +115,9 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 		} else if (name.equals("setGreen")) {
 			int value = 0;
 			if (params.get(0).getType().equals(ScriptValueType.FLOAT)) {
-				value = (int) (Parser.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
+				value = (int) (Conversions.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
 			} else {
-				value = Parser.getInteger(this.getEnvironment(), params.get(0));
+				value = Conversions.getInteger(this.getEnvironment(), params.get(0));
 			}
 			template.setColor(new java.awt.Color(template.getColor().getRed(), value, template.getColor().getBlue()));
 			assert Debugger.closeNode();
@@ -125,15 +125,15 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 		} else if (name.equals("setBlue")) {
 			int value = 0;
 			if (params.get(0).getType().equals(ScriptValueType.FLOAT)) {
-				value = (int) (Parser.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
+				value = (int) (Conversions.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
 			} else {
-				value = Parser.getInteger(this.getEnvironment(), params.get(0));
+				value = Conversions.getInteger(this.getEnvironment(), params.get(0));
 			}
 			template.setColor(new java.awt.Color(template.getColor().getRed(), template.getColor().getGreen(), value));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setColor")) {
-			template.setColor(Stylesheets.getColor(Parser.getString(this.getEnvironment(), params.get(0))));
+			template.setColor(Stylesheets.getColor(Conversions.getString(this.getEnvironment(), params.get(0))));
 			assert Debugger.closeNode();
 			return null;
 		}

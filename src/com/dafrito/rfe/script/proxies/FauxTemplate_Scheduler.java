@@ -6,10 +6,10 @@ import java.util.List;
 import com.dafrito.rfe.actions.Scheduler;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -52,7 +52,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 			}
 			switch (params.size()) {
 			case 1:
-				template.getScheduler().setDefaultListener(Parser.getSchedulerListener(params.get(0)));
+				template.getScheduler().setDefaultListener(Conversions.getSchedulerListener(params.get(0)));
 			case 0:
 				assert Debugger.closeNode();
 				return template;
@@ -60,13 +60,13 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 		} else if (name.equals("schedule")) {
 			ScriptTemplate_Abstract listener = null;
 			if (params.size() == 3) {
-				listener = Parser.getTemplate(params.get(2));
+				listener = Conversions.getTemplate(params.get(2));
 			}
-			template.getScheduler().schedule(Parser.getNumber(this.getEnvironment(), params.get(0)).longValue(), Parser.getAsset(this.getEnvironment(), params.get(1)), listener);
+			template.getScheduler().schedule(Conversions.getNumber(this.getEnvironment(), params.get(0)).longValue(), Conversions.getAsset(this.getEnvironment(), params.get(1)), listener);
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setDefaultListener")) {
-			template.getScheduler().setDefaultListener(Parser.getSchedulerListener(params.get(0)));
+			template.getScheduler().setDefaultListener(Conversions.getSchedulerListener(params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("start")) {

@@ -6,9 +6,9 @@ import java.util.List;
 import com.dafrito.rfe.gui.Interface;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
-import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -47,11 +47,11 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable {
 			assert Debugger.closeNode();
 			return template;
 		} else if (name.equals("add")) {
-			template.getInterface().getRoot().add(Parser.getElement(this.getEnvironment(), params.get(0)));
+			template.getInterface().getRoot().add(Conversions.getElement(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getRoot")) {
-			returning = Parser.getRiffElement(this.getEnvironment(), template.getInterface().getRoot());
+			returning = Conversions.getRiffElement(this.getEnvironment(), template.getInterface().getRoot());
 			assert Debugger.closeNode();
 			return returning;
 		}
