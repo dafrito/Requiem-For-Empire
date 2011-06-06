@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.inspect.Nodeable;
 
 @Inspectable
-public class Asset implements Nodeable {
+public class Asset {
 	private Map<String, Object> properties = new HashMap<String, Object>();
 	private Point location;
 	private List<Ace> aces = new LinkedList<Ace>();
@@ -38,21 +36,6 @@ public class Asset implements Nodeable {
 
 	public Object getProperty(String name) {
 		return this.properties.get(name);
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Asset");
-		assert Debugger.addSnapNode("Location", this.getLocation());
-		if (this.aces != null && this.aces.size() > 0) {
-			assert Debugger.addSnapNode("Archetype Conversion Efficiencies (" + this.aces.size() + " ACE(s))", this.aces);
-		}
-		if (this.properties.size() == 1) {
-			assert Debugger.addSnapNode("Properties (1 property)", this.properties);
-		} else {
-			assert Debugger.addSnapNode("Properties (" + this.properties.size() + " properties)", this.properties);
-		}
-		assert Debugger.closeNode();
 	}
 
 	public void setLocation(Point location) {
