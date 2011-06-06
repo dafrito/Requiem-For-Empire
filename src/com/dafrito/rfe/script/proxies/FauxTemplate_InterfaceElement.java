@@ -75,11 +75,11 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setUniqueStylesheet")) {
-			template.getElement().setUniqueStylesheet(Parser.getStylesheet(params.get(0)));
+			template.getElement().setUniqueStylesheet(Parser.getStylesheet(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setClassStylesheet")) {
-			template.getElement().setClassStylesheet(Parser.getStylesheet(params.get(0)));
+			template.getElement().setClassStylesheet(Parser.getStylesheet(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		}

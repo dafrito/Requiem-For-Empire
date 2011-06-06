@@ -584,8 +584,8 @@ public class Parser {
 		return (String) convert(env, obj);
 	}
 
-	public static Stylesheet getStylesheet(Object obj) throws Exception_Nodeable {
-		return (Stylesheet) convert(null, obj);
+	public static Stylesheet getStylesheet(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Stylesheet) convert(env, obj);
 	}
 
 	public static ScriptTemplate_Abstract getTemplate(Object obj) throws Exception_Nodeable {
