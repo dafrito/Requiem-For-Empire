@@ -452,8 +452,8 @@ public class Parser {
 		return (GraphicalElement) convert(env, obj);
 	}
 
-	public static Integer getInteger(Object obj) throws Exception_Nodeable {
-		return (Integer) convert(null, ((ScriptValue) obj).castToType(null, ScriptValueType.INT));
+	public static Integer getInteger(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Integer) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.INT));
 	}
 
 	public static List<ScriptValue> getList(Object obj) throws Exception_Nodeable {

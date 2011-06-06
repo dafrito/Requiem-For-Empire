@@ -58,9 +58,9 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			} else if (params.size() == 3) {
 				if (params.get(0).isConvertibleTo(ScriptValueType.INT)) {
 					int r, g, b;
-					r = Parser.getInteger(params.get(0));
-					g = Parser.getInteger(params.get(1));
-					b = Parser.getInteger(params.get(2));
+					r = Parser.getInteger(this.getEnvironment(), params.get(0));
+					g = Parser.getInteger(this.getEnvironment(), params.get(1));
+					b = Parser.getInteger(this.getEnvironment(), params.get(2));
 					if (r < 0 || r > 255) {
 						throw new Exception_Nodeable_InvalidColorRange(this, new Integer(r));
 					}
@@ -107,7 +107,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			if (params.get(0).getType().equals(ScriptValueType.FLOAT)) {
 				value = (int) (Parser.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
 			} else {
-				value = Parser.getInteger(params.get(0));
+				value = Parser.getInteger(this.getEnvironment(), params.get(0));
 			}
 			template.setColor(new java.awt.Color(value, template.getColor().getGreen(), template.getColor().getBlue()));
 			assert Debugger.closeNode();
@@ -117,7 +117,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			if (params.get(0).getType().equals(ScriptValueType.FLOAT)) {
 				value = (int) (Parser.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
 			} else {
-				value = Parser.getInteger(params.get(0));
+				value = Parser.getInteger(this.getEnvironment(), params.get(0));
 			}
 			template.setColor(new java.awt.Color(template.getColor().getRed(), value, template.getColor().getBlue()));
 			assert Debugger.closeNode();
@@ -127,7 +127,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			if (params.get(0).getType().equals(ScriptValueType.FLOAT)) {
 				value = (int) (Parser.getFloat(this.getEnvironment(), params.get(0)) * 255.0d);
 			} else {
-				value = Parser.getInteger(params.get(0));
+				value = Parser.getInteger(this.getEnvironment(), params.get(0));
 			}
 			template.setColor(new java.awt.Color(template.getColor().getRed(), template.getColor().getGreen(), value));
 			assert Debugger.closeNode();
