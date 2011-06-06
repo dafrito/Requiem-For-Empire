@@ -5,13 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.script.ScriptConvertible;
-import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.proxies.FauxTemplate_Archetype;
-import com.dafrito.rfe.script.values.ScriptValueType;
 
 @Inspectable
-public class Archetype implements ScriptConvertible<FauxTemplate_Archetype> {
+public class Archetype {
 
 	private final String name;
 	private final List<Ace> parents = new ArrayList<Ace>();
@@ -39,13 +35,6 @@ public class Archetype implements ScriptConvertible<FauxTemplate_Archetype> {
 			return this;
 		}
 		return this.parents.get(0).getArchetype().getRoot();
-	}
-
-	@Override
-	public FauxTemplate_Archetype convert(ScriptEnvironment env) {
-		FauxTemplate_Archetype archetype = new FauxTemplate_Archetype(env, ScriptValueType.createType(env, FauxTemplate_Archetype.ARCHETYPESTRING));
-		archetype.setArchetype(this);
-		return archetype;
 	}
 
 	@Override
