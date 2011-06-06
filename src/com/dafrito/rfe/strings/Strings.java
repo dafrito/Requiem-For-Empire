@@ -125,11 +125,11 @@ public final class Strings {
 	}
 
 	public static String tab(int val, String tab) {
-		String string = "";
+		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < val; i++) {
-			string += tab;
+			builder.append(tab);
 		}
-		return string;
+		return builder.toString();
 	}
 
 	// Gets a single line from the provided stream. Returns null if at the end of the file.
