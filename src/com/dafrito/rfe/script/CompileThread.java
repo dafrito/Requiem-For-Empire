@@ -43,7 +43,7 @@ public class CompileThread extends Thread {
 			return;
 		}
 		List<Exception> exceptions = Parser.parseElements(this.scriptEnvironment);
-		if (exceptions.size() == 0) {
+		if (exceptions.isEmpty()) {
 			this.debugEnvironment.canExecute(true);
 			this.debugEnvironment.setStatus("All files compiled successfully.");
 			Debugger.hitStopWatch();
