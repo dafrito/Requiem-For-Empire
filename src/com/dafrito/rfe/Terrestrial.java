@@ -82,7 +82,7 @@ public class Terrestrial implements Serializable {
 		List<ScriptValue> params = new LinkedList<ScriptValue>();
 		params.add(Parser.getRiffDiscreteRegion(env, currentRegion));
 		params.add(Parser.getRiffAsset(env, asset));
-		path.addPoint(currentPoint, Parser.getDouble(ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
+		path.addPoint(currentPoint, Parser.getDouble(env, ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
 		int ticker = 0;
 		Stack<DiscreteRegion> regionPath = new Stack<DiscreteRegion>();
 		regionPath.push(currentRegion);
@@ -148,7 +148,7 @@ public class Terrestrial implements Serializable {
 				params.clear();
 				params.add(Parser.getRiffDiscreteRegion(env, region));
 				params.add(Parser.getRiffAsset(env, asset));
-				movementCosts.add(Parser.getDouble(ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
+				movementCosts.add(Parser.getDouble(env, ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
 			}
 			assert Debugger.closeNode("Movement costs", movementCosts);
 			double minimumValue = Double.POSITIVE_INFINITY;
@@ -179,7 +179,7 @@ public class Terrestrial implements Serializable {
 			params.clear();
 			params.add(Parser.getRiffDiscreteRegion(env, destination));
 			params.add(Parser.getRiffAsset(env, asset));
-			path.addPoint(destinationPoint, Parser.getDouble(ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
+			path.addPoint(destinationPoint, Parser.getDouble(env, ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
 			assert Debugger.closeNode("Path", path);
 		} else {
 			throw new Exception_InternalError("No route available");

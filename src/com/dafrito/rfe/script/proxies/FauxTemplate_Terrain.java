@@ -95,57 +95,57 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setBrushDensityWeight")) {
-			template.getTerrain().setBrushDensityWeight(Parser.getDouble(params.get(0)));
+			template.getTerrain().setBrushDensityWeight(Parser.getDouble(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setElevationWeight")) {
-			template.getTerrain().setElevationWeight(Parser.getDouble(params.get(0)));
+			template.getTerrain().setElevationWeight(Parser.getDouble(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setGroundCohesionWeight")) {
-			template.getTerrain().setGroundCohesionWeight(Parser.getDouble(params.get(0)));
+			template.getTerrain().setGroundCohesionWeight(Parser.getDouble(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setTemperatureWeight")) {
-			template.getTerrain().setTemperatureWeight(Parser.getDouble(params.get(0)));
+			template.getTerrain().setTemperatureWeight(Parser.getDouble(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setWaterDepthWeight")) {
-			template.getTerrain().setWaterDepthWeight(Parser.getDouble(params.get(0)));
+			template.getTerrain().setWaterDepthWeight(Parser.getDouble(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setBrushDensity")) {
-			template.getTerrain().setBrushDensity(Parser.getDouble(params.get(0)));
+			template.getTerrain().setBrushDensity(Parser.getDouble(this.getEnvironment(), params.get(0)));
 			if (params.size() == 2) {
-				template.getTerrain().setBrushDensityWeight(Parser.getDouble(params.get(1)));
+				template.getTerrain().setBrushDensityWeight(Parser.getDouble(this.getEnvironment(), params.get(1)));
 			}
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setElevation")) {
-			template.getTerrain().setElevation(Parser.getDouble(params.get(0)));
+			template.getTerrain().setElevation(Parser.getDouble(this.getEnvironment(), params.get(0)));
 			if (params.size() == 2) {
-				template.getTerrain().setElevationWeight(Parser.getDouble(params.get(1)));
+				template.getTerrain().setElevationWeight(Parser.getDouble(this.getEnvironment(), params.get(1)));
 			}
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setGroundCohesion")) {
-			template.getTerrain().setGroundCohesion(Parser.getDouble(params.get(0)));
+			template.getTerrain().setGroundCohesion(Parser.getDouble(this.getEnvironment(), params.get(0)));
 			if (params.size() == 2) {
-				template.getTerrain().setGroundCohesionWeight(Parser.getDouble(params.get(1)));
+				template.getTerrain().setGroundCohesionWeight(Parser.getDouble(this.getEnvironment(), params.get(1)));
 			}
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setTemperature")) {
-			template.getTerrain().setTemperature(Parser.getDouble(params.get(0)));
+			template.getTerrain().setTemperature(Parser.getDouble(this.getEnvironment(), params.get(0)));
 			if (params.size() == 2) {
-				template.getTerrain().setTemperatureWeight(Parser.getDouble(params.get(1)));
+				template.getTerrain().setTemperatureWeight(Parser.getDouble(this.getEnvironment(), params.get(1)));
 			}
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setWaterDepth")) {
-			template.getTerrain().setWaterDepth(Parser.getDouble(params.get(0)));
+			template.getTerrain().setWaterDepth(Parser.getDouble(this.getEnvironment(), params.get(0)));
 			if (params.size() == 2) {
-				template.getTerrain().setWaterDepthWeight(Parser.getDouble(params.get(1)));
+				template.getTerrain().setWaterDepthWeight(Parser.getDouble(this.getEnvironment(), params.get(1)));
 			}
 			assert Debugger.closeNode();
 			return null;

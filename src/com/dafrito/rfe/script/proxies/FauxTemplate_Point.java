@@ -58,9 +58,9 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 				template = (FauxTemplate_Point) this.createObject(ref, template);
 			}
 			if (params.size() == 3) {
-				template.getPoint().setX(Parser.getDouble(params.get(0)).doubleValue());
-				template.getPoint().setY(Parser.getDouble(params.get(1)).doubleValue());
-				template.getPoint().setZ(Parser.getDouble(params.get(2)).doubleValue());
+				template.getPoint().setX(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
+				template.getPoint().setY(Parser.getDouble(this.getEnvironment(), params.get(1)).doubleValue());
+				template.getPoint().setZ(Parser.getDouble(this.getEnvironment(), params.get(2)).doubleValue());
 			}
 			params.clear();
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
@@ -72,11 +72,11 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 		} else if (name.equals("getZ")) {
 			returning = Parser.getRiffDouble(this.getEnvironment(), (template).getPoint().getZ());
 		} else if (name.equals("setX")) {
-			(template).getPoint().setX(Parser.getDouble(params.get(0)).doubleValue());
+			(template).getPoint().setX(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("setY")) {
-			(template).getPoint().setY(Parser.getDouble(params.get(0)).doubleValue());
+			(template).getPoint().setY(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("setZ")) {
-			(template).getPoint().setZ(Parser.getDouble(params.get(0)).doubleValue());
+			(template).getPoint().setZ(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else {
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		}

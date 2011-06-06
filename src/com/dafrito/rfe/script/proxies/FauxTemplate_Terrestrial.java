@@ -53,7 +53,7 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 			if (template == null) {
 				template = (FauxTemplate_Terrestrial) this.createObject(ref, template);
 			}
-			template.setTerrestrial(new Terrestrial(Parser.getDouble(params.get(0))));
+			template.setTerrestrial(new Terrestrial(Parser.getDouble(this.getEnvironment(), params.get(0))));
 			assert Debugger.closeNode();
 			return template;
 		} else if (name.equals("add")) {

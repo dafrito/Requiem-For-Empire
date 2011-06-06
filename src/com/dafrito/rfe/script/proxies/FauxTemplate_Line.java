@@ -59,8 +59,8 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 				template.setPointB(Parser.getPoint(params.get(1)));
 				break;
 			case 4:
-				template.setPointA(new Point_Euclidean(this.getEnvironment(), Parser.getDouble(params.get(0)).doubleValue(), Parser.getDouble(params.get(1)).doubleValue(), 0));
-				template.setPointB(new Point_Euclidean(this.getEnvironment(), Parser.getDouble(params.get(2)).doubleValue(), Parser.getDouble(params.get(3)).doubleValue(), 0));
+				template.setPointA(new Point_Euclidean(this.getEnvironment(), Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue(), Parser.getDouble(this.getEnvironment(), params.get(1)).doubleValue(), 0));
+				template.setPointB(new Point_Euclidean(this.getEnvironment(), Parser.getDouble(this.getEnvironment(), params.get(2)).doubleValue(), Parser.getDouble(this.getEnvironment(), params.get(3)).doubleValue(), 0));
 			}
 			params.clear();
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
@@ -75,13 +75,13 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 		} else if (name.equals("getY2")) {
 			returning = Parser.getRiffDouble(this.getEnvironment(), template.getPointB().getY());
 		} else if (name.equals("setX1")) {
-			template.getPointA().setX(Parser.getDouble(params.get(0)).doubleValue());
+			template.getPointA().setX(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("setY1")) {
-			template.getPointA().setY(Parser.getDouble(params.get(0)).doubleValue());
+			template.getPointA().setY(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("setX2")) {
-			template.getPointB().setX(Parser.getDouble(params.get(0)).doubleValue());
+			template.getPointB().setX(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("setY2")) {
-			template.getPointB().setY(Parser.getDouble(params.get(0)).doubleValue());
+			template.getPointB().setY(Parser.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("getPointA")) {
 			returning = Parser.getRiffPoint(this.getEnvironment(), template.getPointA());
 		} else if (name.equals("getPointB")) {

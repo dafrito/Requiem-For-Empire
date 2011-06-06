@@ -436,8 +436,8 @@ public class Parser {
 		return (DiscreteRegion) convert(env, obj);
 	}
 
-	public static Double getDouble(Object obj) throws Exception_Nodeable {
-		return (Double) convert(null, ((ScriptValue) obj).castToType(null, ScriptValueType.DOUBLE));
+	public static Double getDouble(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Double) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.DOUBLE));
 	}
 
 	public static InterfaceElement getElement(Object obj) throws Exception_Nodeable {
