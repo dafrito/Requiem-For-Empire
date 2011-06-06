@@ -55,7 +55,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 			}
 			switch (params.size()) {
 			case 2:
-				template.getScenario().setTerrestrial(Parser.getTerrestrial(params.get(0)));
+				template.getScenario().setTerrestrial(Parser.getTerrestrial(this.getEnvironment(), params.get(0)));
 				template.getScenario().setName(Parser.getString(this.getEnvironment(), params.get(1)));
 			case 0:
 				assert Debugger.closeNode();
@@ -74,7 +74,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setTerrestrial")) {
-			template.getScenario().setTerrestrial(Parser.getTerrestrial(params.get(0)));
+			template.getScenario().setTerrestrial(Parser.getTerrestrial(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getScheduler")) {

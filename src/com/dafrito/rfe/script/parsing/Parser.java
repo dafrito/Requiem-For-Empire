@@ -592,8 +592,8 @@ public class Parser {
 		return (ScriptTemplate_Abstract) ((ScriptValue) obj).getValue();
 	}
 
-	public static Terrestrial getTerrestrial(Object obj) throws Exception_Nodeable {
-		return (Terrestrial) convert(null, obj);
+	public static Terrestrial getTerrestrial(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Terrestrial) convert(env, obj);
 	}
 
 	public static List<ScriptExecutable> parseBodyList(ScriptEnvironment env, List<Object> bodyElements, ScriptValueType type) throws Exception_Nodeable {

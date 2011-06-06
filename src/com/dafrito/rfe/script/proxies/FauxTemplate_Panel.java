@@ -63,7 +63,7 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setTerrestrial")) {
-			template.getPanel().setTerrestrial(Parser.getTerrestrial(params.get(0)));
+			template.getPanel().setTerrestrial(Parser.getTerrestrial(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setRiffDali")) {
