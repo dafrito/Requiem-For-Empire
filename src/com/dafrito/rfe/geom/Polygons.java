@@ -196,17 +196,21 @@ public class Polygons {
 	}
 
 	public static Point findMiddlePoint(Point pointA, Point pointB, Point pointC) {
-		assert Debugger.printDebug("Polygon/findMiddlePoint", "(findMiddlePoint)");
-		assert Debugger.printDebug("Polygon/findMiddlePoint/data", "Points to test: " + pointA + ", " + pointB + ", " + pointC);
+		assert Debugger.openNode("Middle-Point Searches", "Finding middle point");
+		assert Debugger.openNode("Points");
+		assert Debugger.addSnapNode("Point A", pointA);
+		assert Debugger.addSnapNode("Point B", pointB);
+		assert Debugger.addSnapNode("Point C", pointC);
+		assert Debugger.closeNode(); // Node: Points
 		if (Polygons.getBoundingRectIntersection(Math.min(pointA.getX(), pointB.getX()), Math.max(pointA.getX(), pointB.getX()), Math.min(pointA.getY(), pointB.getY()), Math.max(pointA.getY(), pointB.getY()), pointC, true)) {
-			assert Debugger.printDebug("Polygon/findMiddlePoint", "Returning pointC.\n(/findMiddlePoint)");
+			assert Debugger.closeNode("Returning point C.");
 			return pointC;
 		}
 		if (Polygons.getBoundingRectIntersection(Math.min(pointA.getX(), pointC.getX()), Math.max(pointA.getX(), pointC.getX()), Math.min(pointA.getY(), pointC.getY()), Math.max(pointA.getY(), pointC.getY()), pointB, true)) {
-			assert Debugger.printDebug("Polygon/findMiddlePoint", "Returning pointB.\n(/findMiddlePoint)");
+			assert Debugger.closeNode("Returning point B.");
 			return pointB;
 		}
-		assert Debugger.printDebug("Polygon/findMiddlePoint", "Returning pointA.\n(/findMiddlePoint)");
+		assert Debugger.closeNode("Returning point A.");
 		return pointA;
 	}
 
