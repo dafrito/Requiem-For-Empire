@@ -563,8 +563,8 @@ public class Parser {
 		return (FauxTemplate_Terrestrial) convert(env, terrestrial);
 	}
 
-	public static Scenario getScenario(Object obj) throws Exception_Nodeable {
-		return (Scenario) convert(null, obj);
+	public static Scenario getScenario(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Scenario) convert(env, obj);
 	}
 
 	public static Scheduler getScheduler(Object obj) throws Exception_Nodeable {

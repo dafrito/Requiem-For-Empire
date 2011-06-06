@@ -50,7 +50,7 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 				template = (FauxTemplate_Path) this.createObject(ref, template);
 			}
 			if (params.size() == 1) {
-				((Point_Path) template.getPoint()).setScenario(Parser.getScenario(params.get(0)));
+				((Point_Path) template.getPoint()).setScenario(Parser.getScenario(this.getEnvironment(), params.get(0)));
 			}
 			params.clear();
 		} else if (name.equals("getTotalTime")) {
