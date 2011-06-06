@@ -50,7 +50,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 			if (template == null) {
 				template = (FauxTemplate_ArchetypeTree) this.createObject(ref, template);
 			}
-			template.setTree(new ArchetypeMapNode(Parser.getArchetype(params.get(0))));
+			template.setTree(new ArchetypeMapNode(Parser.getArchetype(this.getEnvironment(), params.get(0))));
 			params.clear();
 		} else if (name.equals("addAsset")) {
 			template.getTree().addAsset(Parser.getAsset(params.get(0)));
@@ -58,7 +58,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 			return null;
 		} else if (name.equals("getAssetsOfType")) {
 			List<ScriptValue> assets = new LinkedList<ScriptValue>();
-			for (Asset asset : template.getTree().getAssetsOfType(Parser.getArchetype(params.get(0)))) {
+			for (Asset asset : template.getTree().getAssetsOfType(Parser.getArchetype(this.getEnvironment(), params.get(0)))) {
 				assets.add(Parser.getRiffAsset(this.getEnvironment(), asset));
 			}
 			ScriptValue returning = Parser.getRiffList(this.getEnvironment(), assets);

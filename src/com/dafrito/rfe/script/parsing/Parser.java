@@ -411,8 +411,8 @@ public class Parser {
 		return (Ace) convert(env, obj);
 	}
 
-	public static Archetype getArchetype(Object obj) throws Exception_Nodeable {
-		return (Archetype) convert(null, obj);
+	public static Archetype getArchetype(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return (Archetype) convert(env, obj);
 	}
 
 	public static Asset getAsset(Object obj) throws Exception_Nodeable {
