@@ -26,24 +26,23 @@ public class Polygons {
 	}
 
 	public static void assertCCWPolygon(DiscreteRegion region) {
-		assert Debugger.printDebug("Polygon/assertCCWPolygon", "(assertCCWPolygon)\nAsserting CCW-rotation of region.");
+		assert Debugger.openNode("CCW Polygon Assertions", "Asserting CCW-rotation of region.");
+		assert Debugger.addSnapNode("Tested region", region);
 		if (region.isOptimized()) {
-			assert Debugger.printDebug("Polygon/assertCCWPolygon", "Region already optimized, returning.\n(/assertCCWPolygon)");
+			assert Debugger.closeNode("Region already optimized, returning.");
 			return;
 		}
-		assert Debugger.printDebug("Polygon/assertCCWPolygon/data", "Region: " + region);
-		assert Debugger.printDebug("Polygon/assertCCWPolygon/data", "Interior point: " + region.getInteriorPoint());
+		assert Debugger.addSnapNode("Interior point", region.getInteriorPoint());
 		PointSideStruct struct = Polygons.getPointSideList(region, region.getInteriorPoint());
 		if (struct.hasIndeterminates()) {
-			assert Debugger.printDebug("Polygon/assertCCWPolygon", "*** ERROR: Unanticipated colinear values in assertCCWPolygon.");
+			assert Debugger.closeNode("Unanticipated colinear values in assertCCWPolygon.");
 			return;
 		}
 		if (struct.getLeftPoints().isEmpty()) {
-			assert Debugger.printDebug("Polygon/assertCCWPolygon", "Polygon is clockwise, so reversing points and returning.");
 			region.reversePoints();
-			assert Debugger.printDebug("Polygon/assertCCWPolygon", "(/assertCCWPolygon)");
+			assert Debugger.closeNode("Polygon is clockwise, so reversing points and returning.");
 		} else if (struct.getRightPoints().isEmpty()) {
-			assert Debugger.printDebug("Polygon/assertCCWPolygon", "Polygon is CCW, so returning.\n(/assertCCWPolygon)");
+			assert Debugger.closeNode("Polygon is CCW, so returning.");
 		}
 	}
 
