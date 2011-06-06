@@ -27,37 +27,38 @@ public class CompileThread extends Thread {
 	@Override
 	public void run() {
 		Debugger.hitStopWatch();
-		this.scriptEnvironment.reset();
-		Parser.clearPreparseLists();
-		boolean quickflag = true;
-		for (int i = 0; i < this.debugEnvironment.getScriptElements().size(); i++) {
-			Debug_ScriptElement element = this.debugEnvironment.getScriptElements().get(i);
-			element.saveFile();
-			if (!element.compile(this.scriptEnvironment)) {
-				quickflag = false;
-				this.debugEnvironment.setTitleAt(i + 1, element.getName());
+		try {
+			this.scriptEnvironment.reset();
+			Parser.clearPreparseLists();
+			boolean quickflag = true;
+			for (int i = 0; i < this.debugEnvironment.getScriptElements().size(); i++) {
+				Debug_ScriptElement element = this.debugEnvironment.getScriptElements().get(i);
+				element.saveFile();
+				if (!element.compile(this.scriptEnvironment)) {
+					quickflag = false;
+					this.debugEnvironment.setTitleAt(i + 1, element.getName());
+				}
 			}
-		}
-		if (!quickflag) {
-			this.debugEnvironment.setStatus("One or more files had errors during compilation.");
-			return;
-		}
-		List<Exception> exceptions = Parser.parseElements(this.scriptEnvironment);
-		if (exceptions.isEmpty()) {
-			this.debugEnvironment.canExecute(true);
-			this.debugEnvironment.setStatus("All files compiled successfully.");
-			Debugger.hitStopWatch();
-			assert Debugger.addSnapNode("Compile successful", this.scriptEnvironment);
-			if (this.shouldExecute) {
-				ExecutionThread thread = new ExecutionThread(this.scriptEnvironment);
-				thread.start();
+			if (!quickflag) {
+				this.debugEnvironment.setStatus("One or more files had errors during compilation.");
+				return;
 			}
-			//debugEnvironment.report();
-			return;
-		} else {
+			List<Exception> exceptions = Parser.parseElements(this.scriptEnvironment);
+			if (exceptions.isEmpty()) {
+				this.debugEnvironment.canExecute(true);
+				this.debugEnvironment.setStatus("All files compiled successfully.");
+				Debugger.hitStopWatch();
+				assert Debugger.addSnapNode("Compile successful", this.scriptEnvironment);
+				if (this.shouldExecute) {
+					ExecutionThread thread = new ExecutionThread(this.scriptEnvironment);
+					thread.start();
+				}
+			} else {
+				this.debugEnvironment.setStatus("One or more files had errors during compilation.");
+				this.debugEnvironment.addExceptions(exceptions);
+			}
+		} finally {
 			Debugger.hitStopWatch();
-			this.debugEnvironment.setStatus("One or more files had errors during compilation.");
-			this.debugEnvironment.addExceptions(exceptions);
 		}
 	}
 }
