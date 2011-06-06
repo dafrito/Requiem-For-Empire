@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 
@@ -46,28 +45,28 @@ public final class Strings {
 
 	// Takes a list and returns a string containing its contents in a readable form.
 	private static String displayList(Collection<?> list, String singular, String plural, int nestedVal) {
-		String string = "";
+		StringBuilder builder = new StringBuilder("\n");
+		builder.append(tab(nestedVal));
 		if (list == null || list.isEmpty()) {
-			string += "\n" + tab(nestedVal) + "This list is empty.";
-			return string;
+			builder.append("This list is empty.");
+			return builder.toString();
 		} else if (list.size() == 1) {
-			string += "\n" + tab(nestedVal) + "This list contains one " + singular;
+			builder.append("This list contains one " + singular);
 		} else {
-			string += "\n" + tab(nestedVal) + "This list contains " + list.size() + " " + plural;
+			builder.append("This list contains ").append(list.size()).append(' ').append(plural);
 		}
-		Iterator<?> iter = list.iterator();
 		int value = 1;
-		while (iter.hasNext()) {
-			Object obj = iter.next();
-			string += "\n" + value + ". " + tab(nestedVal);
+		for (Object obj : list) {
+			builder.append('\n').append(value).append(". ").append(tab(nestedVal));
 			value++;
 			if (obj instanceof Collection<?>) {
-				string += "Nested list:" + displayList((Collection<?>) obj, singular, plural, nestedVal + 1);
+				builder.append("Nested list: ");
+				builder.append(displayList((Collection<?>) obj, singular, plural, nestedVal + 1));
 			} else {
-				string += obj;
+				builder.append(obj);
 			}
 		}
-		return string;
+		return builder.toString();
 	}
 
 	public static String displayList(Object[] array) {
