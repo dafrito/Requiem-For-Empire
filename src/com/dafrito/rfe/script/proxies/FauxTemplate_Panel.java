@@ -55,7 +55,7 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 				template = (FauxTemplate_Panel) this.createObject(ref, template);
 			}
 		} else if (name.equals("add")) {
-			template.getPanel().add(Parser.getGraphicalElement(params.get(0)));
+			template.getPanel().add(Parser.getGraphicalElement(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getTerrestrial")) {
