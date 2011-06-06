@@ -14,12 +14,15 @@ import com.dafrito.rfe.inspect.Inspectable;
  */
 @Inspectable
 public class Ace {
-	private Archetype archetype;
+	private final Archetype archetype;
 	private double efficiency;
 
 	public Ace(Archetype archetype, double efficiency) {
+		if (archetype == null) {
+			throw new NullPointerException("archetype must not be null");
+		}
 		this.archetype = archetype;
-		this.efficiency = efficiency;
+		this.setEfficiency(efficiency);
 	}
 
 	@Inspectable
@@ -33,6 +36,38 @@ public class Ace {
 	}
 
 	public void setEfficiency(double efficiency) {
+		if (Double.isNaN(efficiency)) {
+			throw new IllegalArgumentException("efficiency must not be NaN");
+		}
 		this.efficiency = efficiency;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Ace)) {
+			return false;
+		}
+		Ace other = (Ace) obj;
+		if (!this.getArchetype().equals(other.getArchetype())) {
+			return false;
+		}
+		return this.getEfficiency() == other.getEfficiency();
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 23;
+		result = 31 * result + this.getArchetype().hashCode();
+		long efficiencyBits = Double.doubleToLongBits(this.getEfficiency());
+		result = 31 * result + (int) (efficiencyBits ^ (efficiencyBits >>> 32));
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Ace(%s@%f)", this.getArchetype().getName(), this.getEfficiency());
 	}
 }

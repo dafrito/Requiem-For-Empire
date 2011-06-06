@@ -51,4 +51,9 @@ public class Archetype {
 		return this.name.hashCode();
 	}
 
+	@Override
+	public String toString() {
+		return String.format("Archetype(%s)", this.getName());
+	}
+
 }
