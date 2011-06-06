@@ -445,8 +445,10 @@ public class Polygons {
 	// Extends a line, provided by the two points, in both directions so that their x coordinates are equal to the left and right double values provided with correct slope.
 	public static List<Point> getExtensionPoints(Point pointA, Point pointB, DiscreteRegion region) {
 		List<Point> pointList = new LinkedList<Point>();
-		assert Debugger.printDebug("Polygon/getExtensionPoints", "(getExtensionPoints)\nExtending these points: " + pointA + ", " + pointB);
-		assert Debugger.printDebug("Polygon/getExtensionPoints/data", "Region to extend to: " + region);
+		assert Debugger.openNode("Point extensions", "Extending these points");
+		assert Debugger.addSnapNode("Point A", pointA);
+		assert Debugger.addSnapNode("Point B", pointB);
+		assert Debugger.addSnapNode("Region", region);
 		double YValue = Polygons.getExtensionPoint(pointA, pointB, region.getLeftExtreme() - 1.0d);
 		double XValue = region.getLeftExtreme() - 1.0d;
 		if (Points.isGreaterThan(YValue, region.getTopExtreme())) {
@@ -467,7 +469,9 @@ public class Polygons {
 			XValue = (YValue - pointA.getY()) / Polygons.getSlope(pointA, pointB) + pointA.getX();
 		}
 		pointList.add(createPoint(pointA, pointB.getName(), XValue, YValue, 0.0d));
-		assert Debugger.printDebug("Polygon/getExtensionPoints", "List of extended points: " + pointList.get(0) + ", " + pointList.get(1) + "\n(/getExtensionPoints)");
+		assert Debugger.addSnapNode("Extended Point A", pointList.get(0));
+		assert Debugger.addSnapNode("Extended Point B", pointList.get(1));
+		assert Debugger.closeNode();
 		return pointList;
 	}
 
