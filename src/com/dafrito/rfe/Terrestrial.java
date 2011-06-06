@@ -1,4 +1,5 @@
 package com.dafrito.rfe;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -22,7 +23,6 @@ import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
-
 
 public class Terrestrial implements Serializable {
 	/**
