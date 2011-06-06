@@ -39,10 +39,11 @@ public class Archetype {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof Archetype) {
-			return this.name.equals(((Archetype) o).getName());
+		if (this == o) {
+			return true;
 		}
-		return false;
+		return o instanceof Archetype &&
+				this.name.equals(((Archetype) o).getName());
 	}
 
 	@Override
