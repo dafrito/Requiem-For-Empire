@@ -575,7 +575,9 @@ public class Parser {
 	}
 
 	public static FauxTemplate_Terrestrial getRiffTerrestrial(ScriptEnvironment env, Terrestrial terrestrial) throws Exception_Nodeable {
-		return (FauxTemplate_Terrestrial) convert(env, terrestrial);
+		FauxTemplate_Terrestrial wrapped = new FauxTemplate_Terrestrial(env, ScriptValueType.createType(env, FauxTemplate_Terrestrial.TERRESTRIALSTRING));
+		wrapped.setTerrestrial(terrestrial);
+		return wrapped;
 	}
 
 	public static Scenario getScenario(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
