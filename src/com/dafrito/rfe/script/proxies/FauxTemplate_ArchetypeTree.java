@@ -53,7 +53,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 			template.setTree(new ArchetypeMapNode(Parser.getArchetype(this.getEnvironment(), params.get(0))));
 			params.clear();
 		} else if (name.equals("addAsset")) {
-			template.getTree().addAsset(Parser.getAsset(params.get(0)));
+			template.getTree().addAsset(Parser.getAsset(this.getEnvironment(), params.get(0)));
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getAssetsOfType")) {

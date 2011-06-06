@@ -63,7 +63,7 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getPath")) {
-			returning = Parser.getRiffPath(this.getEnvironment(), template.getTerrestrial().getPath(this.getEnvironment(), Parser.getScenario(params.get(0)), Parser.getTemplate(params.get(1)), Parser.getAsset(params.get(2)), Parser.getPoint(params.get(3)), Parser.getPoint(params.get(4))));
+			returning = Parser.getRiffPath(this.getEnvironment(), template.getTerrestrial().getPath(this.getEnvironment(), Parser.getScenario(params.get(0)), Parser.getTemplate(params.get(1)), Parser.getAsset(this.getEnvironment(), params.get(2)), Parser.getPoint(params.get(3)), Parser.getPoint(params.get(4))));
 			assert Debugger.closeNode();
 			return returning;
 		}

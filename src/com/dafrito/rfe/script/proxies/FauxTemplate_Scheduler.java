@@ -62,7 +62,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 			if (params.size() == 3) {
 				listener = Parser.getTemplate(params.get(2));
 			}
-			template.getScheduler().schedule(Parser.getNumber(params.get(0)).longValue(), Parser.getAsset(params.get(1)), listener);
+			template.getScheduler().schedule(Parser.getNumber(params.get(0)).longValue(), Parser.getAsset(this.getEnvironment(), params.get(1)), listener);
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("setDefaultListener")) {

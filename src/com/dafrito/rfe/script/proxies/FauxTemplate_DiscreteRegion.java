@@ -62,9 +62,9 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 			}
 		} else if (name.equals("addAsset")) {
 			if (template.getRegion().getProperty("Archetypes") == null) {
-				template.getRegion().setProperty("Archetypes", ArchetypeMapNode.createTree(Parser.getAsset(params.get(0))));
+				template.getRegion().setProperty("Archetypes", ArchetypeMapNode.createTree(Parser.getAsset(this.getEnvironment(), params.get(0))));
 			} else {
-				((ArchetypeMapNode) template.getRegion().getProperty("Archetypes")).addAsset(Parser.getAsset(params.get(0)));
+				((ArchetypeMapNode) template.getRegion().getProperty("Archetypes")).addAsset(Parser.getAsset(this.getEnvironment(), params.get(0)));
 			}
 			assert Debugger.closeNode();
 			return null;
