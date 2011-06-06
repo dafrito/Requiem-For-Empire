@@ -50,7 +50,7 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 			if (template == null) {
 				template = (FauxTemplate_Archetype) this.createObject(ref, template);
 			}
-			template.setArchetype(new Archetype(this.getEnvironment(), Parser.getString(params.get(0))));
+			template.setArchetype(new Archetype(Parser.getString(params.get(0))));
 			params.clear();
 		} else if (name.equals("addParent")) {
 			template.getArchetype().addParent(Parser.getAce(params.get(0)));

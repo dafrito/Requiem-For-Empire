@@ -15,15 +15,9 @@ public class Archetype implements ScriptConvertible<FauxTemplate_Archetype> {
 
 	private final String name;
 	private final List<Ace> parents = new ArrayList<Ace>();
-	private final ScriptEnvironment environment;
 
-	public Archetype(ScriptEnvironment env, String name) {
-		this.environment = env;
+	public Archetype(String name) {
 		this.name = name;
-	}
-
-	public ScriptEnvironment getEnvironment() {
-		return this.environment;
 	}
 
 	public void addParent(Ace ace) {
@@ -49,7 +43,7 @@ public class Archetype implements ScriptConvertible<FauxTemplate_Archetype> {
 
 	@Override
 	public FauxTemplate_Archetype convert(ScriptEnvironment env) {
-		FauxTemplate_Archetype archetype = new FauxTemplate_Archetype(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING));
+		FauxTemplate_Archetype archetype = new FauxTemplate_Archetype(env, ScriptValueType.createType(env, FauxTemplate_Archetype.ARCHETYPESTRING));
 		archetype.setArchetype(this);
 		return archetype;
 	}

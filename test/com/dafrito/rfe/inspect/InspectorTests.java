@@ -15,7 +15,7 @@ public class InspectorTests {
 
 	@Test
 	public void annotationsProvideAutomatedInspection() throws Exception {
-		Archetype arch = new Archetype(null, "Grain");
+		Archetype arch = new Archetype("Grain");
 		Inspection.reflect(new NoopInspector<Object>(), arch);
 	}
 
