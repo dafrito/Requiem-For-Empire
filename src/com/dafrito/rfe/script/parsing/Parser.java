@@ -1644,15 +1644,15 @@ public class Parser {
 			assert Debugger.openNode("File Preparsing", "Preparsing file (" + filename + ")");
 			assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
 			preparseElements(env, preparseList(stringList));
-			assert Debugger.closeNode("Preparsed successfully");
+			assert Debugger.addNode("Preparsed successfully");
 		} catch (Exception_Nodeable ex) {
 			Debugger.printException(ex);
-			assert Debugger.closeNodeTo("Preparsing file (" + filename + ")");
 			exceptions.add(ex);
 		} catch (Exception_InternalError ex) {
 			Debugger.printException(ex);
-			assert Debugger.closeNodeTo("Preparsing file (" + filename + ")");
 			exceptions.add(ex);
+		} finally {
+			assert Debugger.closeNodeTo("Preparsing file (" + filename + ")");
 		}
 		return exceptions;
 	}
