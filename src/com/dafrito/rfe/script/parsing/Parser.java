@@ -134,6 +134,9 @@ public class Parser {
 	}
 
 	public static Object convert(ScriptEnvironment env, Object object) throws Exception_Nodeable {
+		if (env == null) {
+			throw new NullPointerException("env must not be null");
+		}
 		if (object instanceof ScriptConvertible<?>) {
 			return convert(env, (ScriptConvertible<?>) object);
 		}
