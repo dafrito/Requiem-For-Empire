@@ -11,11 +11,9 @@ import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Point_Euclidean;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.proxies.FauxTemplate_Line;
 
-public class GraphicalElement_Line extends InterfaceElement implements Nodeable, ScriptConvertible<FauxTemplate_Line> {
+public class GraphicalElement_Line extends InterfaceElement implements Nodeable {
 	private Point pointA, pointB;
 
 	public GraphicalElement_Line(ScriptEnvironment env, Point pointA, Point pointB) {
@@ -24,13 +22,12 @@ public class GraphicalElement_Line extends InterfaceElement implements Nodeable,
 		this.pointB = pointB;
 	}
 
-	// ScriptConvertible and Nodeable implementations
-	@Override
-	public FauxTemplate_Line convert(ScriptEnvironment env) {
-		FauxTemplate_Line line = new FauxTemplate_Line(this.getEnvironment());
-		line.setPointA(this.pointA);
-		line.setPointB(this.pointB);
-		return line;
+	public Point getPointA() {
+		return this.pointA;
+	}
+
+	public Point getPointB() {
+		return this.pointB;
 	}
 
 	@Override

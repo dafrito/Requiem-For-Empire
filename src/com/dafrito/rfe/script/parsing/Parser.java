@@ -19,6 +19,7 @@ import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Point_Path;
 import com.dafrito.rfe.gui.GraphicalElement;
+import com.dafrito.rfe.gui.GraphicalElement_Line;
 import com.dafrito.rfe.gui.InterfaceElement;
 import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
@@ -68,6 +69,7 @@ import com.dafrito.rfe.script.proxies.FauxTemplate_Asset;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Color;
 import com.dafrito.rfe.script.proxies.FauxTemplate_DiscreteRegion;
 import com.dafrito.rfe.script.proxies.FauxTemplate_InterfaceElement;
+import com.dafrito.rfe.script.proxies.FauxTemplate_Line;
 import com.dafrito.rfe.script.proxies.FauxTemplate_List;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Object;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Path;
@@ -542,6 +544,13 @@ public class Parser {
 
 	public static ScriptValue_Numeric getRiffInt(ScriptEnvironment env, int value) throws Exception_Nodeable {
 		return (ScriptValue_Numeric) convert(env, value);
+	}
+
+	public static FauxTemplate_Line getRiffLine(ScriptEnvironment env, GraphicalElement_Line line) {
+		FauxTemplate_Line wrapper = new FauxTemplate_Line(env);
+		wrapper.setPointA(line.getPointA());
+		wrapper.setPointB(line.getPointB());
+		return wrapper;
 	}
 
 	public static FauxTemplate_List getRiffList(ScriptEnvironment env, List<ScriptValue> list) throws Exception_Nodeable {
