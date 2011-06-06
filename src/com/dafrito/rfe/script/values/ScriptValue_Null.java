@@ -27,7 +27,7 @@ public class ScriptValue_Null extends ScriptElement implements ScriptExecutable,
 	// ScriptValue_Abstract implementation
 	@Override
 	public ScriptValueType getType() {
-		return null;
+		return ScriptValueType.VOID;
 	}
 
 	@Override
