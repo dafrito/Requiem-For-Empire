@@ -69,10 +69,17 @@ import com.dafrito.rfe.script.values.ScriptValue_Variable;
 import com.dafrito.rfe.strings.Strings;
 
 /**
+ * A collection of static methods that parse RiffScript code.
+ * 
  * @author Aaron Faanes
  * 
  */
-public class Parser {
+public final class Parser {
+
+	private Parser() {
+		throw new AssertionError("Instantiation is not allowed");
+	}
+
 	private static List<TemplateParams> classParams = new LinkedList<TemplateParams>();
 
 	public static void clearPreparseLists() {

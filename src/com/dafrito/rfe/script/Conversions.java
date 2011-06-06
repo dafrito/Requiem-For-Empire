@@ -38,7 +38,18 @@ import com.dafrito.rfe.script.values.ScriptValue_Boolean;
 import com.dafrito.rfe.script.values.ScriptValue_Numeric;
 import com.dafrito.rfe.script.values.ScriptValue_String;
 
-public class Conversions {
+/**
+ * A collection of methods that convert between script values and raw objects.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
+public final class Conversions {
+
+	private Conversions() {
+		throw new AssertionError("Instantiation is not allowed");
+	}
+
 	public static Object convert(ScriptEnvironment env, boolean value) throws Exception_Nodeable {
 		return new ScriptValue_Boolean(env, value);
 	}
