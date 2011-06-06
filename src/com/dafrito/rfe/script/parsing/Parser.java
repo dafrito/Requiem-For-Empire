@@ -468,8 +468,8 @@ public class Parser {
 		return (Number) convert(env, obj);
 	}
 
-	public static Object getObject(Object obj) throws Exception_Nodeable {
-		return convert(null, obj);
+	public static Object getObject(ScriptEnvironment env, Object obj) throws Exception_Nodeable {
+		return convert(env, obj);
 	}
 
 	public static Point getPoint(Object obj) throws Exception_Nodeable {
