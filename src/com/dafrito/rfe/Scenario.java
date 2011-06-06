@@ -4,20 +4,14 @@ import com.dafrito.rfe.actions.Scheduler;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class Scenario {
-	private ScriptEnvironment environment;
 	private Scheduler scheduler;
 	private String name;
 	private Terrestrial terrestrial;
 
 	public Scenario(ScriptEnvironment env, Terrestrial terrestrial, String name) {
-		this.environment = env;
 		this.name = name;
 		this.terrestrial = terrestrial;
 		this.scheduler = new Scheduler(env);
-	}
-
-	public ScriptEnvironment getEnvironment() {
-		return this.environment;
 	}
 
 	public long getGameTime() {
