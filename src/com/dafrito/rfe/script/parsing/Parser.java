@@ -66,7 +66,6 @@ import com.dafrito.rfe.script.values.ScriptValue_Null;
 import com.dafrito.rfe.script.values.ScriptValue_Numeric;
 import com.dafrito.rfe.script.values.ScriptValue_String;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
-import com.dafrito.rfe.strings.Strings;
 
 /**
  * A collection of static methods that parse RiffScript code.
@@ -208,18 +207,6 @@ public final class Parser {
 			list.add(new ScriptLine(line.getString().substring(nextCharElem + "'".length()), line, (short) (nextCharElem + "'".length())));
 			return createQuotedElements(list);
 		}
-	}
-
-	// Initial parsing functions
-	private static List<ScriptValueType> createTypeList(List<ScriptValue> values) {
-		List<ScriptValueType> keywords = new LinkedList<ScriptValueType>();
-		if (values == null) {
-			return keywords;
-		}
-		for (ScriptValue value : values) {
-			keywords.add(value.getType());
-		}
-		return keywords;
 	}
 
 	private static List<Object> extractKeywords(List<Object> lineList) throws Exception_Nodeable {
@@ -735,28 +722,6 @@ public final class Parser {
 			return (ScriptExecutable) list.get(0);
 		}
 		throw new Exception_InternalError(env, "Defaulted in parseExpression");
-	}
-
-	private static List<Exception> parseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
-		List<Exception> exceptions = new ArrayList<Exception>();
-		try {
-			clearPreparseLists();
-			assert Debugger.openNode("File Parsing", "Parsing file (" + filename + ")");
-			assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
-			preparseElements(env, preparseList(stringList));
-			parseElements(env);
-			assert Debugger.addSnapNode("Parsed successfully", env);
-			assert Debugger.closeNode();
-		} catch (Exception_Nodeable ex) {
-			Debugger.printException(ex);
-			assert Debugger.closeNodeTo("Parsing file (" + filename + ")");
-			exceptions.add(ex);
-		} catch (Exception_InternalError ex) {
-			Debugger.printException(ex);
-			assert Debugger.closeNodeTo("Parsing file (" + filename + ")");
-			exceptions.add(ex);
-		}
-		return exceptions;
 	}
 
 	private static ScriptExecutable parseFlowElement(ScriptEnvironment env, List<Object> list, ScriptValueType type) throws Exception_Nodeable {
@@ -1546,20 +1511,6 @@ public final class Parser {
 		template.setConstructing(false);
 		assert Debugger.closeNode();
 		return template;
-	}
-
-	// Miscellaneous functions
-	private static String printParseList(List<Object> list, int offset) {
-		String string = new String();
-		for (int i = 0; i < list.size(); i++) {
-			Object obj = list.get(i);
-			if (obj instanceof ScriptGroup) {
-				string += Strings.tab(offset) + "Script Group:\n" + printParseList(((ScriptGroup) obj).getElements(), offset + 1);
-				continue;
-			}
-			string += Strings.tab(offset) + obj + "\n";
-		}
-		return string;
 	}
 
 	private static List<Object> removeComments(List<Object> stringList) {
