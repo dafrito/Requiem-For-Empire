@@ -30,7 +30,7 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 
 	public FauxTemplate_Terrain(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.terrain = new Terrain(env);
+		this.terrain = new Terrain();
 	}
 
 	// Nodeable implementation

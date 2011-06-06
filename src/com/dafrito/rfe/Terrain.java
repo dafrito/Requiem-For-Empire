@@ -13,13 +13,9 @@ public class Terrain implements GradientValue<Terrain>, ScriptConvertible<FauxTe
 	private double brushDensityWeight, elevationWeight, groundCohesionWeight,
 			temperatureWeight, waterDepthWeight;
 
-	public Terrain(ScriptEnvironment env) {
-		this.environment = env;
-	}
-
 	@Override
 	public FauxTemplate_Terrain convert(ScriptEnvironment env) {
-		FauxTemplate_Terrain terrain = new FauxTemplate_Terrain(this.getEnvironment(), this.getEnvironment().getTemplate(FauxTemplate_Terrain.TERRAINSTRING).getType());
+		FauxTemplate_Terrain terrain = new FauxTemplate_Terrain(env, env.getTemplate(FauxTemplate_Terrain.TERRAINSTRING).getType());
 		terrain.setTerrain(this);
 		return terrain;
 	}
@@ -67,7 +63,7 @@ public class Terrain implements GradientValue<Terrain>, ScriptConvertible<FauxTe
 
 	@Override
 	public Terrain diluted(double intensity) {
-		Terrain terrain = new Terrain(this.getEnvironment());
+		Terrain terrain = new Terrain();
 		terrain.setBrushDensity(this.getBrushDensity(), this.getBrushDensityWeight() * intensity);
 		terrain.setElevation(this.getElevation(), this.getElevationWeight() * intensity);
 		terrain.setTemperature(this.getTemperature(), this.getTemperatureWeight() * intensity);
