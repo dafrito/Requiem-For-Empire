@@ -397,7 +397,7 @@ public class Polygons {
 
 	// Tests how many times a line, using the coord's as the first point, and the extreme right point of the poly, crosses any other border.
 	public static int getCrosses(double xCoord, double yCoord, DiscreteRegion region) {
-		assert Debugger.printDebug("Polygon/Polygon/getCrosses", "(getCrosses)\nTesting for crosses for x-coord:" + xCoord + " and y-coord: " + yCoord);
+		assert Debugger.openNode("GetCrosses", "Testing for crosses for x-coord:" + xCoord + " and y-coord: " + yCoord);
 		List<Point> pointList = region.getPoints();
 		int crosses = 0;
 		double xExtremeCoord = Double.NEGATIVE_INFINITY;
@@ -407,7 +407,7 @@ public class Polygons {
 			}
 		}
 		xExtremeCoord += 1.0f;
-		assert Debugger.printDebug("Polygon/getCrosses", "This line extends to x-coord: " + xExtremeCoord + " and y-coord: " + yCoord);
+		assert Debugger.addNode("This line extends to x-coord: " + xExtremeCoord + " and y-coord: " + yCoord);
 		Point crossExtremePoint = createPoint(pointList.get(0), "Extreme right-point", xExtremeCoord, yCoord, 0.0d);
 		Point crossMidPoint = createPoint(pointList.get(0), "MidPoint", xCoord, yCoord, 0.0d);
 		List<Point> overlappedVertices = new LinkedList<Point>();
@@ -433,7 +433,7 @@ public class Polygons {
 			}
 			crosses++;
 		}
-		assert Debugger.printDebug("Polygon/getCrosses", "Total Crosses: " + crosses + "\n(/getCrosses)");
+		assert Debugger.closeNode("Total Crosses: " + crosses);
 		return crosses;
 	}
 
