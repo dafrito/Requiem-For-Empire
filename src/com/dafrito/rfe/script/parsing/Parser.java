@@ -86,7 +86,7 @@ public final class Parser {
 		classParams.clear();
 	}
 
-	public static List<Object> createGroupings(List<Object> stringList, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) throws Exception_Nodeable {
+	private static List<Object> createGroupings(List<Object> stringList, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) throws Exception_Nodeable {
 		assert Debugger.openNode("Character-Group Parsing", "Creating Groupings (Syntax: " + openChar + "..." + closingChar + " )");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
 		assert Debugger.addNode("Allowed to Recurse: " + recurse);
@@ -153,7 +153,7 @@ public final class Parser {
 		return stringList;
 	}
 
-	public static List<Object> createQuotedElements(List<Object> lineList) throws Exception_Nodeable {
+	private static List<Object> createQuotedElements(List<Object> lineList) throws Exception_Nodeable {
 		for (int i = 0; i < lineList.size(); i++) {
 			if (!(lineList.get(i) instanceof ScriptLine)) {
 				continue;
@@ -165,7 +165,7 @@ public final class Parser {
 		return lineList;
 	}
 
-	public static List<Object> createQuotedElements(ScriptLine line) throws Exception_Nodeable {
+	private static List<Object> createQuotedElements(ScriptLine line) throws Exception_Nodeable {
 		int charElem = line.getString().indexOf("'");
 		int stringElem = line.getString().indexOf('"');
 		List<Object> list = new LinkedList<Object>();
@@ -211,7 +211,7 @@ public final class Parser {
 	}
 
 	// Initial parsing functions
-	public static List<ScriptValueType> createTypeList(List<ScriptValue> values) {
+	private static List<ScriptValueType> createTypeList(List<ScriptValue> values) {
 		List<ScriptValueType> keywords = new LinkedList<ScriptValueType>();
 		if (values == null) {
 			return keywords;
@@ -222,7 +222,7 @@ public final class Parser {
 		return keywords;
 	}
 
-	public static List<Object> extractKeywords(List<Object> lineList) throws Exception_Nodeable {
+	private static List<Object> extractKeywords(List<Object> lineList) throws Exception_Nodeable {
 		ListIterator<Object> iter = lineList.listIterator();
 		while (iter.hasNext()) {
 			Object line = iter.next();
@@ -246,7 +246,7 @@ public final class Parser {
 	}
 
 	// Procedural parsing functions
-	public static List<Object> extractNumbers(List<Object> lineList) {
+	private static List<Object> extractNumbers(List<Object> lineList) {
 		for (int i = 0; i < lineList.size(); i++) {
 			if (lineList.get(i) instanceof ScriptGroup) {
 				((ScriptGroup) lineList.get(i)).setElements(extractNumbers(((ScriptGroup) lineList.get(i)).getElements()));
@@ -341,7 +341,7 @@ public final class Parser {
 		return lineList;
 	}
 
-	public static List<ScriptExecutable> parseBodyList(ScriptEnvironment env, List<Object> bodyElements, ScriptValueType type) throws Exception_Nodeable {
+	private static List<ScriptExecutable> parseBodyList(ScriptEnvironment env, List<Object> bodyElements, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.openNode("Body List Parsing", "Parsing Body List (" + bodyElements.size() + " element(s))");
 		List<Object> elements = new LinkedList<Object>();
 		List<ScriptExecutable> statementBodyList = new LinkedList<ScriptExecutable>();
@@ -394,7 +394,7 @@ public final class Parser {
 		return exceptions;
 	}
 
-	public static ScriptExecutable parseExpression(ScriptEnvironment env, List<Object> list, boolean automaticallyAddToStack, ScriptValueType type) throws Exception_Nodeable {
+	private static ScriptExecutable parseExpression(ScriptEnvironment env, List<Object> list, boolean automaticallyAddToStack, ScriptValueType type) throws Exception_Nodeable {
 		if (list.size() == 1 && list.get(0) instanceof ScriptExecutable) {
 			return (ScriptExecutable) list.get(0);
 		}
@@ -737,7 +737,7 @@ public final class Parser {
 		throw new Exception_InternalError(env, "Defaulted in parseExpression");
 	}
 
-	public static List<Exception> parseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
+	private static List<Exception> parseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
 		List<Exception> exceptions = new ArrayList<Exception>();
 		try {
 			clearPreparseLists();
@@ -759,7 +759,7 @@ public final class Parser {
 		return exceptions;
 	}
 
-	public static ScriptExecutable parseFlowElement(ScriptEnvironment env, List<Object> list, ScriptValueType type) throws Exception_Nodeable {
+	private static ScriptExecutable parseFlowElement(ScriptEnvironment env, List<Object> list, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.openNode("Flow Element Parsing", "Parsing Flow Element");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, list);
 		for (int i = 0; i < list.size(); i++) {
@@ -849,7 +849,7 @@ public final class Parser {
 		return fxn;
 	}
 
-	public static ScriptExecutable_IfStatement parseIfStatement(Referenced ref, List<Object> list, ScriptValue value, int i, ScriptValueType type) throws Exception_Nodeable {
+	private static ScriptExecutable_IfStatement parseIfStatement(Referenced ref, List<Object> list, ScriptValue value, int i, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.openNode("If-Statement Parsing", "Parsing 'if' Statement (" + list.size() + " element(s))");
 		assert Debugger.addSnapNode("Boolean-Testing-Value", value);
 		assert Debugger.addSnapNode("Body Elements", list);
@@ -868,7 +868,7 @@ public final class Parser {
 		return statement;
 	}
 
-	public static List<Object> parseOperator(ScriptLine line, String operator) {
+	private static List<Object> parseOperator(ScriptLine line, String operator) {
 		int location = line.getString().indexOf(operator);
 		if (location != -1) {
 			assert Debugger.openNode("Operator Parsing", ScriptOperatorType.parse(operator) + " found in script-line: " + line.getString());
@@ -891,7 +891,7 @@ public final class Parser {
 		return null;
 	}
 
-	public static List<Object> parseOperators(List<Object> list) {
+	private static List<Object> parseOperators(List<Object> list) {
 		for (int i = 0; i < list.size(); i++) {
 			Object element = list.get(i);
 			if (element instanceof ScriptGroup) {
@@ -907,7 +907,7 @@ public final class Parser {
 		return list;
 	}
 
-	public static List<Object> parseOperators(ScriptLine line) {
+	private static List<Object> parseOperators(ScriptLine line) {
 		List<Object> list = parseOperator(line, ";");
 		if (list != null) {
 			return parseOperators(list);
@@ -1026,7 +1026,7 @@ public final class Parser {
 		return list;
 	}
 
-	public static List<ScriptValue> parseParamGroup(ScriptEnvironment env, List<Object> elementsList, ScriptValueType type) throws Exception_Nodeable {
+	private static List<ScriptValue> parseParamGroup(ScriptEnvironment env, List<Object> elementsList, ScriptValueType type) throws Exception_Nodeable {
 		assert Debugger.openNode("Parameter-Group Parsing", "Parsing Parameter-Group (" + elementsList.size() + " element(s) in group)");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, elementsList);
 		Iterator<Object> iter = elementsList.iterator();
@@ -1058,11 +1058,11 @@ public final class Parser {
 		return groupList;
 	}
 
-	public static List<ScriptValue> parseParamGroup(ScriptEnvironment env, ScriptGroup group, ScriptValueType type) throws Exception_Nodeable {
+	private static List<ScriptValue> parseParamGroup(ScriptEnvironment env, ScriptGroup group, ScriptValueType type) throws Exception_Nodeable {
 		return parseParamGroup(env, group.getElements(), type);
 	}
 
-	public static Stylesheet parseStylesheet(Referenced ref, ScriptEnvironment env, ScriptGroup group) throws Exception_Nodeable {
+	private static Stylesheet parseStylesheet(Referenced ref, ScriptEnvironment env, ScriptGroup group) throws Exception_Nodeable {
 		assert Debugger.openNode("Stylesheet Parsing", "Parsing Stylesheet");
 		List<Object> elements = group.getElements();
 		assert Debugger.addSnapNode("Elements (" + elements.size() + " element(s))", elements);
@@ -1282,7 +1282,7 @@ public final class Parser {
 	}
 
 	// Object-oriented parsing functions
-	public static void preparseElements(ScriptEnvironment env, List<Object> lineList) throws Exception_Nodeable {
+	private static void preparseElements(ScriptEnvironment env, List<Object> lineList) throws Exception_Nodeable {
 		assert Debugger.openNode("Preparsing Elements", "Preparsing Elements (" + lineList.size() + " element(s))");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, lineList);
 		List<Object> modifiers = new LinkedList<Object>();
@@ -1357,7 +1357,7 @@ public final class Parser {
 		return exceptions;
 	}
 
-	public static ScriptExecutable_ParseFunction preparseFunction(ScriptEnvironment env, final ScriptTemplate_Abstract object, List<Object> modifiers, ScriptGroup paramGroup, ScriptGroup body, String name) throws Exception_Nodeable {
+	private static ScriptExecutable_ParseFunction preparseFunction(ScriptEnvironment env, final ScriptTemplate_Abstract object, List<Object> modifiers, ScriptGroup paramGroup, ScriptGroup body, String name) throws Exception_Nodeable {
 		if (name.equals("")) {
 			assert Debugger.openNode("Preparsing Functions", "Preparsing Function (constructor)");
 		} else {
@@ -1446,7 +1446,7 @@ public final class Parser {
 		return function;
 	}
 
-	public static List<Object> preparseList(List<Object> stringList) throws Exception_Nodeable {
+	private static List<Object> preparseList(List<Object> stringList) throws Exception_Nodeable {
 		stringList = removeComments(stringList);
 		stringList = createQuotedElements(stringList);
 		stringList = createGroupings(stringList, "{", "}", ScriptGroup.GroupType.curly, false);
@@ -1460,7 +1460,7 @@ public final class Parser {
 		return stringList;
 	}
 
-	public static ScriptTemplate_Abstract preparseTemplate(Referenced ref, ScriptEnvironment env, List<Object> modifiers, ScriptGroup body, String className) throws Exception_Nodeable {
+	private static ScriptTemplate_Abstract preparseTemplate(Referenced ref, ScriptEnvironment env, List<Object> modifiers, ScriptGroup body, String className) throws Exception_Nodeable {
 		assert Debugger.openNode("Template Preparsing", "Preparsing Template (" + className + ")");
 		assert Debugger.addSnapNode("Modifiers (" + modifiers.size() + " modifier(s))", modifiers);
 		assert Debugger.addSnapNode("Template Body (" + body.getElements().size() + " element(s))", body);
@@ -1549,7 +1549,7 @@ public final class Parser {
 	}
 
 	// Miscellaneous functions
-	public static String printParseList(List<Object> list, int offset) {
+	private static String printParseList(List<Object> list, int offset) {
 		String string = new String();
 		for (int i = 0; i < list.size(); i++) {
 			Object obj = list.get(i);
@@ -1562,7 +1562,7 @@ public final class Parser {
 		return string;
 	}
 
-	public static List<Object> removeComments(List<Object> stringList) {
+	private static List<Object> removeComments(List<Object> stringList) {
 		boolean isParagraphCommenting = false;
 		List<Object> list = new LinkedList<Object>();
 		for (Object element : stringList) {
@@ -1619,7 +1619,7 @@ public final class Parser {
 		return list;
 	}
 
-	public static List<Object> removeEmptyScriptLines(List<Object> list) {
+	private static List<Object> removeEmptyScriptLines(List<Object> list) {
 		assert Debugger.openNode("Empty Script-Line Removals", "Empty Script-Line Removal");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, list);
 		int q = 0;
@@ -1644,7 +1644,7 @@ public final class Parser {
 		return list;
 	}
 
-	public static List<Object> removeSingleLineGroupings(List<Object> lineList, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) {
+	private static List<Object> removeSingleLineGroupings(List<Object> lineList, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) {
 		for (int i = 0; i < lineList.size(); i++) {
 			if (lineList.get(i) instanceof ScriptGroup) {
 				if (recurse) {
@@ -1662,7 +1662,7 @@ public final class Parser {
 		return lineList;
 	}
 
-	public static List<Object> removeSingleLineGroupings(ScriptLine line, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) {
+	private static List<Object> removeSingleLineGroupings(ScriptLine line, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) {
 		int endGroup = -1;
 		int beginGroup = -1;
 		int offset = 0;
@@ -1699,7 +1699,7 @@ public final class Parser {
 		return list;
 	}
 
-	public static String removeSingleLineParagraphs(String string) {
+	private static String removeSingleLineParagraphs(String string) {
 		int beginParagraph = string.indexOf("/*");
 		int endParagraph = string.indexOf("*/");
 		if (beginParagraph != -1 && endParagraph != -1) {
@@ -1709,7 +1709,7 @@ public final class Parser {
 		return string;
 	}
 
-	public static List<Object> splitByWhitespace(List<Object> list) {
+	private static List<Object> splitByWhitespace(List<Object> list) {
 		assert Debugger.openNode("Split-By-Whitespace List Operations", "Splitting lines in list by whitespace (" + list.size() + " element(s))");
 		assert Debugger.addSnapNode("Elements", list);
 		for (int i = 0; i < list.size(); i++) {
@@ -1728,7 +1728,7 @@ public final class Parser {
 		return list;
 	}
 
-	public static List<Object> splitByWhitespace(ScriptLine line) {
+	private static List<Object> splitByWhitespace(ScriptLine line) {
 		assert Debugger.openNode("Split-By-Whitespace Operations", "Splitting line by whitespace (" + line.getLineNumber() + ":'" + line.getString() + "')");
 		assert Debugger.addSnapNode("Line", line);
 		List<Object> list = new LinkedList<Object>();
