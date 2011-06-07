@@ -117,23 +117,25 @@ public class RiffScriptFunction implements Nodeable, ScriptFunction {
 	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws Exception_Nodeable {
 		String currNode = "Executing Function Expressions (" + this.expressions.size() + " expressions)";
 		assert Debugger.openNode("Function Expression Executions", currNode);
-		if (valuesGiven != null && valuesGiven.size() > 0) {
-			assert Debugger.openNode("Assigning Initial Parameters (" + valuesGiven.size() + " parameter(s))");
-			assert this.areParametersConvertible(valuesGiven) : "Parameters-convertible test failed in execute";
-			for (int i = 0; i < this.getParameters().size(); i++) {
-				this.getParameters().get(i).setValue(ref, valuesGiven.get(i));
+		try {
+			if (valuesGiven != null && valuesGiven.size() > 0) {
+				assert Debugger.openNode("Assigning Initial Parameters (" + valuesGiven.size() + " parameter(s))");
+				assert this.areParametersConvertible(valuesGiven) : "Parameters-convertible test failed in execute";
+				for (int i = 0; i < this.getParameters().size(); i++) {
+					this.getParameters().get(i).setValue(ref, valuesGiven.get(i));
+				}
+				assert Debugger.closeNode();
 			}
+			for (ScriptExecutable exec : this.expressions) {
+				exec.execute();
+				if (exec instanceof Returnable && ((Returnable) exec).shouldReturn()) {
+					this.setReturnValue(exec.getDebugReference(), ((Returnable) exec).getReturnValue());
+					return;
+				}
+			}
+		} finally {
 			assert Debugger.closeNode();
 		}
-		for (ScriptExecutable exec : this.expressions) {
-			exec.execute();
-			if (exec instanceof Returnable && ((Returnable) exec).shouldReturn()) {
-				this.setReturnValue(exec.getDebugReference(), ((Returnable) exec).getReturnValue());
-				assert Debugger.closeNode();
-				return;
-			}
-		}
-		assert Debugger.closeNode();
 	}
 
 	@Override
