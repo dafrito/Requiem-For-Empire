@@ -30,16 +30,16 @@ public class CompileThread extends Thread {
 		try {
 			this.scriptEnvironment.reset();
 			Parser.clearPreparseLists();
-			boolean quickflag = true;
+			boolean compilationFailed = true;
 			for (int i = 0; i < this.debugEnvironment.getScriptElements().size(); i++) {
 				Debug_ScriptElement element = this.debugEnvironment.getScriptElements().get(i);
 				element.saveFile();
 				if (!element.compile(this.scriptEnvironment)) {
-					quickflag = false;
+					compilationFailed = false;
 					this.debugEnvironment.setTitleAt(i + 1, element.getName());
 				}
 			}
-			if (!quickflag) {
+			if (!compilationFailed) {
 				this.debugEnvironment.setStatus("One or more files had errors during compilation.");
 				return;
 			}
