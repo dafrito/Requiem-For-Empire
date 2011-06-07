@@ -63,6 +63,11 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	protected MutableTreeNode parent, practicalParent;
 
+	/**
+	 * This list is lazily instantiated for performance reasons. Having to check
+	 * if it's set dirties up a lot of code, so I'd like to find a smarter way
+	 * to save memory.
+	 */
 	protected List<Debug_TreeNode> children;
 
 	public Debug_TreeNode(int unique, Object group, Object data) {
