@@ -119,7 +119,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 		}
 	}
 
-	public synchronized Debug_TreeNode addChild(Debug_TreeNode node) {
+	public Debug_TreeNode addChild(Debug_TreeNode node) {
 		if (this.children == null) {
 			this.children = new ArrayList<Debug_TreeNode>();
 		}
@@ -133,7 +133,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 		return node;
 	}
 
-	public synchronized Debug_TreeNode addChild(Object data) {
+	public Debug_TreeNode addChild(Object data) {
 		return this.addChild(new Debug_TreeNode(data));
 	}
 
@@ -204,7 +204,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 		}
 	}
 
-	public synchronized List<Debug_TreeNode> getChildrenByFilter(DefaultListModel data) {
+	public List<Debug_TreeNode> getChildrenByFilter(DefaultListModel data) {
 		if (this.children == null) {
 			return Collections.emptyList();
 		}
