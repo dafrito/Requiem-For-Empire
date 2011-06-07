@@ -165,7 +165,7 @@ public class ScriptEnvironment {
 
 	public void addType(Referenced ref, String name, ScriptValueType keyword) throws Exception_Nodeable {
 		assert Debugger.addNode("Variable-Type Additions", "Adding variable type name to the variable-map (" + name + ")");
-		if (this.variableTypes.get(name) != null) {
+		if (this.variableTypes.containsKey(name)) {
 			throw new Exception_Nodeable_VariableTypeAlreadyDefined(ref, name);
 		}
 		this.variableTypes.put(name, keyword);
