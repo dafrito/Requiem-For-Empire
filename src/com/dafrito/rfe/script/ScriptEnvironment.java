@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateAlreadyDefined;
@@ -49,7 +49,8 @@ import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
-public class ScriptEnvironment implements Nodeable {
+@Inspectable
+public class ScriptEnvironment {
 	private final Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)
 	private final Map<String, ScriptTemplate_Abstract> templates = new HashMap<String, ScriptTemplate_Abstract>(); // Map of object templates(Short,ScriptTemplate)
 	private final List<javax.swing.Timer> timers = new LinkedList<javax.swing.Timer>();
@@ -181,6 +182,11 @@ public class ScriptEnvironment implements Nodeable {
 		return this.getTemplate(this.getName(code));
 	}
 
+	@Inspectable
+	public Map<String, ScriptTemplate_Abstract> getTemplates() {
+		return Collections.unmodifiableMap(this.templates);
+	}
+
 	public ScriptTemplate_Abstract getTemplate(String name) {
 		return this.templates.get(name);
 	}
@@ -258,14 +264,6 @@ public class ScriptEnvironment implements Nodeable {
 
 	public boolean isTemplateDefined(String name) {
 		return this.templates.get(name) != null;
-	}
-
-	// Miscellaneous functions
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Script Environment");
-		assert Debugger.addSnapNode("Templates: " + this.templates.size() + " templates(s)", this.templates);
-		assert Debugger.closeNode();
 	}
 
 	public void reset() {
