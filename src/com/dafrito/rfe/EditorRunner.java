@@ -1,4 +1,4 @@
-package com.dafrito.rfe.runners;
+package com.dafrito.rfe;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
