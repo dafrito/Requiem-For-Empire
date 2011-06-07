@@ -146,7 +146,7 @@ public class ScriptEnvironment {
 	}
 
 	public boolean isTemplateDefined(String name) {
-		return this.templates.get(name) != null;
+		return this.templates.containsKey(name);
 	}
 
 	public ScriptTemplate_Abstract getTemplate(String name) {
