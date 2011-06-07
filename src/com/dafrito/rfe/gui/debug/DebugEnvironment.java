@@ -165,74 +165,81 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 
 		this.menuBar.add(this.editMenu);
 		this.editMenu.setMnemonic('E');
+
 		this.editMenu.add(this.undo);
 		this.undo.addActionListener(this);
+		this.undo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+
 		this.editMenu.add(this.redo);
 		this.redo.addActionListener(this);
+		this.redo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
 
 		this.parserMenu.setMnemonic('P');
 		this.menuBar.add(this.parserMenu);
+
 		this.parserMenu.add(this.compile);
+		this.compile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+		this.compile.addActionListener(this);
+
 		this.parserMenu.add(this.execute);
-		this.parserMenu.add(this.compileAndRun);
+		this.execute.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
+		this.execute.addActionListener(this);
 		this.execute.setEnabled(false);
+
+		this.parserMenu.add(this.compileAndRun);
+		this.compileAndRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, ActionEvent.CTRL_MASK));
+		this.compileAndRun.addActionListener(this);
 
 		JMenu debugMenu = new JMenu("Debugger");
 		this.menuBar.add(debugMenu);
+
+		ButtonGroup group = new ButtonGroup();
 		debugMenu.add(this.exceptionsMode = new JRadioButtonMenuItem("Lazy Filter Mode"));
+		group.add(this.exceptionsMode);
 		debugMenu.add(this.ignoreMode = new JRadioButtonMenuItem("Greedy Filter Mode"));
+		group.add(this.ignoreMode);
+		this.exceptionsMode.setSelected(true);
+
 		debugMenu.addSeparator();
 		debugMenu.add(this.addException = new JMenuItem("Add Exception"));
+		this.addException.addActionListener(this);
+
 		debugMenu.add(this.addExceptionFromList = new JMenuItem("Add Exception From List..."));
+		this.addExceptionFromList.addActionListener(this);
+
 		debugMenu.add(this.removeException = new JMenuItem("Remove Exception..."));
+		this.removeException.addActionListener(this);
+
 		debugMenu.addSeparator();
+
 		debugMenu.add(this.addIgnore = new JMenuItem("Add to Ignore List"));
+		this.addIgnore.addActionListener(this);
 		debugMenu.add(this.addIgnoreFromList = new JMenuItem("Add Ignore From List..."));
+		this.addIgnoreFromList.addActionListener(this);
 		debugMenu.add(this.removeIgnore = new JMenuItem("Remove Ignore..."));
+		this.removeIgnore.addActionListener(this);
 		debugMenu.addSeparator();
 		debugMenu.add(this.addAssertionFailure = new JMenuItem("Add Assertion Failure"));
+		this.addAssertionFailure.addActionListener(this);
 		debugMenu.add(this.removeAssertionFailure = new JMenuItem("Remove Assertion Failure"));
+		this.removeAssertionFailure.addActionListener(this);
 
 		this.menuBar.add(this.listenerMenu);
 		this.listenerMenu.setMnemonic('L');
 		this.listenerMenu.add(this.createListener = new JMenuItem("Create Listener...", 'C'));
-		this.listenerMenu.add(this.renameTab = new JMenuItem("Rename Tab...", 'N'));
-		this.listenerMenu.add(this.clearTab = new JMenuItem("Clear Tab", 'C'));
-		this.listenerMenu.add(this.removeTab = new JMenuItem("Remove Tab", 'R'));
-
-		ButtonGroup group = new ButtonGroup();
-		group.add(this.exceptionsMode);
-		group.add(this.ignoreMode);
-		this.exceptionsMode.setSelected(true);
-		// Set up our debug spew and script tabs
-		this.tabbedPane.add("Debug Output", this.filteredPanes);
-		// Accelerators
-		this.clearTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-		this.removeTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-
-		this.undo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
-		this.redo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
-		this.compile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-		this.execute.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
-		this.compileAndRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, ActionEvent.CTRL_MASK));
-		// Listeners
-		this.renameTab.addActionListener(this);
-		this.filteredPanes.addChangeListener(this);
-		this.clearTab.addActionListener(this);
-		this.removeTab.addActionListener(this);
 		this.createListener.addActionListener(this);
+		this.listenerMenu.add(this.renameTab = new JMenuItem("Rename Tab...", 'N'));
+		this.renameTab.addActionListener(this);
+		this.listenerMenu.add(this.clearTab = new JMenuItem("Clear Tab", 'C'));
+		this.clearTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+		this.clearTab.addActionListener(this);
+		this.listenerMenu.add(this.removeTab = new JMenuItem("Remove Tab", 'R'));
+		this.removeTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		this.removeTab.addActionListener(this);
 
-		this.compile.addActionListener(this);
-		this.execute.addActionListener(this);
-		this.compileAndRun.addActionListener(this);
-		this.addException.addActionListener(this);
-		this.addExceptionFromList.addActionListener(this);
-		this.addIgnoreFromList.addActionListener(this);
-		this.addIgnore.addActionListener(this);
-		this.removeException.addActionListener(this);
-		this.removeIgnore.addActionListener(this);
-		this.addAssertionFailure.addActionListener(this);
-		this.removeAssertionFailure.addActionListener(this);
+		this.tabbedPane.add("Debug Output", this.filteredPanes);
+		this.filteredPanes.addChangeListener(this);
+
 		// Open all valid scripts in our working directory
 		File folder = new File(".");
 		ExtensionFilter filter = new ExtensionFilter();
