@@ -12,7 +12,7 @@ public class SplitterThread extends Thread {
 	private Set<DiscreteRegion> regions;
 	private boolean recurse;
 	private static int threadNum = 0;
-	public static final String SPLITTERTHREADSTRING = "Splitter Pipeline ";
+	public static final String SPLITTERTHREADSTRING = "Splitter Pipeline";
 	private Terrestrial terrestrial;
 
 	public SplitterThread(Terrestrial terrestrial, DiscreteRegionBSPNode root, Collection<DiscreteRegion> regions, boolean recurse) {
