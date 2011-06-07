@@ -65,140 +65,6 @@ public class ScriptEnvironment {
 		this.initialize();
 	}
 
-	// Template functions
-	public void addTemplate(Referenced ref, String name, ScriptTemplate_Abstract template) throws Exception_Nodeable {
-		if (this.templates.get(name) != null) {
-			throw new Exception_Nodeable_TemplateAlreadyDefined(ref, name);
-		}
-		this.templates.put(name, template);
-	}
-
-	public void addTimer(javax.swing.Timer timer) {
-		this.timers.add(timer);
-	}
-
-	// Variable-type functions
-	public void addType(Referenced ref, String name) throws Exception_Nodeable {
-		this.addType(ref, name, new ScriptValueType(this));
-	}
-
-	public void addType(Referenced ref, String name, ScriptTemplate_Abstract template) throws Exception_Nodeable {
-		this.addType(ref, name);
-		this.addTemplate(ref, name, template);
-	}
-
-	public void addType(Referenced ref, String name, ScriptValueType keyword) throws Exception_Nodeable {
-		assert Debugger.addNode("Variable-Type Additions", "Adding variable type name to the variable-map (" + name + ")");
-		if (this.variableTypes.get(name) != null) {
-			throw new Exception_Nodeable_VariableTypeAlreadyDefined(ref, name);
-		}
-		this.variableTypes.put(name, keyword);
-	}
-
-	public void addVariableToStack(String name, ScriptValue_Variable var) throws Exception_Nodeable {
-		this.threads.get().addVariable(name, var);
-	}
-
-	public void advanceNestedStack() {
-		this.threads.get().advanceNestedStack();
-	}
-
-	// Stack functions
-	public void advanceStack(ScriptTemplate_Abstract template, ScriptFunction fxn) throws Exception_Nodeable {
-		if (fxn == null) {
-			throw new NullPointerException("fxn must not be null");
-		}
-		this.threads.get().advanceStack(template, fxn);
-	}
-
-	public void clearStacks() {
-		this.threads.set(new ThreadStack());
-	}
-
-	public void execute() {
-		assert Debugger.openNode("Executing Script-Environment (Default Run)");
-		try {
-			this.clearStacks();
-			for (ScriptTemplate_Abstract template : this.templates.values()) {
-				template.initialize();
-			}
-			List<ScriptValue> params = Collections.emptyList();
-			if (Debugger.getDebugger().getPriorityExecutingClass() != null) {
-				if (this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()) != null && this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()).getFunction("main", params) != null) {
-					ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()), "main", params);
-					return;
-				}
-			}
-			List<String> templateNames = new ArrayList<String>();
-			for (Map.Entry<String, ScriptTemplate_Abstract> entry : this.templates.entrySet()) {
-				if (entry.getValue().getFunction("main", params) != null) {
-					templateNames.add(entry.getKey());
-				}
-			}
-			if (templateNames.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "No classes compiled are executable.", "No Executable Class", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-			Object selection;
-			if (templateNames.size() > 1) {
-				selection = JOptionPane.showInputDialog(null, "Select the appropriate class to run from", "Multiple Executable Classes", JOptionPane.QUESTION_MESSAGE, null, templateNames.toArray(), templateNames.get(0));
-			} else {
-				selection = templateNames.get(0);
-			}
-			if (selection == null) {
-				return;
-			}
-			Debugger.getDebugger().setPriorityExecutingClass((String) selection);
-			assert Debugger.addNode(this);
-			ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate((String) selection), "main", params);
-		} catch (Exception_Nodeable ex) {
-			Debugger.printException(ex);
-		} catch (Exception_InternalError ex) {
-			Debugger.printException(ex);
-		} finally {
-			assert Debugger.closeNode();
-		}
-	}
-
-	public ScriptFunction getCurrentFunction() {
-		return this.threads.get().getCurrentFunction();
-	}
-
-	public ScriptTemplate_Abstract getCurrentObject() {
-		return this.threads.get().getCurrentObject();
-	}
-
-	public String getName(ScriptValueType keyword) {
-		assert keyword != null;
-		for (Map.Entry<String, ScriptValueType> entry : this.variableTypes.entrySet()) {
-			if (keyword.equals(entry.getValue())) {
-				return entry.getKey();
-			}
-		}
-		throw new Exception_InternalError(this, "Name not found for keyword");
-	}
-
-	public ScriptTemplate_Abstract getTemplate(ScriptValueType code) {
-		return this.getTemplate(this.getName(code));
-	}
-
-	@Inspectable
-	public Map<String, ScriptTemplate_Abstract> getTemplates() {
-		return Collections.unmodifiableMap(this.templates);
-	}
-
-	public ScriptTemplate_Abstract getTemplate(String name) {
-		return this.templates.get(name);
-	}
-
-	public ScriptValueType getType(String name) {
-		return this.variableTypes.get(name);
-	}
-
-	public ScriptValue_Variable getVariableFromStack(String name) {
-		return this.threads.get().getVariableFromStack(name);
-	}
-
 	public void initialize() {
 		assert Debugger.openNode("Initializing Script Environment");
 		try {
@@ -262,18 +128,75 @@ public class ScriptEnvironment {
 		}
 	}
 
+	// Template functions
+	public void addTemplate(Referenced ref, String name, ScriptTemplate_Abstract template) throws Exception_Nodeable {
+		if (this.templates.get(name) != null) {
+			throw new Exception_Nodeable_TemplateAlreadyDefined(ref, name);
+		}
+		this.templates.put(name, template);
+	}
+
+	public ScriptTemplate_Abstract getTemplate(ScriptValueType code) {
+		return this.getTemplate(this.getName(code));
+	}
+
+	@Inspectable
+	public Map<String, ScriptTemplate_Abstract> getTemplates() {
+		return Collections.unmodifiableMap(this.templates);
+	}
+
 	public boolean isTemplateDefined(String name) {
 		return this.templates.get(name) != null;
 	}
 
-	public void reset() {
-		assert Debugger.openNode("Resetting Environment");
-		this.variableTypes.clear();
-		this.templates.clear();
-		this.clearStacks();
-		System.gc();
-		this.initialize();
-		assert Debugger.closeNode();
+	public ScriptTemplate_Abstract getTemplate(String name) {
+		return this.templates.get(name);
+	}
+
+	// Variable-type functions
+	public void addType(Referenced ref, String name) throws Exception_Nodeable {
+		this.addType(ref, name, new ScriptValueType(this));
+	}
+
+	public void addType(Referenced ref, String name, ScriptTemplate_Abstract template) throws Exception_Nodeable {
+		this.addType(ref, name);
+		this.addTemplate(ref, name, template);
+	}
+
+	public void addType(Referenced ref, String name, ScriptValueType keyword) throws Exception_Nodeable {
+		assert Debugger.addNode("Variable-Type Additions", "Adding variable type name to the variable-map (" + name + ")");
+		if (this.variableTypes.get(name) != null) {
+			throw new Exception_Nodeable_VariableTypeAlreadyDefined(ref, name);
+		}
+		this.variableTypes.put(name, keyword);
+	}
+
+	public void addVariableToStack(String name, ScriptValue_Variable var) throws Exception_Nodeable {
+		this.threads.get().addVariable(name, var);
+	}
+
+	public void advanceNestedStack() {
+		this.threads.get().advanceNestedStack();
+	}
+
+	// Stack functions
+	public void advanceStack(ScriptTemplate_Abstract template, ScriptFunction fxn) throws Exception_Nodeable {
+		if (fxn == null) {
+			throw new NullPointerException("fxn must not be null");
+		}
+		this.threads.get().advanceStack(template, fxn);
+	}
+
+	public ScriptFunction getCurrentFunction() {
+		return this.threads.get().getCurrentFunction();
+	}
+
+	public ScriptTemplate_Abstract getCurrentObject() {
+		return this.threads.get().getCurrentObject();
+	}
+
+	public ScriptValue_Variable getVariableFromStack(String name) {
+		return this.threads.get().getVariableFromStack(name);
 	}
 
 	public void retreatNestedStack() {
@@ -282,6 +205,69 @@ public class ScriptEnvironment {
 
 	public void retreatStack() {
 		this.threads.get().retreatStack();
+	}
+
+	public void clearStacks() {
+		this.threads.set(new ThreadStack());
+	}
+
+	public void execute() {
+		assert Debugger.openNode("Executing Script-Environment (Default Run)");
+		try {
+			this.clearStacks();
+			for (ScriptTemplate_Abstract template : this.templates.values()) {
+				template.initialize();
+			}
+			List<ScriptValue> params = Collections.emptyList();
+			if (Debugger.getDebugger().getPriorityExecutingClass() != null) {
+				if (this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()) != null && this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()).getFunction("main", params) != null) {
+					ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()), "main", params);
+					return;
+				}
+			}
+			List<String> templateNames = new ArrayList<String>();
+			for (Map.Entry<String, ScriptTemplate_Abstract> entry : this.templates.entrySet()) {
+				if (entry.getValue().getFunction("main", params) != null) {
+					templateNames.add(entry.getKey());
+				}
+			}
+			if (templateNames.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "No classes compiled are executable.", "No Executable Class", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			Object selection;
+			if (templateNames.size() > 1) {
+				selection = JOptionPane.showInputDialog(null, "Select the appropriate class to run from", "Multiple Executable Classes", JOptionPane.QUESTION_MESSAGE, null, templateNames.toArray(), templateNames.get(0));
+			} else {
+				selection = templateNames.get(0);
+			}
+			if (selection == null) {
+				return;
+			}
+			Debugger.getDebugger().setPriorityExecutingClass((String) selection);
+			assert Debugger.addNode(this);
+			ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate((String) selection), "main", params);
+		} catch (Exception_Nodeable ex) {
+			Debugger.printException(ex);
+		} catch (Exception_InternalError ex) {
+			Debugger.printException(ex);
+		} finally {
+			assert Debugger.closeNode();
+		}
+	}
+
+	public String getName(ScriptValueType keyword) {
+		assert keyword != null;
+		for (Map.Entry<String, ScriptValueType> entry : this.variableTypes.entrySet()) {
+			if (keyword.equals(entry.getValue())) {
+				return entry.getKey();
+			}
+		}
+		throw new Exception_InternalError(this, "Name not found for keyword");
+	}
+
+	public ScriptValueType getType(String name) {
+		return this.variableTypes.get(name);
 	}
 
 	// Variable functions
@@ -315,10 +301,25 @@ public class ScriptEnvironment {
 		return value;
 	}
 
+	public void addTimer(javax.swing.Timer timer) {
+		this.timers.add(timer);
+	}
+
 	public void stopExecution() {
 		for (javax.swing.Timer timer : this.timers) {
 			timer.stop();
 		}
 		this.timers.clear();
 	}
+
+	public void reset() {
+		assert Debugger.openNode("Resetting Environment");
+		this.variableTypes.clear();
+		this.templates.clear();
+		this.clearStacks();
+		System.gc();
+		this.initialize();
+		assert Debugger.closeNode();
+	}
+
 }
