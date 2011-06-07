@@ -53,7 +53,12 @@ public class ScriptEnvironment implements Nodeable {
 	private Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)
 	private Map<String, ScriptTemplate_Abstract> templates = new HashMap<String, ScriptTemplate_Abstract>(); // Map of object templates(Short,ScriptTemplate)
 	private List<javax.swing.Timer> timers = new LinkedList<javax.swing.Timer>();
-	private Map<String, ThreadStack> threads = new HashMap<String, ThreadStack>();
+	private ThreadLocal<ThreadStack> threads = new ThreadLocal<ThreadStack>() {
+		@Override
+		protected ThreadStack initialValue() {
+			return new ThreadStack();
+		}
+	};
 
 	public ScriptEnvironment() {
 		this.initialize();
@@ -90,11 +95,11 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public void addVariableToStack(String name, ScriptValue_Variable var) throws Exception_Nodeable {
-		this.threads.get(Thread.currentThread().getName()).addVariable(name, var);
+		this.threads.get().addVariable(name, var);
 	}
 
 	public void advanceNestedStack() {
-		this.threads.get(Thread.currentThread().getName()).advanceNestedStack();
+		this.threads.get().advanceNestedStack();
 	}
 
 	// Stack functions
@@ -102,14 +107,11 @@ public class ScriptEnvironment implements Nodeable {
 		if (fxn == null) {
 			throw new NullPointerException("fxn must not be null");
 		}
-		if (this.threads.get(Thread.currentThread().getName()) == null) {
-			this.threads.put(Thread.currentThread().getName(), new ThreadStack());
-		}
-		this.threads.get(Thread.currentThread().getName()).advanceStack(template, fxn);
+		this.threads.get().advanceStack(template, fxn);
 	}
 
 	public void clearStacks() {
-		this.threads.put(Thread.currentThread().getName(), new ThreadStack());
+		this.threads.set(new ThreadStack());
 	}
 
 	public void execute() {
@@ -158,11 +160,11 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public ScriptFunction getCurrentFunction() {
-		return this.threads.get(Thread.currentThread().getName()).getCurrentFunction();
+		return this.threads.get().getCurrentFunction();
 	}
 
 	public ScriptTemplate_Abstract getCurrentObject() {
-		return this.threads.get(Thread.currentThread().getName()).getCurrentObject();
+		return this.threads.get().getCurrentObject();
 	}
 
 	public String getName(ScriptValueType keyword) {
@@ -188,7 +190,7 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public ScriptValue_Variable getVariableFromStack(String name) {
-		return this.threads.get(Thread.currentThread().getName()).getVariableFromStack(name);
+		return this.threads.get().getVariableFromStack(name);
 	}
 
 	public void initialize() {
@@ -263,7 +265,6 @@ public class ScriptEnvironment implements Nodeable {
 	public void nodificate() {
 		assert Debugger.openNode("Script Environment");
 		assert Debugger.addSnapNode("Templates: " + this.templates.size() + " templates(s)", this.templates);
-		assert Debugger.addSnapNode("Thread Stacks", this.threads);
 		assert Debugger.closeNode();
 	}
 
@@ -278,11 +279,11 @@ public class ScriptEnvironment implements Nodeable {
 	}
 
 	public void retreatNestedStack() {
-		this.threads.get(Thread.currentThread().getName()).retreatNestedStack();
+		this.threads.get().retreatNestedStack();
 	}
 
 	public void retreatStack() {
-		this.threads.get(Thread.currentThread().getName()).retreatStack();
+		this.threads.get().retreatStack();
 	}
 
 	// Variable functions
@@ -290,7 +291,7 @@ public class ScriptEnvironment implements Nodeable {
 		assert Debugger.openNode("Variable Retrievals", "Retrieving Variable (" + name + ")");
 		ScriptValue_Variable value = null;
 		if (value == null) {
-			assert Debugger.addSnapNode("Checking current variable stack", this.threads.get(Thread.currentThread().getName()));
+			assert Debugger.addSnapNode("Checking current variable stack", this.threads.get());
 			value = this.getVariableFromStack(name);
 		}
 		if (value == null) {
