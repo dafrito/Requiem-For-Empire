@@ -51,8 +51,8 @@ import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 @Inspectable
 public class ScriptEnvironment {
-	private final Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)
-	private final Map<String, ScriptTemplate_Abstract> templates = new HashMap<String, ScriptTemplate_Abstract>(); // Map of object templates(Short,ScriptTemplate)
+	private final Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>();
+	private final Map<String, ScriptTemplate_Abstract> templates = new HashMap<String, ScriptTemplate_Abstract>();
 	private final List<javax.swing.Timer> timers = new LinkedList<javax.swing.Timer>();
 	private final ThreadLocal<ThreadStack> threads = new ThreadLocal<ThreadStack>() {
 		@Override
