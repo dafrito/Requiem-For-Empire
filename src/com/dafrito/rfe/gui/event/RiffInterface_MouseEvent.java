@@ -4,10 +4,10 @@
 package com.dafrito.rfe.gui.event;
 
 import com.dafrito.rfe.gui.MouseButton;
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class RiffInterface_MouseEvent implements Nodeable, RiffInterface_Event {
+@Inspectable
+public class RiffInterface_MouseEvent implements RiffInterface_Event {
 	final int x, y;
 	final MouseButton button;
 
@@ -17,24 +17,19 @@ public class RiffInterface_MouseEvent implements Nodeable, RiffInterface_Event {
 		this.button = button;
 	}
 
+	@Inspectable
 	public MouseButton getButton() {
 		return this.button;
 	}
 
+	@Inspectable
 	public int getX() {
 		return this.x;
 	}
 
+	@Inspectable
 	public int getY() {
 		return this.y;
 	}
 
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Generic Mouse Event");
-		assert Debugger.addNode("X: " + this.getX());
-		assert Debugger.addNode("Y: " + this.getY());
-		assert Debugger.addNode("Button: " + this.getButton());
-		assert Debugger.closeNode();
-	}
 }

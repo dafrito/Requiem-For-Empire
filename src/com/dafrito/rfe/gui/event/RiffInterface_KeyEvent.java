@@ -3,22 +3,18 @@
  */
 package com.dafrito.rfe.gui.event;
 
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class RiffInterface_KeyEvent implements Nodeable, RiffInterface_Event {
+@Inspectable
+public class RiffInterface_KeyEvent implements RiffInterface_Event {
 	private int key;
 
 	public RiffInterface_KeyEvent(int key) {
 		this.key = key;
 	}
 
+	@Inspectable
 	public int getKeyCode() {
 		return this.key;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.addNode("Key code: " + this.key);
 	}
 }

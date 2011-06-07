@@ -4,10 +4,10 @@
 package com.dafrito.rfe.gui.event;
 
 import com.dafrito.rfe.gui.MouseButton;
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class RiffInterface_DragEvent extends RiffInterface_MouseEvent implements Nodeable {
+@Inspectable
+public class RiffInterface_DragEvent extends RiffInterface_MouseEvent {
 	private final int xOffset, yOffset;
 	private final double distance;
 
@@ -22,20 +22,13 @@ public class RiffInterface_DragEvent extends RiffInterface_MouseEvent implements
 		return this.distance;
 	}
 
+	@Inspectable
 	public int getXOffset() {
 		return this.xOffset;
 	}
 
+	@Inspectable
 	public int getYOffset() {
 		return this.yOffset;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Mouse-Drag Events", "Mouse-Drag Event");
-		super.nodificate();
-		assert Debugger.addNode("X-Offset: " + this.getXOffset());
-		assert Debugger.addNode("Y-Offset: " + this.getYOffset());
-		assert Debugger.closeNode();
 	}
 }
