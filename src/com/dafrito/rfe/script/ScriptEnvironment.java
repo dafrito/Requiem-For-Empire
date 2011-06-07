@@ -50,10 +50,10 @@ import com.dafrito.rfe.script.values.ScriptValueType;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 public class ScriptEnvironment implements Nodeable {
-	private Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)
-	private Map<String, ScriptTemplate_Abstract> templates = new HashMap<String, ScriptTemplate_Abstract>(); // Map of object templates(Short,ScriptTemplate)
-	private List<javax.swing.Timer> timers = new LinkedList<javax.swing.Timer>();
-	private ThreadLocal<ThreadStack> threads = new ThreadLocal<ThreadStack>() {
+	private final Map<String, ScriptValueType> variableTypes = new HashMap<String, ScriptValueType>(); // Map of variable-Types(Variable-type-name, short)
+	private final Map<String, ScriptTemplate_Abstract> templates = new HashMap<String, ScriptTemplate_Abstract>(); // Map of object templates(Short,ScriptTemplate)
+	private final List<javax.swing.Timer> timers = new LinkedList<javax.swing.Timer>();
+	private final ThreadLocal<ThreadStack> threads = new ThreadLocal<ThreadStack>() {
 		@Override
 		protected ThreadStack initialValue() {
 			return new ThreadStack();
