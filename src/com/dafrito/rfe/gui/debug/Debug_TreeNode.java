@@ -63,7 +63,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	protected MutableTreeNode parent, practicalParent;
 
-	protected List<Debug_TreeNode> children = new LinkedList<Debug_TreeNode>();
+	protected List<Debug_TreeNode> children;
 
 	public Debug_TreeNode(int unique, Object group, Object data) {
 		this.unique = unique;
@@ -114,7 +114,14 @@ public class Debug_TreeNode implements MutableTreeNode {
 		}
 	}
 
+	protected void createChildren() {
+		if (this.children == null) {
+			this.children = new ArrayList<Debug_TreeNode>();
+		}
+	}
+
 	public synchronized Debug_TreeNode addChild(Debug_TreeNode node) {
+		this.createChildren();
 		this.children.add(node);
 		if (node.getParent() == null) {
 			node.setParent(this);
@@ -131,7 +138,11 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	@Override
 	public Enumeration<Debug_TreeNode> children() {
-		return Collections.enumeration(this.children);
+		if (this.children != null) {
+			return Collections.enumeration(this.children);
+		} else {
+			return Collections.enumeration(Collections.<Debug_TreeNode> emptyList());
+		}
 	}
 
 	public Debug_TreeNode duplicate() {
@@ -168,21 +179,35 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	@Override
 	public TreeNode getChildAt(int x) {
-		return this.children.get(x);
+		if (this.children != null) {
+			return this.children.get(x);
+		}
+		return null;
 	}
 
 	@Override
 	public int getChildCount() {
-		return this.children.size();
+		if (this.children != null) {
+			return this.children.size();
+		} else {
+			return 0;
+		}
 	}
 
 	// TreeNode functions
 	public List<Debug_TreeNode> getChildren() {
-		return Collections.unmodifiableList(this.children);
+		if (this.children != null) {
+			return Collections.unmodifiableList(this.children);
+		} else {
+			return Collections.emptyList();
+		}
 	}
 
 	public synchronized List<Debug_TreeNode> getChildrenByFilter(DefaultListModel data) {
-		List<Debug_TreeNode> filtered = new LinkedList<Debug_TreeNode>();
+		if (this.children == null) {
+			return Collections.emptyList();
+		}
+		List<Debug_TreeNode> filtered = new ArrayList<Debug_TreeNode>();
 		boolean flag;
 		for (Debug_TreeNode node : this.children) {
 			flag = false;
@@ -233,23 +258,36 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	@Override
 	public int getIndex(TreeNode node) {
-		return this.children.indexOf(node);
+		if (this.children != null) {
+			return this.children.indexOf(node);
+		} else {
+			return -1;
+		}
 	}
 
 	public Debug_TreeNode getLastChild() {
-		return this.children.get(this.children.size() - 1);
+		if (this.children != null) {
+			return this.children.get(this.children.size() - 1);
+		} else {
+			return null;
+		}
 	}
 
 	public Debug_TreeNode getNode(Debug_TreeNode node) {
-		for (Debug_TreeNode child : this.children) {
-			if (child.equals(node)) {
-				return child;
+		if (this.children != null) {
+			for (Debug_TreeNode child : this.children) {
+				if (child.equals(node)) {
+					return child;
+				}
 			}
 		}
 		return null;
 	}
 
 	public List<Debug_TreeNode> getNodesByData(Object data) {
+		if (this.children == null) {
+			return Collections.emptyList();
+		}
 		List<Debug_TreeNode> nodes = new LinkedList<Debug_TreeNode>();
 		for (Debug_TreeNode child : this.children) {
 			if (child.getData().equals(data)) {
@@ -301,6 +339,9 @@ public class Debug_TreeNode implements MutableTreeNode {
 	}
 
 	public int getTotalChildren() {
+		if (this.children == null) {
+			return 1;
+		}
 		Iterator<Debug_TreeNode> iter = this.children.iterator();
 		int value = this.children.size() + 1;
 		while (iter.hasNext()) {
@@ -323,7 +364,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 	}
 
 	public boolean hasChildren() {
-		return this.children.size() > 0;
+		return this.children != null && !this.children.isEmpty();
 	}
 
 	@Override
@@ -333,7 +374,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	@Override
 	public boolean isLeaf() {
-		return this.children.size() == 0;
+		return this.children == null || this.children.isEmpty();
 	}
 
 	public boolean isRoot() {
@@ -343,12 +384,16 @@ public class Debug_TreeNode implements MutableTreeNode {
 	// MutableTreeNode functions
 	@Override
 	public void remove(int index) {
-		this.children.remove(index);
+		if (this.children != null) {
+			this.children.remove(index);
+		}
 	}
 
 	@Override
 	public void remove(MutableTreeNode node) {
-		this.children.remove(node);
+		if (this.children != null) {
+			this.children.remove(node);
+		}
 	}
 
 	@Override
@@ -358,7 +403,11 @@ public class Debug_TreeNode implements MutableTreeNode {
 	}
 
 	public Debug_TreeNode removeLastChild() {
-		return this.children.remove(this.children.size() - 1);
+		if (this.children != null) {
+			return this.children.remove(this.children.size() - 1);
+		} else {
+			return null;
+		}
 	}
 
 	@Override
