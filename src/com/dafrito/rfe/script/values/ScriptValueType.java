@@ -133,17 +133,6 @@ public class ScriptValueType {
 
 	private static int identifierSeed = 0;
 
-	public static void initialize(ScriptEnvironment env) throws Exception_Nodeable {
-		env.addType(null, "void", ScriptValueType.VOID);
-		env.addType(null, "boolean", ScriptValueType.BOOLEAN);
-		env.addType(null, "short", ScriptValueType.SHORT);
-		env.addType(null, "int", ScriptValueType.INT);
-		env.addType(null, "long", ScriptValueType.LONG);
-		env.addType(null, "float", ScriptValueType.FLOAT);
-		env.addType(null, "double", ScriptValueType.DOUBLE);
-		env.addType(null, "String", ScriptValueType.STRING);
-	}
-
 	private final ScriptEnvironment environment;
 
 	public ScriptValueType() {

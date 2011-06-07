@@ -68,8 +68,14 @@ public class ScriptEnvironment {
 	public void initialize() {
 		assert Debugger.openNode("Initializing Script Environment");
 		try {
-			// Internal variables
-			ScriptValueType.initialize(this);
+			this.addType(null, "void", ScriptValueType.VOID);
+			this.addType(null, "boolean", ScriptValueType.BOOLEAN);
+			this.addType(null, "short", ScriptValueType.SHORT);
+			this.addType(null, "int", ScriptValueType.INT);
+			this.addType(null, "long", ScriptValueType.LONG);
+			this.addType(null, "float", ScriptValueType.FLOAT);
+			this.addType(null, "double", ScriptValueType.DOUBLE);
+			this.addType(null, "String", ScriptValueType.STRING);
 			// Faux object templates
 			FauxTemplate template = new FauxTemplate_Object(this);
 			this.addType(null, FauxTemplate_Object.OBJECTSTRING, template);

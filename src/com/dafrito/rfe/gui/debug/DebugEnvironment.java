@@ -106,7 +106,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	private final Set<String> knownThreads = new HashSet<String>();
 
 	private void populateKnownThreads() {
-		this.knownThreads.add("AWT-EventQueue-0");
+		this.knownThreads.add("AWT-EventQueue");
 		this.knownThreads.add(CompileThread.COMPILETHREADSTRING);
 		this.knownThreads.add(ExecutionThread.EXECUTIONTHREADSTRING);
 		this.knownThreads.add(PolygonPipeline.POLYGONPIPELINESTRING);
