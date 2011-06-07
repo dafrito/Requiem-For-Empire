@@ -119,14 +119,10 @@ public class Debug_TreeNode implements MutableTreeNode {
 		}
 	}
 
-	protected void createChildren() {
+	public synchronized Debug_TreeNode addChild(Debug_TreeNode node) {
 		if (this.children == null) {
 			this.children = new ArrayList<Debug_TreeNode>();
 		}
-	}
-
-	public synchronized Debug_TreeNode addChild(Debug_TreeNode node) {
-		this.createChildren();
 		this.children.add(node);
 		if (node.getParent() == null) {
 			node.setParent(this);
