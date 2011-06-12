@@ -3,7 +3,7 @@ package com.dafrito.rfe.script.operations;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_DivisionByZero;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -24,7 +24,7 @@ public class ScriptExecutable_EvalAssignMathExpression extends ScriptElement imp
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws ScriptException {
 		assert Debugger.openNode("'Evaluate and Assign' Executions", "Executing 'Evaluate and Assign' Expression");
 		assert Debugger.addNode(this);
 		ScriptValue_Numeric left = (ScriptValue_Numeric) this.left.getValue();

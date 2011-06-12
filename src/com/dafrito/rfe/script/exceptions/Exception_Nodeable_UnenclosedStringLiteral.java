@@ -5,7 +5,7 @@ package com.dafrito.rfe.script.exceptions;
 
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_UnenclosedStringLiteral extends Exception_Nodeable {
+public class Exception_Nodeable_UnenclosedStringLiteral extends ScriptException {
 	/**
 	 * 
 	 */

@@ -9,7 +9,7 @@ import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -40,7 +40,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
 		assert Debugger.openNode("Faux Template Executions", "Executing List Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_List template = (FauxTemplate_List) rawTemplate;
 		ScriptValue returning;
@@ -78,7 +78,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
-	public void initialize() throws Exception_Nodeable {
+	public void initialize() throws ScriptException {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing list faux template");
 		this.addConstructor(this.getType());
 		this.disableFullCreation();

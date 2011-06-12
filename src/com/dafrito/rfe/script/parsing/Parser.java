@@ -31,7 +31,7 @@ import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageHeightElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageWidthElement;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateNotFound;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnenclosedBracket;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnenclosedStringLiteral;
@@ -88,7 +88,7 @@ public final class Parser {
 		classParams.clear();
 	}
 
-	private static List<Object> createGroupings(List<Object> stringList, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) throws Exception_Nodeable {
+	private static List<Object> createGroupings(List<Object> stringList, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) throws ScriptException {
 		assert Debugger.openNode("Character-Group Parsing", "Creating Groupings (Syntax: " + openChar + "..." + closingChar + " )");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
 		assert Debugger.addNode("Allowed to Recurse: " + recurse);
@@ -155,7 +155,7 @@ public final class Parser {
 		return stringList;
 	}
 
-	private static List<Object> createQuotedElements(List<Object> lineList) throws Exception_Nodeable {
+	private static List<Object> createQuotedElements(List<Object> lineList) throws ScriptException {
 		for (int i = 0; i < lineList.size(); i++) {
 			if (!(lineList.get(i) instanceof ScriptLine)) {
 				continue;
@@ -167,7 +167,7 @@ public final class Parser {
 		return lineList;
 	}
 
-	private static List<Object> createQuotedElements(ScriptLine line) throws Exception_Nodeable {
+	private static List<Object> createQuotedElements(ScriptLine line) throws ScriptException {
 		int charElem = line.getString().indexOf("'");
 		int stringElem = line.getString().indexOf('"');
 		List<Object> list = new LinkedList<Object>();
@@ -212,7 +212,7 @@ public final class Parser {
 		}
 	}
 
-	private static List<Object> extractKeywords(List<Object> lineList) throws Exception_Nodeable {
+	private static List<Object> extractKeywords(List<Object> lineList) throws ScriptException {
 		ListIterator<Object> iter = lineList.listIterator();
 		while (iter.hasNext()) {
 			Object line = iter.next();
@@ -331,7 +331,7 @@ public final class Parser {
 		return lineList;
 	}
 
-	private static List<ScriptExecutable> parseBodyList(ScriptEnvironment env, List<Object> bodyElements, ScriptValueType type) throws Exception_Nodeable {
+	private static List<ScriptExecutable> parseBodyList(ScriptEnvironment env, List<Object> bodyElements, ScriptValueType type) throws ScriptException {
 		assert Debugger.openNode("Body List Parsing", "Parsing Body List (" + bodyElements.size() + " element(s))");
 		List<Object> elements = new LinkedList<Object>();
 		List<ScriptExecutable> statementBodyList = new LinkedList<ScriptExecutable>();
@@ -371,7 +371,7 @@ public final class Parser {
 			for (int i = 0; i < queuedTemplates.size(); i++) {
 				queuedTemplates.get(i).initializeFunctions(classParams.get(i).getDebugReference());
 			}
-		} catch (Exception_Nodeable ex) {
+		} catch (ScriptException ex) {
 			Debugger.printException(ex);
 			exceptions.add(ex);
 		} catch (Exception_InternalError ex) {
@@ -383,7 +383,7 @@ public final class Parser {
 		return exceptions;
 	}
 
-	private static ScriptExecutable parseExpression(ScriptEnvironment env, List<Object> list, boolean automaticallyAddToStack, ScriptValueType type) throws Exception_Nodeable {
+	private static ScriptExecutable parseExpression(ScriptEnvironment env, List<Object> list, boolean automaticallyAddToStack, ScriptValueType type) throws ScriptException {
 		if (list.size() == 1 && list.get(0) instanceof ScriptExecutable) {
 			return (ScriptExecutable) list.get(0);
 		}
@@ -726,7 +726,7 @@ public final class Parser {
 		throw new Exception_InternalError(env, "Defaulted in parseExpression");
 	}
 
-	private static ScriptExecutable parseFlowElement(ScriptEnvironment env, List<Object> list, ScriptValueType type) throws Exception_Nodeable {
+	private static ScriptExecutable parseFlowElement(ScriptEnvironment env, List<Object> list, ScriptValueType type) throws ScriptException {
 		assert Debugger.openNode("Flow Element Parsing", "Parsing Flow Element");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, list);
 		for (int i = 0; i < list.size(); i++) {
@@ -803,7 +803,7 @@ public final class Parser {
 		throw new Exception_Nodeable_UnexpectedType(env, list.get(0), "Keyword");
 	}
 
-	public static ScriptFunction parseFunction(ScriptExecutable_ParseFunction function, ScriptValueType type) throws Exception_Nodeable {
+	public static ScriptFunction parseFunction(ScriptExecutable_ParseFunction function, ScriptValueType type) throws ScriptException {
 		assert Debugger.openNode("Parsing Functions", "Parsing Function (" + RiffScriptFunction.getDisplayableFunctionName(function.getName()) + ")");
 		ScriptFunction fxn;
 		if (function.getName() == null || function.getName().equals("")) {
@@ -816,7 +816,7 @@ public final class Parser {
 		return fxn;
 	}
 
-	private static ScriptExecutable_IfStatement parseIfStatement(Referenced ref, List<Object> list, ScriptValue value, int i, ScriptValueType type) throws Exception_Nodeable {
+	private static ScriptExecutable_IfStatement parseIfStatement(Referenced ref, List<Object> list, ScriptValue value, int i, ScriptValueType type) throws ScriptException {
 		assert Debugger.openNode("If-Statement Parsing", "Parsing 'if' Statement (" + list.size() + " element(s))");
 		assert Debugger.addSnapNode("Boolean-Testing-Value", value);
 		assert Debugger.addSnapNode("Body Elements", list);
@@ -993,7 +993,7 @@ public final class Parser {
 		return list;
 	}
 
-	private static List<ScriptValue> parseParamGroup(ScriptEnvironment env, List<Object> elementsList, ScriptValueType type) throws Exception_Nodeable {
+	private static List<ScriptValue> parseParamGroup(ScriptEnvironment env, List<Object> elementsList, ScriptValueType type) throws ScriptException {
 		assert Debugger.openNode("Parameter-Group Parsing", "Parsing Parameter-Group (" + elementsList.size() + " element(s) in group)");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, elementsList);
 		Iterator<Object> iter = elementsList.iterator();
@@ -1025,11 +1025,11 @@ public final class Parser {
 		return groupList;
 	}
 
-	private static List<ScriptValue> parseParamGroup(ScriptEnvironment env, ScriptGroup group, ScriptValueType type) throws Exception_Nodeable {
+	private static List<ScriptValue> parseParamGroup(ScriptEnvironment env, ScriptGroup group, ScriptValueType type) throws ScriptException {
 		return parseParamGroup(env, group.getElements(), type);
 	}
 
-	private static Stylesheet parseStylesheet(Referenced ref, ScriptEnvironment env, ScriptGroup group) throws Exception_Nodeable {
+	private static Stylesheet parseStylesheet(Referenced ref, ScriptEnvironment env, ScriptGroup group) throws ScriptException {
 		assert Debugger.openNode("Stylesheet Parsing", "Parsing Stylesheet");
 		List<Object> elements = group.getElements();
 		assert Debugger.addSnapNode("Elements (" + elements.size() + " element(s))", elements);
@@ -1249,7 +1249,7 @@ public final class Parser {
 	}
 
 	// Object-oriented parsing functions
-	private static void preparseElements(ScriptEnvironment env, List<Object> lineList) throws Exception_Nodeable {
+	private static void preparseElements(ScriptEnvironment env, List<Object> lineList) throws ScriptException {
 		assert Debugger.openNode("Preparsing Elements", "Preparsing Elements (" + lineList.size() + " element(s))");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, lineList);
 		List<Object> modifiers = new LinkedList<Object>();
@@ -1322,7 +1322,7 @@ public final class Parser {
 			assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
 			preparseElements(env, preparseList(stringList));
 			assert Debugger.addNode("Preparsed successfully");
-		} catch (Exception_Nodeable ex) {
+		} catch (ScriptException ex) {
 			Debugger.printException(ex);
 			exceptions.add(ex);
 		} catch (Exception_InternalError ex) {
@@ -1334,7 +1334,7 @@ public final class Parser {
 		return exceptions;
 	}
 
-	private static ScriptExecutable_ParseFunction preparseFunction(ScriptEnvironment env, final ScriptTemplate_Abstract object, List<Object> modifiers, ScriptGroup paramGroup, ScriptGroup body, String name) throws Exception_Nodeable {
+	private static ScriptExecutable_ParseFunction preparseFunction(ScriptEnvironment env, final ScriptTemplate_Abstract object, List<Object> modifiers, ScriptGroup paramGroup, ScriptGroup body, String name) throws ScriptException {
 		if (name.equals("")) {
 			assert Debugger.openNode("Preparsing Functions", "Preparsing Function (constructor)");
 		} else {
@@ -1423,7 +1423,7 @@ public final class Parser {
 		return function;
 	}
 
-	private static List<Object> preparseList(List<Object> stringList) throws Exception_Nodeable {
+	private static List<Object> preparseList(List<Object> stringList) throws ScriptException {
 		stringList = removeComments(stringList);
 		stringList = createQuotedElements(stringList);
 		stringList = createGroupings(stringList, "{", "}", ScriptGroup.GroupType.curly, false);
@@ -1437,7 +1437,7 @@ public final class Parser {
 		return stringList;
 	}
 
-	private static ScriptTemplate_Abstract preparseTemplate(Referenced ref, ScriptEnvironment env, List<Object> modifiers, ScriptGroup body, String className) throws Exception_Nodeable {
+	private static ScriptTemplate_Abstract preparseTemplate(Referenced ref, ScriptEnvironment env, List<Object> modifiers, ScriptGroup body, String className) throws ScriptException {
 		assert Debugger.openNode("Template Preparsing", "Preparsing Template (" + className + ")");
 		assert Debugger.addSnapNode("Modifiers (" + modifiers.size() + " modifier(s))", modifiers);
 		assert Debugger.addSnapNode("Template Body (" + body.getElements().size() + " element(s))", body);

@@ -3,7 +3,7 @@ package com.dafrito.rfe.script.values;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IncomparableObjects;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -15,12 +15,12 @@ public class ScriptValue_Null extends ScriptElement implements ScriptExecutable,
 	}
 
 	@Override
-	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
 		return this;
 	}
 
 	@Override
-	public ScriptValue execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws ScriptException {
 		return this;
 	}
 
@@ -31,7 +31,7 @@ public class ScriptValue_Null extends ScriptElement implements ScriptExecutable,
 	}
 
 	@Override
-	public ScriptValue getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws ScriptException {
 		return this;
 	}
 
@@ -46,17 +46,17 @@ public class ScriptValue_Null extends ScriptElement implements ScriptExecutable,
 	}
 
 	@Override
-	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
 		throw new Exception_InternalError("Set Value");
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
 		throw new Exception_Nodeable_IncomparableObjects(ref, this, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return (rhs == null || rhs.getValue() == null || rhs.getValue() instanceof ScriptValue_Null);
 	}
 }

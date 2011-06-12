@@ -6,7 +6,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
 
@@ -19,32 +19,32 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public void addFunction(Referenced ref, String name, ScriptFunction function) throws Exception_Nodeable {
+	public void addFunction(Referenced ref, String name, ScriptFunction function) throws ScriptException {
 		this.getTemplate().addFunction(ref, name, function);
 	}
 
 	@Override
-	public void addPreconstructorExpression(ScriptExecutable exec) throws Exception_Nodeable {
+	public void addPreconstructorExpression(ScriptExecutable exec) throws ScriptException {
 		this.getTemplate().addPreconstructorExpression(exec);
 	}
 
 	@Override
-	public void addTemplatePreconstructorExpression(ScriptExecutable exec) throws Exception_Nodeable {
+	public void addTemplatePreconstructorExpression(ScriptExecutable exec) throws ScriptException {
 		this.getTemplate().addTemplatePreconstructorExpression(exec);
 	}
 
 	@Override
-	public ScriptValue_Variable addVariable(Referenced ref, String name, ScriptValue_Variable value) throws Exception_Nodeable {
+	public ScriptValue_Variable addVariable(Referenced ref, String name, ScriptValue_Variable value) throws ScriptException {
 		return this.getTemplate().addVariable(ref, name, value);
 	}
 
 	@Override
-	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
 		return this.getTemplate().castToType(ref, type);
 	}
 
 	@Override
-	public ScriptTemplate_Abstract createObject(Referenced ref, ScriptTemplate_Abstract object) throws Exception_Nodeable {
+	public ScriptTemplate_Abstract createObject(Referenced ref, ScriptTemplate_Abstract object) throws ScriptException {
 		return this.getTemplate().createObject(ref, object);
 	}
 
@@ -80,7 +80,7 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public ScriptValue_Variable getStaticReference() throws Exception_Nodeable {
+	public ScriptValue_Variable getStaticReference() throws ScriptException {
 		return this.getTemplate().getStaticReference();
 	}
 
@@ -89,7 +89,7 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 			ScriptTemplate_Abstract template = (ScriptTemplate_Abstract) this.getEnvironment().retrieveVariable(this.name).getValue();
 			assert template != null : "Template could not be retrieved (" + this.name + ")";
 			return template;
-		} catch (Exception_Nodeable ex) {
+		} catch (ScriptException ex) {
 			throw new Exception_InternalError("Exception occurred while retrieving template: " + ex);
 		}
 	}
@@ -101,22 +101,22 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public ScriptValue getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws ScriptException {
 		return this.getTemplate().getValue();
 	}
 
 	@Override
-	public ScriptValue_Variable getVariable(String name) throws Exception_Nodeable {
+	public ScriptValue_Variable getVariable(String name) throws ScriptException {
 		return this.getTemplate().getVariable(name);
 	}
 
 	@Override
-	public void initialize() throws Exception_Nodeable {
+	public void initialize() throws ScriptException {
 		this.getTemplate().initialize();
 	}
 
 	@Override
-	public void initializeFunctions(Referenced ref) throws Exception_Nodeable {
+	public void initializeFunctions(Referenced ref) throws ScriptException {
 		this.getTemplate().initializeFunctions(ref);
 	}
 
@@ -126,12 +126,12 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public boolean isAbstract() throws Exception_Nodeable {
+	public boolean isAbstract() throws ScriptException {
 		return this.getTemplate().isAbstract();
 	}
 
 	@Override
-	public boolean isConstructing() throws Exception_Nodeable {
+	public boolean isConstructing() throws ScriptException {
 		return this.getTemplate().isConstructing();
 	}
 
@@ -159,22 +159,22 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 	}
 
 	@Override
-	public void setConstructing(boolean constructing) throws Exception_Nodeable {
+	public void setConstructing(boolean constructing) throws ScriptException {
 		this.getTemplate().setConstructing(constructing);
 	}
 
 	@Override
-	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
 		return this.getTemplate().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getTemplate().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getTemplate().valuesEqual(ref, rhs);
 	}
 }

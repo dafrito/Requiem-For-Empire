@@ -5,7 +5,7 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
 import com.dafrito.rfe.script.parsing.ScriptGroup;
@@ -35,12 +35,12 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	}
 
 	@Override
-	public void addExpression(ScriptExecutable exp) throws Exception_Nodeable {
+	public void addExpression(ScriptExecutable exp) throws ScriptException {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
 	@Override
-	public void addExpressions(List<ScriptExecutable> list) throws Exception_Nodeable {
+	public void addExpressions(List<ScriptExecutable> list) throws ScriptException {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
@@ -56,12 +56,12 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws ScriptException {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 
 	@Override
-	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws Exception_Nodeable {
+	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws ScriptException {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
 	}
 

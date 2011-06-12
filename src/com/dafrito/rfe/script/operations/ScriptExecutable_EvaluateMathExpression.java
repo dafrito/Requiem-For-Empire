@@ -3,7 +3,7 @@ package com.dafrito.rfe.script.operations;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_DivisionByZero;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -36,13 +36,13 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 	}
 
 	@Override
-	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
 		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws ScriptException {
 		return this.getValue();
 	}
 
@@ -53,7 +53,7 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 	}
 
 	@Override
-	public ScriptValue getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws ScriptException {
 		assert Debugger.openNode("Mathematic Expressions", "Executing Mathematic Expression");
 		assert Debugger.addNode(this);
 		ScriptValue_Numeric left = (ScriptValue_Numeric) this.lhs.getValue();
@@ -99,17 +99,17 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 	}
 
 	@Override
-	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
 		throw new Exception_InternalError(this, "Unexecuted Variable");
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getValue().valuesCompare(ref, rhs.castToType(ref, this.getType()));
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getValue().valuesEqual(ref, rhs.castToType(ref, this.getType()));
 	}
 }

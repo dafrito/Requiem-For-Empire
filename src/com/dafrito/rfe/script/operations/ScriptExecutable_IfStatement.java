@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
 import com.dafrito.rfe.script.values.Returnable;
@@ -26,7 +26,7 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws ScriptException {
 		assert Debugger.openNode("If-Statement Executions", "Executing If-Statements");
 		if (((ScriptValue_Boolean) this.testingValue.getValue()).getBooleanValue()) {
 			this.getEnvironment().advanceNestedStack();
@@ -50,7 +50,7 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 	}
 
 	@Override
-	public ScriptValue getReturnValue() throws Exception_Nodeable {
+	public ScriptValue getReturnValue() throws ScriptException {
 		if (this.returnValue != null) {
 			this.returnValue = this.returnValue.getValue();
 		}

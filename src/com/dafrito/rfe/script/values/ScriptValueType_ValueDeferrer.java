@@ -1,6 +1,6 @@
 package com.dafrito.rfe.script.values;
 
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 
 
 public class ScriptValueType_ValueDeferrer extends ScriptValueType {
@@ -13,7 +13,7 @@ public class ScriptValueType_ValueDeferrer extends ScriptValueType {
 	}
 
 	@Override
-	public ScriptValueType getBaseType() throws Exception_Nodeable {
+	public ScriptValueType getBaseType() throws ScriptException {
 		return this.value.getType();
 	}
 }

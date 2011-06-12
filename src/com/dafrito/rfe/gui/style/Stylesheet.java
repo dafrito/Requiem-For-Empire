@@ -10,7 +10,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.proxies.FauxTemplate;
 import com.dafrito.rfe.script.values.ScriptTemplate;
@@ -47,7 +47,7 @@ public class Stylesheet extends FauxTemplate implements ScriptValue, ScriptConve
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract template) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract template) throws ScriptException {
 		return null;
 	}
 

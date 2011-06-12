@@ -10,7 +10,7 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
 
-public class Exception_Nodeable_FunctionNotFound extends Exception_Nodeable {
+public class Exception_Nodeable_FunctionNotFound extends ScriptException {
 	private static final long serialVersionUID = 4051248649703169850L;
 	private String name;
 	private List<?> params;

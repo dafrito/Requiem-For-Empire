@@ -7,7 +7,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_UnexpectedType extends Exception_Nodeable {
+public class Exception_Nodeable_UnexpectedType extends ScriptException {
 	/**
 	 * 
 	 */

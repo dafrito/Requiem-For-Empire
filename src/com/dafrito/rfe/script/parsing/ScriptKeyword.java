@@ -1,14 +1,14 @@
 package com.dafrito.rfe.script.parsing;
 
 import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.values.ScriptValueType;
 
 @Inspectable
 public class ScriptKeyword extends ScriptElement {
 	private final ScriptKeywordType type;
 
-	public ScriptKeyword(final Referenced ref, final ScriptKeywordType type) throws Exception_Nodeable {
+	public ScriptKeyword(final Referenced ref, final ScriptKeywordType type) throws ScriptException {
 		super(ref);
 		this.type = type;
 	}

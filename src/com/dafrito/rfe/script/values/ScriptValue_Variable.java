@@ -4,7 +4,7 @@ import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -39,15 +39,15 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 	private final ScriptEnvironment environment;
 	private final ScriptValueType type;
 
-	public ScriptValue_Variable(ScriptEnvironment env, ScriptValue value, ScriptKeywordType permission) throws Exception_Nodeable {
+	public ScriptValue_Variable(ScriptEnvironment env, ScriptValue value, ScriptKeywordType permission) throws ScriptException {
 		this(env, value.getType(), value, permission);
 	}
 
-	public ScriptValue_Variable(ScriptEnvironment env, ScriptValueType type, ScriptKeywordType permission) throws Exception_Nodeable {
+	public ScriptValue_Variable(ScriptEnvironment env, ScriptValueType type, ScriptKeywordType permission) throws ScriptException {
 		this(env, type, null, permission);
 	}
 
-	public ScriptValue_Variable(ScriptEnvironment env, ScriptValueType type, ScriptValue value, ScriptKeywordType permission) throws Exception_Nodeable {
+	public ScriptValue_Variable(ScriptEnvironment env, ScriptValueType type, ScriptValue value, ScriptKeywordType permission) throws ScriptException {
 		this.environment = env;
 		this.permission = permission;
 		if (this.permission == null) {
@@ -70,7 +70,7 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 	}
 
 	@Override
-	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
 		if (this.isConvertibleTo(type)) {
 			return new ScriptValue_Variable(this.getEnvironment(), this.getType(), this.getValue(), this.getPermission());
 		}
@@ -83,7 +83,7 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 		return this.environment;
 	}
 
-	public ScriptKeywordType getPermission() throws Exception_Nodeable {
+	public ScriptKeywordType getPermission() throws ScriptException {
 		return this.permission;
 	}
 
@@ -93,7 +93,7 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 	}
 
 	@Override
-	public ScriptValue getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws ScriptException {
 		assert Debugger.openNode("Variable Value Retrievals", "Retrieving Variable's Value");
 		assert Debugger.addNode(this);
 		ScriptValue returning;
@@ -140,7 +140,7 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 		assert Debugger.closeNode();
 	}
 
-	public ScriptValue setReference(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setReference(Referenced ref, ScriptValue value) throws ScriptException {
 		assert Debugger.openNode("Reference Assignments", "Setting Variable Reference");
 		if (!ScriptValueType.isPrimitiveType(this.getType())) {
 			assert Debugger.addNode("Assigning reference");
@@ -164,17 +164,17 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 	}
 
 	@Override
-	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
 		return this.setReference(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws ScriptException {
 		if (this.value == null || this.value.getValue() == null || this.value.getValue() instanceof ScriptValue_Null) {
 			return (rhs == null || rhs instanceof ScriptValue_Null);
 		}

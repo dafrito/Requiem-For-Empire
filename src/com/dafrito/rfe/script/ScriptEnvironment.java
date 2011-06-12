@@ -13,7 +13,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateAlreadyDefined;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableTypeAlreadyDefined;
 import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
@@ -127,7 +127,7 @@ public class ScriptEnvironment {
 			this.addType(null, FauxTemplate_Ace.ACESTRING, template);
 			template = new FauxTemplate_ArchetypeTree(this);
 			this.addType(null, FauxTemplate_ArchetypeTree.ARCHETYPETREESTRING, template);
-		} catch (Exception_Nodeable ex) {
+		} catch (ScriptException ex) {
 			throw new Exception_InternalError("Exception occurred during script initialization: " + ex);
 		} finally {
 			assert Debugger.closeNode();
@@ -135,7 +135,7 @@ public class ScriptEnvironment {
 	}
 
 	// Template functions
-	public void addTemplate(Referenced ref, String name, ScriptTemplate_Abstract template) throws Exception_Nodeable {
+	public void addTemplate(Referenced ref, String name, ScriptTemplate_Abstract template) throws ScriptException {
 		if (this.templates.get(name) != null) {
 			throw new Exception_Nodeable_TemplateAlreadyDefined(ref, name);
 		}
@@ -160,16 +160,16 @@ public class ScriptEnvironment {
 	}
 
 	// Variable-type functions
-	public void addType(Referenced ref, String name) throws Exception_Nodeable {
+	public void addType(Referenced ref, String name) throws ScriptException {
 		this.addType(ref, name, new ScriptValueType(this));
 	}
 
-	public void addType(Referenced ref, String name, ScriptTemplate_Abstract template) throws Exception_Nodeable {
+	public void addType(Referenced ref, String name, ScriptTemplate_Abstract template) throws ScriptException {
 		this.addType(ref, name);
 		this.addTemplate(ref, name, template);
 	}
 
-	public void addType(Referenced ref, String name, ScriptValueType keyword) throws Exception_Nodeable {
+	public void addType(Referenced ref, String name, ScriptValueType keyword) throws ScriptException {
 		assert Debugger.addNode("Variable-Type Additions", "Adding variable type name to the variable-map (" + name + ")");
 		if (this.variableTypes.containsKey(name)) {
 			throw new Exception_Nodeable_VariableTypeAlreadyDefined(ref, name);
@@ -177,7 +177,7 @@ public class ScriptEnvironment {
 		this.variableTypes.put(name, keyword);
 	}
 
-	public void addVariableToStack(String name, ScriptValue_Variable var) throws Exception_Nodeable {
+	public void addVariableToStack(String name, ScriptValue_Variable var) throws ScriptException {
 		this.threads.get().addVariable(name, var);
 	}
 
@@ -186,7 +186,7 @@ public class ScriptEnvironment {
 	}
 
 	// Stack functions
-	public void advanceStack(ScriptTemplate_Abstract template, ScriptFunction fxn) throws Exception_Nodeable {
+	public void advanceStack(ScriptTemplate_Abstract template, ScriptFunction fxn) throws ScriptException {
 		if (fxn == null) {
 			throw new NullPointerException("fxn must not be null");
 		}
@@ -253,7 +253,7 @@ public class ScriptEnvironment {
 			Debugger.getDebugger().setPriorityExecutingClass((String) selection);
 			assert Debugger.addNode(this);
 			ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate((String) selection), "main", params);
-		} catch (Exception_Nodeable ex) {
+		} catch (ScriptException ex) {
 			Debugger.printException(ex);
 		} catch (Exception_InternalError ex) {
 			Debugger.printException(ex);
@@ -277,7 +277,7 @@ public class ScriptEnvironment {
 	}
 
 	// Variable functions
-	public ScriptValue_Variable retrieveVariable(String name) throws Exception_Nodeable {
+	public ScriptValue_Variable retrieveVariable(String name) throws ScriptException {
 		assert Debugger.openNode("Variable Retrievals", "Retrieving Variable (" + name + ")");
 		ScriptValue_Variable value = null;
 		if (value == null) {

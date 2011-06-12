@@ -9,7 +9,7 @@ import java.util.Deque;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.values.ScriptFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
@@ -35,7 +35,7 @@ class ThreadStack implements Nodeable {
 		this.variableTable.advanceNestedStack();
 	}
 
-	public synchronized void advanceStack(ScriptTemplate_Abstract template, ScriptFunction fxn) throws Exception_Nodeable {
+	public synchronized void advanceStack(ScriptTemplate_Abstract template, ScriptFunction fxn) throws ScriptException {
 		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Stack (Stack size before advance: " + this.functionStack.size() + ")");
 		assert (this.functionStack.size() == this.objectStack.size()) && (this.objectStack.size() == this.variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + this.functionStack.size() + " Object-stack: " + this.objectStack.size() + " Variable-stack: " + this.variableTable.getStacks().size();
 		if (template != null) {

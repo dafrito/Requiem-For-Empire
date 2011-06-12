@@ -6,7 +6,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -30,23 +30,23 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 		this.interfaces = interfaces;
 	}
 
-	public abstract void addFunction(Referenced ref, String name, ScriptFunction function) throws Exception_Nodeable;
+	public abstract void addFunction(Referenced ref, String name, ScriptFunction function) throws ScriptException;
 
-	public abstract void addPreconstructorExpression(ScriptExecutable exec) throws Exception_Nodeable;
+	public abstract void addPreconstructorExpression(ScriptExecutable exec) throws ScriptException;
 
-	public abstract void addTemplatePreconstructorExpression(ScriptExecutable exec) throws Exception_Nodeable;
+	public abstract void addTemplatePreconstructorExpression(ScriptExecutable exec) throws ScriptException;
 
-	public abstract ScriptValue_Variable addVariable(Referenced ref, String name, ScriptValue_Variable value) throws Exception_Nodeable;
+	public abstract ScriptValue_Variable addVariable(Referenced ref, String name, ScriptValue_Variable value) throws ScriptException;
 
 	@Override
-	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
 		if (this.isConvertibleTo(type)) {
 			return this;
 		}
 		throw new Exception_Nodeable_ClassCast(ref, this, type);
 	}
 
-	public abstract ScriptTemplate_Abstract createObject(Referenced ref, ScriptTemplate_Abstract object) throws Exception_Nodeable;
+	public abstract ScriptTemplate_Abstract createObject(Referenced ref, ScriptTemplate_Abstract object) throws ScriptException;
 
 	public abstract void disableFullCreation();
 
@@ -81,7 +81,7 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 		return Collections.unmodifiableList(this.interfaces);
 	}
 
-	public abstract ScriptValue_Variable getStaticReference() throws Exception_Nodeable;
+	public abstract ScriptValue_Variable getStaticReference() throws ScriptException;
 
 	@Override
 	public ScriptValueType getType() {
@@ -89,21 +89,21 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 	}
 
 	@Override
-	public ScriptValue getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws ScriptException {
 		return this;
 	}
 
-	public abstract ScriptValue_Variable getVariable(String name) throws Exception_Nodeable;
+	public abstract ScriptValue_Variable getVariable(String name) throws ScriptException;
 
-	public abstract void initialize() throws Exception_Nodeable;
+	public abstract void initialize() throws ScriptException;
 
-	public abstract void initializeFunctions(Referenced ref) throws Exception_Nodeable;
+	public abstract void initializeFunctions(Referenced ref) throws ScriptException;
 
 	public abstract ScriptTemplate instantiateTemplate();
 
-	public abstract boolean isAbstract() throws Exception_Nodeable;
+	public abstract boolean isAbstract() throws ScriptException;
 
-	public abstract boolean isConstructing() throws Exception_Nodeable;
+	public abstract boolean isConstructing() throws ScriptException;
 
 	@Override
 	public boolean isConvertibleTo(ScriptValueType type) {
@@ -144,20 +144,20 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 	@Override
 	public abstract void nodificate();
 
-	public abstract void setConstructing(boolean constructing) throws Exception_Nodeable;
+	public abstract void setConstructing(boolean constructing) throws ScriptException;
 
 	@Override
-	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
 		throw new Exception_InternalError("Templates have no inherent value, and thus their value cannot be set directly.");
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
 		throw new Exception_InternalError("Templates have no inherent value, and thus cannot be compared.");
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return (this == rhs);
 	}
 }

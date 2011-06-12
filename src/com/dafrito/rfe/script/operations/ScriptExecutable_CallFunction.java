@@ -7,7 +7,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_FunctionNotFound;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IllegalNullReturnValue;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -20,7 +20,7 @@ import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 
 public class ScriptExecutable_CallFunction extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
-	public static ScriptValue callFunction(ScriptEnvironment env, Referenced ref, ScriptValue object, String name, List<ScriptValue> params) throws Exception_Nodeable {
+	public static ScriptValue callFunction(ScriptEnvironment env, Referenced ref, ScriptValue object, String name, List<ScriptValue> params) throws ScriptException {
 		assert Debugger.openNode("Function Calls", "Calling Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		assert Debugger.openNode("Function Call Details");
 		// Get our object
@@ -96,13 +96,13 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 	}
 
 	@Override
-	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
 		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws ScriptException {
 		return callFunction(this.getEnvironment(), this, this.object, this.functionName, this.params);
 	}
 
@@ -111,13 +111,13 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 	public ScriptValueType getType() {
 		try {
 			return ((ScriptTemplate_Abstract) this.object.getValue()).getFunction(this.functionName, this.params).getReturnType();
-		} catch (Exception_Nodeable ex) {
+		} catch (ScriptException ex) {
 			throw new Exception_InternalError(this.getEnvironment(), ex.toString());
 		}
 	}
 
 	@Override
-	public ScriptValue getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws ScriptException {
 		return this.execute();
 	}
 
@@ -134,17 +134,17 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 	}
 
 	@Override
-	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
 		return this.getValue().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

@@ -10,7 +10,7 @@ import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_InvalidColorRange;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -43,7 +43,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
 		assert Debugger.openNode("Faux Template Executions", "Executing color faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Color template = (FauxTemplate_Color) rawTemplate;
 		ScriptValue returning;
@@ -148,7 +148,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
-	public void initialize() throws Exception_Nodeable {
+	public void initialize() throws ScriptException {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing color faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();

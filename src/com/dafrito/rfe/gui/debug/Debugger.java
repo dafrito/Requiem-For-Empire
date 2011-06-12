@@ -12,7 +12,7 @@ import com.dafrito.rfe.inspect.Inspection;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.inspect.NodeableInspector;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 
 public class Debugger {
 	private static DebugEnvironment debugger;
@@ -66,8 +66,8 @@ public class Debugger {
 			addNodeableNode(group, (Nodeable) o);
 			if (o instanceof Exception) {
 				String exceptionName;
-				if (o instanceof Exception_Nodeable) {
-					exceptionName = ((Exception_Nodeable) o).getName();
+				if (o instanceof ScriptException) {
+					exceptionName = ((ScriptException) o).getName();
 				} else if (o instanceof Exception_InternalError) {
 					exceptionName = ((Exception_InternalError) o).getMessage();
 				} else {
@@ -86,8 +86,8 @@ public class Debugger {
 		getDebugInspector().addNode(new Debug_TreeNode(group, o));
 		if (o instanceof Exception) {
 			String exceptionName;
-			if (o instanceof Exception_Nodeable) {
-				exceptionName = ((Exception_Nodeable) o).getName();
+			if (o instanceof ScriptException) {
+				exceptionName = ((ScriptException) o).getName();
 			} else if (o instanceof Exception_InternalError) {
 				exceptionName = ((Exception_InternalError) o).getMessage();
 			} else {
@@ -160,7 +160,7 @@ public class Debugger {
 
 	public static void printException(Exception ex) {
 		System.out.println(ex);
-		if (ex instanceof Exception_Nodeable || ex instanceof Exception_InternalError) {
+		if (ex instanceof ScriptException || ex instanceof Exception_InternalError) {
 			assert addNode("Exceptions and Errors", ex);
 		} else {
 			assert addSnapNode("Exceptions and Errors", "Exception", ex);

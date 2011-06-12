@@ -3,7 +3,7 @@ package com.dafrito.rfe.script.operations;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -16,7 +16,7 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 	private String name;
 	private ScriptElement reference;
 
-	public ScriptExecutable_CreateVariable(Referenced ref, ScriptValueType type, String name, ScriptKeywordType permission) throws Exception_Nodeable {
+	public ScriptExecutable_CreateVariable(Referenced ref, ScriptValueType type, String name, ScriptKeywordType permission) throws ScriptException {
 		super(ref.getEnvironment(), type, permission);
 		this.reference = ref.getDebugReference();
 		this.name = name;
@@ -24,13 +24,13 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 	}
 
 	@Override
-	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
 		return this.getValue().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws ScriptException {
 		assert Debugger.openNode("Creating Variable (" + this.name + ")");
 		ScriptValue_Variable value;
 		this.getEnvironment().getCurrentObject().addVariable(this, this.name, value = new ScriptValue_Variable(this.getEnvironment(), this.getType(), this.getPermission()));
@@ -57,12 +57,12 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 
 	// Overloaded ScriptValue_Variable functions
 	@Override
-	public ScriptKeywordType getPermission() throws Exception_Nodeable {
+	public ScriptKeywordType getPermission() throws ScriptException {
 		return this.permission;
 	}
 
 	@Override
-	public ScriptValue getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws ScriptException {
 		return this.execute().getValue();
 	}
 
@@ -80,22 +80,22 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 	}
 
 	@Override
-	public ScriptValue setReference(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setReference(Referenced ref, ScriptValue value) throws ScriptException {
 		return ((ScriptValue_Variable) this.execute()).setReference(ref, value);
 	}
 
 	@Override
-	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
 		return this.execute().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

@@ -6,7 +6,7 @@ package com.dafrito.rfe.script.values;
 import java.util.Collections;
 import java.util.List;
 
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -31,12 +31,12 @@ public class NoopScriptFunction implements ScriptFunction {
 	}
 
 	@Override
-	public void addExpression(ScriptExecutable exp) throws Exception_Nodeable {
+	public void addExpression(ScriptExecutable exp) throws ScriptException {
 		throw new UnsupportedOperationException("Noop function does not accept expressions");
 	}
 
 	@Override
-	public void addExpressions(List<ScriptExecutable> list) throws Exception_Nodeable {
+	public void addExpressions(List<ScriptExecutable> list) throws ScriptException {
 		throw new UnsupportedOperationException("Noop function does not accept expressions");
 	}
 
@@ -51,7 +51,7 @@ public class NoopScriptFunction implements ScriptFunction {
 	}
 
 	@Override
-	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws Exception_Nodeable {
+	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws ScriptException {
 		// Do nothing
 	}
 
@@ -86,7 +86,7 @@ public class NoopScriptFunction implements ScriptFunction {
 	}
 
 	@Override
-	public void setReturnValue(Referenced element, ScriptValue value) throws Exception_Nodeable {
+	public void setReturnValue(Referenced element, ScriptValue value) throws ScriptException {
 		throw new UnsupportedOperationException("Return value must not be set");
 	}
 

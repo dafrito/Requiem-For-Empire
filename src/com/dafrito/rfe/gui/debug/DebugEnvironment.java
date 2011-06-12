@@ -33,7 +33,7 @@ import com.dafrito.rfe.script.CompileThread;
 import com.dafrito.rfe.script.ExecutionThread;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.strings.ExtensionFilter;
 
 /**
@@ -379,8 +379,8 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 
 	public void addExceptions(List<Exception> exceptions) {
 		for (Exception rawEx : exceptions) {
-			if (rawEx instanceof Exception_Nodeable && !((Exception_Nodeable) rawEx).isAnonymous()) {
-				Exception_Nodeable ex = (Exception_Nodeable) rawEx;
+			if (rawEx instanceof ScriptException && !((ScriptException) rawEx).isAnonymous()) {
+				ScriptException ex = (ScriptException) rawEx;
 				this.getReferenced(ex.getFilename()).addException(ex);
 				this.tabbedPane.setTitleAt(this.scriptElements.indexOf(this.getReferenced(ex.getFilename())) + 1, this.getReferenced(ex.getFilename()).getName());
 			} else {

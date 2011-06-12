@@ -34,7 +34,7 @@ import javax.swing.undo.CompoundEdit;
 
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.strings.ExtensionFilter;
 
@@ -83,8 +83,8 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 		this.prefix = "X ";
 		this.errors.setListData(this.displayedExceptions.toArray());
 		this.errors.setBorder(BorderFactory.createTitledBorder(this.getFilename() + "(" + this.exceptions.size() + " error(s))"));
-		if (exception instanceof Exception_Nodeable) {
-			this.displayedExceptions.add(((Exception_Nodeable) exception).getName());
+		if (exception instanceof ScriptException) {
+			this.displayedExceptions.add(((ScriptException) exception).getName());
 		} else {
 			this.displayedExceptions.add(exception.getMessage());
 		}
@@ -131,8 +131,8 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 			return true;
 		} else {
 			for (Exception ex : this.exceptions) {
-				if (ex instanceof Exception_Nodeable) {
-					this.displayedExceptions.add(((Exception_Nodeable) ex).getName());
+				if (ex instanceof ScriptException) {
+					this.displayedExceptions.add(((ScriptException) ex).getName());
 				} else if (ex instanceof Exception_InternalError) {
 					this.displayedExceptions.add(((Exception_InternalError) ex).getName());
 				} else {
@@ -197,10 +197,10 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 			return;
 		}
 		Exception rawEx = this.exceptions.get(this.errors.getSelectedIndex());
-		if (!(rawEx instanceof Exception_Nodeable)) {
+		if (!(rawEx instanceof ScriptException)) {
 			return;
 		}
-		Exception_Nodeable ex = (Exception_Nodeable) rawEx;
+		ScriptException ex = (ScriptException) rawEx;
 		String[] array = this.textArea.getText().split("\n");
 		int offset = 0;
 		this.textArea.requestFocus();

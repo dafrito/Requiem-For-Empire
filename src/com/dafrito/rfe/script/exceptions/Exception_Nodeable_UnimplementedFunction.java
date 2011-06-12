@@ -7,7 +7,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 
-public class Exception_Nodeable_UnimplementedFunction extends Exception_Nodeable {
+public class Exception_Nodeable_UnimplementedFunction extends ScriptException {
 	/**
 	 * 
 	 */

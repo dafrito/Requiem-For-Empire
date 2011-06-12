@@ -7,7 +7,7 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -91,13 +91,13 @@ public class RiffScriptFunction implements Nodeable, ScriptFunction {
 	}
 
 	@Override
-	public void addExpression(ScriptExecutable exp) throws Exception_Nodeable {
+	public void addExpression(ScriptExecutable exp) throws ScriptException {
 		assert exp != null;
 		this.expressions.add(exp);
 	}
 
 	@Override
-	public void addExpressions(List<ScriptExecutable> list) throws Exception_Nodeable {
+	public void addExpressions(List<ScriptExecutable> list) throws ScriptException {
 		for (ScriptExecutable exec : list) {
 			this.addExpression(exec);
 		}
@@ -114,7 +114,7 @@ public class RiffScriptFunction implements Nodeable, ScriptFunction {
 	}
 
 	@Override
-	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws Exception_Nodeable {
+	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws ScriptException {
 		String currNode = "Executing Function Expressions (" + this.expressions.size() + " expressions)";
 		assert Debugger.openNode("Function Expression Executions", currNode);
 		try {
@@ -201,7 +201,7 @@ public class RiffScriptFunction implements Nodeable, ScriptFunction {
 	}
 
 	@Override
-	public void setReturnValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public void setReturnValue(Referenced ref, ScriptValue value) throws ScriptException {
 		if (this.getReturnType().equals(ScriptKeywordType.VOID)) {
 			return;
 		}

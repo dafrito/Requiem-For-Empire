@@ -9,7 +9,7 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
 
-public abstract class Exception_Nodeable extends Exception implements Nodeable {
+public abstract class ScriptException extends Exception implements Nodeable {
 	/**
 	 * 
 	 */
@@ -19,11 +19,11 @@ public abstract class Exception_Nodeable extends Exception implements Nodeable {
 	private final ScriptEnvironment environment;
 	private final Object object;
 
-	public Exception_Nodeable(Referenced ref) {
+	public ScriptException(Referenced ref) {
 		this(ref.getDebugReference().getEnvironment(), ref.getDebugReference());
 	}
 
-	public Exception_Nodeable(ScriptEnvironment env) {
+	public ScriptException(ScriptEnvironment env) {
 		this.environment = env;
 		this.object = null;
 		this.filename = null;
@@ -33,7 +33,7 @@ public abstract class Exception_Nodeable extends Exception implements Nodeable {
 		this.length = -1;
 	}
 
-	public Exception_Nodeable(ScriptEnvironment env, Object element) {
+	public ScriptException(ScriptEnvironment env, Object element) {
 		this.environment = env;
 		this.object = element;
 		this.filename = null;
@@ -43,7 +43,7 @@ public abstract class Exception_Nodeable extends Exception implements Nodeable {
 		this.length = -1;
 	}
 
-	public Exception_Nodeable(ScriptEnvironment env, ScriptElement element) {
+	public ScriptException(ScriptEnvironment env, ScriptElement element) {
 		this.object = null;
 		this.environment = env;
 		if (element != null) {

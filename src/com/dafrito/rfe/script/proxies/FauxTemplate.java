@@ -7,7 +7,7 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -31,26 +31,26 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 		super(env, type, extended, implemented, isAbstract);
 	}
 
-	public void addConstructor(ScriptValueType returnType, ScriptValue... params) throws Exception_Nodeable {
+	public void addConstructor(ScriptValueType returnType, ScriptValue... params) throws ScriptException {
 		this.addConstructor(returnType, Arrays.asList(params));
 	}
 
-	public void addConstructor(ScriptValueType returnType, List<ScriptValue> params) throws Exception_Nodeable {
+	public void addConstructor(ScriptValueType returnType, List<ScriptValue> params) throws ScriptException {
 		this.addFauxFunction("", returnType, params, ScriptKeywordType.PUBLIC, false, true);
 	}
 
-	public void addFauxFunction(String name, ScriptValueType returnType, List<ScriptValue> params, ScriptKeywordType permission, boolean isAbstract, boolean isStatic) throws Exception_Nodeable {
+	public void addFauxFunction(String name, ScriptValueType returnType, List<ScriptValue> params, ScriptKeywordType permission, boolean isAbstract, boolean isStatic) throws ScriptException {
 		this.addFunction(null, name, new ScriptFunction_Faux(this, name, returnType, params, permission, isAbstract, isStatic));
 	}
 
 	@Override
-	public void addTemplatePreconstructorExpression(ScriptExecutable exec) throws Exception_Nodeable {
+	public void addTemplatePreconstructorExpression(ScriptExecutable exec) throws ScriptException {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in FauxTemplate");
 	}
 
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
-	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
 		assert Debugger.openNode("Faux Template Executions", "Executing INSERTFAUXTEMPLATENAMEHERE Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_InterfaceElement template = (FauxTemplate_InterfaceElement) rawTemplate;
 		assert Debugger.addSnapNode("Template provided", template);
@@ -65,11 +65,11 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract,boolean isStatic)
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
-	public void initialize() throws Exception_Nodeable {
+	public void initialize() throws ScriptException {
 
 	}
 
-	public void initializeFunctions() throws Exception_Nodeable {
+	public void initializeFunctions() throws ScriptException {
 	}
 
 	// Define default constructor here
@@ -79,12 +79,12 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 	}
 
 	@Override
-	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in FauxTemplate");
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
 		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in FauxTemplate");
 	}
 }

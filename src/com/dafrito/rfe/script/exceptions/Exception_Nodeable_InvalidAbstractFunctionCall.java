@@ -7,7 +7,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 
-class Exception_Nodeable_InvalidAbstractFunctionCall extends Exception_Nodeable {
+class Exception_Nodeable_InvalidAbstractFunctionCall extends ScriptException {
 	/**
 	 * 
 	 */

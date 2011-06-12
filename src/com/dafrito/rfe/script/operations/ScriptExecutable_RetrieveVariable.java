@@ -3,7 +3,7 @@ package com.dafrito.rfe.script.operations;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -17,7 +17,7 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	private ScriptValue template;
 	private ScriptElement reference;
 
-	public ScriptExecutable_RetrieveVariable(Referenced ref, ScriptValue template, String name, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptExecutable_RetrieveVariable(Referenced ref, ScriptValue template, String name, ScriptValueType type) throws ScriptException {
 		super(ref.getEnvironment(), type, ScriptKeywordType.PRIVATE);
 		this.reference = ref.getDebugReference();
 		this.name = name;
@@ -25,13 +25,13 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	}
 
 	@Override
-	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws Exception_Nodeable {
+	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
 		return this.getVariable().castToType(ref, type);
 	}
 
 	// ScriptExecutable implementation
 	@Override
-	public ScriptValue execute() throws Exception_Nodeable {
+	public ScriptValue execute() throws ScriptException {
 		return this.getValue();
 	}
 
@@ -48,16 +48,16 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 
 	// Overloaded ScriptValue_Variable functions
 	@Override
-	public ScriptKeywordType getPermission() throws Exception_Nodeable {
+	public ScriptKeywordType getPermission() throws ScriptException {
 		return this.getVariable().getPermission();
 	}
 
 	@Override
-	public ScriptValue getValue() throws Exception_Nodeable {
+	public ScriptValue getValue() throws ScriptException {
 		return this.getVariable().getValue();
 	}
 
-	public ScriptValue_Variable getVariable() throws Exception_Nodeable {
+	public ScriptValue_Variable getVariable() throws ScriptException {
 		assert Debugger.openNode("Executing Variable Retrieval (" + this.name + ")");
 		ScriptValue_Variable variable;
 		if (this.template != null) {
@@ -88,22 +88,22 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	}
 
 	@Override
-	public ScriptValue setReference(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setReference(Referenced ref, ScriptValue value) throws ScriptException {
 		return this.getVariable().setReference(ref, value);
 	}
 
 	@Override
-	public ScriptValue setValue(Referenced ref, ScriptValue value) throws Exception_Nodeable {
+	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
 		return this.getVariable().setValue(ref, value);
 	}
 
 	@Override
-	public int valuesCompare(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getValue().valuesCompare(ref, rhs);
 	}
 
 	@Override
-	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws Exception_Nodeable {
+	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws ScriptException {
 		return this.getValue().valuesEqual(ref, rhs);
 	}
 }

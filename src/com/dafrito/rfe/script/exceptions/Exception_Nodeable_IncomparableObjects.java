@@ -7,7 +7,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.ScriptValue;
 
-public class Exception_Nodeable_IncomparableObjects extends Exception_Nodeable {
+public class Exception_Nodeable_IncomparableObjects extends ScriptException {
 	/**
 	 * 
 	 */

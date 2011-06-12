@@ -17,7 +17,7 @@ import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
@@ -74,7 +74,7 @@ public class Scheduler implements ActionListener {
 				this.events.add(event);
 			}
 			this.tempList.clear();
-		} catch (Exception_Nodeable exception) {
+		} catch (ScriptException exception) {
 			throw new Exception_InternalError(this.getEnvironment(), exception);
 		}
 	}

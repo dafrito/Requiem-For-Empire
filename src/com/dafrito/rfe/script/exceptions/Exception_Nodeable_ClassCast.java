@@ -7,18 +7,18 @@ import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 
-public class Exception_Nodeable_ClassCast extends Exception_Nodeable {
+public class Exception_Nodeable_ClassCast extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 375067664989244754L;
 	private String value, castingValue;
 
-	public Exception_Nodeable_ClassCast(Referenced ref, ScriptValue value, ScriptValue castValue) throws Exception_Nodeable {
+	public Exception_Nodeable_ClassCast(Referenced ref, ScriptValue value, ScriptValue castValue) throws ScriptException {
 		this(ref, value.getType().getName(), castValue.getType().getName());
 	}
 
-	public Exception_Nodeable_ClassCast(Referenced ref, ScriptValue castingValue, ScriptValueType type) throws Exception_Nodeable {
+	public Exception_Nodeable_ClassCast(Referenced ref, ScriptValue castingValue, ScriptValueType type) throws ScriptException {
 		this(ref, type.getName(), type.getName());
 	}
 

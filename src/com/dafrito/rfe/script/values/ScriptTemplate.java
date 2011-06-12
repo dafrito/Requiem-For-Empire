@@ -8,7 +8,7 @@ import java.util.Map;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_AbstractFunctionNotImplemented;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_FunctionAlreadyDefined;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IllegalAbstractObjectCreation;
@@ -61,7 +61,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public void addFunction(Referenced ref, String name, ScriptFunction function) throws Exception_Nodeable {
+	public void addFunction(Referenced ref, String name, ScriptFunction function) throws ScriptException {
 		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
 			this.getEnvironment().getTemplate(this.getType()).addFunction(ref, name, function);
 			return;
@@ -108,7 +108,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public void addPreconstructorExpression(ScriptExecutable exec) throws Exception_Nodeable {
+	public void addPreconstructorExpression(ScriptExecutable exec) throws ScriptException {
 		assert Debugger.openNode("Preconstructor Additions", "Adding Preconstructor");
 		assert Debugger.addNode("Template", this);
 		assert Debugger.addNode(exec);
@@ -117,7 +117,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public void addTemplatePreconstructorExpression(ScriptExecutable exec) throws Exception_Nodeable {
+	public void addTemplatePreconstructorExpression(ScriptExecutable exec) throws ScriptException {
 		assert Debugger.openNode("Template Preconstructor Additions", "Adding Template Preconstructor");
 		assert Debugger.addNode("Template", this);
 		assert Debugger.addNode(exec);
@@ -126,7 +126,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public ScriptValue_Variable addVariable(Referenced ref, String name, ScriptValue_Variable value) throws Exception_Nodeable {
+	public ScriptValue_Variable addVariable(Referenced ref, String name, ScriptValue_Variable value) throws ScriptException {
 		if (this.isConstructing()) {
 			assert Debugger.openNode("Object Variable Additions", "Adding Variable to Object (" + name + ")");
 			assert Debugger.addNode(this);
@@ -154,7 +154,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public ScriptTemplate_Abstract createObject(Referenced ref, ScriptTemplate_Abstract object) throws Exception_Nodeable {
+	public ScriptTemplate_Abstract createObject(Referenced ref, ScriptTemplate_Abstract object) throws ScriptException {
 		assert Debugger.openNode("Object Creations", "Object Creation");
 		if (object == null) {
 			if (this.isAbstract()) {
@@ -267,12 +267,12 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public ScriptValue_Variable getStaticReference() throws Exception_Nodeable {
+	public ScriptValue_Variable getStaticReference() throws ScriptException {
 		return new ScriptValue_Variable(this.getEnvironment(), this.getType(), this, ScriptKeywordType.PUBLIC);
 	}
 
 	@Override
-	public ScriptValue_Variable getVariable(String name) throws Exception_Nodeable {
+	public ScriptValue_Variable getVariable(String name) throws ScriptException {
 		assert Debugger.openNode("Object Variable Retrievals", "Retrieving Variable From Object ('" + name + "')");
 		assert Debugger.addNode(this);
 		ScriptValue_Variable var = this.variables.get(name);
@@ -297,7 +297,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public void initialize() throws Exception_Nodeable {
+	public void initialize() throws ScriptException {
 		this.variables.clear();
 		if (this.templatePreconstructors == null || this.templatePreconstructors.size() == 0) {
 			return;
@@ -327,7 +327,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public void initializeFunctions(Referenced ref) throws Exception_Nodeable {
+	public void initializeFunctions(Referenced ref) throws ScriptException {
 		assert Debugger.openNode("Unparsed Member-Function Initialization", "Initializing Unparsed Member Functions (" + this.getType() + ")");
 		this.getEnvironment().advanceStack(this, NoopScriptFunction.instance());
 		assert Debugger.openNode("Adding static member-variables");
@@ -389,7 +389,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public boolean isAbstract() throws Exception_Nodeable {
+	public boolean isAbstract() throws ScriptException {
 		if (this.getEnvironment().getTemplate(this.getType()) != this) {
 			return this.getEnvironment().getTemplate(this.getType()).isAbstract();
 		}
@@ -397,7 +397,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public boolean isConstructing() throws Exception_Nodeable {
+	public boolean isConstructing() throws ScriptException {
 		return this.isConstructing;
 	}
 
@@ -451,7 +451,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	}
 
 	@Override
-	public void setConstructing(boolean constructing) throws Exception_Nodeable {
+	public void setConstructing(boolean constructing) throws ScriptException {
 		assert Debugger.openNode("Object Construction Settings", "Setting constructing-boolean to: " + constructing);
 		this.isConstructing = constructing;
 		assert Debugger.addNode(this);

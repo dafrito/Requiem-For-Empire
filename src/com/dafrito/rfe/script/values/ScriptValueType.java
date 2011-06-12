@@ -2,7 +2,7 @@ package com.dafrito.rfe.script.values;
 
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Object;
@@ -152,7 +152,7 @@ public class ScriptValueType {
 	// Standard type-checking functions
 	// getBaseType is necessary because our extensions of ValueType overload it to provide their functionality with us
 	// still using just this getType
-	public ScriptValueType getBaseType() throws Exception_Nodeable {
+	public ScriptValueType getBaseType() throws ScriptException {
 		return this;
 	}
 
@@ -193,7 +193,7 @@ public class ScriptValueType {
 		return getName(this);
 	}
 
-	public int getType() throws Exception_Nodeable {
+	public int getType() throws ScriptException {
 		if (this.getBaseType() == this) {
 			return this.type;
 		} else {
@@ -221,7 +221,7 @@ public class ScriptValueType {
 		}
 		try {
 			return ((ScriptValueType) obj).getType() == this.getType();
-		} catch (Exception_Nodeable e) {
+		} catch (ScriptException e) {
 			throw new Exception_InternalError(this.getEnvironment(), e);
 		}
 	}
@@ -230,7 +230,7 @@ public class ScriptValueType {
 	public int hashCode() {
 		try {
 			return this.getType();
-		} catch (Exception_Nodeable e) {
+		} catch (ScriptException e) {
 			throw new Exception_InternalError(this.getEnvironment(), e);
 		}
 	}

@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.values;
 
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableTypeNotFound;
 import com.dafrito.rfe.script.parsing.Referenced;
 
@@ -25,7 +25,7 @@ public class ScriptValueType_StringDeferrer extends ScriptValueType {
 	}
 
 	@Override
-	public ScriptValueType getBaseType() throws Exception_Nodeable {
+	public ScriptValueType getBaseType() throws ScriptException {
 		ScriptValueType kw = this.getEnvironment().getType(this.typeString);
 		if (kw == null) {
 			if (this.reference == null) {

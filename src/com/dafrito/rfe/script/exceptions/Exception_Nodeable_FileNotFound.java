@@ -5,7 +5,7 @@ package com.dafrito.rfe.script.exceptions;
 
 import com.dafrito.rfe.script.ScriptEnvironment;
 
-class Exception_Nodeable_FileNotFound extends Exception_Nodeable {
+class Exception_Nodeable_FileNotFound extends ScriptException {
 	/**
 	 * 
 	 */

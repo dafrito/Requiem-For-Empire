@@ -5,7 +5,7 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -23,17 +23,17 @@ public class ScriptFunction_Faux extends RiffScriptFunction implements ScriptFun
 	}
 
 	@Override
-	public void addExpression(ScriptExecutable exp) throws Exception_Nodeable {
+	public void addExpression(ScriptExecutable exp) throws ScriptException {
 		throw new Exception_InternalError("Invalid call in faux function");
 	}
 
 	@Override
-	public void addExpressions(List<ScriptExecutable> list) throws Exception_Nodeable {
+	public void addExpressions(List<ScriptExecutable> list) throws ScriptException {
 		throw new Exception_InternalError("Invalid call in faux function");
 	}
 
 	@Override
-	public void execute(Referenced ref, List<ScriptValue> params) throws Exception_Nodeable {
+	public void execute(Referenced ref, List<ScriptValue> params) throws ScriptException {
 		if (this.name.equals("")) {
 			this.setReturnValue(ref, this.fauxTemplate.execute(ref, this.name, params, null));
 		} else {

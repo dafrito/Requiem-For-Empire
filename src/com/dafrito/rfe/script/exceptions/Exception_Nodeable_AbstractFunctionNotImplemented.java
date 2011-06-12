@@ -8,7 +8,7 @@ import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.ScriptFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 
-public class Exception_Nodeable_AbstractFunctionNotImplemented extends Exception_Nodeable {
+public class Exception_Nodeable_AbstractFunctionNotImplemented extends ScriptException {
 	/**
 	 * 
 	 */

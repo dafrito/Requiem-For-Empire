@@ -10,7 +10,7 @@ import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -41,7 +41,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 	// Function bodies are contained via a series of if statements in execute
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
-	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws Exception_Nodeable {
+	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
 		assert Debugger.openNode("Faux Template Executions", "Executing archetype tree faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_ArchetypeTree template = (FauxTemplate_ArchetypeTree) rawTemplate;
 		assert Debugger.addSnapNode("Template provided", template);
@@ -76,7 +76,7 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
-	public void initialize() throws Exception_Nodeable {
+	public void initialize() throws ScriptException {
 		assert Debugger.openNode("Faux Template Initializations", "Initializing archetype tree faux template");
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING)));

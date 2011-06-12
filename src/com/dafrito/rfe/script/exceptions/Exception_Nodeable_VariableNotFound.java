@@ -6,7 +6,7 @@ package com.dafrito.rfe.script.exceptions;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_VariableNotFound extends Exception_Nodeable {
+public class Exception_Nodeable_VariableNotFound extends ScriptException {
 	/**
 	 * 
 	 */
