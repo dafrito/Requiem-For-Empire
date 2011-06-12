@@ -3,12 +3,15 @@
  */
 package com.dafrito.rfe.script.parsing;
 
+import com.dafrito.rfe.inspect.Inspectable;
+
 /**
  * An assortment of common character groupings.
  * 
  * @author Aaron Faanes
  * 
  */
+@Inspectable
 public enum CharacterGroup {
 	BLOCK_COMMENT("/*", "*/", false),
 	CURLY_BRACES("{", "}"),
@@ -37,15 +40,23 @@ public enum CharacterGroup {
 		this.recursive = recursive;
 	}
 
+	@Inspectable
 	public String getStart() {
 		return this.start;
 	}
 
+	@Inspectable
 	public String getEnd() {
 		return this.end;
 	}
 
+	@Inspectable
 	public boolean isRecursive() {
 		return this.recursive;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("CharacterGroup%s: %s %s", this.isRecursive() ? "[recursive]" : "", this.getStart(), this.getEnd());
 	}
 }
