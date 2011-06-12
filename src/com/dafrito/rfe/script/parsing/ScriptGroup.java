@@ -7,14 +7,10 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
 public class ScriptGroup extends ScriptElement implements Nodeable {
-	public enum GroupType {
-		curly, parenthetical
-	}
-
 	protected List<Object> elements;
-	private GroupType type;
+	private CharacterGroup type;
 
-	public ScriptGroup(Referenced ref, List<Object> elements, GroupType type) {
+	public ScriptGroup(Referenced ref, List<Object> elements, CharacterGroup type) {
 		super(ref);
 		this.elements = elements;
 		this.type = type;
@@ -24,21 +20,21 @@ public class ScriptGroup extends ScriptElement implements Nodeable {
 		return this.elements;
 	}
 
-	public GroupType getType() {
+	public CharacterGroup getType() {
 		return this.type;
 	}
 
 	@Override
 	public void nodificate() {
 		switch (this.type) {
-		case curly:
+		case CURLY_BRACES:
 			assert Debugger.openNode(CommonString.SCRIPTGROUPCURLY);
 			break;
-		case parenthetical:
+		case PARENTHESES:
 			assert Debugger.openNode(CommonString.SCRIPTGROUPPARENTHETICAL);
 			break;
 		default:
-			throw new AssertionError("Invalid default");
+			throw new AssertionError("Unsupported group");
 		}
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, this.elements);
 		assert Debugger.closeNode();

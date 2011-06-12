@@ -88,18 +88,20 @@ public final class Parser {
 		classParams.clear();
 	}
 
-	private static List<Object> createGroupings(List<Object> stringList, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) throws ScriptException {
+	private static List<Object> createGroupings(List<Object> stringList, CharacterGroup group) throws ScriptException {
+		String openChar = group.getStart();
+		String closingChar = group.getEnd();
 		assert Debugger.openNode("Character-Group Parsing", "Creating Groupings (Syntax: " + openChar + "..." + closingChar + " )");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
-		assert Debugger.addNode("Allowed to Recurse: " + recurse);
-		stringList = removeSingleLineGroupings(stringList, openChar, closingChar, type, recurse);
+		assert Debugger.addNode("Allowed to Recurse: " + group.isRecursive());
+		stringList = removeSingleLineGroupings(stringList, group);
 		boolean foundGroup = false;
 		for (int i = 0; i < stringList.size(); i++) {
 			Object obj = stringList.get(i);
 			if (obj instanceof ScriptGroup) {
-				if (recurse) {
+				if (group.isRecursive()) {
 					assert Debugger.openNode("Group found - recursing to parse");
-					((ScriptGroup) obj).setElements(createGroupings(((ScriptGroup) obj).getElements(), openChar, closingChar, type, recurse));
+					((ScriptGroup) obj).setElements(createGroupings(((ScriptGroup) obj).getElements(), group));
 					assert Debugger.closeNode();
 				}
 				continue;
@@ -140,10 +142,10 @@ public final class Parser {
 				backwardScriptLine.setString(backwardScriptLine.getString().substring(0, x));
 				Collections.reverse(newList);
 				assert Debugger.openNode("Recursing to parse elements in newly created group");
-				stringList.add(i, new ScriptGroup((Referenced) newList.get(0), createGroupings(newList, openChar, closingChar, type, recurse), type));
+				stringList.add(i, new ScriptGroup((Referenced) newList.get(0), createGroupings(newList, group), group));
 				assert Debugger.closeNode();
 				assert Debugger.openNode("Recursing to parse remaining elements");
-				List<Object> list = createGroupings(stringList, openChar, closingChar, type, recurse);
+				List<Object> list = createGroupings(stringList, group);
 				assert Debugger.closeNode();
 				assert Debugger.closeNode();
 				return list;
@@ -342,7 +344,7 @@ public final class Parser {
 				continue;
 			}
 			elements.add(bodyElements.get(j));
-			if (bodyElements.get(j) instanceof ScriptGroup && ((ScriptGroup) bodyElements.get(j)).getType() == ScriptGroup.GroupType.curly) {
+			if (bodyElements.get(j) instanceof ScriptGroup && ((ScriptGroup) bodyElements.get(j)).getType() == CharacterGroup.CURLY_BRACES) {
 				if (j + 1 < bodyElements.size() && bodyElements.get(j + 1).equals(ScriptKeywordType.ELSE)) {
 					continue;
 				}
@@ -1426,8 +1428,8 @@ public final class Parser {
 	private static List<Object> preparseList(List<Object> stringList) throws ScriptException {
 		stringList = removeComments(stringList);
 		stringList = createQuotedElements(stringList);
-		stringList = createGroupings(stringList, "{", "}", ScriptGroup.GroupType.curly, false);
-		stringList = createGroupings(stringList, "(", ")", ScriptGroup.GroupType.parenthetical, true);
+		stringList = createGroupings(stringList, CharacterGroup.CURLY_BRACES);
+		stringList = createGroupings(stringList, CharacterGroup.PARENTHESES);
 		stringList = parseOperators(stringList);
 		stringList = removeEmptyScriptLines(stringList);
 		stringList = splitByWhitespace(stringList);
@@ -1607,25 +1609,28 @@ public final class Parser {
 		return list;
 	}
 
-	private static List<Object> removeSingleLineGroupings(List<Object> lineList, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) {
+	private static List<Object> removeSingleLineGroupings(List<Object> lineList, CharacterGroup group) {
 		for (int i = 0; i < lineList.size(); i++) {
 			if (lineList.get(i) instanceof ScriptGroup) {
-				if (recurse) {
-					((ScriptGroup) lineList.get(i)).setElements(removeSingleLineGroupings(((ScriptGroup) lineList.get(i)).getElements(), openChar, closingChar, type, recurse));
+				if (group.isRecursive()) {
+					((ScriptGroup) lineList.get(i)).setElements(removeSingleLineGroupings(((ScriptGroup) lineList.get(i)).getElements(), group));
 				}
 				continue;
 			}
 			if (!(lineList.get(i) instanceof ScriptLine)) {
 				continue;
 			}
-			List<Object> returnedList = removeSingleLineGroupings((ScriptLine) lineList.get(i), openChar, closingChar, type, recurse);
+			List<Object> returnedList = removeSingleLineGroupings((ScriptLine) lineList.get(i), group);
 			lineList.remove(i);
 			lineList.addAll(i, returnedList);
 		}
 		return lineList;
 	}
 
-	private static List<Object> removeSingleLineGroupings(ScriptLine line, String openChar, String closingChar, ScriptGroup.GroupType type, boolean recurse) {
+	private static List<Object> removeSingleLineGroupings(ScriptLine line, CharacterGroup group) {
+		String openChar = group.getStart();
+		String closingChar = group.getEnd();
+		boolean recurse = group.isRecursive();
 		int endGroup = -1;
 		int beginGroup = -1;
 		int offset = 0;
@@ -1651,12 +1656,16 @@ public final class Parser {
 		List<Object> itemList = new LinkedList<Object>();
 		ScriptLine newGroup = new ScriptLine(string.substring(beginGroup + openChar.length()), line, (short) (beginGroup + openChar.length()));
 		assert Debugger.openNode("Recursing for left-side groups.");
-		list.addAll(removeSingleLineGroupings(new ScriptLine(line.getString().substring(0, beginGroup), line, (short) 0), openChar, closingChar, type, recurse));
+		list.addAll(removeSingleLineGroupings(
+				new ScriptLine(line.getString().substring(0, beginGroup), line, (short) 0),
+				group));
 		assert Debugger.closeNode();
 		itemList.add(newGroup);
-		list.add(new ScriptGroup(line, itemList, type));
+		list.add(new ScriptGroup(line, itemList, group));
 		assert Debugger.openNode("Recursing for right-side groups.");
-		list.addAll(removeSingleLineGroupings(new ScriptLine(line.getString().substring(endGroup + closingChar.length()), line, (short) (endGroup + closingChar.length())), openChar, closingChar, type, recurse));
+		list.addAll(removeSingleLineGroupings(
+				new ScriptLine(line.getString().substring(endGroup + closingChar.length()), line, (short) (endGroup + closingChar.length())),
+				group));
 		assert Debugger.closeNode();
 		assert Debugger.closeNode();
 		return list;
