@@ -5,8 +5,10 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.script.parsing.tokens.RiffToken;
+import com.dafrito.rfe.script.parsing.tokens.RiffTokenVisitor;
 
-public class ScriptGroup extends ScriptElement implements Nodeable {
+public class ScriptGroup extends ScriptElement implements Nodeable, RiffToken {
 	protected List<Object> elements;
 	private CharacterGroup type;
 
@@ -42,5 +44,10 @@ public class ScriptGroup extends ScriptElement implements Nodeable {
 
 	public void setElements(List<Object> list) {
 		this.elements = list;
+	}
+
+	@Override
+	public void accept(RiffTokenVisitor visitor) {
+		visitor.visitGroup(this);
 	}
 }

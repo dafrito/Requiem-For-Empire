@@ -4,10 +4,12 @@
 package com.dafrito.rfe.script.parsing;
 
 import com.dafrito.rfe.inspect.Inspectable;
+import com.dafrito.rfe.script.parsing.tokens.RiffToken;
+import com.dafrito.rfe.script.parsing.tokens.RiffTokenVisitor;
 import com.dafrito.rfe.script.values.ScriptValueType;
 
 @Inspectable
-public enum ScriptKeywordType {
+public enum ScriptKeywordType implements RiffToken {
 	NULL,
 	VOID(ScriptValueType.VOID),
 	BOOLEAN(ScriptValueType.BOOLEAN),
@@ -82,6 +84,11 @@ public enum ScriptKeywordType {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void accept(RiffTokenVisitor visitor) {
+		visitor.visitKeyword(this);
 	}
 
 }

@@ -1,9 +1,11 @@
 package com.dafrito.rfe.script.parsing;
 
 import com.dafrito.rfe.inspect.Inspectable;
+import com.dafrito.rfe.script.parsing.tokens.RiffToken;
+import com.dafrito.rfe.script.parsing.tokens.RiffTokenVisitor;
 
 @Inspectable
-public class ScriptOperator extends ScriptElement {
+public class ScriptOperator extends ScriptElement implements RiffToken {
 
 	private final ScriptOperatorType type;
 
@@ -40,5 +42,10 @@ public class ScriptOperator extends ScriptElement {
 	@Override
 	public String toString() {
 		return String.format("ScriptOperator[%s]", this.type.toString());
+	}
+
+	@Override
+	public void accept(RiffTokenVisitor visitor) {
+		visitor.visitOperator(this.getType());
 	}
 }
