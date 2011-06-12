@@ -1,16 +1,15 @@
 package com.dafrito.rfe.script.values;
+
 import java.util.Collections;
 import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
-
 
 public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 	private final ScriptEnvironment environment;
@@ -148,12 +147,12 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 
 	@Override
 	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
-		throw new Exception_InternalError("Templates have no inherent value, and thus their value cannot be set directly.");
+		throw new UnsupportedOperationException("Templates have no inherent value, and thus their value cannot be set directly.");
 	}
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
-		throw new Exception_InternalError("Templates have no inherent value, and thus cannot be compared.");
+		throw new UnsupportedOperationException("Templates have no inherent value, and thus cannot be compared.");
 	}
 
 	@Override

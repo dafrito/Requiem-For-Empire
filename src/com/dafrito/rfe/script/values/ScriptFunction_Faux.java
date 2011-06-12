@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -24,12 +23,12 @@ public class ScriptFunction_Faux extends RiffScriptFunction implements ScriptFun
 
 	@Override
 	public void addExpression(ScriptExecutable exp) throws ScriptException {
-		throw new Exception_InternalError("Invalid call in faux function");
+		throw new UnsupportedOperationException("Invalid call in faux function");
 	}
 
 	@Override
 	public void addExpressions(List<ScriptExecutable> list) throws ScriptException {
-		throw new Exception_InternalError("Invalid call in faux function");
+		throw new UnsupportedOperationException("Invalid call in faux function");
 	}
 
 	@Override

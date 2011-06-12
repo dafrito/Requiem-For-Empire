@@ -3,8 +3,6 @@ package com.dafrito.rfe.gui.style;
 import java.awt.Color;
 import java.awt.Font;
 
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-
 public class Stylesheets {
 	public static Color getColor(String colorString) {
 		// W3C CSS standard colors: aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple, red, silver, teal, white, and yellow
@@ -97,7 +95,8 @@ public class Stylesheets {
 		switch (style) {
 		case Font.PLAIN:
 			return "Plain";
+		default:
+			throw new IllegalArgumentException("Invalid default");
 		}
-		throw new Exception_InternalError("Invalid default");
 	}
 }

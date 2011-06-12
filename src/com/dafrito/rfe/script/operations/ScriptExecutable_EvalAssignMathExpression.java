@@ -2,9 +2,8 @@ package com.dafrito.rfe.script.operations;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_DivisionByZero;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
 import com.dafrito.rfe.script.parsing.ScriptOperatorType;
@@ -50,7 +49,7 @@ public class ScriptExecutable_EvalAssignMathExpression extends ScriptElement imp
 			returning = left.setNumericValue(left.modulus(this, right));
 			break;
 		default:
-			throw new Exception_InternalError("Invalid default");
+			throw new AssertionError("Invalid default");
 		}
 		assert Debugger.closeNode();
 		return returning;

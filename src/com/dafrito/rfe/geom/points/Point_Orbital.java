@@ -1,7 +1,5 @@
 package com.dafrito.rfe.geom.points;
 
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-
 public class Point_Orbital extends Point {
 	private Point focus;
 	private double periapsis, apoapsis;
@@ -50,12 +48,12 @@ public class Point_Orbital extends Point {
 	// Point implementation
 	@Override
 	public double getX() {
-		throw new Exception_InternalError("Unsupported operation in Point_Orbital: getX");
+		throw new UnsupportedOperationException("Unsupported operation in Point_Orbital: getX");
 	}
 
 	@Override
 	public double getY() {
-		throw new Exception_InternalError("Unsupported operation in Point_Orbital: getY");
+		throw new UnsupportedOperationException("Unsupported operation in Point_Orbital: getY");
 	}
 
 	public double getYaw() {
@@ -68,7 +66,7 @@ public class Point_Orbital extends Point {
 
 	@Override
 	public double getZ() {
-		throw new Exception_InternalError("Unsupported operation in Point_Orbital: getZ");
+		throw new UnsupportedOperationException("Unsupported operation in Point_Orbital: getZ");
 	}
 
 	public void setApoapsis(double apoapsis) {
@@ -107,12 +105,12 @@ public class Point_Orbital extends Point {
 
 	@Override
 	public void setX(double x) {
-		throw new Exception_InternalError("Unsupported operation in Point_Orbital: setX");
+		throw new UnsupportedOperationException("Unsupported operation in Point_Orbital: setX");
 	}
 
 	@Override
 	public void setY(double y) {
-		throw new Exception_InternalError("Unsupported operation in Point_Orbital: setY");
+		throw new UnsupportedOperationException("Unsupported operation in Point_Orbital: setY");
 	}
 
 	public void setYaw(double yaw) {
@@ -137,6 +135,6 @@ public class Point_Orbital extends Point {
 
 	@Override
 	public void setZ(double z) {
-		throw new Exception_InternalError("Unsupported operation in Point_Orbital: setZ");
+		throw new UnsupportedOperationException("Unsupported operation in Point_Orbital: setZ");
 	}
 }

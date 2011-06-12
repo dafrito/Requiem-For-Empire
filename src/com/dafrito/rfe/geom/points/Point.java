@@ -1,6 +1,5 @@
 package com.dafrito.rfe.geom.points;
 
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public abstract class Point {
 	public enum System {
@@ -13,8 +12,9 @@ public abstract class Point {
 			return new Point_Euclidean(x, y, z);
 		case SPHERICAL:
 			return new Point_Spherical(x, y, z);
+		default:
+			throw new UnsupportedOperationException("Point system is not supported");
 		}
-		throw new Exception_InternalError("Invalid default");
 	}
 
 	private String name;

@@ -8,7 +8,6 @@ import java.util.Deque;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.values.ScriptFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
@@ -57,14 +56,14 @@ class ThreadStack implements Nodeable {
 
 	public synchronized ScriptFunction getCurrentFunction() {
 		if (this.functionStack.size() == 0) {
-			throw new Exception_InternalError("No call stack");
+			throw new IllegalStateException("No call stack");
 		}
 		return this.functionStack.peek();
 	}
 
 	public synchronized ScriptTemplate_Abstract getCurrentObject() {
 		if (this.objectStack.size() == 0) {
-			throw new Exception_InternalError("No call stack");
+			throw new IllegalStateException("No call stack");
 		}
 		return this.objectStack.peek();
 	}

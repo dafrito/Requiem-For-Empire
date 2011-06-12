@@ -5,7 +5,6 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public class ScriptGroup extends ScriptElement implements Nodeable {
 	public enum GroupType {
@@ -39,7 +38,7 @@ public class ScriptGroup extends ScriptElement implements Nodeable {
 			assert Debugger.openNode(CommonString.SCRIPTGROUPPARENTHETICAL);
 			break;
 		default:
-			throw new Exception_InternalError("Invalid default");
+			throw new AssertionError("Invalid default");
 		}
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, this.elements);
 		assert Debugger.closeNode();

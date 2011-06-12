@@ -81,7 +81,7 @@ public class ScriptValueType {
 		if (number instanceof Float) {
 			return ScriptValueType.FLOAT;
 		}
-		throw new Exception_InternalError("Invalid default");
+		throw new IllegalArgumentException("Invalid default");
 	}
 
 	public static boolean isBooleanType(ScriptValueType type) {

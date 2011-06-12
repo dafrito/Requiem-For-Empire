@@ -35,7 +35,6 @@ import com.dafrito.rfe.gui.event.RiffInterface_Event;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseDownEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseUpEvent;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 /**
  * Displays the game world and dispatches input events.

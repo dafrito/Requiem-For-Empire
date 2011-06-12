@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -36,12 +35,12 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 
 	@Override
 	public void addExpression(ScriptExecutable exp) throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
+		throw new UnsupportedOperationException("Invalid call in unparsed function");
 	}
 
 	@Override
 	public void addExpressions(List<ScriptExecutable> list) throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
+		throw new UnsupportedOperationException("Invalid call in unparsed function");
 	}
 
 	@Override
@@ -57,12 +56,12 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue execute() throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
+		throw new UnsupportedOperationException("Invalid call in unparsed function");
 	}
 
 	@Override
 	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
+		throw new UnsupportedOperationException("Invalid call in unparsed function");
 	}
 
 	public ScriptGroup getBody() {
@@ -90,7 +89,7 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 
 	@Override
 	public ScriptValue getReturnValue() {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
+		throw new UnsupportedOperationException("Invalid call in unparsed function");
 	}
 
 	// ScriptFunction implementation
@@ -114,6 +113,6 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 
 	@Override
 	public void setReturnValue(Referenced element, ScriptValue value) {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in unparsed function");
+		throw new UnsupportedOperationException("Invalid call in unparsed function");
 	}
 }

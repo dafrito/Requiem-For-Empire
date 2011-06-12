@@ -5,10 +5,9 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_DivisionByZero;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 
@@ -328,7 +327,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUEDOUBLE);
 			break;
 		default:
-			throw new Exception_InternalError("Invalid default");
+			throw new AssertionError("Invalid default");
 		}
 		if (this.number == null) {
 			assert Debugger.addNode("Numeric value: null");

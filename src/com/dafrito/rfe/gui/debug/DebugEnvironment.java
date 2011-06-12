@@ -32,7 +32,6 @@ import com.dafrito.rfe.geom.SplitterThread;
 import com.dafrito.rfe.script.CompileThread;
 import com.dafrito.rfe.script.ExecutionThread;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.strings.ExtensionFilter;
 
@@ -437,7 +436,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 				return element;
 			}
 		}
-		throw new Exception_InternalError("Script element not found: " + name);
+		throw new IllegalArgumentException("Script element not found: " + name);
 	}
 
 	public List<Debug_ScriptElement> getScriptElements() {

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Stack;
 
@@ -18,7 +19,6 @@ import com.dafrito.rfe.geom.points.Points;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
@@ -70,7 +70,6 @@ public class Terrestrial implements Serializable {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException ex) {
-				throw new Exception_InternalError(env, ex);
 			}
 		}
 		assert Debugger.openNode("Pathfinding", "Getting path (" + currentPoint + " to " + destinationPoint + ")");
@@ -92,7 +91,7 @@ public class Terrestrial implements Serializable {
 		List<Double> movementCosts = new LinkedList<Double>();
 		while (!currentRegion.equals(destination)) {
 			if (ticker > 100) {
-				throw new Exception_InternalError("Pathfinder iteration tolerance exceeded.");
+				throw new IllegalStateException("Pathfinder iteration tolerance exceeded.");
 			} else {
 				ticker++;
 			}
@@ -182,7 +181,7 @@ public class Terrestrial implements Serializable {
 			path.addPoint(destinationPoint, Conversions.getDouble(env, ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
 			assert Debugger.closeNode("Path", path);
 		} else {
-			throw new Exception_InternalError("No route available");
+			throw new NoSuchElementException("No route available");
 		}
 		return path;
 	}

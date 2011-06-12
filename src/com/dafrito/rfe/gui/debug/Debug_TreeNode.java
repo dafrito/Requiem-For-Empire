@@ -16,7 +16,6 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import com.dafrito.rfe.Incrementor;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.strings.NamedTreePath;
 
 public class Debug_TreeNode implements MutableTreeNode {
@@ -370,7 +369,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	@Override
 	public void insert(MutableTreeNode child, int index) {
-		throw new Exception_InternalError("Unimplemented feature");
+		throw new UnsupportedOperationException("Unimplemented feature");
 	}
 
 	@Override
@@ -423,7 +422,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	@Override
 	public void setUserObject(Object data) {
-		throw new Exception_InternalError("Unimplemented feature");
+		throw new UnsupportedOperationException("Unimplemented feature");
 	}
 
 	@Override

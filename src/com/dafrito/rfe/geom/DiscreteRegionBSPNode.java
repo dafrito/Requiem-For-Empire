@@ -13,7 +13,6 @@ import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Points;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public class DiscreteRegionBSPNode implements Nodeable {
 	private final Point pointA;
@@ -226,16 +225,15 @@ public class DiscreteRegionBSPNode implements Nodeable {
 			assert Debugger.closeNode("Right node is null, so returning right neighbors.", this.rightNeighbors);
 			return this.rightNeighbors;
 		}
-		throw new Exception_InternalError("Defaulted in getPotentialList in DiscreteRegionBSPNode");
+		throw new AssertionError("Defaulted in getPotentialList in DiscreteRegionBSPNode");
 	}
 
 	public DiscreteRegion getRegion(Point point) {
 		Set<DiscreteRegion> set = this.getRegions(point);
 		if (set.size() > 1) {
-			throw new Exception_InternalError("More than one polygon found for supposedly single-polygon query (" + point + ")");
-		} else if (set.size() == 0) {
-			assert false;
-			throw new Exception_InternalError("No polygon found at location (" + point + ")");
+			throw new IllegalArgumentException("More than one polygon found for supposedly single-polygon query (" + point + ")");
+		} else if (set.isEmpty()) {
+			throw new IllegalStateException("No polygon found at location (" + point + ")");
 		}
 		return set.iterator().next();
 	}

@@ -1,8 +1,8 @@
 package com.dafrito.rfe.script.values;
 
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableTypeNotFound;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 
 public class ScriptValueType_StringDeferrer extends ScriptValueType {

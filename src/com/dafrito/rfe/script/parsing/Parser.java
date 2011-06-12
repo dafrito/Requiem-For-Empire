@@ -31,7 +31,6 @@ import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageHeightElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageWidthElement;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateNotFound;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnenclosedBracket;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnenclosedStringLiteral;
@@ -40,6 +39,7 @@ import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnknownModifier;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnparseableElement;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableAlreadyDefined;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableNotFound;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.operations.ScriptExecutable_AssignValue;
 import com.dafrito.rfe.script.operations.ScriptExecutable_AutoMathematicator;
@@ -723,7 +723,7 @@ public final class Parser {
 		if (list.size() == 1 && list.get(0) instanceof ScriptExecutable) {
 			return (ScriptExecutable) list.get(0);
 		}
-		throw new Exception_InternalError(env, "Defaulted in parseExpression");
+		throw new AssertionError("Defaulted in parseExpression");
 	}
 
 	private static ScriptExecutable parseFlowElement(ScriptEnvironment env, List<Object> list, ScriptValueType type) throws ScriptException {

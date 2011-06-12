@@ -3,7 +3,6 @@
  */
 package com.dafrito.rfe.gui;
 
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public enum MouseButton {
 	LEFT, MIDDLE, RIGHT;
@@ -18,7 +17,8 @@ public enum MouseButton {
 			return MouseButton.RIGHT;
 		case java.awt.event.MouseEvent.NOBUTTON:
 			return null;
+		default:
+			throw new IllegalArgumentException("Button is not recognized");
 		}
-		throw new Exception_InternalError("Invalid default");
 	}
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import com.dafrito.rfe.Scenario;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 
 public class Point_Path extends Point implements Nodeable {
 	private List<Point> points = new LinkedList<Point>();
@@ -129,16 +128,16 @@ public class Point_Path extends Point implements Nodeable {
 
 	@Override
 	public void setX(double x) {
-		throw new Exception_InternalError("Unsupported operation");
+		throw new UnsupportedOperationException("Unsupported operation");
 	}
 
 	@Override
 	public void setY(double y) {
-		throw new Exception_InternalError("Unsupported operation");
+		throw new UnsupportedOperationException("Unsupported operation");
 	}
 
 	@Override
 	public void setZ(double z) {
-		throw new Exception_InternalError("Unsupported operation");
+		throw new UnsupportedOperationException("Unsupported operation");
 	}
 }

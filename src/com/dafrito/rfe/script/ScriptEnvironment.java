@@ -13,9 +13,9 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateAlreadyDefined;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableTypeAlreadyDefined;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.proxies.FauxTemplate;
@@ -269,7 +269,7 @@ public class ScriptEnvironment {
 				return entry.getKey();
 			}
 		}
-		throw new Exception_InternalError(this, "Name not found for keyword");
+		throw new IllegalArgumentException("Name not found for keyword");
 	}
 
 	public ScriptValueType getType(String name) {

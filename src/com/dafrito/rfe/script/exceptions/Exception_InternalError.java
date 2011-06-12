@@ -9,6 +9,11 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
 
+/**
+ * 
+ * @author Aaron Faanes
+ * @see ScriptException
+ */
 public class Exception_InternalError extends RuntimeException implements Nodeable {
 	/**
 	 * 

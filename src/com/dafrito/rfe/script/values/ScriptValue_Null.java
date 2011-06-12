@@ -2,9 +2,8 @@ package com.dafrito.rfe.script.values;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IncomparableObjects;
+import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -47,7 +46,7 @@ public class ScriptValue_Null extends ScriptElement implements ScriptExecutable,
 
 	@Override
 	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
-		throw new Exception_InternalError("Set Value");
+		throw new UnsupportedOperationException("Set Value");
 	}
 
 	@Override
