@@ -54,37 +54,40 @@ public final class Conversions {
 		return new ScriptValue_Boolean(env, value);
 	}
 
-	public static Object convert(ScriptEnvironment env, Color color) throws ScriptException {
-		FauxTemplate_Color fauxColor = new FauxTemplate_Color(env, ScriptValueType.createType(env, FauxTemplate_Color.COLORSTRING));
-		fauxColor.setColor(color);
-		return fauxColor;
-	}
-
-	public static Object convert(ScriptEnvironment env, double num) throws ScriptException {
-		return new ScriptValue_Numeric(env, Double.valueOf(num));
-	}
-
-	public static Object convert(ScriptEnvironment env, float num) throws ScriptException {
-		return new ScriptValue_Numeric(env, Float.valueOf(num));
+	public static Object convert(ScriptEnvironment env, short num) throws ScriptException {
+		return new ScriptValue_Numeric(env, Short.valueOf(num));
 	}
 
 	public static Object convert(ScriptEnvironment env, int num) throws ScriptException {
 		return new ScriptValue_Numeric(env, Integer.valueOf(num));
 	}
 
-	public static Object convert(ScriptEnvironment env, List<ScriptValue> elements) throws ScriptException {
-		FauxTemplate_List list = new FauxTemplate_List(env, ScriptValueType.createType(env, FauxTemplate_List.LISTSTRING));
-		list.setList(elements);
-		return list;
-	}
-
 	public static Object convert(ScriptEnvironment env, long num) throws ScriptException {
 		return new ScriptValue_Numeric(env, Long.valueOf(num));
 	}
 
-	// Generic-conversion fxns
+	public static Object convert(ScriptEnvironment env, float num) throws ScriptException {
+		return new ScriptValue_Numeric(env, Float.valueOf(num));
+	}
+
+	public static Object convert(ScriptEnvironment env, double num) throws ScriptException {
+		return new ScriptValue_Numeric(env, Double.valueOf(num));
+	}
+
 	public static Object convert(ScriptEnvironment env, Number num) throws ScriptException {
 		return new ScriptValue_Numeric(env, num);
+	}
+
+	public static Object convert(ScriptEnvironment env, Color color) throws ScriptException {
+		FauxTemplate_Color fauxColor = new FauxTemplate_Color(env, ScriptValueType.createType(env, FauxTemplate_Color.COLORSTRING));
+		fauxColor.setColor(color);
+		return fauxColor;
+	}
+
+	public static Object convert(ScriptEnvironment env, List<ScriptValue> elements) throws ScriptException {
+		FauxTemplate_List list = new FauxTemplate_List(env, ScriptValueType.createType(env, FauxTemplate_List.LISTSTRING));
+		list.setList(elements);
+		return list;
 	}
 
 	public static Object convert(ScriptEnvironment env, Object object) throws ScriptException {
@@ -109,10 +112,6 @@ public final class Conversions {
 
 	public static <T> T convert(ScriptEnvironment env, ScriptConvertible<T> object) throws ScriptException {
 		return object.convert(env);
-	}
-
-	public static Object convert(ScriptEnvironment env, short num) throws ScriptException {
-		return new ScriptValue_Numeric(env, Short.valueOf(num));
 	}
 
 	public static Object convert(ScriptEnvironment env, String string) throws ScriptException {
