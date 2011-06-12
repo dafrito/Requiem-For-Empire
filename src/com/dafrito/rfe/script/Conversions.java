@@ -54,6 +54,15 @@ public final class Conversions {
 		return object.convert(env);
 	}
 
+	// Conversion assistance functions
+	public static ScriptValue getCoreValue(Object obj) throws ScriptException {
+		return ((ScriptValue) obj).getValue();
+	}
+
+	public static List<ScriptValue> getList(Object obj) throws ScriptException {
+		return ((FauxTemplate_List) getCoreValue(obj)).getList();
+	}
+
 	public static ScriptValue_Boolean convert(ScriptEnvironment env, boolean value) throws ScriptException {
 		return new ScriptValue_Boolean(env, value);
 	}
@@ -162,6 +171,10 @@ public final class Conversions {
 		return convert(env, value);
 	}
 
+	public static FauxTemplate_List wrapList(ScriptEnvironment env, List<ScriptValue> list) throws ScriptException {
+		return convert(env, list);
+	}
+
 	public static FauxTemplate_Color convert(ScriptEnvironment env, Color color) throws ScriptException {
 		FauxTemplate_Color fauxColor = new FauxTemplate_Color(env, ScriptValueType.createType(env, FauxTemplate_Color.COLORSTRING));
 		fauxColor.setColor(color);
@@ -224,11 +237,6 @@ public final class Conversions {
 		return wrapped;
 	}
 
-	// Conversion assistance functions
-	public static ScriptValue getCoreValue(Object obj) throws ScriptException {
-		return ((ScriptValue) obj).getValue();
-	}
-
 	public static DiscreteRegion getDiscreteRegion(ScriptEnvironment env, Object obj) throws ScriptException {
 		return (DiscreteRegion) convert(env, obj);
 	}
@@ -243,12 +251,14 @@ public final class Conversions {
 		return (InterfaceElement) convert(env, obj);
 	}
 
-	public static GraphicalElement getGraphicalElement(ScriptEnvironment env, Object obj) throws ScriptException {
-		return (GraphicalElement) convert(env, obj);
+	public static FauxTemplate_InterfaceElement wrapElement(ScriptEnvironment env, InterfaceElement elem) throws ScriptException {
+		FauxTemplate_InterfaceElement wrapped = new FauxTemplate_InterfaceElement(env, ScriptValueType.createType(env, FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING));
+		wrapped.setElement(elem);
+		return wrapped;
 	}
 
-	public static List<ScriptValue> getList(Object obj) throws ScriptException {
-		return ((FauxTemplate_List) getCoreValue(obj)).getList();
+	public static GraphicalElement getGraphicalElement(ScriptEnvironment env, Object obj) throws ScriptException {
+		return (GraphicalElement) convert(env, obj);
 	}
 
 	public static Point getPoint(ScriptEnvironment env, Object obj) throws ScriptException {
@@ -261,12 +271,6 @@ public final class Conversions {
 		return wrapped;
 	}
 
-	public static FauxTemplate_InterfaceElement wrapElement(ScriptEnvironment env, InterfaceElement elem) throws ScriptException {
-		FauxTemplate_InterfaceElement wrapped = new FauxTemplate_InterfaceElement(env, ScriptValueType.createType(env, FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING));
-		wrapped.setElement(elem);
-		return wrapped;
-	}
-
 	public static FauxTemplate_Line wrapLine(ScriptEnvironment env, GraphicalElement_Line line) {
 		FauxTemplate_Line wrapper = new FauxTemplate_Line(env);
 		wrapper.setPointA(line.getPointA());
@@ -274,18 +278,10 @@ public final class Conversions {
 		return wrapper;
 	}
 
-	public static FauxTemplate_List wrapList(ScriptEnvironment env, List<ScriptValue> list) throws ScriptException {
-		return convert(env, list);
-	}
-
 	public static FauxTemplate_Path wrapPath(ScriptEnvironment env, Point_Path path) throws ScriptException {
 		FauxTemplate_Path wrapped = new FauxTemplate_Path(env, ScriptValueType.createType(env, FauxTemplate_Path.PATHSTRING));
 		wrapped.setPoint(path);
 		return wrapped;
-	}
-
-	public static Scheduler getScheduler(ScriptEnvironment env, Object obj) throws ScriptException {
-		return (Scheduler) convert(env, obj);
 	}
 
 	public static FauxTemplate_Scheduler wrapScheduler(ScriptEnvironment env, Scheduler scheduler) throws ScriptException {
@@ -316,6 +312,10 @@ public final class Conversions {
 
 	public static Scenario getScenario(ScriptEnvironment env, Object obj) throws ScriptException {
 		return (Scenario) convert(env, obj);
+	}
+
+	public static Scheduler getScheduler(ScriptEnvironment env, Object obj) throws ScriptException {
+		return (Scheduler) convert(env, obj);
 	}
 
 	public static ScriptTemplate_Abstract getSchedulerListener(Object obj) throws ScriptException {
