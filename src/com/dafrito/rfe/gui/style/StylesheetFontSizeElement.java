@@ -3,23 +3,19 @@
  */
 package com.dafrito.rfe.gui.style;
 
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class StylesheetFontSizeElement implements Nodeable {
+@Inspectable
+public class StylesheetFontSizeElement {
 	private int fontSize;
 
 	public StylesheetFontSizeElement(int fontSize) {
 		this.fontSize = fontSize;
 	}
 
+	@Inspectable
 	public int getFontSize() {
 		return this.fontSize;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.addSnapNode("Font Size Stylesheet-Element", "Font size: " + this.fontSize);
 	}
 
 	@Override

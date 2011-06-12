@@ -5,11 +5,10 @@ package com.dafrito.rfe.gui.style;
 
 import java.awt.Color;
 
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 
-public class StylesheetBorderElement implements Nodeable {
+public class StylesheetBorderElement {
 	private int magnitude;
 	private ScriptKeywordType style;
 	private Color color;
@@ -20,25 +19,19 @@ public class StylesheetBorderElement implements Nodeable {
 		this.color = color;
 	}
 
+	@Inspectable
 	public Color getColor() {
 		return this.color;
 	}
 
+	@Inspectable
 	public int getMagnitude() {
 		return this.magnitude;
 	}
 
+	@Inspectable
 	public ScriptKeywordType getStyle() {
 		return this.style;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Border Stylesheet-Element");
-		assert Debugger.addNode("Magnitude: " + this.magnitude);
-		assert Debugger.addNode("Style: " + this.style);
-		assert Debugger.addNode("Color: " + Stylesheets.getColorName(this.color));
-		assert Debugger.closeNode();
 	}
 
 	@Override

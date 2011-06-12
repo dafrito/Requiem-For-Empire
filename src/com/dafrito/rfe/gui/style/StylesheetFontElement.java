@@ -3,23 +3,19 @@
  */
 package com.dafrito.rfe.gui.style;
 
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class StylesheetFontElement implements Nodeable {
+@Inspectable
+public class StylesheetFontElement {
 	private String fontName;
 
 	public StylesheetFontElement(String fontName) {
 		this.fontName = fontName;
 	}
 
+	@Inspectable
 	public String getFontName() {
 		return this.fontName;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.addSnapNode("Font Stylesheet-Element", "Font Name: " + this.fontName);
 	}
 
 	@Override
