@@ -95,6 +95,252 @@ public final class Parser {
 		classParams.clear();
 	}
 
+	public static List<Exception> preparseFile(ScriptEnvironment env, String filename, BufferedReader reader) throws IOException {
+		Iterator<String> iter = new LineIterator(reader);
+		List<Object> strings = new ArrayList<Object>();
+		int i = 1;
+		while (iter.hasNext()) {
+			strings.add(new ScriptLine(env, filename, i++, iter.next()));
+		}
+		return preparseFile(env, filename, strings);
+	}
+
+	private static List<Object> preparseList(List<Object> stringList) throws ScriptException {
+		stringList = removeComments(stringList);
+		stringList = createQuotedElements(stringList);
+		stringList = createGroupings(stringList, CharacterGroup.CURLY_BRACES);
+		stringList = createGroupings(stringList, CharacterGroup.PARENTHESES);
+		stringList = parseOperators(stringList);
+		stringList = removeEmptyScriptLines(stringList);
+		stringList = splitByWhitespace(stringList);
+		stringList = removeEmptyScriptLines(stringList);
+		stringList = extractKeywords(stringList);
+		stringList = extractNumbers(stringList);
+		return stringList;
+	}
+
+	private static List<Exception> preparseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
+		List<Exception> exceptions = new ArrayList<Exception>();
+		assert Debugger.openNode("File Preparsing", "Preparsing file (" + filename + ")");
+		try {
+			assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
+			preparseElements(env, preparseList(stringList));
+			assert Debugger.addNode("Preparsed successfully");
+		} catch (ScriptException ex) {
+			Debugger.printException(ex);
+			exceptions.add(ex);
+		} catch (Exception_InternalError ex) {
+			Debugger.printException(ex);
+			exceptions.add(ex);
+		} finally {
+			assert Debugger.closeNode();
+		}
+		return exceptions;
+	}
+
+	private static ScriptExecutable_ParseFunction preparseFunction(ScriptEnvironment env, final ScriptTemplate_Abstract object, List<Object> modifiers, ScriptGroup paramGroup, ScriptGroup body, String name) throws ScriptException {
+		if (name.equals("")) {
+			assert Debugger.openNode("Preparsing Functions", "Preparsing Function (constructor)");
+		} else {
+			assert Debugger.openNode("Preparsing Functions", "Preparsing Function (" + name + ")");
+		}
+		if (object == null) {
+			throw new NullPointerException("object must not be null");
+		}
+		assert Debugger.addSnapNode("Reference Template", object);
+		assert Debugger.addSnapNode("Modifiers", modifiers);
+		assert Debugger.addSnapNode("Parameters", paramGroup);
+		assert Debugger.addSnapNode("Body", body);
+		ScriptExecutable_ParseFunction function;
+		assert env != null : "ScriptEnvironment for parseFunction is null.";
+		ScriptValueType returnType = null;
+		Referenced ref = null;
+		String functionName = null;
+		ScriptKeywordType permission = ScriptKeywordType.PRIVATE;
+		boolean isStatic, isAbstract;
+		isStatic = isAbstract = false;
+		for (int i = 0; i < modifiers.size(); i++) {
+			if (modifiers.get(i) instanceof ScriptKeyword) {
+				if (ref == null) {
+					ref = (ScriptKeyword) modifiers.get(i);
+				}
+				if (i == modifiers.size() - 1) {
+					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Function name");
+				}
+				ScriptKeyword keyword = (ScriptKeyword) modifiers.get(i);
+				if (keyword.equals(ScriptKeywordType.STATIC)) {
+					assert Debugger.addNode("Modifier Parsing", "Static modifier found");
+					isStatic = true;
+				} else if (keyword.equals(ScriptKeywordType.ABSTRACT)) {
+					assert Debugger.addNode("Modifier Parsing", "Abstract modifier found");
+					isAbstract = true;
+				} else if (keyword.equals(ScriptKeywordType.PRIVATE) || keyword.equals(ScriptKeywordType.PUBLIC) || keyword.equals(ScriptKeywordType.PROTECTED)) {
+					assert Debugger.addNode("Modifier Parsing", "Permission modifier found (" + keyword + ")");
+					permission = keyword.getType();
+				} else {
+					if (ScriptValueType.isReturnablePrimitiveType(keyword.getValueType()) && returnType == null) {
+						returnType = keyword.getValueType();
+					} else {
+						throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Modifier");
+					}
+				}
+			}
+			if (modifiers.get(i) instanceof ScriptLine) {
+				if (ref == null) {
+					ref = (ScriptLine) modifiers.get(i);
+				}
+				if (i == modifiers.size() - 1) {
+					// It's a function name
+					if (returnType != null) {
+						functionName = ((ScriptLine) modifiers.get(i)).getString();
+						break;
+					}
+					// It's a constructor
+					if (returnType == null) {
+						returnType = ScriptValueType.createType((ScriptLine) modifiers.get(i), ((ScriptLine) modifiers.get(i)).getString());
+						break;
+					}
+				}
+				if (i != modifiers.size() - 2) {
+					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Modifier");
+				}
+				if (!(modifiers.get(modifiers.size() - 1) instanceof ScriptLine)) {
+					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(modifiers.size() - 1), "Function name");
+				}
+				if (returnType != null) {
+					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Modifier");
+				}
+				returnType = ScriptValueType.createType((ScriptLine) modifiers.get(i), ((ScriptLine) modifiers.get(i)).getString());
+				functionName = ((ScriptLine) modifiers.get(modifiers.size() - 1)).getString();
+			}
+		}
+		if (functionName == null) {
+			function = new ScriptExecutable_ParseFunction(ref, returnType, object, functionName, parseParamGroup(env, paramGroup, object.getType()), permission, true, false, body);
+			assert Debugger.addSnapNode("Function parsed is a constructor (" + returnType + ")", function);
+		} else if (returnType != null) {
+			function = new ScriptExecutable_ParseFunction(ref, returnType, object, functionName, parseParamGroup(env, paramGroup, object.getType()), permission, isStatic, isAbstract, body);
+			assert Debugger.addSnapNode("Function parsed is a regular function with a primitive return type (" + returnType + ")", function);
+		} else {
+			throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(modifiers.size() - 1), "Function parameters");
+		}
+		assert Debugger.closeNode();
+		return function;
+	}
+
+	private static List<Object> removeComments(List<Object> stringList) {
+		boolean isParagraphCommenting = false;
+		List<Object> list = new LinkedList<Object>();
+		for (Object element : stringList) {
+			if (!(element instanceof ScriptLine)) {
+				if (!isParagraphCommenting) {
+					list.add(element);
+				}
+				continue;
+			}
+			ScriptLine scriptLine = (ScriptLine) element;
+			if (isParagraphCommenting) {
+				int endComment = scriptLine.getString().indexOf("*/");
+				if (endComment != -1) {
+					scriptLine.setString(scriptLine.getString().substring(endComment + "*/".length()));
+					isParagraphCommenting = false;
+				} else {
+					continue;
+				}
+			}
+			int oldStringLength = 0;
+			do {
+				oldStringLength = scriptLine.getString().length();
+				scriptLine.setString(removeSingleLineParagraphs(scriptLine.getString()));
+			} while (oldStringLength != scriptLine.getString().length());
+			int beginParagraph = scriptLine.getString().indexOf("/*");
+			int lineComment = scriptLine.getString().indexOf("//");
+			if (lineComment != -1 && beginParagraph != -1) {
+				if (lineComment < beginParagraph) {
+					scriptLine.setString(scriptLine.getString().substring(0, lineComment));
+				} else {
+					isParagraphCommenting = true;
+					int endComment = scriptLine.getString().indexOf("*/");
+					if (endComment != -1) {
+						scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
+						isParagraphCommenting = false;
+					} else {
+						scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
+					}
+				}
+			} else if (lineComment != -1) {
+				scriptLine.setString(scriptLine.getString().substring(0, lineComment));
+			} else if (beginParagraph != -1) {
+				isParagraphCommenting = true;
+				int endComment = scriptLine.getString().indexOf("*/");
+				if (endComment != -1) {
+					scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
+					isParagraphCommenting = false;
+				} else {
+					scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
+				}
+			}
+			list.add(scriptLine);
+		}
+		return list;
+	}
+
+	private static List<Object> createQuotedElements(List<Object> lineList) throws ScriptException {
+		for (int i = 0; i < lineList.size(); i++) {
+			if (!(lineList.get(i) instanceof ScriptLine)) {
+				continue;
+			}
+			List<Object> returnedList = createQuotedElements((ScriptLine) lineList.get(i));
+			lineList.remove(i);
+			lineList.addAll(i, returnedList);
+		}
+		return lineList;
+	}
+
+	private static List<Object> createQuotedElements(ScriptLine line) throws ScriptException {
+		int charElem = line.getString().indexOf("'");
+		int stringElem = line.getString().indexOf('"');
+		List<Object> list = new LinkedList<Object>();
+		// If neither are found, return.
+		if (charElem == -1 && stringElem == -1) {
+			list.add(line);
+			return list;
+		} else if ((charElem == -1 || stringElem < charElem) && stringElem != -1) {
+			// We've found a string element
+			assert stringElem != -1;
+			int offset = stringElem + 1;
+			int nextStringElem;
+			do {
+				nextStringElem = line.getString().indexOf('"', offset);
+				// If it's not found, throw an error.
+				if (nextStringElem == -1) {
+					throw new Exception_Nodeable_UnenclosedStringLiteral(line);
+				}
+				// If we enter this, we're at a literal quotation mark inside our string, and must loop to find the actual closing mark.
+				if (nextStringElem != 0 && '\\' == line.getString().charAt(nextStringElem - 1)) {
+					offset = nextStringElem + 1;
+					nextStringElem = -1;
+				}
+			} while (nextStringElem == -1);
+			list.add(new ScriptLine(line.getString().substring(0, stringElem), line, 0));
+			String value = line.getString().substring(stringElem + "\"".length(), nextStringElem);
+			list.add(new ScriptValue_String(line.getEnvironment(), value));
+			list.add(new ScriptLine(line.getString().substring(nextStringElem + "\"".length()), line, (short) (nextStringElem + "\"".length())));
+			return createQuotedElements(list);
+		} else {
+			// We found a character-string element
+			assert charElem != -1;
+			int nextCharElem = line.getString().indexOf("'", charElem + 1);
+			if (nextCharElem == -1) {
+				throw new Exception_Nodeable_UnenclosedStringLiteral(line);
+			}
+			list.add(new ScriptLine(line.getString().substring(0, charElem), line, 0));
+			String value = line.getString().substring(charElem + "'".length(), nextCharElem);
+			list.add(new ScriptValue_String(line.getEnvironment(), value));
+			list.add(new ScriptLine(line.getString().substring(nextCharElem + "'".length()), line, (short) (nextCharElem + "'".length())));
+			return createQuotedElements(list);
+		}
+	}
+
 	private static List<Object> createGroupings(List<Object> stringList, CharacterGroup group) throws ScriptException {
 		assert Debugger.openNode("Character-Group Parsing", "Creating Groupings (" + group + ")");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
@@ -166,61 +412,187 @@ public final class Parser {
 		return stringList;
 	}
 
-	private static List<Object> createQuotedElements(List<Object> lineList) throws ScriptException {
-		for (int i = 0; i < lineList.size(); i++) {
-			if (!(lineList.get(i) instanceof ScriptLine)) {
-				continue;
-			}
-			List<Object> returnedList = createQuotedElements((ScriptLine) lineList.get(i));
-			lineList.remove(i);
-			lineList.addAll(i, returnedList);
+	private static List<Object> parseOperator(ScriptLine line, String operator) {
+		int location = line.getString().indexOf(operator);
+		if (location == -1) {
+			return null;
 		}
-		return lineList;
+		assert Debugger.openNode("Operator Parsing", ScriptOperatorType.parse(operator) + " found in script-line: " + line.getString());
+		assert Debugger.addNode(line);
+		List<Object> list = new LinkedList<Object>();
+		String string = line.getString().substring(0, location).trim();
+		String originalString = line.getString();
+		if (string.length() > 0) {
+			list.add(line);
+			line.setString(string);
+		}
+		list.add(new ScriptOperator(new ScriptLine(operator, line, location), ScriptOperatorType.parse(operator)));
+		string = originalString.substring(location + operator.length()).trim();
+		if (string.length() > 0) {
+			list.add(new ScriptLine(string, line, (short) (location + operator.length())));
+		}
+		assert Debugger.closeNode("Split-string list formed from operator parse", list);
+		return list;
 	}
 
-	private static List<Object> createQuotedElements(ScriptLine line) throws ScriptException {
-		int charElem = line.getString().indexOf("'");
-		int stringElem = line.getString().indexOf('"');
-		List<Object> list = new LinkedList<Object>();
-		// If neither are found, return.
-		if (charElem == -1 && stringElem == -1) {
-			list.add(line);
-			return list;
-		} else if ((charElem == -1 || stringElem < charElem) && stringElem != -1) {
-			// We've found a string element
-			assert stringElem != -1;
-			int offset = stringElem + 1;
-			int nextStringElem;
-			do {
-				nextStringElem = line.getString().indexOf('"', offset);
-				// If it's not found, throw an error.
-				if (nextStringElem == -1) {
-					throw new Exception_Nodeable_UnenclosedStringLiteral(line);
-				}
-				// If we enter this, we're at a literal quotation mark inside our string, and must loop to find the actual closing mark.
-				if (nextStringElem != 0 && '\\' == line.getString().charAt(nextStringElem - 1)) {
-					offset = nextStringElem + 1;
-					nextStringElem = -1;
-				}
-			} while (nextStringElem == -1);
-			list.add(new ScriptLine(line.getString().substring(0, stringElem), line, 0));
-			String value = line.getString().substring(stringElem + "\"".length(), nextStringElem);
-			list.add(new ScriptValue_String(line.getEnvironment(), value));
-			list.add(new ScriptLine(line.getString().substring(nextStringElem + "\"".length()), line, (short) (nextStringElem + "\"".length())));
-			return createQuotedElements(list);
-		} else {
-			// We found a character-string element
-			assert charElem != -1;
-			int nextCharElem = line.getString().indexOf("'", charElem + 1);
-			if (nextCharElem == -1) {
-				throw new Exception_Nodeable_UnenclosedStringLiteral(line);
+	private static List<Object> parseOperators(List<Object> list) {
+		for (int i = 0; i < list.size(); i++) {
+			Object element = list.get(i);
+			if (element instanceof ScriptGroup) {
+				((ScriptGroup) element).setElements(parseOperators(((ScriptGroup) element).getElements()));
+				continue;
 			}
-			list.add(new ScriptLine(line.getString().substring(0, charElem), line, 0));
-			String value = line.getString().substring(charElem + "'".length(), nextCharElem);
-			list.add(new ScriptValue_String(line.getEnvironment(), value));
-			list.add(new ScriptLine(line.getString().substring(nextCharElem + "'".length()), line, (short) (nextCharElem + "'".length())));
-			return createQuotedElements(list);
+			if (!(element instanceof ScriptLine)) {
+				continue;
+			}
+			list.remove(i);
+			list.addAll(i, parseOperators((ScriptLine) element));
 		}
+		return list;
+	}
+
+	private static List<Object> parseOperators(ScriptLine line) {
+		List<Object> list = parseOperator(line, ";");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, ",");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, ".");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, ":");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "#");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		// Comparision operations
+		list = parseOperator(line, "==");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "!=");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, ">=");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "<=");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, ">");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "<");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		// Boolean operations
+		list = parseOperator(line, "!");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "&&");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "||");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		// Single-line equation operations
+		list = parseOperator(line, "++");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "--");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "+=");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "-=");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "*=");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "/=");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "%=");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		// Assignment operation
+		list = parseOperator(line, "=");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		// Mathematical operations.
+		list = parseOperator(line, "-");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "+");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "*");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "/");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = parseOperator(line, "%");
+		if (list != null) {
+			return parseOperators(list);
+		}
+		list = new LinkedList<Object>();
+		list.add(line);
+		return list;
+	}
+
+	private static List<Object> removeEmptyScriptLines(List<Object> list) {
+		assert Debugger.openNode("Empty Script-Line Removals", "Empty Script-Line Removal");
+		assert Debugger.addSnapNode(CommonString.ELEMENTS, list);
+		int q = 0;
+		for (int i = 0; i < list.size(); i++) {
+			Object element = list.get(i);
+			if (element instanceof ScriptGroup) {
+				assert Debugger.openNode("Found script-group - recursing to parse");
+				((ScriptGroup) element).setElements(removeEmptyScriptLines(((ScriptGroup) element).getElements()));
+				assert Debugger.closeNode();
+				continue;
+			}
+			if (!(element instanceof ScriptLine)) {
+				continue;
+			}
+			if (((ScriptLine) element).getString().trim().length() == 0) {
+				q++;
+				list.remove(i);
+				i--;
+			}
+		}
+		assert Debugger.closeNode("Final elements (" + q + " removal(s))", list);
+		return list;
 	}
 
 	private static List<Object> extractKeywords(List<Object> lineList) throws ScriptException {
@@ -846,164 +1218,6 @@ public final class Parser {
 		return statement;
 	}
 
-	private static List<Object> parseOperator(ScriptLine line, String operator) {
-		int location = line.getString().indexOf(operator);
-		if (location != -1) {
-			assert Debugger.openNode("Operator Parsing", ScriptOperatorType.parse(operator) + " found in script-line: " + line.getString());
-			assert Debugger.addNode(line);
-			List<Object> list = new LinkedList<Object>();
-			String string = line.getString().substring(0, location).trim();
-			String originalString = line.getString();
-			if (string.length() > 0) {
-				list.add(line);
-				line.setString(string);
-			}
-			list.add(new ScriptOperator(new ScriptLine(operator, line, location), ScriptOperatorType.parse(operator)));
-			string = originalString.substring(location + operator.length()).trim();
-			if (string.length() > 0) {
-				list.add(new ScriptLine(string, line, (short) (location + operator.length())));
-			}
-			assert Debugger.closeNode("Split-string list formed from operator parse", list);
-			return list;
-		}
-		return null;
-	}
-
-	private static List<Object> parseOperators(List<Object> list) {
-		for (int i = 0; i < list.size(); i++) {
-			Object element = list.get(i);
-			if (element instanceof ScriptGroup) {
-				((ScriptGroup) element).setElements(parseOperators(((ScriptGroup) element).getElements()));
-				continue;
-			}
-			if (!(element instanceof ScriptLine)) {
-				continue;
-			}
-			list.remove(i);
-			list.addAll(i, parseOperators((ScriptLine) element));
-		}
-		return list;
-	}
-
-	private static List<Object> parseOperators(ScriptLine line) {
-		List<Object> list = parseOperator(line, ";");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, ",");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, ".");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, ":");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "#");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		// Comparision operations
-		list = parseOperator(line, "==");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "!=");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, ">=");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "<=");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, ">");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "<");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		// Boolean operations
-		list = parseOperator(line, "!");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "&&");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "||");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		// Single-line equation operations
-		list = parseOperator(line, "++");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "--");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "+=");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "-=");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "*=");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "/=");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "%=");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		// Assignment operation
-		list = parseOperator(line, "=");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		// Mathematical operations.
-		list = parseOperator(line, "-");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "+");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "*");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "/");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = parseOperator(line, "%");
-		if (list != null) {
-			return parseOperators(list);
-		}
-		list = new LinkedList<Object>();
-		list.add(line);
-		return list;
-	}
-
 	private static List<ScriptValue> parseParamGroup(ScriptEnvironment env, List<Object> elementsList, ScriptValueType type) throws ScriptException {
 		assert Debugger.openNode("Parameter-Group Parsing", "Parsing Parameter-Group (" + elementsList.size() + " element(s) in group)");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, elementsList);
@@ -1316,138 +1530,6 @@ public final class Parser {
 		assert Debugger.closeNode();
 	}
 
-	public static List<Exception> preparseFile(ScriptEnvironment env, String filename, BufferedReader reader) throws IOException {
-		Iterator<String> iter = new LineIterator(reader);
-		List<Object> strings = new ArrayList<Object>();
-		int i = 1;
-		while (iter.hasNext()) {
-			strings.add(new ScriptLine(env, filename, i++, iter.next()));
-		}
-		return preparseFile(env, filename, strings);
-	}
-
-	private static List<Exception> preparseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
-		List<Exception> exceptions = new ArrayList<Exception>();
-		assert Debugger.openNode("File Preparsing", "Preparsing file (" + filename + ")");
-		try {
-			assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
-			preparseElements(env, preparseList(stringList));
-			assert Debugger.addNode("Preparsed successfully");
-		} catch (ScriptException ex) {
-			Debugger.printException(ex);
-			exceptions.add(ex);
-		} catch (Exception_InternalError ex) {
-			Debugger.printException(ex);
-			exceptions.add(ex);
-		} finally {
-			assert Debugger.closeNode();
-		}
-		return exceptions;
-	}
-
-	private static ScriptExecutable_ParseFunction preparseFunction(ScriptEnvironment env, final ScriptTemplate_Abstract object, List<Object> modifiers, ScriptGroup paramGroup, ScriptGroup body, String name) throws ScriptException {
-		if (name.equals("")) {
-			assert Debugger.openNode("Preparsing Functions", "Preparsing Function (constructor)");
-		} else {
-			assert Debugger.openNode("Preparsing Functions", "Preparsing Function (" + name + ")");
-		}
-		if (object == null) {
-			throw new NullPointerException("object must not be null");
-		}
-		assert Debugger.addSnapNode("Reference Template", object);
-		assert Debugger.addSnapNode("Modifiers", modifiers);
-		assert Debugger.addSnapNode("Parameters", paramGroup);
-		assert Debugger.addSnapNode("Body", body);
-		ScriptExecutable_ParseFunction function;
-		assert env != null : "ScriptEnvironment for parseFunction is null.";
-		ScriptValueType returnType = null;
-		Referenced ref = null;
-		String functionName = null;
-		ScriptKeywordType permission = ScriptKeywordType.PRIVATE;
-		boolean isStatic, isAbstract;
-		isStatic = isAbstract = false;
-		for (int i = 0; i < modifiers.size(); i++) {
-			if (modifiers.get(i) instanceof ScriptKeyword) {
-				if (ref == null) {
-					ref = (ScriptKeyword) modifiers.get(i);
-				}
-				if (i == modifiers.size() - 1) {
-					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Function name");
-				}
-				ScriptKeyword keyword = (ScriptKeyword) modifiers.get(i);
-				if (keyword.equals(ScriptKeywordType.STATIC)) {
-					assert Debugger.addNode("Modifier Parsing", "Static modifier found");
-					isStatic = true;
-				} else if (keyword.equals(ScriptKeywordType.ABSTRACT)) {
-					assert Debugger.addNode("Modifier Parsing", "Abstract modifier found");
-					isAbstract = true;
-				} else if (keyword.equals(ScriptKeywordType.PRIVATE) || keyword.equals(ScriptKeywordType.PUBLIC) || keyword.equals(ScriptKeywordType.PROTECTED)) {
-					assert Debugger.addNode("Modifier Parsing", "Permission modifier found (" + keyword + ")");
-					permission = keyword.getType();
-				} else {
-					if (ScriptValueType.isReturnablePrimitiveType(keyword.getValueType()) && returnType == null) {
-						returnType = keyword.getValueType();
-					} else {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Modifier");
-					}
-				}
-			}
-			if (modifiers.get(i) instanceof ScriptLine) {
-				if (ref == null) {
-					ref = (ScriptLine) modifiers.get(i);
-				}
-				if (i == modifiers.size() - 1) {
-					// It's a function name
-					if (returnType != null) {
-						functionName = ((ScriptLine) modifiers.get(i)).getString();
-						break;
-					}
-					// It's a constructor
-					if (returnType == null) {
-						returnType = ScriptValueType.createType((ScriptLine) modifiers.get(i), ((ScriptLine) modifiers.get(i)).getString());
-						break;
-					}
-				}
-				if (i != modifiers.size() - 2) {
-					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Modifier");
-				}
-				if (!(modifiers.get(modifiers.size() - 1) instanceof ScriptLine)) {
-					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(modifiers.size() - 1), "Function name");
-				}
-				if (returnType != null) {
-					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Modifier");
-				}
-				returnType = ScriptValueType.createType((ScriptLine) modifiers.get(i), ((ScriptLine) modifiers.get(i)).getString());
-				functionName = ((ScriptLine) modifiers.get(modifiers.size() - 1)).getString();
-			}
-		}
-		if (functionName == null) {
-			function = new ScriptExecutable_ParseFunction(ref, returnType, object, functionName, parseParamGroup(env, paramGroup, object.getType()), permission, true, false, body);
-			assert Debugger.addSnapNode("Function parsed is a constructor (" + returnType + ")", function);
-		} else if (returnType != null) {
-			function = new ScriptExecutable_ParseFunction(ref, returnType, object, functionName, parseParamGroup(env, paramGroup, object.getType()), permission, isStatic, isAbstract, body);
-			assert Debugger.addSnapNode("Function parsed is a regular function with a primitive return type (" + returnType + ")", function);
-		} else {
-			throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(modifiers.size() - 1), "Function parameters");
-		}
-		assert Debugger.closeNode();
-		return function;
-	}
-
-	private static List<Object> preparseList(List<Object> stringList) throws ScriptException {
-		stringList = removeComments(stringList);
-		stringList = createQuotedElements(stringList);
-		stringList = createGroupings(stringList, CharacterGroup.CURLY_BRACES);
-		stringList = createGroupings(stringList, CharacterGroup.PARENTHESES);
-		stringList = parseOperators(stringList);
-		stringList = removeEmptyScriptLines(stringList);
-		stringList = splitByWhitespace(stringList);
-		stringList = removeEmptyScriptLines(stringList);
-		stringList = extractKeywords(stringList);
-		stringList = extractNumbers(stringList);
-		return stringList;
-	}
-
 	private static ScriptTemplate_Abstract preparseTemplate(Referenced ref, ScriptEnvironment env, List<Object> modifiers, ScriptGroup body, String className) throws ScriptException {
 		assert Debugger.openNode("Template Preparsing", "Preparsing Template (" + className + ")");
 		assert Debugger.addSnapNode("Modifiers (" + modifiers.size() + " modifier(s))", modifiers);
@@ -1534,88 +1616,6 @@ public final class Parser {
 		template.setConstructing(false);
 		assert Debugger.closeNode();
 		return template;
-	}
-
-	private static List<Object> removeComments(List<Object> stringList) {
-		boolean isParagraphCommenting = false;
-		List<Object> list = new LinkedList<Object>();
-		for (Object element : stringList) {
-			if (!(element instanceof ScriptLine)) {
-				if (!isParagraphCommenting) {
-					list.add(element);
-				}
-				continue;
-			}
-			ScriptLine scriptLine = (ScriptLine) element;
-			if (isParagraphCommenting) {
-				int endComment = scriptLine.getString().indexOf("*/");
-				if (endComment != -1) {
-					scriptLine.setString(scriptLine.getString().substring(endComment + "*/".length()));
-					isParagraphCommenting = false;
-				} else {
-					continue;
-				}
-			}
-			int oldStringLength = 0;
-			do {
-				oldStringLength = scriptLine.getString().length();
-				scriptLine.setString(removeSingleLineParagraphs(scriptLine.getString()));
-			} while (oldStringLength != scriptLine.getString().length());
-			int beginParagraph = scriptLine.getString().indexOf("/*");
-			int lineComment = scriptLine.getString().indexOf("//");
-			if (lineComment != -1 && beginParagraph != -1) {
-				if (lineComment < beginParagraph) {
-					scriptLine.setString(scriptLine.getString().substring(0, lineComment));
-				} else {
-					isParagraphCommenting = true;
-					int endComment = scriptLine.getString().indexOf("*/");
-					if (endComment != -1) {
-						scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
-						isParagraphCommenting = false;
-					} else {
-						scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
-					}
-				}
-			} else if (lineComment != -1) {
-				scriptLine.setString(scriptLine.getString().substring(0, lineComment));
-			} else if (beginParagraph != -1) {
-				isParagraphCommenting = true;
-				int endComment = scriptLine.getString().indexOf("*/");
-				if (endComment != -1) {
-					scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
-					isParagraphCommenting = false;
-				} else {
-					scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
-				}
-			}
-			list.add(scriptLine);
-		}
-		return list;
-	}
-
-	private static List<Object> removeEmptyScriptLines(List<Object> list) {
-		assert Debugger.openNode("Empty Script-Line Removals", "Empty Script-Line Removal");
-		assert Debugger.addSnapNode(CommonString.ELEMENTS, list);
-		int q = 0;
-		for (int i = 0; i < list.size(); i++) {
-			Object element = list.get(i);
-			if (element instanceof ScriptGroup) {
-				assert Debugger.openNode("Found script-group - recursing to parse");
-				((ScriptGroup) element).setElements(removeEmptyScriptLines(((ScriptGroup) element).getElements()));
-				assert Debugger.closeNode();
-				continue;
-			}
-			if (!(element instanceof ScriptLine)) {
-				continue;
-			}
-			if (((ScriptLine) element).getString().trim().length() == 0) {
-				q++;
-				list.remove(i);
-				i--;
-			}
-		}
-		assert Debugger.closeNode("Final elements (" + q + " removal(s))", list);
-		return list;
 	}
 
 	private static List<Object> removeSingleLineGroupings(List<Object> lineList, CharacterGroup group) {
