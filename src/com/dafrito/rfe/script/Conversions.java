@@ -61,15 +61,15 @@ public final class Conversions {
 	}
 
 	public static Object convert(ScriptEnvironment env, double num) throws ScriptException {
-		return new ScriptValue_Numeric(env, new Double(num));
+		return new ScriptValue_Numeric(env, Double.valueOf(num));
 	}
 
 	public static Object convert(ScriptEnvironment env, float num) throws ScriptException {
-		return new ScriptValue_Numeric(env, new Float(num));
+		return new ScriptValue_Numeric(env, Float.valueOf(num));
 	}
 
 	public static Object convert(ScriptEnvironment env, int num) throws ScriptException {
-		return new ScriptValue_Numeric(env, new Integer(num));
+		return new ScriptValue_Numeric(env, Integer.valueOf(num));
 	}
 
 	public static Object convert(ScriptEnvironment env, List<ScriptValue> elements) throws ScriptException {
@@ -79,7 +79,7 @@ public final class Conversions {
 	}
 
 	public static Object convert(ScriptEnvironment env, long num) throws ScriptException {
-		return new ScriptValue_Numeric(env, new Long(num));
+		return new ScriptValue_Numeric(env, Long.valueOf(num));
 	}
 
 	// Generic-conversion fxns
@@ -112,7 +112,7 @@ public final class Conversions {
 	}
 
 	public static Object convert(ScriptEnvironment env, short num) throws ScriptException {
-		return new ScriptValue_Numeric(env, new Short(num));
+		return new ScriptValue_Numeric(env, Short.valueOf(num));
 	}
 
 	public static Object convert(ScriptEnvironment env, String string) throws ScriptException {
