@@ -89,8 +89,6 @@ public final class Parser {
 	}
 
 	private static List<Object> createGroupings(List<Object> stringList, CharacterGroup group) throws ScriptException {
-		String openChar = group.getStart();
-		String closingChar = group.getEnd();
 		assert Debugger.openNode("Character-Group Parsing", "Creating Groupings (" + group + ")");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
 		assert Debugger.addSnapNode("Character Group", group);
@@ -110,7 +108,7 @@ public final class Parser {
 				continue;
 			}
 			ScriptLine scriptLine = (ScriptLine) obj;
-			int j = scriptLine.getString().indexOf(closingChar);
+			int j = scriptLine.getString().indexOf(group.getEnd());
 			if (j == -1) {
 				continue;
 			}
@@ -118,7 +116,7 @@ public final class Parser {
 			assert foundGroup = true;
 			List<Object> newList = new LinkedList<Object>();
 			newList.add(new ScriptLine(scriptLine.getString().substring(0, j), scriptLine, (short) 0));
-			scriptLine.setString(scriptLine.getString().substring(j + closingChar.length()));
+			scriptLine.setString(scriptLine.getString().substring(j + group.getEnd().length()));
 			for (int q = i - 1; q >= 0; q--) {
 				if (!(stringList.get(q) instanceof ScriptLine)) {
 					newList.add(stringList.get(q));
@@ -127,7 +125,7 @@ public final class Parser {
 					continue;
 				}
 				ScriptLine backwardScriptLine = (ScriptLine) stringList.get(q);
-				int x = backwardScriptLine.getString().lastIndexOf(openChar);
+				int x = backwardScriptLine.getString().lastIndexOf(group.getStart());
 				if (x == -1) {
 					if (q == 0) {
 						throw new Exception_Nodeable_UnenclosedBracket(scriptLine);
@@ -138,7 +136,11 @@ public final class Parser {
 					continue;
 				}
 				assert Debugger.addSnapNode("Found opening character", backwardScriptLine);
-				newList.add(new ScriptLine(backwardScriptLine.getString().substring(x + openChar.length()), backwardScriptLine, (short) (x + openChar.length())));
+				newList.add(new ScriptLine(
+						backwardScriptLine.getString().substring(x + group.getStart().length()),
+						backwardScriptLine,
+						x + group.getStart().length()
+						));
 				backwardScriptLine.setString(backwardScriptLine.getString().substring(0, x));
 				Collections.reverse(newList);
 				assert Debugger.openNode("Recursing to parse elements in newly created group");
