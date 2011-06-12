@@ -7,14 +7,14 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
 
-public class Exception_Nodeable_FunctionAlreadyDefined extends ScriptException {
+public class FunctionAlreadyDefinedScriptException extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6734795857087945843L;
 	private String name;
 
-	public Exception_Nodeable_FunctionAlreadyDefined(Referenced ref, String name) {
+	public FunctionAlreadyDefinedScriptException(Referenced ref, String name) {
 		super(ref);
 		this.name = name;
 	}

@@ -7,8 +7,8 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_FunctionNotFound;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IllegalNullReturnValue;
+import com.dafrito.rfe.script.exceptions.FunctionNotFoundScriptException;
+import com.dafrito.rfe.script.exceptions.IllegalNullReturnValueException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -46,9 +46,9 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 		ScriptTemplate_Abstract functionTemplate = ((ScriptTemplate_Abstract) object).getFunctionTemplate(function);
 		if (function == null) {
 			if (ref == null) {
-				throw new Exception_Nodeable_FunctionNotFound(env, name, params);
+				throw new FunctionNotFoundScriptException(env, name, params);
 			} else {
-				throw new Exception_Nodeable_FunctionNotFound(ref, name, params);
+				throw new FunctionNotFoundScriptException(ref, name, params);
 			}
 		}
 		if (functionTemplate.getType().equals(object.getType()) && !function.isStatic()) {
@@ -57,10 +57,10 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 		assert Debugger.addSnapNode("Function", function);
 		assert Debugger.addSnapNode("Function's Template", functionTemplate);
 		if (!function.isStatic() && !(functionTemplate).isObject()) {
-			throw new Exception_Nodeable_FunctionNotFound(ref, name, params);
+			throw new FunctionNotFoundScriptException(ref, name, params);
 		}
 		if (function.isStatic() && (functionTemplate).isObject()) {
-			throw new Exception_Nodeable_FunctionNotFound(ref, name, params);
+			throw new FunctionNotFoundScriptException(ref, name, params);
 		}
 		// Execute that function
 		if (function instanceof ScriptFunction_Faux) {
@@ -73,9 +73,9 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 		ScriptValue returning = env.getCurrentFunction().getReturnValue();
 		if (returning == null && !env.getCurrentFunction().getReturnType().equals(ScriptValueType.VOID)) {
 			if (ref == null) {
-				throw new Exception_Nodeable_IllegalNullReturnValue(env, env.getCurrentFunction());
+				throw new IllegalNullReturnValueException(env, env.getCurrentFunction());
 			} else {
-				throw new Exception_Nodeable_IllegalNullReturnValue(ref, env.getCurrentFunction());
+				throw new IllegalNullReturnValueException(ref, env.getCurrentFunction());
 			}
 		}
 		env.retreatStack();

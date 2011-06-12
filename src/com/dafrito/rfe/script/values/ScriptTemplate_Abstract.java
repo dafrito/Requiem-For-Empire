@@ -6,7 +6,7 @@ import java.util.List;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
+import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -42,7 +42,7 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 		if (this.isConvertibleTo(type)) {
 			return this;
 		}
-		throw new Exception_Nodeable_ClassCast(ref, this, type);
+		throw new ClassCastScriptException(ref, this, type);
 	}
 
 	public abstract ScriptTemplate_Abstract createObject(Referenced ref, ScriptTemplate_Abstract object) throws ScriptException;

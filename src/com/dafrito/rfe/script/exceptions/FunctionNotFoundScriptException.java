@@ -10,22 +10,22 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
 
-public class Exception_Nodeable_FunctionNotFound extends ScriptException {
+public class FunctionNotFoundScriptException extends ScriptException {
 	private static final long serialVersionUID = 4051248649703169850L;
 	private String name;
 	private List<?> params;
 
-	public Exception_Nodeable_FunctionNotFound(Object ref, String name, List<?> params) {
+	public FunctionNotFoundScriptException(Object ref, String name, List<?> params) {
 		this(((Referenced) ref).getEnvironment(), ref, name, params);
 	}
 
-	public Exception_Nodeable_FunctionNotFound(ScriptEnvironment env, Object ref, String name, List<?> params) {
+	public FunctionNotFoundScriptException(ScriptEnvironment env, Object ref, String name, List<?> params) {
 		super(env, ref);
 		this.name = name;
 		this.params = params;
 	}
 
-	public Exception_Nodeable_FunctionNotFound(ScriptEnvironment env, String name, List<?> params) {
+	public FunctionNotFoundScriptException(ScriptEnvironment env, String name, List<?> params) {
 		super(env);
 		this.name = name;
 		this.params = params;

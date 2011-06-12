@@ -8,9 +8,9 @@ import java.util.Map;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_AbstractFunctionNotImplemented;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_FunctionAlreadyDefined;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IllegalAbstractObjectCreation;
+import com.dafrito.rfe.script.exceptions.AbstractFunctionNotImplementedScriptException;
+import com.dafrito.rfe.script.exceptions.FunctionAlreadyDefinedScriptException;
+import com.dafrito.rfe.script.exceptions.IllegalAbstractObjectCreationScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnimplementedFunction;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableAlreadyDefined;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -89,7 +89,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 					// We already implement this function, so return.
 					if (function.areParametersEqual(currentFxn.getParameters())) {
 						if (currentFxn instanceof ScriptExecutable_ParseFunction) {
-							throw new Exception_Nodeable_FunctionAlreadyDefined(ref, name);
+							throw new FunctionAlreadyDefinedScriptException(ref, name);
 						}
 						list.remove(i);
 						list.add(function);
@@ -158,7 +158,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		assert Debugger.openNode("Object Creations", "Object Creation");
 		if (object == null) {
 			if (this.isAbstract()) {
-				throw new Exception_Nodeable_IllegalAbstractObjectCreation(ref);
+				throw new IllegalAbstractObjectCreationScriptException(ref);
 			}
 			object = this.instantiateTemplate();
 		}
@@ -192,7 +192,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		if (object.getFunctions() != null) {
 			for (ScriptFunction function : object.getFunctions()) {
 				if (function.isAbstract()) {
-					throw new Exception_Nodeable_AbstractFunctionNotImplemented(ref, object, function);
+					throw new AbstractFunctionNotImplementedScriptException(ref, object, function);
 				}
 			}
 		} else {

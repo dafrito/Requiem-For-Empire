@@ -2,7 +2,7 @@ package com.dafrito.rfe.script.operations;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_DivisionByZero;
+import com.dafrito.rfe.script.exceptions.DivisionByZeroScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -29,7 +29,7 @@ public class ScriptExecutable_EvalAssignMathExpression extends ScriptElement imp
 		ScriptValue_Numeric left = (ScriptValue_Numeric) this.left.getValue();
 		ScriptValue_Numeric right = (ScriptValue_Numeric) this.right.getValue();
 		if ((this.operation == ScriptOperatorType.DIVIDE || this.operation == ScriptOperatorType.MODULUS) && right.getNumericValue().doubleValue() == 0.0d) {
-			throw new Exception_Nodeable_DivisionByZero(this);
+			throw new DivisionByZeroScriptException(this);
 		}
 		ScriptValue returning = null;
 		switch (this.operation) {

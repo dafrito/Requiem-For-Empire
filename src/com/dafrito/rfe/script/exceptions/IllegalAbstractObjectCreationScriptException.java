@@ -6,13 +6,13 @@ package com.dafrito.rfe.script.exceptions;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_IllegalAbstractObjectCreation extends ScriptException {
+public class IllegalAbstractObjectCreationScriptException extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2947890390494988260L;
 
-	public Exception_Nodeable_IllegalAbstractObjectCreation(Referenced ref) {
+	public IllegalAbstractObjectCreationScriptException(Referenced ref) {
 		super(ref);
 	}
 

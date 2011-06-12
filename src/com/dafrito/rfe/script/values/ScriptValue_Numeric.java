@@ -5,8 +5,8 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_DivisionByZero;
+import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
+import com.dafrito.rfe.script.exceptions.DivisionByZeroScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -105,7 +105,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 			value = new ScriptValue_Numeric(environment, new Double(this.number.doubleValue()));
 			break;
 		default:
-			throw new Exception_Nodeable_ClassCast(ref, this, type);
+			throw new ClassCastScriptException(ref, this, type);
 		}
 		assert Debugger.closeNode("Returned value", this);
 		return value;
@@ -142,7 +142,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 			number = new Double(this.getNumericValue().doubleValue() - number.doubleValue());
 			break;
 		default:
-			throw new Exception_Nodeable_ClassCast(ref, this, value);
+			throw new ClassCastScriptException(ref, this, value);
 		}
 		assert Debugger.closeNode("Number after decrement", "" + number);
 		return number;
@@ -153,7 +153,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 		assert Debugger.addSnapNode("Number before division", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
 		if (number.doubleValue() == 0) {
-			throw new Exception_Nodeable_DivisionByZero(ref);
+			throw new DivisionByZeroScriptException(ref);
 		}
 		switch (this.getType().getKeywordType()) {
 		case SHORT:
@@ -172,7 +172,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 			number = new Double(this.getNumericValue().doubleValue() / number.doubleValue());
 			break;
 		default:
-			throw new Exception_Nodeable_ClassCast(ref, this, value);
+			throw new ClassCastScriptException(ref, this, value);
 		}
 		assert Debugger.closeNode("Number after division", "" + number);
 		return number;
@@ -232,7 +232,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 			number = new Double(this.getNumericValue().doubleValue() + number.doubleValue());
 			break;
 		default:
-			throw new Exception_Nodeable_ClassCast(ref, this, value);
+			throw new ClassCastScriptException(ref, this, value);
 		}
 		assert Debugger.closeNode("Number after increment", "" + number);
 		return number;
@@ -256,7 +256,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 		assert Debugger.addSnapNode("Number before modulus", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
 		if (number.doubleValue() == 0) {
-			throw new Exception_Nodeable_DivisionByZero(ref);
+			throw new DivisionByZeroScriptException(ref);
 		}
 		switch (this.getType().getKeywordType()) {
 		case SHORT:
@@ -275,7 +275,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 			number = new Double(this.getNumericValue().doubleValue() % number.doubleValue());
 			break;
 		default:
-			throw new Exception_Nodeable_ClassCast(ref, this, value);
+			throw new ClassCastScriptException(ref, this, value);
 		}
 		assert Debugger.closeNode("Number after modulus", "" + number);
 		return number;
@@ -302,7 +302,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 			number = new Double(this.getNumericValue().doubleValue() * number.doubleValue());
 			break;
 		default:
-			throw new Exception_Nodeable_ClassCast(ref, this, value);
+			throw new ClassCastScriptException(ref, this, value);
 		}
 		assert Debugger.closeNode("Number after multiplication", "" + number);
 		return number;
@@ -363,7 +363,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 			this.number = new Double(number.doubleValue());
 			break;
 		default:
-			throw new Exception_Nodeable_ClassCast(ref, this, value);
+			throw new ClassCastScriptException(ref, this, value);
 		}
 		return this;
 	}
@@ -387,7 +387,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 	@Override
 	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws ScriptException {
 		if (!ScriptValueType.isNumericType(rhs.getType())) {
-			throw new Exception_Nodeable_ClassCast(ref, rhs, this.getType());
+			throw new ClassCastScriptException(ref, rhs, this.getType());
 		}
 		return ((ScriptValue_Numeric) this.getValue()).doubleValue() == ((ScriptValue_Numeric) rhs.getValue()).doubleValue();
 	}

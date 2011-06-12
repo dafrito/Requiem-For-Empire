@@ -4,7 +4,7 @@ import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
+import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -74,7 +74,7 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 		if (this.isConvertibleTo(type)) {
 			return new ScriptValue_Variable(this.getEnvironment(), this.getType(), this.getValue(), this.getPermission());
 		}
-		throw new Exception_Nodeable_ClassCast(ref, this, type);
+		throw new ClassCastScriptException(ref, this, type);
 	}
 
 	// Abstract-value implementation

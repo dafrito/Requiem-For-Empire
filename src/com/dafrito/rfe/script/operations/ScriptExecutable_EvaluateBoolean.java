@@ -2,7 +2,7 @@ package com.dafrito.rfe.script.operations;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
+import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -28,7 +28,7 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 		if (this.getType().equals(type)) {
 			return this;
 		}
-		throw new Exception_Nodeable_ClassCast(ref, this, type);
+		throw new ClassCastScriptException(ref, this, type);
 	}
 
 	// ScriptExecutable implementation

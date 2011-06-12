@@ -2,7 +2,7 @@ package com.dafrito.rfe.script.operations;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
+import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -39,10 +39,10 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 		assert Debugger.openNode("Combo-Boolean Evaluations", "Evaluating Combo-Boolean Expression (" + this.operator + ")");
 		assert Debugger.addNode(this);
 		if (this.lhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
-			throw new Exception_Nodeable_ClassCast(this, this.lhs, ScriptValueType.BOOLEAN);
+			throw new ClassCastScriptException(this, this.lhs, ScriptValueType.BOOLEAN);
 		}
 		if (this.rhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
-			throw new Exception_Nodeable_ClassCast(this, this.rhs, ScriptValueType.BOOLEAN);
+			throw new ClassCastScriptException(this, this.rhs, ScriptValueType.BOOLEAN);
 		}
 		ScriptValue_Boolean lhs = (ScriptValue_Boolean) this.lhs.getValue();
 		ScriptValue_Boolean rhs = (ScriptValue_Boolean) this.rhs.getValue();

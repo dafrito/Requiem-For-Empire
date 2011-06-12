@@ -4,7 +4,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
+import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IncomparableObjects;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -24,7 +24,7 @@ public class ScriptValue_Boolean implements ScriptConvertible<Boolean>, ScriptVa
 		if (this.getType().equals(type)) {
 			return this;
 		}
-		throw new Exception_Nodeable_ClassCast(ref, this, type);
+		throw new ClassCastScriptException(ref, this, type);
 	}
 
 	// Overloaded and miscellaneous functions

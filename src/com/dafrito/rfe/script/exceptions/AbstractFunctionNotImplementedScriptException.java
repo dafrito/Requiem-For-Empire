@@ -8,7 +8,7 @@ import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.ScriptFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 
-public class Exception_Nodeable_AbstractFunctionNotImplemented extends ScriptException {
+public class AbstractFunctionNotImplementedScriptException extends ScriptException {
 	/**
 	 * 
 	 */
@@ -16,7 +16,7 @@ public class Exception_Nodeable_AbstractFunctionNotImplemented extends ScriptExc
 	private ScriptTemplate_Abstract object;
 	private ScriptFunction function;
 
-	public Exception_Nodeable_AbstractFunctionNotImplemented(Referenced ref, ScriptTemplate_Abstract object, ScriptFunction function) {
+	public AbstractFunctionNotImplementedScriptException(Referenced ref, ScriptTemplate_Abstract object, ScriptFunction function) {
 		super(ref);
 		this.object = object;
 		this.function = function;

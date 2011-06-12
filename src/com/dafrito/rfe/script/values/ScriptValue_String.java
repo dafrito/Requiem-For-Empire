@@ -4,7 +4,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_ClassCast;
+import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 
@@ -23,7 +23,7 @@ public class ScriptValue_String implements ScriptValue, ScriptConvertible<String
 		if (this.getType().equals(type)) {
 			return this;
 		}
-		throw new Exception_Nodeable_ClassCast(ref, this, type);
+		throw new ClassCastScriptException(ref, this, type);
 	}
 
 	// Interface implementations

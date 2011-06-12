@@ -7,7 +7,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_FunctionNotFound;
+import com.dafrito.rfe.script.exceptions.FunctionNotFoundScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeyword;
@@ -44,7 +44,7 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (params.size() != 0) {
-				throw new Exception_Nodeable_FunctionNotFound(ref, name, params);
+				throw new FunctionNotFoundScriptException(ref, name, params);
 			}
 			if (rawTemplate == null) {
 				rawTemplate = this.createObject(ref, rawTemplate);
@@ -52,7 +52,7 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 			assert Debugger.closeNode();
 			return rawTemplate;
 		}
-		throw new Exception_Nodeable_FunctionNotFound(ref, name, params);
+		throw new FunctionNotFoundScriptException(ref, name, params);
 	}
 
 	// addFauxFunction(name,ScriptValueType type,List<ScriptValue_Abstract>params,ScriptKeywordType permission,boolean isAbstract)
