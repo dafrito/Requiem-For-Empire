@@ -1,5 +1,7 @@
 package com.dafrito.rfe.geom;
 
+import java.util.List;
+
 import com.dafrito.rfe.geom.points.Point;
 
 public interface Gradient<T extends GradientValue<T>> {
@@ -11,7 +13,7 @@ public interface Gradient<T extends GradientValue<T>> {
 
 	public double getLeftExtreme();
 
-	public java.util.List<DiscreteRegion> getRegions(double precision);
+	public List<DiscreteRegion> getRegions(double precision);
 
 	public double getRightExtreme();
 
