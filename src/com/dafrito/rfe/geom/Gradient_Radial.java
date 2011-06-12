@@ -41,9 +41,9 @@ public class Gradient_Radial<T extends GradientValue<T>> implements Gradient<T> 
 	public T valueAt(Point point) {
 		double distance = Points.getDistance(this.getFocus(), point);
 		if (Math.abs(distance) > this.getRadius() || this.getExponent() == 0) {
-			return this.getGradientValue().diluted(0.0d);
+			return this.getGradientValue().sample(0.0d);
 		}
-		return this.getGradientValue().diluted(Math.abs(Math.pow(distance / this.getRadius(), this.getExponent()) - 1.0d));
+		return this.getGradientValue().sample(Math.abs(Math.pow(distance / this.getRadius(), this.getExponent()) - 1.0d));
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class Gradient_Radial<T extends GradientValue<T>> implements Gradient<T> 
 			assert Debugger.addNode("Entering sequence. i is at: " + i);
 			radius += precision * this.getRadius();
 			DiscreteRegion newRegion = new DiscreteRegion();
-			newRegion.setProperty(this.getGradientValue().getName(), this.getGradientValue().diluted(i));
+			newRegion.setProperty(this.getGradientValue().getName(), this.getGradientValue().sample(i));
 			for (int j = 0; j < Gradient_Radial.polygonVertices; j++) {
 				double radianOffset = ((Math.PI * 2) / polygonVertices) * j;
 				double longOffset = Math.cos(radianOffset) * radius;

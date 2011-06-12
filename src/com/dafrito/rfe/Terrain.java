@@ -53,7 +53,7 @@ public class Terrain implements GradientValue<Terrain>, Nodeable {
 	}
 
 	@Override
-	public Terrain diluted(double intensity) {
+	public Terrain sample(double intensity) {
 		Terrain terrain = new Terrain();
 		terrain.setBrushDensity(this.getBrushDensity(), this.getBrushDensityWeight() * intensity);
 		terrain.setElevation(this.getElevation(), this.getElevationWeight() * intensity);
