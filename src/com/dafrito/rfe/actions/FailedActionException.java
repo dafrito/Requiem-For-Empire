@@ -1,4 +1,5 @@
 package com.dafrito.rfe.actions;
+
 public class FailedActionException extends OrderException {
 	/**
 	 * 
@@ -12,8 +13,7 @@ public class FailedActionException extends OrderException {
 
 	@Override
 	public String getMessage() {
-		String string = new String();
-		string += "An action failed, returning this exception:";
+		String string = "An action failed, returning this exception:";
 		string += "\n" + this.exception;
 		return string;
 	}
