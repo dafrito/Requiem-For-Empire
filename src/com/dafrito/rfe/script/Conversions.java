@@ -50,41 +50,41 @@ public final class Conversions {
 		throw new AssertionError("Instantiation is not allowed");
 	}
 
-	public static Object convert(ScriptEnvironment env, boolean value) throws ScriptException {
+	public static ScriptValue_Boolean convert(ScriptEnvironment env, boolean value) throws ScriptException {
 		return new ScriptValue_Boolean(env, value);
 	}
 
-	public static Object convert(ScriptEnvironment env, short num) throws ScriptException {
+	public static ScriptValue_Numeric convert(ScriptEnvironment env, short num) throws ScriptException {
 		return new ScriptValue_Numeric(env, Short.valueOf(num));
 	}
 
-	public static Object convert(ScriptEnvironment env, int num) throws ScriptException {
+	public static ScriptValue_Numeric convert(ScriptEnvironment env, int num) throws ScriptException {
 		return new ScriptValue_Numeric(env, Integer.valueOf(num));
 	}
 
-	public static Object convert(ScriptEnvironment env, long num) throws ScriptException {
+	public static ScriptValue_Numeric convert(ScriptEnvironment env, long num) throws ScriptException {
 		return new ScriptValue_Numeric(env, Long.valueOf(num));
 	}
 
-	public static Object convert(ScriptEnvironment env, float num) throws ScriptException {
+	public static ScriptValue_Numeric convert(ScriptEnvironment env, float num) throws ScriptException {
 		return new ScriptValue_Numeric(env, Float.valueOf(num));
 	}
 
-	public static Object convert(ScriptEnvironment env, double num) throws ScriptException {
+	public static ScriptValue_Numeric convert(ScriptEnvironment env, double num) throws ScriptException {
 		return new ScriptValue_Numeric(env, Double.valueOf(num));
 	}
 
-	public static Object convert(ScriptEnvironment env, Number num) throws ScriptException {
+	public static ScriptValue_Numeric convert(ScriptEnvironment env, Number num) throws ScriptException {
 		return new ScriptValue_Numeric(env, num);
 	}
 
-	public static Object convert(ScriptEnvironment env, Color color) throws ScriptException {
+	public static FauxTemplate_Color convert(ScriptEnvironment env, Color color) throws ScriptException {
 		FauxTemplate_Color fauxColor = new FauxTemplate_Color(env, ScriptValueType.createType(env, FauxTemplate_Color.COLORSTRING));
 		fauxColor.setColor(color);
 		return fauxColor;
 	}
 
-	public static Object convert(ScriptEnvironment env, List<ScriptValue> elements) throws ScriptException {
+	public static FauxTemplate_List convert(ScriptEnvironment env, List<ScriptValue> elements) throws ScriptException {
 		FauxTemplate_List list = new FauxTemplate_List(env, ScriptValueType.createType(env, FauxTemplate_List.LISTSTRING));
 		list.setList(elements);
 		return list;
@@ -114,7 +114,7 @@ public final class Conversions {
 		return object.convert(env);
 	}
 
-	public static Object convert(ScriptEnvironment env, String string) throws ScriptException {
+	public static ScriptValue_String convert(ScriptEnvironment env, String string) throws ScriptException {
 		return new ScriptValue_String(env, string);
 	}
 
@@ -207,11 +207,11 @@ public final class Conversions {
 	}
 
 	public static ScriptValue_Boolean getRiffBoolean(ScriptEnvironment env, boolean value) throws ScriptException {
-		return (ScriptValue_Boolean) convert(env, value);
+		return convert(env, value);
 	}
 
 	public static FauxTemplate_Color getRiffColor(ScriptEnvironment env, Color color) throws ScriptException {
-		return (FauxTemplate_Color) convert(env, color);
+		return convert(env, color);
 	}
 
 	public static FauxTemplate_Color getRiffColor(ScriptEnvironment env, Object obj) throws ScriptException {
@@ -225,7 +225,7 @@ public final class Conversions {
 	}
 
 	public static ScriptValue_Numeric getRiffDouble(ScriptEnvironment env, double value) throws ScriptException {
-		return (ScriptValue_Numeric) convert(env, value);
+		return convert(env, value);
 	}
 
 	public static FauxTemplate_InterfaceElement getRiffElement(ScriptEnvironment env, InterfaceElement elem) throws ScriptException {
@@ -235,11 +235,11 @@ public final class Conversions {
 	}
 
 	public static ScriptValue_Numeric getRiffFloat(ScriptEnvironment env, float value) throws ScriptException {
-		return (ScriptValue_Numeric) convert(env, value);
+		return convert(env, value);
 	}
 
 	public static ScriptValue_Numeric getRiffInt(ScriptEnvironment env, int value) throws ScriptException {
-		return (ScriptValue_Numeric) convert(env, value);
+		return convert(env, value);
 	}
 
 	public static FauxTemplate_Line getRiffLine(ScriptEnvironment env, GraphicalElement_Line line) {
@@ -250,15 +250,15 @@ public final class Conversions {
 	}
 
 	public static FauxTemplate_List getRiffList(ScriptEnvironment env, List<ScriptValue> list) throws ScriptException {
-		return (FauxTemplate_List) convert(env, list);
+		return convert(env, list);
 	}
 
 	public static ScriptValue_Numeric getRiffLong(ScriptEnvironment env, long value) throws ScriptException {
-		return (ScriptValue_Numeric) convert(env, value);
+		return convert(env, value);
 	}
 
 	public static ScriptValue_Numeric getRiffNumber(ScriptEnvironment env, Number value) throws ScriptException {
-		return (ScriptValue_Numeric) convert(env, value);
+		return convert(env, value);
 	}
 
 	public static FauxTemplate_Path getRiffPath(ScriptEnvironment env, Point_Path path) throws ScriptException {
@@ -280,11 +280,11 @@ public final class Conversions {
 	}
 
 	public static ScriptValue_Numeric getRiffShort(ScriptEnvironment env, short value) throws ScriptException {
-		return (ScriptValue_Numeric) convert(env, value);
+		return convert(env, value);
 	}
 
 	public static ScriptValue_String getRiffString(ScriptEnvironment env, String value) throws ScriptException {
-		return (ScriptValue_String) convert(env, value);
+		return convert(env, value);
 	}
 
 	public static Stylesheet getRiffStylesheet(ScriptEnvironment env, Object obj) throws ScriptException {
