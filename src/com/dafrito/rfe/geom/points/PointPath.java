@@ -7,17 +7,17 @@ import com.dafrito.rfe.Scenario;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 
-public class Point_Path extends Point implements Nodeable {
+public class PointPath extends Point implements Nodeable {
 	private List<Point> points = new LinkedList<Point>();
 	private List<Double> movementCosts = new LinkedList<Double>();
 	private long startTime;
 	private Scenario scenario;
 
-	public Point_Path(Scenario scenario) {
+	public PointPath(Scenario scenario) {
 		this(null, scenario);
 	}
 
-	public Point_Path(String name, Scenario scenario) {
+	public PointPath(String name, Scenario scenario) {
 		super(null);
 		this.scenario = scenario;
 		this.setStartTime(this.scenario.getGameTime());

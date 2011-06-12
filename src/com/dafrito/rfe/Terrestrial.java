@@ -14,7 +14,7 @@ import com.dafrito.rfe.geom.PolygonPipeline;
 import com.dafrito.rfe.geom.Polygons;
 import com.dafrito.rfe.geom.SplitterThread;
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.geom.points.Point_Path;
+import com.dafrito.rfe.geom.points.PointPath;
 import com.dafrito.rfe.geom.points.Points;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.Conversions;
@@ -65,7 +65,7 @@ public class Terrestrial implements Serializable {
 		this.openThreads--;
 	}
 
-	public Point_Path getPath(ScriptEnvironment env, Scenario scenario, ScriptTemplate_Abstract evaluator, Asset asset, Point currentPoint, Point destinationPoint) throws ScriptException {
+	public PointPath getPath(ScriptEnvironment env, Scenario scenario, ScriptTemplate_Abstract evaluator, Asset asset, Point currentPoint, Point destinationPoint) throws ScriptException {
 		while (this.openThreads != 0) {
 			try {
 				Thread.sleep(100);
@@ -73,7 +73,7 @@ public class Terrestrial implements Serializable {
 			}
 		}
 		assert Debugger.openNode("Pathfinding", "Getting path (" + currentPoint + " to " + destinationPoint + ")");
-		Point_Path path = new Point_Path(scenario);
+		PointPath path = new PointPath(scenario);
 		DiscreteRegion startingRegion;
 		assert this.getTree() != null : "BSP Tree is null!";
 		DiscreteRegion currentRegion = startingRegion = this.getTree().getRegion(currentPoint);

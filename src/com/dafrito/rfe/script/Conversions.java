@@ -12,7 +12,7 @@ import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.actions.Scheduler;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.geom.points.Point_Path;
+import com.dafrito.rfe.geom.points.PointPath;
 import com.dafrito.rfe.gui.GraphicalElement;
 import com.dafrito.rfe.gui.GraphicalElement_Line;
 import com.dafrito.rfe.gui.InterfaceElement;
@@ -278,7 +278,7 @@ public final class Conversions {
 		return wrapper;
 	}
 
-	public static FauxTemplate_Path wrapPath(ScriptEnvironment env, Point_Path path) throws ScriptException {
+	public static FauxTemplate_Path wrapPath(ScriptEnvironment env, PointPath path) throws ScriptException {
 		FauxTemplate_Path wrapped = new FauxTemplate_Path(env, ScriptValueType.createType(env, FauxTemplate_Path.PATHSTRING));
 		wrapped.setPoint(path);
 		return wrapped;

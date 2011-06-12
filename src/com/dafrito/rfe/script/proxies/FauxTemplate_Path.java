@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.geom.points.Point_Path;
+import com.dafrito.rfe.geom.points.PointPath;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.Conversions;
@@ -50,11 +50,11 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 				template = (FauxTemplate_Path) this.createObject(ref, template);
 			}
 			if (params.size() == 1) {
-				((Point_Path) template.getPoint()).setScenario(Conversions.getScenario(this.getEnvironment(), params.get(0)));
+				((PointPath) template.getPoint()).setScenario(Conversions.getScenario(this.getEnvironment(), params.get(0)));
 			}
 			params.clear();
 		} else if (name.equals("getTotalTime")) {
-			ScriptValue returning = Conversions.wrapLong(this.getEnvironment(), ((Point_Path) template.getPoint()).getTotalTime());
+			ScriptValue returning = Conversions.wrapLong(this.getEnvironment(), ((PointPath) template.getPoint()).getTotalTime());
 			assert Debugger.closeNode();
 			return returning;
 		}
