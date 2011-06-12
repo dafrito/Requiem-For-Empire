@@ -2,13 +2,12 @@ package com.dafrito.rfe.script.parsing;
 
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.CommonString;
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.parsing.tokens.RiffToken;
 import com.dafrito.rfe.script.parsing.tokens.RiffTokenVisitor;
 
-public class ScriptGroup extends ScriptElement implements Nodeable, RiffToken {
+@Inspectable
+public class ScriptGroup extends ScriptElement implements RiffToken {
 	protected List<Object> elements;
 	private CharacterGroup type;
 
@@ -18,28 +17,14 @@ public class ScriptGroup extends ScriptElement implements Nodeable, RiffToken {
 		this.type = type;
 	}
 
-	public List<Object> getElements() {
-		return this.elements;
-	}
-
+	@Inspectable
 	public CharacterGroup getType() {
 		return this.type;
 	}
 
-	@Override
-	public void nodificate() {
-		switch (this.type) {
-		case CURLY_BRACES:
-			assert Debugger.openNode(CommonString.SCRIPTGROUPCURLY);
-			break;
-		case PARENTHESES:
-			assert Debugger.openNode(CommonString.SCRIPTGROUPPARENTHETICAL);
-			break;
-		default:
-			throw new AssertionError("Unsupported group");
-		}
-		assert Debugger.addSnapNode(CommonString.ELEMENTS, this.elements);
-		assert Debugger.closeNode();
+	@Inspectable
+	public List<Object> getElements() {
+		return this.elements;
 	}
 
 	public void setElements(List<Object> list) {
