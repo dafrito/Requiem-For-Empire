@@ -73,6 +73,13 @@ import com.dafrito.rfe.script.values.ScriptValue_Variable;
 /**
  * A collection of static methods that parse RiffScript code.
  * 
+ * <ol>
+ * <li>File --> List of naked strings
+ * <li>List of naked strings --> Comments-removed naked strings
+ * <li>Comments-removed naked strings --> Curly Bracket Groupings
+ * <li>Curly Bracket Groupings --> Lists of line of code
+ * </ol>
+ * 
  * @author Aaron Faanes
  * 
  */
@@ -1737,10 +1744,6 @@ public final class Parser {
 
 }
 
-// File --> List of naked strings
-// List of naked strings --> Comments-removed naked strings
-// Comments-removed naked strings --> Curly Bracket Groupings
-// Curly Bracket Groupings --> Lists of line of code
 class StylesheetParams {
 	private Referenced reference;
 	private List<Object> modifiers;
