@@ -5,19 +5,11 @@ import java.awt.Rectangle;
 
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
-import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
-public class InterfaceElement_Rectangle extends InterfaceElement implements Nodeable {
+public class InterfaceElement_Rectangle extends InterfaceElement {
 	public InterfaceElement_Rectangle(ScriptEnvironment env, Stylesheet uniqueStyle, Stylesheet classStyle) {
 		super(env, uniqueStyle, classStyle);
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Rectangle Interface Element");
-		super.nodificate();
-		assert Debugger.closeNode();
 	}
 
 	@Override
