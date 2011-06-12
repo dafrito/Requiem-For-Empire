@@ -1,13 +1,13 @@
 package com.dafrito.rfe.geom.points;
 
-public class Point_Orbital extends Point {
+public class OrbitalPoint extends Point {
 	private Point focus;
 	private double periapsis, apoapsis;
 	private double yawVelocity, pitchVelocity, rollVelocity;
 	private double yaw, pitch, roll;
 
 	// Constructors
-	public Point_Orbital(String name) {
+	public OrbitalPoint(String name) {
 		super(name);
 	}
 
