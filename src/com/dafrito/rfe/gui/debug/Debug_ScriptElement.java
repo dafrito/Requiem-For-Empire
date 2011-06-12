@@ -8,12 +8,13 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -35,7 +36,6 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable;
 import com.dafrito.rfe.script.parsing.Parser;
-import com.dafrito.rfe.script.parsing.ScriptLine;
 import com.dafrito.rfe.strings.ExtensionFilter;
 
 public class Debug_ScriptElement extends JPanel implements UndoableEditListener, ListSelectionListener, ComponentListener, MouseListener {
@@ -114,18 +114,16 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	}
 
 	public boolean compile(ScriptEnvironment env) {
-		String text = this.textArea.getText();
-		String[] stringArray = text.split("\n");
-		java.util.List<Object> strings = new LinkedList<Object>();
-		for (int i = 0; i < stringArray.length; i++) {
-			strings.add(new ScriptLine(env, this.getFilename(), i + 1, stringArray[i]));
-		}
 		this.width = this.getWidth();
 		this.splitPane.setRightComponent(new JScrollPane(this.errors = new JList()));
 		this.splitPane.setDividerLocation(this.getWidth() - 200);
 		this.errors.addListSelectionListener(this);
 		this.errors.addMouseListener(this);
-		this.exceptions = Parser.preparseFile(env, this.getFilename(), strings);
+		try {
+			this.exceptions = Parser.preparseFile(env, this.getFilename(), new BufferedReader(new StringReader(this.textArea.getText())));
+		} catch (IOException e) {
+			throw new AssertionError("IOExceptions should never occur with StringReader");
+		}
 		this.displayedExceptions = new ArrayList<String>();
 		if (this.exceptions.size() == 0) {
 			this.errors.setBorder(BorderFactory.createTitledBorder("Compiled Successfully"));
