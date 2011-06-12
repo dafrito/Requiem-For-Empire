@@ -176,10 +176,6 @@ public final class Conversions {
 		return convert(env, color);
 	}
 
-	public static FauxTemplate_Color wrapColor(ScriptEnvironment env, Object obj) throws ScriptException {
-		return (FauxTemplate_Color) convert(env, obj);
-	}
-
 	public static FauxTemplate_List convert(ScriptEnvironment env, List<ScriptValue> elements) throws ScriptException {
 		FauxTemplate_List list = new FauxTemplate_List(env, ScriptValueType.createType(env, FauxTemplate_List.LISTSTRING));
 		list.setList(elements);
