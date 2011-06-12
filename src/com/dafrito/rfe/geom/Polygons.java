@@ -10,7 +10,7 @@ import java.util.Set;
 
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.EuclideanPoint;
-import com.dafrito.rfe.geom.points.Point_Spherical;
+import com.dafrito.rfe.geom.points.PolarPoint;
 import com.dafrito.rfe.geom.points.Points;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -180,7 +180,7 @@ public class Polygons {
 		if (referencePoint instanceof EuclideanPoint) {
 			return new EuclideanPoint(name, x, y, 0.0d);
 		}
-		return new Point_Spherical(name, x, y, 0.0d);
+		return new PolarPoint(name, x, y, 0.0d);
 	}
 
 	// Using the two given points to create a line, it returns a list of the distribution of points from the polygon. 

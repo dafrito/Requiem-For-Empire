@@ -11,7 +11,7 @@ public abstract class Point {
 		case EUCLIDEAN:
 			return new EuclideanPoint(x, y, z);
 		case SPHERICAL:
-			return new Point_Spherical(x, y, z);
+			return new PolarPoint(x, y, z);
 		default:
 			throw new UnsupportedOperationException("Point system is not supported");
 		}

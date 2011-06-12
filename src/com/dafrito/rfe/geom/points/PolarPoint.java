@@ -2,17 +2,17 @@ package com.dafrito.rfe.geom.points;
 
 import com.bluespot.geom.vectors.Vector3d;
 
-public class Point_Spherical extends Point {
+public class PolarPoint extends Point {
 	private static final double LATITUDEMAXIMUM = 180;
 	private static final double LONGITUDEMAXIMUM = 360;
 
 	private final Vector3d point;
 
-	public Point_Spherical(double longitude, double latitude, double magnitude) {
+	public PolarPoint(double longitude, double latitude, double magnitude) {
 		this(null, longitude, latitude, magnitude);
 	}
 
-	public Point_Spherical(String name, double longitude, double latitude, double magnitude) {
+	public PolarPoint(String name, double longitude, double latitude, double magnitude) {
 		super(name);
 		this.point = Vector3d.mutable(longitude, latitude, magnitude);
 	}
@@ -100,10 +100,10 @@ public class Point_Spherical extends Point {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof Point_Spherical)) {
+		if (!(obj instanceof PolarPoint)) {
 			return false;
 		}
-		Point_Spherical other = (Point_Spherical) obj;
+		PolarPoint other = (PolarPoint) obj;
 		this.simplify();
 		other.simplify();
 		return this.point.equals(other.point);

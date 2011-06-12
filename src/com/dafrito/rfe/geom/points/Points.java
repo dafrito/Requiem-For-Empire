@@ -32,7 +32,7 @@ public final class Points {
 	}
 
 	public static boolean isGreaterThanOrEqualTo(Object point, double greater, double less) {
-		if (point instanceof Point_Spherical) {
+		if (point instanceof PolarPoint) {
 			return isGreaterThanOrEqualTo(Point.System.SPHERICAL, greater, less);
 		}
 		return isGreaterThanOrEqualTo(Point.System.EUCLIDEAN, greater, less);
@@ -47,7 +47,7 @@ public final class Points {
 	}
 
 	public static boolean isLessThanOrEqualTo(Object point, double greater, double less) {
-		if (point instanceof Point_Spherical) {
+		if (point instanceof PolarPoint) {
 			return isLessThanOrEqualTo(Point.System.SPHERICAL, greater, less);
 		}
 		return isLessThanOrEqualTo(Point.System.EUCLIDEAN, greater, less);
@@ -79,7 +79,7 @@ public final class Points {
 	}
 
 	// Spherical distance formula for Point_Sphericals
-	public static double getDistance(Terrestrial terrestrial, Point_Spherical firstPoint, Point_Spherical secondPoint) {
+	public static double getDistance(Terrestrial terrestrial, PolarPoint firstPoint, PolarPoint secondPoint) {
 		double firstLat = Math.toRadians(firstPoint.getLatitudeDegrees());
 		double secondLat = Math.toRadians(secondPoint.getLatitudeDegrees());
 		double firstLong = Math.toRadians(firstPoint.getLongitudeDegrees());
@@ -89,7 +89,7 @@ public final class Points {
 	}
 
 	public static boolean areEqual(Point point, double a, double b) {
-		if (point instanceof Point_Spherical) {
+		if (point instanceof PolarPoint) {
 			return areEqual(Point.System.SPHERICAL, a, b);
 		}
 		return areEqual(Point.System.EUCLIDEAN, a, b);
