@@ -91,9 +91,9 @@ public final class Parser {
 	private static List<Object> createGroupings(List<Object> stringList, CharacterGroup group) throws ScriptException {
 		String openChar = group.getStart();
 		String closingChar = group.getEnd();
-		assert Debugger.openNode("Character-Group Parsing", "Creating Groupings (Syntax: " + openChar + "..." + closingChar + " )");
+		assert Debugger.openNode("Character-Group Parsing", "Creating Groupings (" + group + ")");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
-		assert Debugger.addNode("Allowed to Recurse: " + group.isRecursive());
+		assert Debugger.addSnapNode("Character Group", group);
 		stringList = removeSingleLineGroupings(stringList, group);
 		boolean foundGroup = false;
 		for (int i = 0; i < stringList.size(); i++) {
