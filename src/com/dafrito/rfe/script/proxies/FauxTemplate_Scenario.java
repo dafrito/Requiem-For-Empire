@@ -62,7 +62,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 				return template;
 			}
 		} else if (name.equals("getName")) {
-			returning = Conversions.getRiffString(ref.getEnvironment(), template.getScenario().getName());
+			returning = Conversions.wrapString(ref.getEnvironment(), template.getScenario().getName());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setName")) {
@@ -70,7 +70,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getTerrestrial")) {
-			returning = Conversions.getRiffTerrestrial(ref.getEnvironment(), template.getScenario().getTerrestrial());
+			returning = Conversions.wrapTerrestrial(ref.getEnvironment(), template.getScenario().getTerrestrial());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setTerrestrial")) {
@@ -78,7 +78,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getScheduler")) {
-			returning = Conversions.getRiffScheduler(this.getEnvironment(), template.getScenario().getScheduler());
+			returning = Conversions.wrapScheduler(this.getEnvironment(), template.getScenario().getScheduler());
 			assert Debugger.closeNode();
 			return returning;
 		}

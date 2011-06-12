@@ -59,9 +59,9 @@ public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptCo
 		} else if (name.equals("getAssetsOfType")) {
 			List<ScriptValue> assets = new LinkedList<ScriptValue>();
 			for (Asset asset : template.getTree().getAssetsOfType(Conversions.getArchetype(this.getEnvironment(), params.get(0)))) {
-				assets.add(Conversions.getRiffAsset(this.getEnvironment(), asset));
+				assets.add(Conversions.wrapAsset(this.getEnvironment(), asset));
 			}
-			ScriptValue returning = Conversions.getRiffList(this.getEnvironment(), assets);
+			ScriptValue returning = Conversions.wrapList(this.getEnvironment(), assets);
 			assert Debugger.closeNode();
 			return returning;
 		}

@@ -62,8 +62,8 @@ public class Scheduler implements ActionListener {
 						listener = this.getDefaultListener();
 					}
 					params.clear();
-					params.add(Conversions.getRiffLong(this.getEnvironment(), differential));
-					params.add(Conversions.getRiffAsset(this.getEnvironment(), event.getAsset()));
+					params.add(Conversions.wrapLong(this.getEnvironment(), differential));
+					params.add(Conversions.wrapAsset(this.getEnvironment(), event.getAsset()));
 					ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, listener, "iterate", params);
 					assert Debugger.closeNode();
 					iter.remove();

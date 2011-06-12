@@ -64,7 +64,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 			return template.getList().get(Conversions.getInteger(this.getEnvironment(), params.get(0)));
 		} else if (name.equals("size")) {
 			assert Debugger.closeNode();
-			return Conversions.getRiffInt(this.getEnvironment(), template.getList().size());
+			return Conversions.wrapInt(this.getEnvironment(), template.getList().size());
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		assert Debugger.closeNode();

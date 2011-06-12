@@ -56,11 +56,11 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getEfficiency")) {
-			ScriptValue returning = Conversions.getRiffDouble(this.getEnvironment(), template.getAce().getEfficiency());
+			ScriptValue returning = Conversions.wrapDouble(this.getEnvironment(), template.getAce().getEfficiency());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getArchetype")) {
-			ScriptValue returning = Conversions.getRiffArchetype(this.getEnvironment(), template.getAce().getArchetype());
+			ScriptValue returning = Conversions.wrapArchetype(this.getEnvironment(), template.getAce().getArchetype());
 			assert Debugger.closeNode();
 			return returning;
 		}

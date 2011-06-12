@@ -57,17 +57,17 @@ public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConver
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getName")) {
-			ScriptValue returning = Conversions.getRiffString(this.getEnvironment(), template.getArchetype().getName());
+			ScriptValue returning = Conversions.wrapString(this.getEnvironment(), template.getArchetype().getName());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getParents")) {
 			List<ScriptValue> parents = new LinkedList<ScriptValue>();
 			for (Ace parent : template.getArchetype().getParents()) {
-				parents.add(Conversions.getRiffAce(this.getEnvironment(), parent));
+				parents.add(Conversions.wrapAce(this.getEnvironment(), parent));
 			}
 			// This getRiffList line might not be necessary; it used to have a variable
 			// assigned to it, but it was never used.
-			Conversions.getRiffList(this.getEnvironment(), parents);
+			Conversions.wrapList(this.getEnvironment(), parents);
 			assert Debugger.closeNode();
 			return null;
 		}

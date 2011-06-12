@@ -66,11 +66,11 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		}
 		if (name.equals("getX")) {
-			returning = Conversions.getRiffDouble(this.getEnvironment(), (template).getPoint().getX());
+			returning = Conversions.wrapDouble(this.getEnvironment(), (template).getPoint().getX());
 		} else if (name.equals("getY")) {
-			returning = Conversions.getRiffDouble(this.getEnvironment(), (template).getPoint().getY());
+			returning = Conversions.wrapDouble(this.getEnvironment(), (template).getPoint().getY());
 		} else if (name.equals("getZ")) {
-			returning = Conversions.getRiffDouble(this.getEnvironment(), (template).getPoint().getZ());
+			returning = Conversions.wrapDouble(this.getEnvironment(), (template).getPoint().getZ());
 		} else if (name.equals("setX")) {
 			(template).getPoint().setX(Conversions.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("setY")) {

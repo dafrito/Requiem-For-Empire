@@ -54,7 +54,7 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 			}
 			params.clear();
 		} else if (name.equals("getTotalTime")) {
-			ScriptValue returning = Conversions.getRiffLong(this.getEnvironment(), ((Point_Path) template.getPoint()).getTotalTime());
+			ScriptValue returning = Conversions.wrapLong(this.getEnvironment(), ((Point_Path) template.getPoint()).getTotalTime());
 			assert Debugger.closeNode();
 			return returning;
 		}

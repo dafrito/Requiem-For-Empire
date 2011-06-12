@@ -55,43 +55,43 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 			assert Debugger.closeNode();
 			return template;
 		} else if (name.equals("getBrushDensityWeight")) {
-			returning = Conversions.getRiffDouble(ref.getEnvironment(), template.getTerrain().getBrushDensityWeight());
+			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getBrushDensityWeight());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getElevationWeight")) {
-			returning = Conversions.getRiffDouble(ref.getEnvironment(), template.getTerrain().getElevationWeight());
+			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getElevationWeight());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getGroundCohesionWeight")) {
-			returning = Conversions.getRiffDouble(ref.getEnvironment(), template.getTerrain().getGroundCohesionWeight());
+			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getGroundCohesionWeight());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getTemperatureWeight")) {
-			returning = Conversions.getRiffDouble(ref.getEnvironment(), template.getTerrain().getTemperatureWeight());
+			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getTemperatureWeight());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getWaterDepthWeight")) {
-			returning = Conversions.getRiffDouble(ref.getEnvironment(), template.getTerrain().getWaterDepthWeight());
+			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getWaterDepthWeight());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getBrushDensity")) {
-			returning = Conversions.getRiffDouble(ref.getEnvironment(), template.getTerrain().getBrushDensity());
+			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getBrushDensity());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getElevation")) {
-			returning = Conversions.getRiffDouble(ref.getEnvironment(), template.getTerrain().getElevation());
+			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getElevation());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getGroundCohesion")) {
-			returning = Conversions.getRiffDouble(ref.getEnvironment(), template.getTerrain().getGroundCohesion());
+			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getGroundCohesion());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getTemperature")) {
-			returning = Conversions.getRiffDouble(ref.getEnvironment(), template.getTerrain().getTemperature());
+			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getTemperature());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getWaterDepth")) {
-			returning = Conversions.getRiffDouble(ref.getEnvironment(), template.getTerrain().getWaterDepth());
+			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getWaterDepth());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setBrushDensityWeight")) {

@@ -79,8 +79,8 @@ public class Terrestrial implements Serializable {
 		DiscreteRegion currentRegion = startingRegion = this.getTree().getRegion(currentPoint);
 		DiscreteRegion destination = this.getTree().getRegion(destinationPoint);
 		List<ScriptValue> params = new LinkedList<ScriptValue>();
-		params.add(Conversions.getRiffDiscreteRegion(env, currentRegion));
-		params.add(Conversions.getRiffAsset(env, asset));
+		params.add(Conversions.wrapDiscreteRegion(env, currentRegion));
+		params.add(Conversions.wrapAsset(env, asset));
 		path.addPoint(currentPoint, Conversions.getDouble(env, ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
 		int ticker = 0;
 		Stack<DiscreteRegion> regionPath = new Stack<DiscreteRegion>();
@@ -145,8 +145,8 @@ public class Terrestrial implements Serializable {
 			assert Debugger.openNode("Getting movement costs (" + availableNeighbors.size() + " neighbor(s))");
 			for (DiscreteRegion region : availableNeighbors) {
 				params.clear();
-				params.add(Conversions.getRiffDiscreteRegion(env, region));
-				params.add(Conversions.getRiffAsset(env, asset));
+				params.add(Conversions.wrapDiscreteRegion(env, region));
+				params.add(Conversions.wrapAsset(env, asset));
 				movementCosts.add(Conversions.getDouble(env, ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
 			}
 			assert Debugger.closeNode("Movement costs", movementCosts);
@@ -176,8 +176,8 @@ public class Terrestrial implements Serializable {
 		}
 		if (path != null) {
 			params.clear();
-			params.add(Conversions.getRiffDiscreteRegion(env, destination));
-			params.add(Conversions.getRiffAsset(env, asset));
+			params.add(Conversions.wrapDiscreteRegion(env, destination));
+			params.add(Conversions.wrapAsset(env, asset));
 			path.addPoint(destinationPoint, Conversions.getDouble(env, ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
 			assert Debugger.closeNode("Path", path);
 		} else {

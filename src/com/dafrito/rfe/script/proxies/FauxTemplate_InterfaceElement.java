@@ -67,11 +67,11 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 				break;
 			}
 		} else if (name.equals("getUniqueStylesheet")) {
-			returning = Conversions.getRiffStylesheet(this.getEnvironment(), template.getElement().getUniqueStylesheet());
+			returning = Conversions.wrapStylesheet(this.getEnvironment(), template.getElement().getUniqueStylesheet());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getClassStylesheet")) {
-			returning = Conversions.getRiffStylesheet(this.getEnvironment(), template.getElement().getClassStylesheet());
+			returning = Conversions.wrapStylesheet(this.getEnvironment(), template.getElement().getClassStylesheet());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setUniqueStylesheet")) {

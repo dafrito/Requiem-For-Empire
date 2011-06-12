@@ -82,7 +82,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 				return returning;
 			}
 		} else if (name.equals("getCenter")) {
-			ScriptValue returning = Conversions.getRiffPoint(this.getEnvironment(), template.getRegion().getCenter());
+			ScriptValue returning = Conversions.wrapPoint(this.getEnvironment(), template.getRegion().getCenter());
 			assert Debugger.closeNode();
 			return returning;
 		}

@@ -67,13 +67,13 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getX1")) {
-			returning = Conversions.getRiffDouble(this.getEnvironment(), template.getPointA().getX());
+			returning = Conversions.wrapDouble(this.getEnvironment(), template.getPointA().getX());
 		} else if (name.equals("getY1")) {
-			returning = Conversions.getRiffDouble(this.getEnvironment(), template.getPointA().getY());
+			returning = Conversions.wrapDouble(this.getEnvironment(), template.getPointA().getY());
 		} else if (name.equals("getX2")) {
-			returning = Conversions.getRiffDouble(this.getEnvironment(), template.getPointB().getX());
+			returning = Conversions.wrapDouble(this.getEnvironment(), template.getPointB().getX());
 		} else if (name.equals("getY2")) {
-			returning = Conversions.getRiffDouble(this.getEnvironment(), template.getPointB().getY());
+			returning = Conversions.wrapDouble(this.getEnvironment(), template.getPointB().getY());
 		} else if (name.equals("setX1")) {
 			template.getPointA().setX(Conversions.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("setY1")) {
@@ -83,9 +83,9 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 		} else if (name.equals("setY2")) {
 			template.getPointB().setY(Conversions.getDouble(this.getEnvironment(), params.get(0)).doubleValue());
 		} else if (name.equals("getPointA")) {
-			returning = Conversions.getRiffPoint(this.getEnvironment(), template.getPointA());
+			returning = Conversions.wrapPoint(this.getEnvironment(), template.getPointA());
 		} else if (name.equals("getPointB")) {
-			returning = Conversions.getRiffPoint(this.getEnvironment(), template.getPointB());
+			returning = Conversions.wrapPoint(this.getEnvironment(), template.getPointB());
 		} else if (name.equals("setPointA")) {
 			template.setPointA(Conversions.getPoint(this.getEnvironment(), params.get(0)));
 		} else if (name.equals("setPointB")) {

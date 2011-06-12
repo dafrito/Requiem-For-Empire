@@ -91,15 +91,15 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			}
 			params.clear();
 		} else if (name.equals("getRed")) {
-			returning = Conversions.getRiffInt(this.getEnvironment(), template.getColor().getRed());
+			returning = Conversions.wrapInt(this.getEnvironment(), template.getColor().getRed());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getGreen")) {
-			returning = Conversions.getRiffInt(this.getEnvironment(), template.getColor().getGreen());
+			returning = Conversions.wrapInt(this.getEnvironment(), template.getColor().getGreen());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("getBlue")) {
-			returning = Conversions.getRiffInt(this.getEnvironment(), template.getColor().getBlue());
+			returning = Conversions.wrapInt(this.getEnvironment(), template.getColor().getBlue());
 			assert Debugger.closeNode();
 			return returning;
 		} else if (name.equals("setRed")) {

@@ -73,12 +73,12 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 			} else if (name.equals("getAces")) {
 				List<ScriptValue> list = new LinkedList<ScriptValue>();
 				for (Ace ace : template.getAsset().getAces()) {
-					list.add(Conversions.getRiffAce(this.getEnvironment(), ace));
+					list.add(Conversions.wrapAce(this.getEnvironment(), ace));
 				}
-				return Conversions.getRiffList(this.getEnvironment(), list);
+				return Conversions.wrapList(this.getEnvironment(), list);
 			} else if (name.equals("getLocation")) {
 				assert template.getAsset().getLocation() != null : "Asset location is null!";
-				return Conversions.getRiffPoint(this.getEnvironment(), template.getAsset().getLocation());
+				return Conversions.wrapPoint(this.getEnvironment(), template.getAsset().getLocation());
 			} else if (name.equals("setLocation")) {
 				template.getAsset().setLocation(Conversions.getPoint(this.getEnvironment(), params.get(0)));
 				return null;

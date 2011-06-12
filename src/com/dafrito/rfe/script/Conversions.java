@@ -62,7 +62,7 @@ public final class Conversions {
 		return (Boolean) convert(env, obj);
 	}
 
-	public static ScriptValue_Boolean getRiffBoolean(ScriptEnvironment env, boolean value) throws ScriptException {
+	public static ScriptValue_Boolean wrapBoolean(ScriptEnvironment env, boolean value) throws ScriptException {
 		return convert(env, value);
 	}
 
@@ -74,7 +74,7 @@ public final class Conversions {
 		return (Short) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.SHORT));
 	}
 
-	public static ScriptValue_Numeric getRiffShort(ScriptEnvironment env, short value) throws ScriptException {
+	public static ScriptValue_Numeric wrapShort(ScriptEnvironment env, short value) throws ScriptException {
 		return convert(env, value);
 	}
 
@@ -86,7 +86,7 @@ public final class Conversions {
 		return (Integer) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.INT));
 	}
 
-	public static ScriptValue_Numeric getRiffInt(ScriptEnvironment env, int value) throws ScriptException {
+	public static ScriptValue_Numeric wrapInt(ScriptEnvironment env, int value) throws ScriptException {
 		return convert(env, value);
 	}
 
@@ -98,7 +98,7 @@ public final class Conversions {
 		return (Long) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.LONG));
 	}
 
-	public static ScriptValue_Numeric getRiffLong(ScriptEnvironment env, long value) throws ScriptException {
+	public static ScriptValue_Numeric wrapLong(ScriptEnvironment env, long value) throws ScriptException {
 		return convert(env, value);
 	}
 
@@ -110,7 +110,7 @@ public final class Conversions {
 		return (Float) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.FLOAT));
 	}
 
-	public static ScriptValue_Numeric getRiffFloat(ScriptEnvironment env, float value) throws ScriptException {
+	public static ScriptValue_Numeric wrapFloat(ScriptEnvironment env, float value) throws ScriptException {
 		return convert(env, value);
 	}
 
@@ -122,7 +122,7 @@ public final class Conversions {
 		return (Double) convert(env, ((ScriptValue) obj).castToType(null, ScriptValueType.DOUBLE));
 	}
 
-	public static ScriptValue_Numeric getRiffDouble(ScriptEnvironment env, double value) throws ScriptException {
+	public static ScriptValue_Numeric wrapDouble(ScriptEnvironment env, double value) throws ScriptException {
 		return convert(env, value);
 	}
 
@@ -141,7 +141,7 @@ public final class Conversions {
 			// It turns out that the property returned is a terrain, so my "fix" is to explicitly check for
 			// terrains here and convert them properly. Ordinarily, this wouldn't be sufficient, but I have
 			// plans for a much better system of conversion that will fix this issue.
-			return getRiffTerrain(env, (Terrain) object);
+			return wrapTerrain(env, (Terrain) object);
 		}
 		return convert(env, (ScriptConvertible<?>) ((ScriptValue) object).getValue());
 	}
@@ -158,7 +158,7 @@ public final class Conversions {
 		return (Number) convert(env, obj);
 	}
 
-	public static ScriptValue_Numeric getRiffNumber(ScriptEnvironment env, Number value) throws ScriptException {
+	public static ScriptValue_Numeric wrapNumber(ScriptEnvironment env, Number value) throws ScriptException {
 		return convert(env, value);
 	}
 
@@ -172,11 +172,11 @@ public final class Conversions {
 		return (Color) convert(env, obj);
 	}
 
-	public static FauxTemplate_Color getRiffColor(ScriptEnvironment env, Color color) throws ScriptException {
+	public static FauxTemplate_Color wrapColor(ScriptEnvironment env, Color color) throws ScriptException {
 		return convert(env, color);
 	}
 
-	public static FauxTemplate_Color getRiffColor(ScriptEnvironment env, Object obj) throws ScriptException {
+	public static FauxTemplate_Color wrapColor(ScriptEnvironment env, Object obj) throws ScriptException {
 		return (FauxTemplate_Color) convert(env, obj);
 	}
 
@@ -195,7 +195,7 @@ public final class Conversions {
 		return (String) convert(env, obj);
 	}
 
-	public static ScriptValue_String getRiffString(ScriptEnvironment env, String value) throws ScriptException {
+	public static ScriptValue_String wrapString(ScriptEnvironment env, String value) throws ScriptException {
 		return convert(env, value);
 	}
 
@@ -204,7 +204,7 @@ public final class Conversions {
 	}
 
 	// Engine->Script Conversion functions
-	public static FauxTemplate_Ace getRiffAce(ScriptEnvironment env, Ace ace) throws ScriptException {
+	public static FauxTemplate_Ace wrapAce(ScriptEnvironment env, Ace ace) throws ScriptException {
 		FauxTemplate_Ace wrappedAce = new FauxTemplate_Ace(env, ScriptValueType.createType(env, FauxTemplate_Ace.ACESTRING));
 		wrappedAce.setAce(ace);
 		return wrappedAce;
@@ -214,7 +214,7 @@ public final class Conversions {
 		return (Archetype) convert(env, obj);
 	}
 
-	public static FauxTemplate_Archetype getRiffArchetype(ScriptEnvironment env, Archetype archetype) throws ScriptException {
+	public static FauxTemplate_Archetype wrapArchetype(ScriptEnvironment env, Archetype archetype) throws ScriptException {
 		FauxTemplate_Archetype wrapped = new FauxTemplate_Archetype(env, ScriptValueType.createType(env, FauxTemplate_Archetype.ARCHETYPESTRING));
 		wrapped.setArchetype(archetype);
 		return wrapped;
@@ -224,7 +224,7 @@ public final class Conversions {
 		return (Asset) convert(env, obj);
 	}
 
-	public static FauxTemplate_Asset getRiffAsset(ScriptEnvironment env, Asset asset) throws ScriptException {
+	public static FauxTemplate_Asset wrapAsset(ScriptEnvironment env, Asset asset) throws ScriptException {
 		FauxTemplate_Asset wrapped = new FauxTemplate_Asset(env, env.getTemplate(FauxTemplate_Asset.ASSETSTRING).getType());
 		wrapped.setAsset(asset);
 		return wrapped;
@@ -239,7 +239,7 @@ public final class Conversions {
 		return (DiscreteRegion) convert(env, obj);
 	}
 
-	public static FauxTemplate_DiscreteRegion getRiffDiscreteRegion(ScriptEnvironment env, DiscreteRegion region) throws ScriptException {
+	public static FauxTemplate_DiscreteRegion wrapDiscreteRegion(ScriptEnvironment env, DiscreteRegion region) throws ScriptException {
 		FauxTemplate_DiscreteRegion wrapped = new FauxTemplate_DiscreteRegion(env, env.getTemplate(FauxTemplate_DiscreteRegion.DISCRETEREGIONSTRING).getType());
 		wrapped.setRegion(region);
 		return wrapped;
@@ -261,30 +261,30 @@ public final class Conversions {
 		return (Point) convert(env, obj);
 	}
 
-	public static FauxTemplate_Point getRiffPoint(ScriptEnvironment env, Point point) throws ScriptException {
+	public static FauxTemplate_Point wrapPoint(ScriptEnvironment env, Point point) throws ScriptException {
 		FauxTemplate_Point wrapped = new FauxTemplate_Point(env);
 		wrapped.setPoint(point);
 		return wrapped;
 	}
 
-	public static FauxTemplate_InterfaceElement getRiffElement(ScriptEnvironment env, InterfaceElement elem) throws ScriptException {
+	public static FauxTemplate_InterfaceElement wrapElement(ScriptEnvironment env, InterfaceElement elem) throws ScriptException {
 		FauxTemplate_InterfaceElement wrapped = new FauxTemplate_InterfaceElement(env, ScriptValueType.createType(env, FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING));
 		wrapped.setElement(elem);
 		return wrapped;
 	}
 
-	public static FauxTemplate_Line getRiffLine(ScriptEnvironment env, GraphicalElement_Line line) {
+	public static FauxTemplate_Line wrapLine(ScriptEnvironment env, GraphicalElement_Line line) {
 		FauxTemplate_Line wrapper = new FauxTemplate_Line(env);
 		wrapper.setPointA(line.getPointA());
 		wrapper.setPointB(line.getPointB());
 		return wrapper;
 	}
 
-	public static FauxTemplate_List getRiffList(ScriptEnvironment env, List<ScriptValue> list) throws ScriptException {
+	public static FauxTemplate_List wrapList(ScriptEnvironment env, List<ScriptValue> list) throws ScriptException {
 		return convert(env, list);
 	}
 
-	public static FauxTemplate_Path getRiffPath(ScriptEnvironment env, Point_Path path) throws ScriptException {
+	public static FauxTemplate_Path wrapPath(ScriptEnvironment env, Point_Path path) throws ScriptException {
 		FauxTemplate_Path wrapped = new FauxTemplate_Path(env, ScriptValueType.createType(env, FauxTemplate_Path.PATHSTRING));
 		wrapped.setPoint(path);
 		return wrapped;
@@ -294,17 +294,17 @@ public final class Conversions {
 		return (Scheduler) convert(env, obj);
 	}
 
-	public static FauxTemplate_Scheduler getRiffScheduler(ScriptEnvironment env, Scheduler scheduler) throws ScriptException {
+	public static FauxTemplate_Scheduler wrapScheduler(ScriptEnvironment env, Scheduler scheduler) throws ScriptException {
 		FauxTemplate_Scheduler wrapped = new FauxTemplate_Scheduler(env, ScriptValueType.createType(env, FauxTemplate_Scheduler.SCHEDULERSTRING));
 		wrapped.setScheduler(scheduler);
 		return wrapped;
 	}
 
-	public static Stylesheet getRiffStylesheet(ScriptEnvironment env, Object obj) throws ScriptException {
+	public static Stylesheet wrapStylesheet(ScriptEnvironment env, Object obj) throws ScriptException {
 		return (Stylesheet) convert(env, obj);
 	}
 
-	public static FauxTemplate_Terrain getRiffTerrain(ScriptEnvironment env, Terrain terrain) throws ScriptException {
+	public static FauxTemplate_Terrain wrapTerrain(ScriptEnvironment env, Terrain terrain) throws ScriptException {
 		FauxTemplate_Terrain wrapped = new FauxTemplate_Terrain(env, ScriptValueType.createType(env, FauxTemplate_Terrain.TERRAINSTRING));
 		wrapped.setTerrain(terrain);
 		return wrapped;
@@ -314,7 +314,7 @@ public final class Conversions {
 		return (Terrestrial) convert(env, obj);
 	}
 
-	public static FauxTemplate_Terrestrial getRiffTerrestrial(ScriptEnvironment env, Terrestrial terrestrial) throws ScriptException {
+	public static FauxTemplate_Terrestrial wrapTerrestrial(ScriptEnvironment env, Terrestrial terrestrial) throws ScriptException {
 		FauxTemplate_Terrestrial wrapped = new FauxTemplate_Terrestrial(env, ScriptValueType.createType(env, FauxTemplate_Terrestrial.TERRESTRIALSTRING));
 		wrapped.setTerrestrial(terrestrial);
 		return wrapped;

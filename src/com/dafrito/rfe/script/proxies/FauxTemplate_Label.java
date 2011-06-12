@@ -55,7 +55,7 @@ public class FauxTemplate_Label extends FauxTemplate_InterfaceElement implements
 			assert Debugger.closeNode();
 			return null;
 		} else if (name.equals("getString")) {
-			returning = Conversions.getRiffString(this.getEnvironment(), template.getLabel().getString());
+			returning = Conversions.wrapString(this.getEnvironment(), template.getLabel().getString());
 			assert Debugger.closeNode();
 			return returning;
 		}

@@ -156,15 +156,15 @@ public class InterfaceElement_Panel extends InterfaceElement implements ScriptCo
 			List<ScriptValue> regionList = new LinkedList<ScriptValue>();
 			List<ScriptValue> assetList = new LinkedList<ScriptValue>();
 			for (DiscreteRegion region : regions) {
-				regionList.add(Conversions.getRiffDiscreteRegion(this.getEnvironment(), region));
+				regionList.add(Conversions.wrapDiscreteRegion(this.getEnvironment(), region));
 				if (region.getProperty("Archetypes") != null) {
 					for (Asset asset : ((ArchetypeMapNode) region.getProperty("Archetypes")).getAllAssets()) {
-						assetList.add(Conversions.getRiffAsset(this.getEnvironment(), asset));
+						assetList.add(Conversions.wrapAsset(this.getEnvironment(), asset));
 					}
 				}
 			}
-			params.add(Conversions.getRiffList(this.getEnvironment(), regionList));
-			params.add(Conversions.getRiffList(this.getEnvironment(), assetList));
+			params.add(Conversions.wrapList(this.getEnvironment(), regionList));
+			params.add(Conversions.wrapList(this.getEnvironment(), assetList));
 			if (this.dali != null) {
 				ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, this.dali, "paintPanel", params);
 			}

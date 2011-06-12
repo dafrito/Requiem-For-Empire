@@ -34,7 +34,7 @@ public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 		assert Debugger.addSnapNode("Template provided", rawTemplate);
 		assert Debugger.addSnapNode("Parameters provided", params);
 		if (name.equals("parseColor")) {
-			returning = Conversions.getRiffColor(this.getEnvironment(), Stylesheets.getColor(Conversions.getString(this.getEnvironment(), params.get(0))));
+			returning = Conversions.wrapColor(this.getEnvironment(), Stylesheets.getColor(Conversions.getString(this.getEnvironment(), params.get(0))));
 		} else if (name.equals("paintPanel")) {
 			List<ScriptValue> list = Conversions.getList(params.get(1));
 			List<ScriptValue> paramList = new LinkedList<ScriptValue>();
