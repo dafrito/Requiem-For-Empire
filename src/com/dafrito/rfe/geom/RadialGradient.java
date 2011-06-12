@@ -7,13 +7,13 @@ import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Points;
 import com.dafrito.rfe.gui.debug.Debugger;
 
-public class Gradient_Radial<T extends GradientValue<T>> implements Gradient<T> {
+public class RadialGradient<T extends GradientValue<T>> implements Gradient<T> {
 	private static final int polygonVertices = 4;
 	private T gradientValue;
 	private double exponent, radius;
 	private Point focus;
 
-	public Gradient_Radial(Point focus, double radius, double exponent) {
+	public RadialGradient(Point focus, double radius, double exponent) {
 		this.focus = focus;
 		this.radius = radius;
 		this.exponent = exponent;
@@ -65,7 +65,7 @@ public class Gradient_Radial<T extends GradientValue<T>> implements Gradient<T> 
 			radius += precision * this.getRadius();
 			DiscreteRegion newRegion = new DiscreteRegion();
 			newRegion.setProperty(this.getGradientValue().getName(), this.getGradientValue().sample(i));
-			for (int j = 0; j < Gradient_Radial.polygonVertices; j++) {
+			for (int j = 0; j < RadialGradient.polygonVertices; j++) {
 				double radianOffset = ((Math.PI * 2) / polygonVertices) * j;
 				double longOffset = Math.cos(radianOffset) * radius;
 				double latOffset = Math.sin(radianOffset) * radius;
