@@ -105,6 +105,6 @@ public class ScriptElement implements Referenced {
 		if (this.getLineNumber() == -1) {
 			return "ScriptElement: No information provided";
 		}
-		return String.format("ScriptElement[%s@%d]=\"%s\"", this.getFilename(), this.getLineNumber(), this.getOriginalString().substring(0, 20));
+		return String.format("ScriptElement[%s@%d]=\"%s\"", this.getFilename(), this.getLineNumber(), this.getOriginalString().substring(0, Math.min(this.getOriginalString().length() - 1, 20)));
 	}
 }
