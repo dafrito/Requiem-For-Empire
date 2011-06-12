@@ -8,7 +8,7 @@ import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.geom.Polygons;
 import com.dafrito.rfe.geom.RiffIntersectionPoint;
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.geom.points.Point_Euclidean;
+import com.dafrito.rfe.geom.points.EuclideanPoint;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -56,7 +56,7 @@ public class GraphicalElement_Line extends InterfaceElement implements Nodeable 
 		if (this.getParent() instanceof InterfaceElement_Panel) {
 			offset = ((InterfaceElement_Panel) this.getParent()).getOffset();
 		} else {
-			offset = new Point_Euclidean(this.getXAnchor(), this.getYAnchor(), 0.0d);
+			offset = new EuclideanPoint(this.getXAnchor(), this.getYAnchor(), 0.0d);
 		}
 		// Offset translation
 		assert this.pointA != null : "Point A is null in LineElement";
@@ -78,8 +78,8 @@ public class GraphicalElement_Line extends InterfaceElement implements Nodeable 
 		double width = (this.getParent().getContainerElement().getDrawingBounds().getWidth() - this.getParent().getContainerElement().getDrawingBounds().getX()) / 2;
 		double height = (this.getParent().getContainerElement().getDrawingBounds().getHeight() - this.getParent().getContainerElement().getDrawingBounds().getY()) / 2;
 		// Draw transformed line
-		Point translatedPointA = new Point_Euclidean(ax + this.getParent().getContainerElement().getDrawingBounds().getX() + width, ay + this.getParent().getContainerElement().getDrawingBounds().getY() + height, 0.0d);
-		Point translatedPointB = new Point_Euclidean(bx + this.getParent().getContainerElement().getDrawingBounds().getX() + width, by + this.getParent().getContainerElement().getDrawingBounds().getY() + height, 0.0d);
+		Point translatedPointA = new EuclideanPoint(ax + this.getParent().getContainerElement().getDrawingBounds().getX() + width, ay + this.getParent().getContainerElement().getDrawingBounds().getY() + height, 0.0d);
+		Point translatedPointB = new EuclideanPoint(bx + this.getParent().getContainerElement().getDrawingBounds().getX() + width, by + this.getParent().getContainerElement().getDrawingBounds().getY() + height, 0.0d);
 		DiscreteRegion region = Polygons.convertToRegion(this.getEnvironment(), this.getParent().getContainerElement().getDrawingBounds());
 		List<RiffIntersectionPoint> intersections = Polygons.getIntersections(translatedPointA, translatedPointB, region);
 		if (intersections.size() == 0 && !Polygons.getBoundingRectIntersection(translatedPointA, translatedPointA, region) && !Polygons.getBoundingRectIntersection(translatedPointB, translatedPointB, region)) {

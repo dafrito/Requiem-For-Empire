@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.geom.points.Point_Euclidean;
+import com.dafrito.rfe.geom.points.EuclideanPoint;
 import com.dafrito.rfe.gui.GraphicalElement_Line;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
@@ -30,8 +30,8 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 
 	public FauxTemplate_Line(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.pointA = new Point_Euclidean(0, 0, 0);
-		this.pointB = new Point_Euclidean(0, 0, 0);
+		this.pointA = new EuclideanPoint(0, 0, 0);
+		this.pointB = new EuclideanPoint(0, 0, 0);
 	}
 
 	// ScriptConvertible and Nodeable implementations
@@ -59,8 +59,8 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 				template.setPointB(Conversions.getPoint(this.getEnvironment(), params.get(1)));
 				break;
 			case 4:
-				template.setPointA(new Point_Euclidean(Conversions.getDouble(this.getEnvironment(), params.get(0)).doubleValue(), Conversions.getDouble(this.getEnvironment(), params.get(1)).doubleValue(), 0));
-				template.setPointB(new Point_Euclidean(Conversions.getDouble(this.getEnvironment(), params.get(2)).doubleValue(), Conversions.getDouble(this.getEnvironment(), params.get(3)).doubleValue(), 0));
+				template.setPointA(new EuclideanPoint(Conversions.getDouble(this.getEnvironment(), params.get(0)).doubleValue(), Conversions.getDouble(this.getEnvironment(), params.get(1)).doubleValue(), 0));
+				template.setPointB(new EuclideanPoint(Conversions.getDouble(this.getEnvironment(), params.get(2)).doubleValue(), Conversions.getDouble(this.getEnvironment(), params.get(3)).doubleValue(), 0));
 			}
 			params.clear();
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);

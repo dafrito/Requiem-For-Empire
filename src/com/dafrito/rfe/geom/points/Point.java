@@ -9,7 +9,7 @@ public abstract class Point {
 	public static Point createPoint(Point reference, double x, double y, double z) {
 		switch (reference.getSystem()) {
 		case EUCLIDEAN:
-			return new Point_Euclidean(x, y, z);
+			return new EuclideanPoint(x, y, z);
 		case SPHERICAL:
 			return new Point_Spherical(x, y, z);
 		default:

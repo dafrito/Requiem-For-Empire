@@ -72,7 +72,7 @@ public final class Points {
 	}
 
 	// 3-dimensional distance formula for Point_Euclideans
-	public static double getDistance(Point_Euclidean firstPoint, Point_Euclidean secondPoint) {
+	public static double getDistance(EuclideanPoint firstPoint, EuclideanPoint secondPoint) {
 		//( (x-a)2 + (y - b)2 + (z - c)2 )1/2
 		double testDouble = Math.sqrt(Math.pow((secondPoint.getX() - firstPoint.getX()), 2) + Math.pow((secondPoint.getY() - firstPoint.getY()), 2) + Math.pow((secondPoint.getZ() - firstPoint.getZ()), 2));
 		return testDouble;

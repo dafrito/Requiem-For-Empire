@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.geom.points.Point_Euclidean;
+import com.dafrito.rfe.geom.points.EuclideanPoint;
 import com.dafrito.rfe.geom.points.Point_Spherical;
 import com.dafrito.rfe.geom.points.Points;
 import com.dafrito.rfe.gui.debug.Debugger;
@@ -177,8 +177,8 @@ public class Polygons {
 	}
 
 	public static Point createPoint(Point referencePoint, String name, double x, double y, double z) {
-		if (referencePoint instanceof Point_Euclidean) {
-			return new Point_Euclidean(name, x, y, 0.0d);
+		if (referencePoint instanceof EuclideanPoint) {
+			return new EuclideanPoint(name, x, y, 0.0d);
 		}
 		return new Point_Spherical(name, x, y, 0.0d);
 	}
@@ -1455,10 +1455,10 @@ public class Polygons {
 
 	public static DiscreteRegion convertToRegion(ScriptEnvironment env, Rectangle rect) {
 		DiscreteRegion region = new DiscreteRegion();
-		region.addPoint(new Point_Euclidean(rect.getX(), rect.getY(), 0.0d));
-		region.addPoint(new Point_Euclidean(rect.getX(), rect.getY() + rect.getHeight(), 0.0d));
-		region.addPoint(new Point_Euclidean(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight(), 0.0d));
-		region.addPoint(new Point_Euclidean(rect.getX() + rect.getWidth(), rect.getY(), 0.0d));
+		region.addPoint(new EuclideanPoint(rect.getX(), rect.getY(), 0.0d));
+		region.addPoint(new EuclideanPoint(rect.getX(), rect.getY() + rect.getHeight(), 0.0d));
+		region.addPoint(new EuclideanPoint(rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight(), 0.0d));
+		region.addPoint(new EuclideanPoint(rect.getX() + rect.getWidth(), rect.getY(), 0.0d));
 		Polygons.optimizePolygon(region);
 		return region;
 	}

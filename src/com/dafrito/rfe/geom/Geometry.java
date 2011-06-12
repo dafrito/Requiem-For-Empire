@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import com.dafrito.rfe.Terrain;
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.geom.points.Point_Euclidean;
+import com.dafrito.rfe.geom.points.EuclideanPoint;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 public final class Geometry {
@@ -20,7 +20,7 @@ public final class Geometry {
 
 	// Converts a Java-point to a RiffPoint
 	public static Point convertPointToEuclidean(ScriptEnvironment env, java.awt.Point point) {
-		return new Point_Euclidean(point.getX(), point.getY(), 0);
+		return new EuclideanPoint(point.getX(), point.getY(), 0);
 	}
 
 	public static Color getDiscreteRegionColor(DiscreteRegion region) {

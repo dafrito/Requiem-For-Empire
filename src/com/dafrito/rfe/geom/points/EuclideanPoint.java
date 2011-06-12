@@ -2,15 +2,15 @@ package com.dafrito.rfe.geom.points;
 
 import com.bluespot.geom.vectors.Vector3d;
 
-public class Point_Euclidean extends Point {
+public class EuclideanPoint extends Point {
 
 	private final Vector3d point;
 
-	public Point_Euclidean(double x, double y, double z) {
+	public EuclideanPoint(double x, double y, double z) {
 		this(null, x, y, z);
 	}
 
-	public Point_Euclidean(String name, double x, double y, double z) {
+	public EuclideanPoint(String name, double x, double y, double z) {
 		super(name);
 		point = Vector3d.mutable(x, y, z);
 	}
@@ -72,10 +72,10 @@ public class Point_Euclidean extends Point {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof Point_Euclidean)) {
+		if (!(obj instanceof EuclideanPoint)) {
 			return false;
 		}
-		Point_Euclidean other = (Point_Euclidean) obj;
+		EuclideanPoint other = (EuclideanPoint) obj;
 		return this.point.equals(other.point);
 	}
 

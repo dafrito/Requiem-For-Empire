@@ -12,7 +12,7 @@ import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.geom.points.Point_Euclidean;
+import com.dafrito.rfe.geom.points.EuclideanPoint;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.event.RiffInterface_DragEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseEvent;
@@ -40,14 +40,14 @@ import com.dafrito.rfe.script.values.ScriptValueType;
  */
 public class InterfaceElement_Panel extends InterfaceElement implements ScriptConvertible<FauxTemplate_Panel>, Interface_Container, RiffInterface_MouseListener {
 	private List<GraphicalElement> elements;
-	private Point_Euclidean offset;
+	private EuclideanPoint offset;
 	private Terrestrial terrestrial;
 	private ScriptTemplate_Abstract dali;
 	private Graphics2D graphics;
 
 	public InterfaceElement_Panel(ScriptEnvironment env, Stylesheet uniqueStyle, Stylesheet classStyle) {
 		super(env, uniqueStyle, classStyle);
-		this.offset = new Point_Euclidean(0, 0, 0);
+		this.offset = new EuclideanPoint(0, 0, 0);
 		this.elements = new LinkedList<GraphicalElement>();
 		this.dali = env.getTemplate(FauxTemplate_RiffDali.RIFFDALISTRING);
 	}
