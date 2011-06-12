@@ -1,15 +1,12 @@
 package com.dafrito.rfe.script.parsing;
 
-import com.dafrito.rfe.gui.debug.CommonString;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.tokens.RiffToken;
 import com.dafrito.rfe.script.parsing.tokens.RiffTokenVisitor;
 
 @Inspectable
-public class ScriptLine extends ScriptElement implements Nodeable, RiffToken {
+public class ScriptLine extends ScriptElement implements RiffToken {
 	private String string;
 
 	public ScriptLine(ScriptEnvironment env, String filename, int num, String string) {
@@ -25,12 +22,6 @@ public class ScriptLine extends ScriptElement implements Nodeable, RiffToken {
 	@Inspectable
 	public String getString() {
 		return this.string;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode(CommonString.SCRIPTLINE.getText() + this.string);
-		assert Debugger.closeNode();
 	}
 
 	public void setString(String string) {
