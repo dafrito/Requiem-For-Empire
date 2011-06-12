@@ -186,7 +186,6 @@ public final class Conversions {
 		return new ScriptValue_String(env, string);
 	}
 
-	// Script->Engine conversion functions
 	public static String getString(ScriptEnvironment env, Object obj) throws ScriptException {
 		return (String) convert(env, obj);
 	}
@@ -199,7 +198,6 @@ public final class Conversions {
 		return (Ace) convert(env, obj);
 	}
 
-	// Engine->Script Conversion functions
 	public static FauxTemplate_Ace wrapAce(ScriptEnvironment env, Ace ace) throws ScriptException {
 		FauxTemplate_Ace wrappedAce = new FauxTemplate_Ace(env, ScriptValueType.createType(env, FauxTemplate_Ace.ACESTRING));
 		wrappedAce.setAce(ace);
