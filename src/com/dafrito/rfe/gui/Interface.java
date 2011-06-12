@@ -218,38 +218,34 @@ public class Interface extends JPanel {
 			return;
 		}
 		Graphics g = this.backBuffer.getGraphics();
-		try {
-			if (Debugger.isResetting()) {
+		if (Debugger.isResetting()) {
+			return;
+		}
+		if (Debugger.atFullAllocation() && Debugger.getFreePercentage() > 50) {
+			Debugger.getDebugger().setExceptionsMode(true);
+		}
+		if (!this.ignoreMemoryWarning && Debugger.atFullAllocation() && Debugger.getFreePercentage() < 20) {
+			System.gc();
+			if (Debugger.getFreePercentage() > 20) {
 				return;
 			}
-			if (Debugger.atFullAllocation() && Debugger.getFreePercentage() > 50) {
-				Debugger.getDebugger().setExceptionsMode(true);
+			Debugger.getDebugger().report();
+			this.emergencyStop = true;
+			int option = JOptionPane.showConfirmDialog(null, "Memory usage exceeds 80% of full allocation. Reset debug tree?", "Memory Warning (" + Debugger.getFreePercentage() + "% free)", JOptionPane.YES_NO_OPTION);
+			if (option == JOptionPane.YES_OPTION) {
+				Debugger.getDebugger().reset();
+				this.emergencyStop = false;
+			} else {
+				this.ignoreMemoryWarning = true;
+				this.emergencyStop = false;
 			}
-			if (!this.ignoreMemoryWarning && Debugger.atFullAllocation() && Debugger.getFreePercentage() < 20) {
-				System.gc();
-				if (Debugger.getFreePercentage() > 20) {
-					return;
-				}
-				Debugger.getDebugger().report();
-				this.emergencyStop = true;
-				int option = JOptionPane.showConfirmDialog(null, "Memory usage exceeds 80% of full allocation. Reset debug tree?", "Memory Warning (" + Debugger.getFreePercentage() + "% free)", JOptionPane.YES_NO_OPTION);
-				if (option == JOptionPane.YES_OPTION) {
-					Debugger.getDebugger().reset();
-					this.emergencyStop = false;
-				} else {
-					this.ignoreMemoryWarning = true;
-					this.emergencyStop = false;
-				}
-			}
-			Graphics2D g2d = (Graphics2D) g;
-			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			this.rootElement.paint(g2d);
-			g2d.setColor(Color.WHITE);
-			g2d.drawString("" + this.lastIteration + " fps", this.getWidth() / 2, 20);
-			g2d.dispose();
-		} catch (Exception ex) {
-			throw new Exception_InternalError(this.rootElement.getEnvironment(), ex);
 		}
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		this.rootElement.paint(g2d);
+		g2d.setColor(Color.WHITE);
+		g2d.drawString("" + this.lastIteration + " fps", this.getWidth() / 2, 20);
+		g2d.dispose();
 	}
 
 }
