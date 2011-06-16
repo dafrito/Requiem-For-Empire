@@ -228,36 +228,55 @@ public final class Parser {
 	}
 
 	private static List<Object> removeComments(List<Object> stringList) {
-		boolean isParagraphCommenting = false;
-		List<Object> list = new LinkedList<Object>();
-		for (Object element : stringList) {
-			if (!(element instanceof ScriptLine)) {
-				if (!isParagraphCommenting) {
-					list.add(element);
-				}
-				continue;
-			}
-			ScriptLine scriptLine = (ScriptLine) element;
-			if (isParagraphCommenting) {
-				int endComment = scriptLine.getString().indexOf("*/");
-				if (endComment != -1) {
-					scriptLine.setString(scriptLine.getString().substring(endComment + "*/".length()));
-					isParagraphCommenting = false;
-				} else {
+		return new CommentRemover().apply(stringList);
+	}
+
+	private static class CommentRemover {
+		private boolean isParagraphCommenting;
+
+		public List<Object> apply(List<Object> strings) {
+			isParagraphCommenting = false;
+			List<Object> list = new LinkedList<Object>();
+			for (Object element : strings) {
+				if (!(element instanceof ScriptLine)) {
+					if (!isParagraphCommenting) {
+						list.add(element);
+					}
 					continue;
 				}
-			}
-			int oldStringLength = 0;
-			do {
-				oldStringLength = scriptLine.getString().length();
-				scriptLine.setString(removeSingleLineParagraphs(scriptLine.getString()));
-			} while (oldStringLength != scriptLine.getString().length());
-			int beginParagraph = scriptLine.getString().indexOf("/*");
-			int lineComment = scriptLine.getString().indexOf("//");
-			if (lineComment != -1 && beginParagraph != -1) {
-				if (lineComment < beginParagraph) {
+				ScriptLine scriptLine = (ScriptLine) element;
+				if (isParagraphCommenting) {
+					int endComment = scriptLine.getString().indexOf("*/");
+					if (endComment != -1) {
+						scriptLine.setString(scriptLine.getString().substring(endComment + "*/".length()));
+						isParagraphCommenting = false;
+					} else {
+						continue;
+					}
+				}
+				int oldStringLength = 0;
+				do {
+					oldStringLength = scriptLine.getString().length();
+					scriptLine.setString(removeSingleLineParagraphs(scriptLine.getString()));
+				} while (oldStringLength != scriptLine.getString().length());
+				int beginParagraph = scriptLine.getString().indexOf("/*");
+				int lineComment = scriptLine.getString().indexOf("//");
+				if (lineComment != -1 && beginParagraph != -1) {
+					if (lineComment < beginParagraph) {
+						scriptLine.setString(scriptLine.getString().substring(0, lineComment));
+					} else {
+						isParagraphCommenting = true;
+						int endComment = scriptLine.getString().indexOf("*/");
+						if (endComment != -1) {
+							scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
+							isParagraphCommenting = false;
+						} else {
+							scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
+						}
+					}
+				} else if (lineComment != -1) {
 					scriptLine.setString(scriptLine.getString().substring(0, lineComment));
-				} else {
+				} else if (beginParagraph != -1) {
 					isParagraphCommenting = true;
 					int endComment = scriptLine.getString().indexOf("*/");
 					if (endComment != -1) {
@@ -267,21 +286,11 @@ public final class Parser {
 						scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
 					}
 				}
-			} else if (lineComment != -1) {
-				scriptLine.setString(scriptLine.getString().substring(0, lineComment));
-			} else if (beginParagraph != -1) {
-				isParagraphCommenting = true;
-				int endComment = scriptLine.getString().indexOf("*/");
-				if (endComment != -1) {
-					scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
-					isParagraphCommenting = false;
-				} else {
-					scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
-				}
+				list.add(scriptLine);
 			}
-			list.add(scriptLine);
+			return list;
 		}
-		return list;
+
 	}
 
 	private static List<Object> createQuotedElements(List<Object> lineList) throws ScriptException {
