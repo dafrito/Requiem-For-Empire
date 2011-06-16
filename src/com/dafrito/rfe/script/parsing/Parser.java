@@ -106,7 +106,7 @@ public final class Parser {
 	}
 
 	private static List<Object> preparseList(List<Object> stringList) throws ScriptException {
-		stringList = removeComments(stringList);
+		removeComments(stringList);
 		stringList = createQuotedElements(stringList);
 		stringList = createGroupings(stringList, CharacterGroup.CURLY_BRACES);
 		stringList = createGroupings(stringList, CharacterGroup.PARENTHESES);
@@ -227,68 +227,69 @@ public final class Parser {
 		return function;
 	}
 
-	private static List<Object> removeComments(List<Object> stringList) {
-		return new CommentRemover().apply(stringList);
+	private static void removeComments(List<Object> stringList) {
+		new CommentRemover().apply(stringList);
 	}
 
 	private static class CommentRemover {
-		private boolean isParagraphCommenting;
+		private boolean isParagraphCommenting = false;
 
-		public List<Object> apply(List<Object> strings) {
-			isParagraphCommenting = false;
-			List<Object> list = new LinkedList<Object>();
-			for (Object element : strings) {
+		private boolean processLine(ScriptLine scriptLine) {
+			if (isParagraphCommenting) {
+				int endComment = scriptLine.getString().indexOf("*/");
+				if (endComment != -1) {
+					scriptLine.setString(scriptLine.getString().substring(endComment + "*/".length()));
+					isParagraphCommenting = false;
+				} else {
+					return false;
+				}
+			}
+			int oldStringLength = 0;
+			do {
+				oldStringLength = scriptLine.getString().length();
+				scriptLine.setString(removeSingleLineParagraphs(scriptLine.getString()));
+			} while (oldStringLength != scriptLine.getString().length());
+			int beginParagraph = scriptLine.getString().indexOf("/*");
+			int lineComment = scriptLine.getString().indexOf("//");
+			if (lineComment != -1 && beginParagraph != -1) {
+				if (lineComment < beginParagraph) {
+					scriptLine.setString(scriptLine.getString().substring(0, lineComment));
+				} else {
+					beginGroupComment(scriptLine, beginParagraph);
+				}
+			} else if (lineComment != -1) {
+				scriptLine.setString(scriptLine.getString().substring(0, lineComment));
+			} else if (beginParagraph != -1) {
+				beginGroupComment(scriptLine, beginParagraph);
+			}
+			return true;
+		}
+
+		public void apply(List<Object> strings) {
+			Iterator<Object> iter = strings.iterator();
+			while (iter.hasNext()) {
+				Object element = iter.next();
 				if (!(element instanceof ScriptLine)) {
-					if (!isParagraphCommenting) {
-						list.add(element);
+					if (isParagraphCommenting) {
+						iter.remove();
 					}
 					continue;
 				}
-				ScriptLine scriptLine = (ScriptLine) element;
-				if (isParagraphCommenting) {
-					int endComment = scriptLine.getString().indexOf("*/");
-					if (endComment != -1) {
-						scriptLine.setString(scriptLine.getString().substring(endComment + "*/".length()));
-						isParagraphCommenting = false;
-					} else {
-						continue;
-					}
+				if (!this.processLine((ScriptLine) element)) {
+					iter.remove();
 				}
-				int oldStringLength = 0;
-				do {
-					oldStringLength = scriptLine.getString().length();
-					scriptLine.setString(removeSingleLineParagraphs(scriptLine.getString()));
-				} while (oldStringLength != scriptLine.getString().length());
-				int beginParagraph = scriptLine.getString().indexOf("/*");
-				int lineComment = scriptLine.getString().indexOf("//");
-				if (lineComment != -1 && beginParagraph != -1) {
-					if (lineComment < beginParagraph) {
-						scriptLine.setString(scriptLine.getString().substring(0, lineComment));
-					} else {
-						isParagraphCommenting = true;
-						int endComment = scriptLine.getString().indexOf("*/");
-						if (endComment != -1) {
-							scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
-							isParagraphCommenting = false;
-						} else {
-							scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
-						}
-					}
-				} else if (lineComment != -1) {
-					scriptLine.setString(scriptLine.getString().substring(0, lineComment));
-				} else if (beginParagraph != -1) {
-					isParagraphCommenting = true;
-					int endComment = scriptLine.getString().indexOf("*/");
-					if (endComment != -1) {
-						scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
-						isParagraphCommenting = false;
-					} else {
-						scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
-					}
-				}
-				list.add(scriptLine);
 			}
-			return list;
+		}
+
+		private void beginGroupComment(ScriptLine scriptLine, int beginParagraph) {
+			isParagraphCommenting = true;
+			int endComment = scriptLine.getString().indexOf("*/");
+			if (endComment != -1) {
+				scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
+				isParagraphCommenting = false;
+			} else {
+				scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
+			}
 		}
 
 	}
