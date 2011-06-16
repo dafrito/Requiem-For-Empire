@@ -230,7 +230,7 @@ public final class Parser {
 	private static class CommentRemover {
 		private boolean isParagraphCommenting = false;
 
-		private static String removeSingleLineParagraphs(String string) {
+		private String removeSingleLineParagraphs(String string) {
 			int beginParagraph = string.indexOf("/*");
 			int endParagraph = string.indexOf("*/");
 			if (beginParagraph != -1 && endParagraph != -1) {
