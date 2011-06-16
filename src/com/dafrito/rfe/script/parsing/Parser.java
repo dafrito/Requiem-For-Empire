@@ -106,7 +106,7 @@ public final class Parser {
 	}
 
 	private static List<Object> preparseList(List<Object> stringList) throws ScriptException {
-		removeComments(stringList);
+		new CommentRemover().apply(stringList);
 		stringList = createQuotedElements(stringList);
 		stringList = createGroupings(stringList, CharacterGroup.CURLY_BRACES);
 		stringList = createGroupings(stringList, CharacterGroup.PARENTHESES);
@@ -225,10 +225,6 @@ public final class Parser {
 		}
 		assert Debugger.closeNode();
 		return function;
-	}
-
-	private static void removeComments(List<Object> stringList) {
-		new CommentRemover().apply(stringList);
 	}
 
 	private static class CommentRemover {
