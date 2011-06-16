@@ -230,6 +230,16 @@ public final class Parser {
 	private static class CommentRemover {
 		private boolean isParagraphCommenting = false;
 
+		private static String removeSingleLineParagraphs(String string) {
+			int beginParagraph = string.indexOf("/*");
+			int endParagraph = string.indexOf("*/");
+			if (beginParagraph != -1 && endParagraph != -1) {
+				String newString = string.substring(0, beginParagraph) + string.substring(endParagraph + "*/".length());
+				return newString;
+			}
+			return string;
+		}
+
 		private boolean processLine(ScriptLine scriptLine) {
 			if (isParagraphCommenting) {
 				int endComment = scriptLine.getString().indexOf("*/");
@@ -1684,16 +1694,6 @@ public final class Parser {
 		assert Debugger.closeNode();
 		assert Debugger.closeNode();
 		return list;
-	}
-
-	private static String removeSingleLineParagraphs(String string) {
-		int beginParagraph = string.indexOf("/*");
-		int endParagraph = string.indexOf("*/");
-		if (beginParagraph != -1 && endParagraph != -1) {
-			String newString = string.substring(0, beginParagraph) + string.substring(endParagraph + "*/".length());
-			return newString;
-		}
-		return string;
 	}
 
 	private static List<Object> splitByWhitespace(List<Object> list) {
