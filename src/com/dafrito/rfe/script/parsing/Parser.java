@@ -228,7 +228,12 @@ public final class Parser {
 	}
 
 	private static class CommentRemover {
-		private boolean isParagraphCommenting = false;
+
+		private static enum State {
+			NORMAL, BLOCK_COMMENT
+		}
+
+		private State state = State.NORMAL;
 
 		private String removeSingleLineParagraphs(String string) {
 			int beginParagraph = string.indexOf("/*");
@@ -241,11 +246,11 @@ public final class Parser {
 		}
 
 		private boolean processLine(ScriptLine scriptLine) {
-			if (isParagraphCommenting) {
+			if (state == State.BLOCK_COMMENT) {
 				int endComment = scriptLine.getString().indexOf("*/");
 				if (endComment != -1) {
 					scriptLine.setString(scriptLine.getString().substring(endComment + "*/".length()));
-					isParagraphCommenting = false;
+					state = State.NORMAL;
 				} else {
 					return false;
 				}
@@ -276,7 +281,7 @@ public final class Parser {
 			while (iter.hasNext()) {
 				Object element = iter.next();
 				if (!(element instanceof ScriptLine)) {
-					if (isParagraphCommenting) {
+					if (state == State.BLOCK_COMMENT) {
 						iter.remove();
 					}
 					continue;
@@ -288,16 +293,15 @@ public final class Parser {
 		}
 
 		private void beginGroupComment(ScriptLine scriptLine, int beginParagraph) {
-			isParagraphCommenting = true;
+			state = State.BLOCK_COMMENT;
 			int endComment = scriptLine.getString().indexOf("*/");
 			if (endComment != -1) {
 				scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
-				isParagraphCommenting = false;
+				state = State.NORMAL;
 			} else {
 				scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
 			}
 		}
-
 	}
 
 	private static class QuoteTokenizer {
