@@ -597,9 +597,9 @@ public final class Parser {
 	private static List<Object> removeEmptyScriptLines(List<Object> list) {
 		assert Debugger.openNode("Empty Script-Line Removals", "Empty Script-Line Removal");
 		assert Debugger.addSnapNode(CommonString.ELEMENTS, list);
-		int q = 0;
-		for (int i = 0; i < list.size(); i++) {
-			Object element = list.get(i);
+		Iterator<Object> iter = list.iterator();
+		while (iter.hasNext()) {
+			Object element = iter.next();
 			if (element instanceof ScriptGroup) {
 				assert Debugger.openNode("Found script-group - recursing to parse");
 				((ScriptGroup) element).setElements(removeEmptyScriptLines(((ScriptGroup) element).getElements()));
@@ -610,12 +610,11 @@ public final class Parser {
 				continue;
 			}
 			if (((ScriptLine) element).getString().trim().length() == 0) {
-				q++;
-				list.remove(i);
-				i--;
+				assert Debugger.addSnapNode("Removing line", element);
+				iter.remove();
 			}
 		}
-		assert Debugger.closeNode("Final elements (" + q + " removal(s))", list);
+		assert Debugger.closeNode();
 		return list;
 	}
 
