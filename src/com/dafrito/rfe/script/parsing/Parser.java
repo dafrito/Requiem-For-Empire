@@ -589,9 +589,7 @@ public final class Parser {
 		if (list != null) {
 			return parseOperators(list);
 		}
-		list = new LinkedList<Object>();
-		list.add(line);
-		return list;
+		return Collections.<Object> singletonList(line);
 	}
 
 	private static List<Object> removeEmptyScriptLines(List<Object> list) {
