@@ -90,7 +90,7 @@ public final class Parser {
 		throw new AssertionError("Instantiation is not allowed");
 	}
 
-	private static List<TemplateParams> classParams = new LinkedList<TemplateParams>();
+	private static final List<TemplateParams> classParams = new LinkedList<TemplateParams>();
 
 	public static void clearPreparseLists() {
 		classParams.clear();
