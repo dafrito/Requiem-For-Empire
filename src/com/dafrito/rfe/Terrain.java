@@ -1,10 +1,10 @@
 package com.dafrito.rfe;
 
 import com.dafrito.rfe.geom.GradientValue;
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 
-public class Terrain implements GradientValue<Terrain>, Nodeable {
+@Inspectable
+public class Terrain implements GradientValue<Terrain> {
 	private double brushDensity, waterDepth, temperature, groundCohesion, elevation;
 	private double brushDensityWeight, elevationWeight, groundCohesionWeight,
 			temperatureWeight, waterDepthWeight;
@@ -22,26 +22,32 @@ public class Terrain implements GradientValue<Terrain>, Nodeable {
 		this.groundCohesionWeight = otherTerrain.getGroundCohesionWeight();
 	}
 
+	@Inspectable
 	public double getBrushDensity() {
 		return this.brushDensity;
 	}
 
+	@Inspectable
 	public double getBrushDensityWeight() {
 		return this.brushDensityWeight;
 	}
 
+	@Inspectable
 	public double getElevation() {
 		return this.elevation;
 	}
 
+	@Inspectable
 	public double getElevationWeight() {
 		return this.elevationWeight;
 	}
 
+	@Inspectable
 	public double getGroundCohesion() {
 		return this.groundCohesion;
 	}
 
+	@Inspectable
 	public double getGroundCohesionWeight() {
 		return this.groundCohesionWeight;
 	}
@@ -61,31 +67,24 @@ public class Terrain implements GradientValue<Terrain>, Nodeable {
 		return "Terrain";
 	}
 
+	@Inspectable
 	public double getTemperature() {
 		return this.temperature;
 	}
 
+	@Inspectable
 	public double getTemperatureWeight() {
 		return this.temperatureWeight;
 	}
 
+	@Inspectable
 	public double getWaterDepth() {
 		return this.waterDepth;
 	}
 
+	@Inspectable
 	public double getWaterDepthWeight() {
 		return this.waterDepthWeight;
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Terrain");
-		assert Debugger.addNode("Brush Density: " + this.getBrushDensity() + " (Weight: " + this.getBrushDensityWeight() + ")");
-		assert Debugger.addNode("Elevation: " + this.getElevation() + " (Weight: " + this.getElevationWeight() + ")");
-		assert Debugger.addNode("Ground Cohesion: " + this.getGroundCohesion() + " (Weight: " + this.getGroundCohesionWeight() + ")");
-		assert Debugger.addNode("Temperature: " + this.getTemperature() + " (Weight: " + this.getTemperatureWeight() + ")");
-		assert Debugger.addNode("Water Depth: " + this.getWaterDepth() + " (Weight: " + this.getWaterDepthWeight() + ")");
-		assert Debugger.closeNode();
 	}
 
 	public void setBrushDensity(double brushDensity) {
