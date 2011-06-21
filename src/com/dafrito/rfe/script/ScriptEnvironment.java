@@ -136,7 +136,7 @@ public class ScriptEnvironment {
 
 	// Template functions
 	public void addTemplate(Referenced ref, String name, ScriptTemplate_Abstract template) throws ScriptException {
-		if (this.templates.get(name) != null) {
+		if (this.templates.containsKey(name)) {
 			throw new Exception_Nodeable_TemplateAlreadyDefined(ref, name);
 		}
 		this.templates.put(name, template);
