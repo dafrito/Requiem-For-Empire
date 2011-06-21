@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -14,7 +13,7 @@ import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 
-public class FauxTemplate_GraphicalElement extends FauxTemplate implements Nodeable {
+public class FauxTemplate_GraphicalElement extends FauxTemplate {
 	public static final String GRAPHICALELEMENTSTRING = "GraphicalElement";
 
 	public FauxTemplate_GraphicalElement(ScriptEnvironment env) {
@@ -57,12 +56,5 @@ public class FauxTemplate_GraphicalElement extends FauxTemplate implements Nodea
 	@Override
 	public ScriptTemplate instantiateTemplate() {
 		return new FauxTemplate_GraphicalElement(this.getEnvironment(), this.getType());
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Graphical Element Faux Template");
-		super.nodificate();
-		assert Debugger.closeNode();
 	}
 }
