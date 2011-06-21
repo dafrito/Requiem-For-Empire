@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import com.bluespot.logic.iterators.LineIterator;
+import com.bluespot.logic.iterators.UnderlyingIOException;
 import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
@@ -96,13 +97,18 @@ public final class Parser {
 	}
 
 	public static List<Exception> preparseFile(ScriptEnvironment env, String filename, BufferedReader reader) throws IOException {
-		Iterator<String> iter = new LineIterator(reader);
-		List<Object> strings = new ArrayList<Object>();
-		int i = 1;
-		while (iter.hasNext()) {
-			strings.add(new ScriptLine(env, filename, i++, iter.next()));
+		try {
+			Iterator<String> iter = new LineIterator(reader);
+			List<Object> strings = new ArrayList<Object>();
+			int i = 1;
+			while (iter.hasNext()) {
+				strings.add(new ScriptLine(env, filename, i++, iter.next()));
+			}
+			return preparseFile(env, filename, strings);
+		} catch (UnderlyingIOException ex) {
+			// Unwrap and throw the IOException
+			throw ex.getCause();
 		}
-		return preparseFile(env, filename, strings);
 	}
 
 	private static List<Object> preparseList(List<Object> stringList) throws ScriptException {
