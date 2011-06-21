@@ -3,10 +3,8 @@ package com.dafrito.rfe;
 import com.dafrito.rfe.geom.GradientValue;
 import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class Terrain implements GradientValue<Terrain>, Nodeable {
-	private ScriptEnvironment environment;
 	private double brushDensity, waterDepth, temperature, groundCohesion, elevation;
 	private double brushDensityWeight, elevationWeight, groundCohesionWeight,
 			temperatureWeight, waterDepthWeight;
@@ -38,10 +36,6 @@ public class Terrain implements GradientValue<Terrain>, Nodeable {
 
 	public double getElevationWeight() {
 		return this.elevationWeight;
-	}
-
-	public ScriptEnvironment getEnvironment() {
-		return this.environment;
 	}
 
 	public double getGroundCohesion() {
