@@ -34,7 +34,6 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateNotFound;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnenclosedBracket;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnenclosedStringLiteral;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnexpectedType;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnknownModifier;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnparseableElement;
@@ -56,6 +55,8 @@ import com.dafrito.rfe.script.operations.ScriptExecutable_ParseFunction;
 import com.dafrito.rfe.script.operations.ScriptExecutable_RetrieveCurrentObject;
 import com.dafrito.rfe.script.operations.ScriptExecutable_RetrieveVariable;
 import com.dafrito.rfe.script.operations.ScriptExecutable_ReturnValue;
+import com.dafrito.rfe.script.parsing.parsers.CommentRemover;
+import com.dafrito.rfe.script.parsing.parsers.QuoteTokenizer;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Object;
 import com.dafrito.rfe.script.values.NoopScriptFunction;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -68,7 +69,6 @@ import com.dafrito.rfe.script.values.ScriptValueType;
 import com.dafrito.rfe.script.values.ScriptValue_Boolean;
 import com.dafrito.rfe.script.values.ScriptValue_Null;
 import com.dafrito.rfe.script.values.ScriptValue_Numeric;
-import com.dafrito.rfe.script.values.ScriptValue_String;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 /**
@@ -231,144 +231,6 @@ public final class Parser {
 		}
 		assert Debugger.closeNode();
 		return function;
-	}
-
-	private static class CommentRemover {
-
-		private static enum State {
-			NORMAL, BLOCK_COMMENT
-		}
-
-		private State state = State.NORMAL;
-
-		private String removeSingleLineParagraphs(String string) {
-			int beginParagraph = string.indexOf("/*");
-			int endParagraph = string.indexOf("*/");
-			if (beginParagraph != -1 && endParagraph != -1) {
-				String newString = string.substring(0, beginParagraph) + string.substring(endParagraph + "*/".length());
-				return newString;
-			}
-			return string;
-		}
-
-		private boolean processLine(ScriptLine scriptLine) {
-			if (state == State.BLOCK_COMMENT) {
-				int endComment = scriptLine.getString().indexOf("*/");
-				if (endComment != -1) {
-					scriptLine.setString(scriptLine.getString().substring(endComment + "*/".length()));
-					state = State.NORMAL;
-				} else {
-					return false;
-				}
-			}
-			int oldStringLength = 0;
-			do {
-				oldStringLength = scriptLine.getString().length();
-				scriptLine.setString(removeSingleLineParagraphs(scriptLine.getString()));
-			} while (oldStringLength != scriptLine.getString().length());
-			int beginParagraph = scriptLine.getString().indexOf("/*");
-			int lineComment = scriptLine.getString().indexOf("//");
-			if (lineComment != -1 && beginParagraph != -1) {
-				if (lineComment < beginParagraph) {
-					scriptLine.setString(scriptLine.getString().substring(0, lineComment));
-				} else {
-					beginGroupComment(scriptLine, beginParagraph);
-				}
-			} else if (lineComment != -1) {
-				scriptLine.setString(scriptLine.getString().substring(0, lineComment));
-			} else if (beginParagraph != -1) {
-				beginGroupComment(scriptLine, beginParagraph);
-			}
-			return true;
-		}
-
-		public void apply(List<Object> strings) {
-			Iterator<Object> iter = strings.iterator();
-			while (iter.hasNext()) {
-				Object element = iter.next();
-				if (!(element instanceof ScriptLine)) {
-					if (state == State.BLOCK_COMMENT) {
-						iter.remove();
-					}
-					continue;
-				}
-				if (!this.processLine((ScriptLine) element)) {
-					iter.remove();
-				}
-			}
-		}
-
-		private void beginGroupComment(ScriptLine scriptLine, int beginParagraph) {
-			state = State.BLOCK_COMMENT;
-			int endComment = scriptLine.getString().indexOf("*/");
-			if (endComment != -1) {
-				scriptLine.setString(scriptLine.getString().substring(0, beginParagraph) + scriptLine.getString().substring(endComment + "*/".length()));
-				state = State.NORMAL;
-			} else {
-				scriptLine.setString(scriptLine.getString().substring(0, beginParagraph));
-			}
-		}
-	}
-
-	private static class QuoteTokenizer {
-
-		public List<Object> apply(List<Object> lineList) throws ScriptException {
-			for (int i = 0; i < lineList.size(); i++) {
-				if (!(lineList.get(i) instanceof ScriptLine)) {
-					continue;
-				}
-				List<Object> returnedList = createQuotedElements((ScriptLine) lineList.get(i));
-				lineList.remove(i);
-				lineList.addAll(i, returnedList);
-			}
-			return lineList;
-		}
-
-		private List<Object> createQuotedElements(ScriptLine line) throws ScriptException {
-			int charElem = line.getString().indexOf("'");
-			int stringElem = line.getString().indexOf('"');
-			List<Object> list = new LinkedList<Object>();
-			// If neither are found, return.
-			if (charElem == -1 && stringElem == -1) {
-				list.add(line);
-				return list;
-			} else if ((charElem == -1 || stringElem < charElem) && stringElem != -1) {
-				// We've found a string element
-				assert stringElem != -1;
-				int offset = stringElem + 1;
-				int nextStringElem;
-				do {
-					nextStringElem = line.getString().indexOf('"', offset);
-					// If it's not found, throw an error.
-					if (nextStringElem == -1) {
-						throw new Exception_Nodeable_UnenclosedStringLiteral(line);
-					}
-					// If we enter this, we're at a literal quotation mark inside our string, and must loop to find the actual closing mark.
-					if (nextStringElem != 0 && '\\' == line.getString().charAt(nextStringElem - 1)) {
-						offset = nextStringElem + 1;
-						nextStringElem = -1;
-					}
-				} while (nextStringElem == -1);
-				list.add(new ScriptLine(line.getString().substring(0, stringElem), line, 0));
-				String value = line.getString().substring(stringElem + "\"".length(), nextStringElem);
-				list.add(new ScriptValue_String(line.getEnvironment(), value));
-				list.add(new ScriptLine(line.getString().substring(nextStringElem + "\"".length()), line, (short) (nextStringElem + "\"".length())));
-				return this.apply(list);
-			} else {
-				// We found a character-string element
-				assert charElem != -1;
-				int nextCharElem = line.getString().indexOf("'", charElem + 1);
-				if (nextCharElem == -1) {
-					throw new Exception_Nodeable_UnenclosedStringLiteral(line);
-				}
-				list.add(new ScriptLine(line.getString().substring(0, charElem), line, 0));
-				String value = line.getString().substring(charElem + "'".length(), nextCharElem);
-				list.add(new ScriptValue_String(line.getEnvironment(), value));
-				list.add(new ScriptLine(line.getString().substring(nextCharElem + "'".length()), line, (short) (nextCharElem + "'".length())));
-				return this.apply(list);
-			}
-		}
-
 	}
 
 	private static List<Object> createGroupings(List<Object> stringList, CharacterGroup group) throws ScriptException {
