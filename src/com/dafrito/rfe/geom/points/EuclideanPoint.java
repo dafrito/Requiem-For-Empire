@@ -22,7 +22,7 @@ public class EuclideanPoint extends Point {
 
 	@Override
 	public double getX() {
-		return this.point.getX();
+		return this.point.x();
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class EuclideanPoint extends Point {
 
 	@Override
 	public double getY() {
-		return this.point.getY();
+		return this.point.y();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class EuclideanPoint extends Point {
 
 	@Override
 	public double getZ() {
-		return this.point.getZ();
+		return this.point.z();
 	}
 
 	@Override

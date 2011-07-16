@@ -27,14 +27,14 @@ public class PolarPoint extends Point {
 	 * values.
 	 */
 	private void simplify() {
-		this.point.setX(this.point.getX() % LONGITUDEMAXIMUM);
-		this.point.setY(this.point.getY() % LATITUDEMAXIMUM);
+		this.point.setX(this.point.x() % LONGITUDEMAXIMUM);
+		this.point.setY(this.point.y() % LATITUDEMAXIMUM);
 	}
 
 	@Override
 	public double getX() {
 		this.simplify();
-		return this.point.getX();
+		return this.point.x();
 	}
 
 	public double getLatitudeDegrees() {
@@ -61,7 +61,7 @@ public class PolarPoint extends Point {
 	@Override
 	public double getY() {
 		this.simplify();
-		return this.point.getY();
+		return this.point.y();
 	}
 
 	public double getLongitudeDegrees() {
@@ -87,7 +87,7 @@ public class PolarPoint extends Point {
 
 	@Override
 	public double getZ() {
-		return this.point.getZ();
+		return this.point.z();
 	}
 
 	@Override
