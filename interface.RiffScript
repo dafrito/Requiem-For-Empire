@@ -50,7 +50,7 @@ class InitialBenchmark extends RiffDali implements SchedulerListener, MovementEv
 		setupThird(region);
 		otherPoint = region.getCenter();
 
-		scenario = new Scenario(terrestrial, "Initial Benchmark");
+		scenario = new Scenario(terrestrial);
 		scenario.getScheduler().setDefaultListener(this);
 		Path path;
 		asset.setLocation(path = terrestrial.getPath(scenario, this, asset, point, otherPoint));

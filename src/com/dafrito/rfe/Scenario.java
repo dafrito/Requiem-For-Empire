@@ -5,11 +5,9 @@ import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class Scenario {
 	private Scheduler scheduler;
-	private String name;
 	private Terrestrial terrestrial;
 
-	public Scenario(ScriptEnvironment env, Terrestrial terrestrial, String name) {
-		this.name = name;
+	public Scenario(ScriptEnvironment env, Terrestrial terrestrial) {
 		this.terrestrial = terrestrial;
 		this.scheduler = new Scheduler(env);
 	}
@@ -18,20 +16,12 @@ public class Scenario {
 		return this.scheduler.getCurrentGameTime();
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
 	public Scheduler getScheduler() {
 		return this.scheduler;
 	}
 
 	public Terrestrial getTerrestrial() {
 		return this.terrestrial;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void setTerrestrial(Terrestrial terrestrial) {

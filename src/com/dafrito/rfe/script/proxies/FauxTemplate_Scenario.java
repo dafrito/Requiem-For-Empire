@@ -31,7 +31,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 
 	public FauxTemplate_Scenario(ScriptEnvironment env, ScriptValueType type) {
 		super(env, type);
-		this.scenario = new Scenario(env, new Terrestrial(1), "Scenario");
+		this.scenario = new Scenario(env, new Terrestrial(1));
 	}
 
 	// Nodeable implementation
@@ -54,21 +54,12 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 				template = (FauxTemplate_Scenario) this.createObject(ref, template);
 			}
 			switch (params.size()) {
-			case 2:
+			case 1:
 				template.getScenario().setTerrestrial(Conversions.getTerrestrial(this.getEnvironment(), params.get(0)));
-				template.getScenario().setName(Conversions.getString(this.getEnvironment(), params.get(1)));
 			case 0:
 				assert Debugger.closeNode();
 				return template;
 			}
-		} else if (name.equals("getName")) {
-			returning = Conversions.wrapString(ref.getEnvironment(), template.getScenario().getName());
-			assert Debugger.closeNode();
-			return returning;
-		} else if (name.equals("setName")) {
-			template.getScenario().setName(Conversions.getString(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
-			return null;
 		} else if (name.equals("getTerrestrial")) {
 			returning = Conversions.wrapTerrestrial(ref.getEnvironment(), template.getScenario().getTerrestrial());
 			assert Debugger.closeNode();
@@ -99,7 +90,6 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING)));
-		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
 		this.addConstructor(this.getType(), fxnParams);
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
