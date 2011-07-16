@@ -7,7 +7,7 @@ import java.util.List;
 import com.dafrito.rfe.Scenario;
 import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -21,7 +21,8 @@ import com.dafrito.rfe.script.values.ScriptValue;
 import com.dafrito.rfe.script.values.ScriptValueType;
 import com.dafrito.rfe.script.values.ScriptValue_Faux;
 
-public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, ScriptConvertible<Scenario> {
+@Inspectable
+public class FauxTemplate_Scenario extends FauxTemplate implements ScriptConvertible<Scenario> {
 	public static final String SCENARIOSTRING = "Scenario";
 	private Scenario scenario;
 
@@ -34,7 +35,6 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 		this.scenario = new Scenario(env, new Terrestrial(1));
 	}
 
-	// Nodeable implementation
 	@Override
 	public Scenario convert(ScriptEnvironment env) {
 		return this.scenario;
@@ -78,6 +78,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 		return returning;
 	}
 
+	@Inspectable
 	public Scenario getScenario() {
 		return this.scenario;
 	}
@@ -109,14 +110,6 @@ public class FauxTemplate_Scenario extends FauxTemplate implements Nodeable, Scr
 	@Override
 	public ScriptTemplate instantiateTemplate() {
 		return new FauxTemplate_Scenario(this.getEnvironment(), this.getType());
-	}
-
-	@Override
-	public void nodificate() {
-		assert Debugger.openNode("Scenario Faux Template");
-		super.nodificate();
-		assert Debugger.addNode(this.scenario);
-		assert Debugger.closeNode();
 	}
 
 	public void setScenario(Scenario scenario) {
