@@ -4,8 +4,8 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.common"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.opengl"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.playground"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.graphics"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
