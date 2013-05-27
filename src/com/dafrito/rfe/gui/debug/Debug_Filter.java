@@ -17,9 +17,9 @@ public class Debug_Filter extends JPanel implements ActionListener {
 	private DefaultListModel<Object> filters = new DefaultListModel<Object>();
 	private JList<Object> filterList;
 	private boolean isListening;
-	private Debug_Listener listener;
+	private LogPanel listener;
 
-	public Debug_Filter(Debug_Listener listener) {
+	public Debug_Filter(LogPanel listener) {
 		this.listener = listener;
 		this.setLayout(new BorderLayout());
 		JPanel filterButtons = new JPanel();
@@ -61,7 +61,7 @@ public class Debug_Filter extends JPanel implements ActionListener {
 		return this.filters;
 	}
 
-	public Debug_Listener getListener() {
+	public LogPanel getListener() {
 		return this.listener;
 	}
 

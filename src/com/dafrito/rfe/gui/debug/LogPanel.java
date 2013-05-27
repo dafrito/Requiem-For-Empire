@@ -17,7 +17,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.tree.TreePath;
 
-public class Debug_Listener extends JPanel implements ActionListener, ComponentListener {
+public class LogPanel extends JPanel implements ActionListener, ComponentListener {
 	// Core stuff
 	private DebugEnvironment debugger;
 	private int width;
@@ -28,13 +28,13 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	// Debug components and filter-parents and children
 	private Debug_Tree treePanel;
 	private HotspotsPanel hotspotPanel;
-	private Debug_Listener source;
-	private java.util.List<Debug_Listener> childOutputs = new LinkedList<Debug_Listener>();
+	private LogPanel source;
+	private java.util.List<LogPanel> childOutputs = new LinkedList<LogPanel>();
 	protected boolean isListening = false;
 	// CONSTRUCTOR!!
 	private String threadName;
 
-	public Debug_Listener(String threadName, DebugEnvironment debugger, Debug_Listener source, String name) {
+	public LogPanel(String threadName, DebugEnvironment debugger, LogPanel source, String name) {
 		this.threadName = threadName;
 		this.treePanel = new Debug_Tree(new Debug_Filter(this));
 		this.debugger = debugger;
@@ -102,7 +102,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 		}
 	}
 
-	public void addChildOutput(Debug_Listener output) {
+	public void addChildOutput(LogPanel output) {
 		this.childOutputs.add(output);
 	}
 
@@ -136,7 +136,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	public void componentShown(ComponentEvent x) {
 	}
 
-	public Debug_Listener createListener() {
+	public LogPanel createListener() {
 		return this.debugger.addOutputListener(this, this.treePanel.getFirstAvailableFilter());
 	}
 
@@ -149,7 +149,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 		return this.hotspotPanel;
 	}
 
-	public Debug_Listener getSource() {
+	public LogPanel getSource() {
 		return this.source;
 	}
 
@@ -183,7 +183,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 		this.source.getTreePanel().showTreePath(path);
 	}
 
-	public Debug_Listener promptCreateListener() {
+	public LogPanel promptCreateListener() {
 		Object filter = this.treePanel.getFirstAvailableFilter();
 		if (this.treePanel.getSelectedNode() != null) {
 			filter = JOptionPane.showInputDialog(this, "Insert Listener Name", "Listener Creation", JOptionPane.PLAIN_MESSAGE, null, null, filter);
@@ -192,7 +192,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	}
 
 	public void removeTab() {
-		for (Debug_Listener output : this.childOutputs) {
+		for (LogPanel output : this.childOutputs) {
 			output.setSource(this.source);
 			output.clearTab();
 		}
@@ -203,7 +203,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 
 	public void sendToFilter() {
 		if (this.debugger.getFilteringOutput() == null) {
-			Debug_Listener listener;
+			LogPanel listener;
 			listener = this.createListener();
 			if (listener == null) {
 				JOptionPane.showMessageDialog(null, "No filtering output defined.", "Undefined Filter", JOptionPane.WARNING_MESSAGE);
@@ -261,7 +261,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 		}
 	}
 
-	public void setSource(Debug_Listener source) {
+	public void setSource(LogPanel source) {
 		this.source = source;
 	}
 

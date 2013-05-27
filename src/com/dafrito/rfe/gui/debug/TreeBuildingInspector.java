@@ -40,11 +40,11 @@ public class TreeBuildingInspector {
 		}
 		String threadName = Thread.currentThread().getName();
 		if (this.debugEnvironment.filteredOutputMap.get(threadName) == null || this.debugEnvironment.filteredOutputMap.get(threadName).isEmpty()) {
-			this.debugEnvironment.filteredOutputMap.put(threadName, new ArrayList<Debug_Listener>());
-			this.debugEnvironment.filteredOutputMap.get(threadName).add(new Debug_Listener(threadName, this.debugEnvironment, null, threadName));
+			this.debugEnvironment.filteredOutputMap.put(threadName, new ArrayList<LogPanel>());
+			this.debugEnvironment.filteredOutputMap.get(threadName).add(new LogPanel(threadName, this.debugEnvironment, null, threadName));
 			this.debugEnvironment.filteredPanes.add(threadName, this.debugEnvironment.filteredOutputMap.get(threadName).get(0));
 		}
-		for (Debug_Listener listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
+		for (LogPanel listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
 			if (listener.isCapturing()) {
 				if (!listener.getTreePanel().getFilter().isListening()) {
 					listener.getTreePanel().getFilter().sniffNode(node);
@@ -57,12 +57,12 @@ public class TreeBuildingInspector {
 				return;
 			}
 		}
-		for (Debug_Listener listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
+		for (LogPanel listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
 			this.addNodeToOutput(node.duplicate(), setAsCurrent, listener);
 		}
 	}
 
-	private void addNodeToOutput(Debug_TreeNode node, boolean setAsCurrent, Debug_Listener listener) {
+	private void addNodeToOutput(Debug_TreeNode node, boolean setAsCurrent, LogPanel listener) {
 		if (!listener.getTreePanel().getFilter().isListening()) {
 			listener.getTreePanel().getFilter().sniffNode(node);
 			if (!listener.getTreePanel().getFilter().isListening()) {
@@ -101,13 +101,13 @@ public class TreeBuildingInspector {
 		if (this.debugEnvironment.isIgnoringThisThread()) {
 			return;
 		}
-		for (Debug_Listener listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
+		for (LogPanel listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
 			if (listener.isCapturing() && listener.getTreePanel().getFilter().isListening()) {
 				listener.getTreePanel().closeNode();
 				return;
 			}
 		}
-		for (Debug_Listener listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
+		for (LogPanel listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
 			if (listener.getTreePanel().getFilter().isListening()) {
 				listener.getTreePanel().closeNode();
 			}

@@ -92,8 +92,8 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	private final JRadioButtonMenuItem ignoreMode;
 
 	private final List<Debug_ScriptElement> scriptElements = new ArrayList<Debug_ScriptElement>();
-	private Debug_Listener filtering;
-	final Map<String, List<Debug_Listener>> filteredOutputMap = new HashMap<String, List<Debug_Listener>>();
+	private LogPanel filtering;
+	final Map<String, List<LogPanel>> filteredOutputMap = new HashMap<String, List<LogPanel>>();
 	private String priorityExecutingClass;
 
 	private final Set<String> ignores = new HashSet<String>();
@@ -285,16 +285,16 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 				this.filteredPanes.setTitleAt(this.filteredPanes.getSelectedIndex(), text.toString());
 			}
 		} else if (event.getSource().equals(this.createListener)) {
-			((Debug_Listener) this.filteredPanes.getSelectedComponent()).promptCreateListener();
+			((LogPanel) this.filteredPanes.getSelectedComponent()).promptCreateListener();
 		} else if (event.getSource().equals(this.saveFile)) {
 			this.scriptElements.get(this.tabbedPane.getSelectedIndex() - 1).saveFile();
 		} else if (event.getSource().equals(this.reset)) {
 			this.reset();
 		} else if (event.getSource().equals(this.clearTab)) {
-			((Debug_Listener) this.filteredPanes.getSelectedComponent()).clearTab();
+			((LogPanel) this.filteredPanes.getSelectedComponent()).clearTab();
 		} else if (event.getSource().equals(this.removeTab)) {
-			((Debug_Listener) this.filteredPanes.getSelectedComponent()).removeTab();
-			this.filteredOutputMap.get(((Debug_Listener) this.filteredPanes.getSelectedComponent()).getThreadName()).remove(this.filteredPanes.getSelectedComponent());
+			((LogPanel) this.filteredPanes.getSelectedComponent()).removeTab();
+			this.filteredOutputMap.get(((LogPanel) this.filteredPanes.getSelectedComponent()).getThreadName()).remove(this.filteredPanes.getSelectedComponent());
 			this.filteredPanes.remove(this.filteredPanes.getSelectedComponent());
 		} else if (event.getSource().equals(this.saveFileAs)) {
 			this.scriptElements.get(this.tabbedPane.getSelectedIndex() - 1).saveFileAs();
@@ -305,7 +305,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		} else if (event.getSource().equals(this.addException)) {
 			Object string = null;
 			if (this.filteredPanes.getSelectedComponent() != null) {
-				string = ((Debug_Listener) this.filteredPanes.getSelectedComponent()).getThreadName();
+				string = ((LogPanel) this.filteredPanes.getSelectedComponent()).getThreadName();
 			}
 			Object text = JOptionPane.showInputDialog(null, "Insert the thread name to add to the exceptions list", "Adding to Exceptions List", JOptionPane.PLAIN_MESSAGE, null, null, string);
 			if (text == null) {
@@ -331,7 +331,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		} else if (event.getSource().equals(this.addIgnore)) {
 			Object string = null;
 			if (this.filteredPanes.getSelectedComponent() != null) {
-				string = ((Debug_Listener) this.filteredPanes.getSelectedComponent()).getThreadName();
+				string = ((LogPanel) this.filteredPanes.getSelectedComponent()).getThreadName();
 			}
 			Object text = JOptionPane.showInputDialog(null, "Insert the thread name to add to the ignore list", "Adding to Ignore List", JOptionPane.PLAIN_MESSAGE, null, null, string);
 			if (text == null) {
@@ -380,7 +380,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		}
 	}
 
-	public Debug_Listener addOutputListener(Debug_Listener source, Object filter) {
+	public LogPanel addOutputListener(LogPanel source, Object filter) {
 		if (filter == null || "".equals(filter)) {
 			return null;
 		}
@@ -389,7 +389,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			this.focusOnOutput(this.isFilterUsed(filter, source.getThreadName()));
 			return null;
 		}
-		Debug_Listener output = new Debug_Listener(source.getThreadName(), this, source, filter.toString());
+		LogPanel output = new LogPanel(source.getThreadName(), this, source, filter.toString());
 		output.getTreePanel().getFilter().addFilter(filter);
 		output.getTreePanel().refresh();
 		source.addChildOutput(output);
@@ -409,12 +409,12 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.execute.setEnabled(value);
 	}
 
-	public void focusOnOutput(Debug_Listener output) {
+	public void focusOnOutput(LogPanel output) {
 		assert output != null;
 		this.filteredPanes.setSelectedIndex(this.filteredPanes.indexOfComponent(output));
 	}
 
-	public Debug_Listener getFilteringOutput() {
+	public LogPanel getFilteringOutput() {
 		return this.filtering;
 	}
 
@@ -439,12 +439,12 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		return this.getUnfilteredOutput().getTreePanel().getCurrentNode();
 	}
 
-	public Debug_Listener getUnfilteredOutput() {
+	public LogPanel getUnfilteredOutput() {
 		return this.filteredOutputMap.get(Thread.currentThread().getName()).get(0);
 	}
 
-	public Debug_Listener isFilterUsed(Object filter, String threadName) {
-		for (Debug_Listener listener : this.filteredOutputMap.get(threadName)) {
+	public LogPanel isFilterUsed(Object filter, String threadName) {
+		for (LogPanel listener : this.filteredOutputMap.get(threadName)) {
 			if (!listener.isUnfiltered() && listener.getTreePanel().getFilter().isFilterUsed(filter)) {
 				return listener;
 			}
@@ -482,7 +482,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		return !this.reset.isEnabled();
 	}
 
-	public void removeListenerListener(Debug_Listener listener) {
+	public void removeListenerListener(LogPanel listener) {
 		this.filteredPanes.removeTabAt(this.filteredPanes.getSelectedIndex());
 		this.filteredOutputMap.get(listener.getThreadName()).remove(listener);
 	}
@@ -506,7 +506,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		}
 		int children = this.filteredPanes.getComponentCount();
 		for (int i = 0; i < children; i++) {
-			((Debug_Listener) this.filteredPanes.getComponent(i)).removeTab();
+			((LogPanel) this.filteredPanes.getComponent(i)).removeTab();
 		}
 		this.filteredPanes.removeAll();
 		this.filteredOutputMap.clear();
@@ -537,7 +537,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.ignoreMode.setSelected(!value);
 	}
 
-	public void setFilteringOutput(Debug_Listener output) {
+	public void setFilteringOutput(LogPanel output) {
 		this.filtering = output;
 	}
 
