@@ -37,9 +37,11 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 		this.filter = filter;
 		this.setLayout(new GridLayout(1, 0));
 		this.add(this.tree = new JTree(new DefaultTreeModel(this.currentNode = new Debug_TreeNode(CommonString.OUTPUTTREE))));
+
 		this.popup = new JPopupMenu();
 		this.popup.add(this.copySelectedNodeData = new JMenuItem("Copy Selected"));
 		this.popup.add(this.copySelectedNodeGroup = new JMenuItem("Copy Selected's Group"));
+
 		this.copySelectedNodeGroup.addActionListener(this);
 		this.copySelectedNodeData.addActionListener(this);
 		this.tree.addMouseListener(this);
