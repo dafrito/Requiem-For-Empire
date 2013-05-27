@@ -40,7 +40,6 @@ public class HotspotsPanel extends JPanel {
 		this.add(new JScrollPane(this.hotspots));
 
 		JPanel hotspotButtons = new JPanel();
-		hotspotButtons.setLayout(new GridLayout(3, 0));
 		this.add(hotspotButtons, BorderLayout.NORTH);
 
 		this.hotspots.addMouseListener(new MouseAdapter() {
@@ -99,6 +98,8 @@ public class HotspotsPanel extends JPanel {
 			}
 		});
 		hotspotButtons.add(removeHotspot);
+
+		hotspotButtons.setLayout(new GridLayout(hotspotButtons.getComponentCount(), 0));
 	}
 
 	public void addHotspot(Debug_TreeNode node, String name) {
