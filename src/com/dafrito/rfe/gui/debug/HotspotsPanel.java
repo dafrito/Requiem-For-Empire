@@ -17,6 +17,15 @@ import javax.swing.tree.TreePath;
 
 import com.dafrito.rfe.strings.NamedTreePath;
 
+/**
+ * A list of hotspots. Hotspots are locations that, when clicked, will focus a
+ * given debug tree on that location. While manual hotspots can be created, it's
+ * more common for them to be automatically created to signal important events
+ * (like compilation errors in a compiler.)
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public class HotspotsPanel extends JPanel {
 	private Debug_Tree treePanel;
 
