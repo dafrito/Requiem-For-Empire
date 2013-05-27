@@ -47,7 +47,6 @@ public class Scheduler implements ActionListener {
 		this.lastIteration = this.getCurrentTime();
 		this.gameTime += differential;
 		List<ScriptValue> params = new LinkedList<ScriptValue>();
-		int i = 0;
 		try {
 			this.inProgress = true;
 			Iterator<ScheduledEvent> iter = this.events.iterator();
@@ -56,7 +55,6 @@ public class Scheduler implements ActionListener {
 				if (event.getTime() <= this.gameTime) {
 					assert Debugger.openNode("Event Iteration", "Iterating event");
 					assert Debugger.addNode(event);
-					i++;
 					ScriptTemplate_Abstract listener = event.getListener();
 					if (listener == null) {
 						listener = this.getDefaultListener();
