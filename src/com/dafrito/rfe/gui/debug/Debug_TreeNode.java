@@ -62,11 +62,6 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	protected MutableTreeNode parent, practicalParent;
 
-	/**
-	 * This list is lazily instantiated for performance reasons. Having to check
-	 * if it's set dirties up a lot of code, so I'd like to find a smarter way
-	 * to save memory.
-	 */
 	protected List<Debug_TreeNode> children;
 
 	public Debug_TreeNode(int unique, Object group, Object data) {
@@ -179,37 +174,27 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	@Override
 	public TreeNode getChildAt(int x) {
-		if (this.children != null) {
-			return this.children.get(x);
-		}
-		return null;
+		return this.getChildren().get(x);
 	}
 
 	@Override
 	public int getChildCount() {
-		if (this.children != null) {
-			return this.children.size();
-		} else {
-			return 0;
-		}
+		return getChildren().size();
 	}
 
 	// TreeNode functions
 	public List<Debug_TreeNode> getChildren() {
 		if (this.children != null) {
-			return Collections.unmodifiableList(this.children);
+			return this.children;
 		} else {
 			return Collections.emptyList();
 		}
 	}
 
 	public List<Debug_TreeNode> getChildrenByFilter(DefaultListModel<?> data) {
-		if (this.children == null) {
-			return Collections.emptyList();
-		}
 		List<Debug_TreeNode> filtered = new ArrayList<Debug_TreeNode>();
 		boolean flag;
-		for (Debug_TreeNode node : this.children) {
+		for (Debug_TreeNode node : this.getChildren()) {
 			flag = false;
 			for (int i = 0; i < data.size(); i++) {
 				if (node.getData().equals(data.get(i)) || (node.getGroup() != null && node.getGroup().equals(data.get(i)))) {
@@ -258,27 +243,20 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	@Override
 	public int getIndex(TreeNode node) {
-		if (this.children != null) {
-			return this.children.indexOf(node);
-		} else {
-			return -1;
-		}
+		return this.getChildren().indexOf(node);
 	}
 
 	public Debug_TreeNode getLastChild() {
-		if (this.children != null) {
-			return this.children.get(this.children.size() - 1);
-		} else {
+		if (getChildren().isEmpty()) {
 			return null;
 		}
+		return this.getChildren().get(this.getChildren().size() - 1);
 	}
 
 	public Debug_TreeNode getNode(Debug_TreeNode node) {
-		if (this.children != null) {
-			for (Debug_TreeNode child : this.children) {
-				if (child.equals(node)) {
-					return child;
-				}
+		for (Debug_TreeNode child : this.getChildren()) {
+			if (child.equals(node)) {
+				return child;
 			}
 		}
 		return null;
