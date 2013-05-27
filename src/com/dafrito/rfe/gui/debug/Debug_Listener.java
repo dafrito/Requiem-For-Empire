@@ -31,7 +31,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	private JSplitPane treeAndHotspotSplitPane;
 	// Debug components and filter-parents and children
 	private Debug_Tree treePanel;
-	private Debug_Hotspots hotspotPanel;
+	private HotspotsPanel hotspotPanel;
 	private Debug_Listener source;
 	private java.util.List<Debug_Listener> childOutputs = new LinkedList<Debug_Listener>();
 	protected boolean isListening = false;
@@ -63,7 +63,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 		JTabbedPane hotspotAndFiltersPanel = new JTabbedPane();
 		this.treeAndHotspotSplitPane.setRightComponent(hotspotAndFiltersPanel);
 		// Set up hotspot-panel
-		hotspotAndFiltersPanel.add("Hotspots", this.hotspotPanel = new Debug_Hotspots(this.treePanel));
+		hotspotAndFiltersPanel.add("Hotspots", this.hotspotPanel = new HotspotsPanel(this.treePanel));
 		hotspotAndFiltersPanel.add("Filters", this.treePanel.getFilter());
 		if (this.isUnfiltered()) {
 			this.jump.setEnabled(false);
@@ -149,7 +149,7 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 		return this.debugger;
 	}
 
-	public Debug_Hotspots getHotspotPanel() {
+	public HotspotsPanel getHotspotPanel() {
 		return this.hotspotPanel;
 	}
 

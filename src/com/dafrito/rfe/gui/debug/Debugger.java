@@ -73,7 +73,7 @@ public class Debugger {
 				} else {
 					exceptionName = "Exception";
 				}
-				getDebugger().getUnfilteredOutput().getHotspotPanel().createHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
+				getDebugger().getUnfilteredOutput().getHotspotPanel().addHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
 			}
 			return true;
 		}
@@ -93,7 +93,7 @@ public class Debugger {
 			} else {
 				exceptionName = "Exception";
 			}
-			getDebugger().getUnfilteredOutput().getHotspotPanel().createHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
+			getDebugger().getUnfilteredOutput().getHotspotPanel().addHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
 		}
 		return true;
 	}
