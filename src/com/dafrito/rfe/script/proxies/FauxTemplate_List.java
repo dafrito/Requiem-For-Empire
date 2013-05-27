@@ -3,8 +3,8 @@ package com.dafrito.rfe.script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.gui.debug.cache.CommonString;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;

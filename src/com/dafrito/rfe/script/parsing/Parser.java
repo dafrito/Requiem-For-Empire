@@ -15,8 +15,8 @@ import java.util.ListIterator;
 
 import com.bluespot.logic.iterators.LineIterator;
 import com.bluespot.logic.iterators.UnderlyingIOException;
-import com.dafrito.rfe.gui.debug.CommonString;
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.gui.debug.cache.CommonString;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.gui.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.gui.style.StylesheetBorderElement;

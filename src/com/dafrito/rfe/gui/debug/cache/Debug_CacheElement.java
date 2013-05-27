@@ -1,9 +1,9 @@
 /**
  * 
  */
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.gui.debug.cache;
 
-class Debug_CacheElement implements Comparable<Debug_CacheElement> {
+public class Debug_CacheElement implements Comparable<Debug_CacheElement> {
 	private int accesses = 1;
 	private Object data;
 
