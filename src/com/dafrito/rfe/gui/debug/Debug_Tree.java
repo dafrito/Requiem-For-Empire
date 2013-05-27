@@ -190,18 +190,14 @@ public class Debug_Tree extends JPanel {
 			pathList.add((Debug_TreeNode) path.getPath()[i]);
 		}
 		Debug_TreeNode node = this.currentNode.getRoot();
-		if (!node.equals(pathList.get(0))) {
-			assert false : "Invalid path (Roots do not match) Root: " + node.getData() + " OtherRoot: " + pathList.get(0);
-		}
+		assert node.equals(pathList.get(0)) : "Invalid path (Roots do not match) Root: " + node.getData() + " OtherRoot: " + pathList.get(0);
 		for (int i = 1; i < pathList.size(); i++) {
 			Debug_TreeNode pathNode = pathList.get(i); // first child
 			if (node.getNode(pathNode) != null) {
 				node = node.getNode(pathNode);
 				continue;
 			}
-			if (pathNode.getGroup() == null) {
-				assert false : "Invalid Path (PathNode has no group)";
-			}
+			assert pathNode.getGroup() != null : "Invalid Path (PathNode has no group)";
 			java.util.List<Debug_TreeNode> groupNodes = node.getNodesByData(pathNode.getGroup());
 			boolean flag = false;
 			for (Debug_TreeNode groupNode : groupNodes) {
@@ -213,9 +209,7 @@ public class Debug_Tree extends JPanel {
 					break;
 				}
 			}
-			if (!flag) {
-				assert false : "Invalid path (GroupNode could not be found)";
-			}
+			assert flag : "Invalid path (GroupNode could not be found)";
 		}
 		if (path instanceof NamedTreePath) {
 			path = new NamedTreePath(((NamedTreePath) path).getName(), pathList.toArray());
