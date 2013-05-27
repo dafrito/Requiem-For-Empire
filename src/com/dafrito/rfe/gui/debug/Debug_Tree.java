@@ -5,8 +5,8 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.LinkedList;
 
 import javax.swing.DefaultListModel;
@@ -21,7 +21,7 @@ import javax.swing.tree.TreePath;
 import com.dafrito.rfe.gui.debug.cache.CommonString;
 import com.dafrito.rfe.strings.NamedTreePath;
 
-public class Debug_Tree extends JPanel implements ActionListener, MouseListener {
+public class Debug_Tree extends JPanel {
 	private Debug_Filter filter;
 	private boolean isReloading = false;
 	private JTree tree;
@@ -39,25 +39,43 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 		this.popup.add(this.copySelectedNodeData = new JMenuItem("Copy Selected"));
 		this.popup.add(this.copySelectedNodeGroup = new JMenuItem("Copy Selected's Group"));
 
-		this.copySelectedNodeGroup.addActionListener(this);
-		this.copySelectedNodeData.addActionListener(this);
-		this.tree.addMouseListener(this);
-	}
+		this.copySelectedNodeGroup.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (getSelectedNode() == null || getSelectedNode().getGroup() == null) {
+					return;
+				}
+				StringSelection ss = new StringSelection(getSelectedNode().getGroup().toString());
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+			}
+		});
 
-	// ActionListener implementation
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(this.copySelectedNodeGroup)) {
-			if (this.getSelectedNode() != null && this.getSelectedNode().getGroup() != null) {
-				StringSelection ss = new StringSelection(this.getSelectedNode().getGroup().toString());
+		this.copySelectedNodeData.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (getSelectedNode() == null) {
+					return;
+				}
+				StringSelection ss = new StringSelection(getSelectedNode().getData().toString());
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
 			}
-		} else if (e.getSource().equals(this.copySelectedNodeData)) {
-			if (this.getSelectedNode() != null) {
-				StringSelection ss = new StringSelection(this.getSelectedNode().getData().toString());
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+		});
+
+		this.tree.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+				if (path != null) {
+					tree.setSelectionPath(path);
+				}
+				maybeShowPopup(e);
 			}
-		}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				maybeShowPopup(e);
+			}
+		});
 	}
 
 	// Node shiz
@@ -147,33 +165,6 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 			return;
 		}
 		this.popup.show(e.getComponent(), e.getX(), e.getY());
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-
-	// MouseListener implementation
-	@Override
-	public void mousePressed(MouseEvent e) {
-		TreePath path = this.tree.getPathForLocation(e.getX(), e.getY());
-		if (path != null) {
-			this.tree.setSelectionPath(path);
-		}
-		this.maybeShowPopup(e);
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		this.maybeShowPopup(e);
 	}
 
 	public void refresh() {
