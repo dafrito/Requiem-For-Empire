@@ -88,8 +88,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	private final JMenuItem addIgnoreFromList;
 	private final JMenuItem removeException;
 	private final JMenuItem removeIgnore;
-	private final JMenuItem addAssertionFailure;
-	private final JMenuItem removeAssertionFailure;
 	private final JRadioButtonMenuItem exceptionsMode;
 	private final JRadioButtonMenuItem ignoreMode;
 
@@ -218,10 +216,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		debugMenu.add(this.removeIgnore = new JMenuItem("Remove Ignore..."));
 		this.removeIgnore.addActionListener(this);
 		debugMenu.addSeparator();
-		debugMenu.add(this.addAssertionFailure = new JMenuItem("Add Assertion Failure"));
-		this.addAssertionFailure.addActionListener(this);
-		debugMenu.add(this.removeAssertionFailure = new JMenuItem("Remove Assertion Failure"));
-		this.removeAssertionFailure.addActionListener(this);
 
 		this.menuBar.add(this.listenerMenu);
 		this.listenerMenu.setMnemonic('L');
@@ -360,8 +354,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 				return;
 			}
 			this.ignores.remove(text.toString());
-		} else if (event.getSource().equals(this.addAssertionFailure)) {
-
 		} else if (event.getSource().equals(this.redo)) {
 			this.scriptElements.get(this.tabbedPane.getSelectedIndex() - 1).redo();
 		} else if (event.getSource().equals(this.compile) || event.getSource().equals(this.compileAndRun)) {
