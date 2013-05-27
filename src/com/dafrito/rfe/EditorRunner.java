@@ -23,7 +23,7 @@ public class EditorRunner implements Runnable {
 		if (!SwingUtilities.isEventDispatchThread()) {
 			throw new IllegalStateException("Runner must be run from EDT");
 		}
-		Components.LookAndFeel.NATIVE.activate();
+		Components.LookAndFeel.GTK.activate();
 		JFrame frame = new DebugEnvironment(800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Components.center(frame);
