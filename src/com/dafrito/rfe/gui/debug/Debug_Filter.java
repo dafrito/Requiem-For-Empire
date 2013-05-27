@@ -13,10 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 public class Debug_Filter extends JPanel implements ActionListener {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3002302090734581411L;
 	private JButton addFilter, removeFilter;
 	private DefaultListModel<Object> filters = new DefaultListModel<Object>();
 	private JList<Object> filterList;
@@ -100,4 +96,6 @@ public class Debug_Filter extends JPanel implements ActionListener {
 			this.isListening = node.getData().equals(this.filters.get(i)) || (node.getGroup() != null && node.getGroup().equals(this.filters.get(i)));
 		}
 	}
+
+	private static final long serialVersionUID = -3002302090734581411L;
 }

@@ -18,13 +18,10 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import com.dafrito.rfe.gui.debug.cache.CommonString;
 import com.dafrito.rfe.strings.NamedTreePath;
 
 public class Debug_Tree extends JPanel implements ActionListener, MouseListener {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8224462858092721477L;
 	private Debug_Filter filter;
 	private boolean isReloading = false;
 	private JTree tree;
@@ -237,4 +234,6 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 		this.tree.setSelectionPath(path);
 		this.tree.makeVisible(path);
 	}
+
+	private static final long serialVersionUID = 8224462858092721477L;
 }

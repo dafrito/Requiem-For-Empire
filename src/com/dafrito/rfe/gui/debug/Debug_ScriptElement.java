@@ -39,10 +39,6 @@ import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.strings.ExtensionFilter;
 
 public class Debug_ScriptElement extends JPanel implements UndoableEditListener, ListSelectionListener, ComponentListener, MouseListener {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1513897604566683983L;
 	private File file;
 	private boolean hasChanged, isValid;
 	private static int fileNumber = 1;
@@ -417,4 +413,6 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 		}
 		return false;
 	}
+
+	private static final long serialVersionUID = -1513897604566683983L;
 }

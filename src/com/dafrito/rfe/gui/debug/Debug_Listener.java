@@ -18,10 +18,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.tree.TreePath;
 
 public class Debug_Listener extends JPanel implements ActionListener, ComponentListener {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6965306788286409632L;
 	// Core stuff
 	private DebugEnvironment debugger;
 	private int width;
@@ -273,6 +269,8 @@ public class Debug_Listener extends JPanel implements ActionListener, ComponentL
 	public void setSynchronized(boolean isSynchronized) {
 		this.isSynchronized.setSelected(isSynchronized);
 	}
+
+	private static final long serialVersionUID = -6965306788286409632L;
 }
 
 class TreePathStruct {
