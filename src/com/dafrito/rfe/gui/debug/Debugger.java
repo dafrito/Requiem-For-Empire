@@ -21,7 +21,7 @@ public class Debugger {
 		return debugger;
 	}
 
-	public static DebugEnvironment.TreeBuildingInspector getDebugInspector() {
+	public static TreeBuildingInspector getDebugInspector() {
 		return debugger.getInspector();
 	}
 
