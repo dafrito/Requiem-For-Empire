@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.dafrito.rfe.gui.debug.cache;
 
 public class Debug_CacheElement implements Comparable<Debug_CacheElement> {
