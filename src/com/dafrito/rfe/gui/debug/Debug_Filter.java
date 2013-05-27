@@ -18,8 +18,8 @@ public class Debug_Filter extends JPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = -3002302090734581411L;
 	private JButton addFilter, removeFilter;
-	private DefaultListModel filters = new DefaultListModel();
-	private JList filterList;
+	private DefaultListModel<Object> filters = new DefaultListModel<Object>();
+	private JList<Object> filterList;
 	private boolean isListening;
 	private Debug_Listener listener;
 
@@ -31,7 +31,7 @@ public class Debug_Filter extends JPanel implements ActionListener {
 		filterButtons.setLayout(new GridLayout(2, 0));
 		filterButtons.add(this.addFilter = new JButton("Add Filter"));
 		filterButtons.add(this.removeFilter = new JButton("Remove Filter"));
-		this.add(new JScrollPane(this.filterList = new JList(this.filters)));
+		this.add(new JScrollPane(this.filterList = new JList<Object>(this.filters)));
 		this.addFilter.addActionListener(this);
 		this.removeFilter.addActionListener(this);
 	}
@@ -61,7 +61,7 @@ public class Debug_Filter extends JPanel implements ActionListener {
 		return true;
 	}
 
-	public DefaultListModel getFilters() {
+	public DefaultListModel<Object> getFilters() {
 		return this.filters;
 	}
 

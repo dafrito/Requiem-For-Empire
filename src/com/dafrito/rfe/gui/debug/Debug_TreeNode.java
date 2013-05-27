@@ -163,7 +163,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 		return this.unique;
 	}
 
-	public Debug_TreeNode filterByData(DefaultListModel data) {
+	public Debug_TreeNode filterByData(DefaultListModel<?> data) {
 		if (!this.isRoot()) {
 			return this.getRoot().filterByData(data);
 		}
@@ -203,7 +203,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 		}
 	}
 
-	public List<Debug_TreeNode> getChildrenByFilter(DefaultListModel data) {
+	public List<Debug_TreeNode> getChildrenByFilter(DefaultListModel<?> data) {
 		if (this.children == null) {
 			return Collections.emptyList();
 		}

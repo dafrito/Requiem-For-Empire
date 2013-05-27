@@ -92,7 +92,7 @@ public class Debug_Tree extends JPanel implements ActionListener, MouseListener 
 		return this.currentNode;
 	}
 
-	public Debug_TreeNode getDataByFilter(DefaultListModel data) {
+	public Debug_TreeNode getDataByFilter(DefaultListModel<Object> data) {
 		return this.currentNode.filterByData(data);
 	}
 

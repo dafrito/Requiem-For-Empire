@@ -51,7 +51,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	private Stack<CompoundEdit> edits = new Stack<CompoundEdit>();
 	private Stack<CompoundEdit> undoneEdits = new Stack<CompoundEdit>();
 	private long lastEdit;
-	private JList errors;
+	private JList<String> errors;
 	private JSplitPane splitPane;
 	private int width;
 	private List<Exception> exceptions;
@@ -81,7 +81,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	public void addException(Exception exception) {
 		this.exceptions.add(exception);
 		this.prefix = "X ";
-		this.errors.setListData(this.displayedExceptions.toArray());
+		this.errors.setListData(this.displayedExceptions.toArray(new String[0]));
 		this.errors.setBorder(BorderFactory.createTitledBorder(this.getFilename() + "(" + this.exceptions.size() + " error(s))"));
 		if (exception instanceof ScriptException) {
 			this.displayedExceptions.add(((ScriptException) exception).getName());
@@ -115,7 +115,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 
 	public boolean compile(ScriptEnvironment env) {
 		this.width = this.getWidth();
-		this.splitPane.setRightComponent(new JScrollPane(this.errors = new JList()));
+		this.splitPane.setRightComponent(new JScrollPane(this.errors = new JList<String>()));
 		this.splitPane.setDividerLocation(this.getWidth() - 200);
 		this.errors.addListSelectionListener(this);
 		this.errors.addMouseListener(this);
@@ -139,7 +139,7 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 					this.displayedExceptions.add(ex.getMessage());
 				}
 			}
-			this.errors.setListData(this.displayedExceptions.toArray());
+			this.errors.setListData(this.displayedExceptions.toArray(new String[0]));
 			this.errors.setBorder(BorderFactory.createTitledBorder(this.getName() + "(" + this.exceptions.size() + " error(s))"));
 			this.prefix = "X ";
 			return false;

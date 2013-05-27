@@ -22,14 +22,14 @@ public class Debug_Hotspots extends JPanel implements ActionListener, MouseListe
 	 */
 	private static final long serialVersionUID = -6430758815840883100L;
 	private Debug_Tree treePanel;
-	private DefaultListModel treePaths;
-	private JList hotspots;
+	private DefaultListModel<TreePath> treePaths;
+	private JList<TreePath> hotspots;
 	private JButton createHotspot, showHotspot, removeHotspot;
 
 	public Debug_Hotspots(Debug_Tree tree) {
 		this.treePanel = tree;
 		this.setLayout(new BorderLayout());
-		this.add(new JScrollPane(this.hotspots = new JList(this.treePaths = new DefaultListModel())));
+		this.add(new JScrollPane(this.hotspots = new JList<TreePath>(this.treePaths = new DefaultListModel<TreePath>())));
 		// Set up hotspot-buttons
 		JPanel hotspotButtons = new JPanel();
 		this.add(hotspotButtons, BorderLayout.NORTH);
@@ -47,7 +47,7 @@ public class Debug_Hotspots extends JPanel implements ActionListener, MouseListe
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource().equals(this.showHotspot)) {
 			if (this.hotspots.getSelectedValue() != null) {
-				this.getTreePanel().showTreePath((TreePath) this.hotspots.getSelectedValue());
+				this.getTreePanel().showTreePath(this.hotspots.getSelectedValue());
 			}
 		} else if (event.getSource().equals(this.createHotspot)) {
 			String string;
@@ -88,7 +88,7 @@ public class Debug_Hotspots extends JPanel implements ActionListener, MouseListe
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
 			if (this.hotspots.getSelectedValue() != null) {
-				this.getTreePanel().showTreePath((TreePath) this.hotspots.getSelectedValue());
+				this.getTreePanel().showTreePath(this.hotspots.getSelectedValue());
 			}
 		}
 	}
