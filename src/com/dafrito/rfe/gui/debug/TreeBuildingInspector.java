@@ -24,10 +24,6 @@ package com.dafrito.rfe.gui.debug;
 import java.util.ArrayList;
 
 public class TreeBuildingInspector {
-
-	/**
-	 * 
-	 */
 	private final DebugEnvironment debugEnvironment;
 
 	TreeBuildingInspector(DebugEnvironment debugEnvironment) {
