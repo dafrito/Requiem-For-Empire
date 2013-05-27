@@ -53,18 +53,7 @@ public class HotspotsPanel extends JPanel {
 			}
 		});
 
-		JButton showHotspot = new JButton("Show hotspot");
-		showHotspot.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (hotspots.getSelectedValue() != null) {
-					getTreePanel().showTreePath(hotspots.getSelectedValue());
-				}
-			}
-		});
-		hotspotButtons.add(showHotspot);
-
-		JButton createHotspot = new JButton("Create hotspot");
+		JButton createHotspot = new JButton("New hotspot...");
 		createHotspot.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
