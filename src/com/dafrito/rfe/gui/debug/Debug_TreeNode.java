@@ -58,14 +58,14 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	protected final Object dataCode, groupCode;
 
-	private int unique;
+	private int id;
 
 	protected MutableTreeNode parent, practicalParent;
 
 	protected List<Debug_TreeNode> children;
 
-	public Debug_TreeNode(int unique, Object group, Object data) {
-		this.unique = unique;
+	protected Debug_TreeNode(int id, Object group, Object data) {
+		this.id = id;
 		assert data != null;
 		if (group != null) {
 			if (group instanceof CommonString) {
@@ -141,7 +141,7 @@ public class Debug_TreeNode implements MutableTreeNode {
 	}
 
 	public Debug_TreeNode duplicate() {
-		Debug_TreeNode node = new Debug_TreeNode(this.getUnique(), this.getGroupCode(), this.getDataCode());
+		Debug_TreeNode node = new Debug_TreeNode(this.getID(), this.getGroupCode(), this.getDataCode());
 		for (Debug_TreeNode child : this.getChildren()) {
 			node.addChild(child.duplicate());
 		}
@@ -150,12 +150,12 @@ public class Debug_TreeNode implements MutableTreeNode {
 
 	@Override
 	public boolean equals(Object o) {
-		return this.unique == ((Debug_TreeNode) o).getUnique();
+		return this.id == ((Debug_TreeNode) o).getID();
 	}
 
 	@Override
 	public int hashCode() {
-		return this.unique;
+		return this.id;
 	}
 
 	public Debug_TreeNode filterByData(DefaultListModel<?> data) {
@@ -337,8 +337,8 @@ public class Debug_TreeNode implements MutableTreeNode {
 		return new NamedTreePath(name, this.getPathFromRoot(new LinkedList<MutableTreeNode>()).toArray());
 	}
 
-	public int getUnique() {
-		return this.unique;
+	public int getID() {
+		return this.id;
 	}
 
 	public boolean hasChildren() {
