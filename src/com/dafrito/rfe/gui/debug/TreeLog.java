@@ -22,7 +22,7 @@
 package com.dafrito.rfe.gui.debug;
 
 /**
- * A hierarchical log of events.
+ * A hierarchical log of {@link LogMessage} events.
  * 
  * @author Aaron Faanes
  * @param <T>
@@ -30,6 +30,12 @@ package com.dafrito.rfe.gui.debug;
  */
 public interface TreeLog<T> {
 
+	/**
+	 * Record the specified log message.
+	 * 
+	 * @param message
+	 *            the message to log. May be null.
+	 */
 	void log(LogMessage<? extends T> message);
 
 	/**
@@ -48,5 +54,8 @@ public interface TreeLog<T> {
 	 */
 	void enter(String scope, String scopeGroup);
 
+	/**
+	 * Leave the current scope.
+	 */
 	void leave();
 }

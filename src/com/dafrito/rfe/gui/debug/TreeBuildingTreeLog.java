@@ -26,6 +26,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
 /**
+ * A {@link TreeLog} that creates a {@link TreeModel}.
+ * 
  * @author Aaron Faanes
  * @param <T>
  *            the type of message
