@@ -372,7 +372,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		}
 	}
 
-	public void addExceptions(List<Exception> exceptions) {
+	public void addExceptions(List<? extends Exception> exceptions) {
 		for (Exception rawEx : exceptions) {
 			if (rawEx instanceof ScriptException && !((ScriptException) rawEx).isAnonymous()) {
 				ScriptException ex = (ScriptException) rawEx;
