@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.dafrito.rfe.gui.debug.cache.CommonString;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Inspection;
 import com.dafrito.rfe.inspect.Nodeable;
@@ -16,6 +17,8 @@ import com.dafrito.rfe.script.exceptions.ScriptException;
 
 public class Debugger {
 	private static DebugEnvironment debugger;
+
+	private static ProxyTreeLog<Object> masterLog = new ProxyTreeLog<Object>();
 
 	public static DebugEnvironment getDebugger() {
 		return debugger;
@@ -31,45 +34,80 @@ public class Debugger {
 		}
 	}
 
-	public static boolean openNode(Object string) {
-		openNode(null, string);
+	/**
+	 * Immediately add the specified log.
+	 * <p>
+	 * I use <? super Object> here simply to remind myself that this is the type
+	 * I want in case I change from using Object at some point in the future.
+	 * Since it's Object right now, it's equivalent to <Object>.
+	 * 
+	 * @param log
+	 *            the log to add
+	 * @see ProxyTreeLog#removeListener(TreeLog)
+	 */
+	public static void addListener(TreeLog<? super Object> log) {
+		masterLog.addListener(log);
+	}
+
+	/**
+	 * Immediately remove the specified log.
+	 * <p>
+	 * I use <? super Object> here simply to remind myself that this is the type
+	 * I want in case I change from using Object at some point in the future.
+	 * Since it's Object right now, it's equivalent to <Object>.
+	 * 
+	 * @param log
+	 *            the log to remove
+	 * @see ProxyTreeLog#removeListener(TreeLog)
+	 */
+	public static void removeListener(TreeLog<? super Object> log) {
+		masterLog.removeListener(log);
+	}
+
+	public static boolean openNode(CommonString scope) {
+		return openNode(scope.getText());
+	}
+
+	public static boolean openNode(String scope) {
+		openNode(null, scope);
 		return true;
 	}
 
-	public static boolean openNode(Object group, Object string) {
+	public static boolean openNode(String scopeGroup, String scope) {
 		if (getDebugger().isIgnoringThisThread()) {
 			return true;
 		}
-		getDebugInspector().openNode(new Debug_TreeNode(group, string));
+		masterLog.enter(scope, scopeGroup != null ? scopeGroup : scope);
+		getDebugInspector().openNode(new Debug_TreeNode(scopeGroup, scope));
 		return true;
 	}
 
-	public static boolean addNode(Object o) {
-		return addNode(null, o);
+	public static boolean addNode(Object message) {
+		return addNode(null, message);
 	}
 
-	public static boolean addNode(Object group, Object o) {
+	public static boolean addNode(Object scope, Object message) {
 		if (getDebugger().isIgnoringThisThread()) {
 			return true;
 		}
-		if (o == null) {
-			getDebugInspector().addNode(new Debug_TreeNode(group, "null"));
+		if (message == null) {
+			getDebugInspector().addNode(new Debug_TreeNode(scope, "null"));
 			return true;
 		}
-		if (o.getClass().isAnnotationPresent(Inspectable.class)) {
+		if (message.getClass().isAnnotationPresent(Inspectable.class)) {
 			NodeableInspector inspector = new NodeableInspector(getDebugInspector());
-			Inspection.reflect(inspector, o);
+			Inspection.reflect(inspector, message);
 			inspector.close();
 			return true;
 		}
-		if (o instanceof Nodeable) {
-			addNodeableNode(group, (Nodeable) o);
-			if (o instanceof Exception) {
+		if (message instanceof Nodeable) {
+			addNodeableNode(scope, (Nodeable) message);
+			if (message instanceof Exception) {
 				String exceptionName;
-				if (o instanceof ScriptException) {
-					exceptionName = ((ScriptException) o).getName();
-				} else if (o instanceof Exception_InternalError) {
-					exceptionName = ((Exception_InternalError) o).getMessage();
+				if (message instanceof ScriptException) {
+					exceptionName = ((ScriptException) message).getName();
+				} else if (message instanceof Exception_InternalError) {
+					exceptionName = ((Exception_InternalError) message).getMessage();
 				} else {
 					exceptionName = "Exception";
 				}
@@ -77,19 +115,20 @@ public class Debugger {
 			}
 			return true;
 		}
-		if (o instanceof Iterable<?>) {
-			return addCollectionNode((Iterable<?>) o);
+		if (message instanceof Iterable<?>) {
+			return addCollectionNode((Iterable<?>) message);
 		}
-		if (o instanceof Map<?, ?>) {
-			return addMapNode((Map<?, ?>) o);
+		if (message instanceof Map<?, ?>) {
+			return addMapNode((Map<?, ?>) message);
 		}
-		getDebugInspector().addNode(new Debug_TreeNode(group, o));
-		if (o instanceof Exception) {
+		masterLog.log(new LogMessage<Object>(message));
+		getDebugInspector().addNode(new Debug_TreeNode(scope, message));
+		if (message instanceof Exception) {
 			String exceptionName;
-			if (o instanceof ScriptException) {
-				exceptionName = ((ScriptException) o).getName();
-			} else if (o instanceof Exception_InternalError) {
-				exceptionName = ((Exception_InternalError) o).getMessage();
+			if (message instanceof ScriptException) {
+				exceptionName = ((ScriptException) message).getName();
+			} else if (message instanceof Exception_InternalError) {
+				exceptionName = ((Exception_InternalError) message).getMessage();
 			} else {
 				exceptionName = "Exception";
 			}
@@ -123,13 +162,17 @@ public class Debugger {
 		return true;
 	}
 
-	public static boolean addSnapNode(Object name, Object o) {
-		return addSnapNode(null, name, o);
+	public static boolean addSnapNode(CommonString scope, Object message) {
+		return addSnapNode(scope.getText(), message);
 	}
 
-	public static boolean addSnapNode(Object group, Object name, Object o) {
-		openNode(group, name);
-		addNode(o);
+	public static boolean addSnapNode(String scope, Object message) {
+		return addSnapNode(null, scope, message);
+	}
+
+	public static boolean addSnapNode(String scopeGroup, String scope, Object message) {
+		openNode(scopeGroup, scope);
+		addNode(message);
 		closeNode();
 		return true;
 	}
@@ -142,14 +185,14 @@ public class Debugger {
 		return true;
 	}
 
-	public static boolean closeNode(Object string) {
-		addNode(string);
+	public static boolean closeNode(Object message) {
+		addNode(message);
 		closeNode();
 		return true;
 	}
 
-	public static boolean closeNode(Object string, Object object) {
-		addSnapNode(string, object);
+	public static boolean closeNode(String scope, Object message) {
+		addSnapNode(scope, message);
 		closeNode();
 		return true;
 	}
@@ -159,7 +202,7 @@ public class Debugger {
 	}
 
 	public static void printException(Exception ex) {
-		System.out.println(ex);
+		System.err.println(ex);
 		if (ex instanceof ScriptException || ex instanceof Exception_InternalError) {
 			assert addNode("Exceptions and Errors", ex);
 		} else {

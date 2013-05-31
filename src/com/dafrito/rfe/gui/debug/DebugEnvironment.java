@@ -91,6 +91,8 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	private final JRadioButtonMenuItem exceptionsMode;
 	private final JRadioButtonMenuItem ignoreMode;
 
+	private final NewLogPanel<Object> logPanel = new NewLogPanel<Object>("Log Panel");
+
 	private final List<Debug_ScriptElement> scriptElements = new ArrayList<Debug_ScriptElement>();
 	private LogPanel filtering;
 	final Map<String, List<LogPanel>> filteredOutputMap = new HashMap<String, List<LogPanel>>();
@@ -231,6 +233,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.removeTab.addActionListener(this);
 
 		this.tabbedPane.add("Debug Output", this.filteredPanes);
+		this.filteredPanes.add("Log Output", this.logPanel);
 		this.filteredPanes.addChangeListener(this);
 
 		// Open all valid scripts in our working directory
@@ -291,7 +294,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		} else if (event.getSource().equals(this.reset)) {
 			this.reset();
 		} else if (event.getSource().equals(this.clearTab)) {
-			((LogPanel) this.filteredPanes.getSelectedComponent()).clearTab();
+			((LogPanel) this.filteredPanes.getSelectedComponent()).clear();
 		} else if (event.getSource().equals(this.removeTab)) {
 			((LogPanel) this.filteredPanes.getSelectedComponent()).removeTab();
 			this.filteredOutputMap.get(((LogPanel) this.filteredPanes.getSelectedComponent()).getThreadName()).remove(this.filteredPanes.getSelectedComponent());

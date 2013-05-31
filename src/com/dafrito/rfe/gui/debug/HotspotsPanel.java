@@ -103,7 +103,7 @@ public class HotspotsPanel extends JPanel {
 		return this.treePanel;
 	}
 
-	public void reset() {
+	public void clear() {
 		this.hotspotPaths.clear();
 	}
 
