@@ -29,6 +29,7 @@ import javax.swing.event.ChangeListener;
 
 import com.dafrito.rfe.geom.PolygonPipeline;
 import com.dafrito.rfe.geom.SplitterThread;
+import com.dafrito.rfe.gui.script.ScriptPanel;
 import com.dafrito.rfe.script.CompileThread;
 import com.dafrito.rfe.script.ExecutionThread;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -93,7 +94,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 
 	private final LogTreePanel<Object> logPanel = new LogTreePanel<Object>("Log Panel");
 
-	private final List<Debug_ScriptElement> scriptElements = new ArrayList<Debug_ScriptElement>();
+	private final List<ScriptPanel> scriptElements = new ArrayList<ScriptPanel>();
 	private LogPanel filtering;
 	final Map<String, List<LogPanel>> filteredOutputMap = new HashMap<String, List<LogPanel>>();
 	private String priorityExecutingClass;
@@ -243,7 +244,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		File[] files = folder.listFiles(filter);
 		for (File file : files) {
 			if (file.isFile()) {
-				this.addReferenced(new Debug_ScriptElement(this, file));
+				this.addReferenced(new ScriptPanel(this, file));
 			}
 		}
 	}
@@ -252,12 +253,12 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (event.getActionCommand().equals("Exit")) {
-			java.util.List<Debug_ScriptElement> removedElements = new LinkedList<Debug_ScriptElement>();
+			java.util.List<ScriptPanel> removedElements = new LinkedList<ScriptPanel>();
 			int index = this.tabbedPane.getSelectedIndex();
 			for (; this.scriptElements.size() > 0;) {
-				Debug_ScriptElement element = this.scriptElements.get(0);
+				ScriptPanel element = this.scriptElements.get(0);
 				if (!element.closeFile()) {
-					for (Debug_ScriptElement added : removedElements) {
+					for (ScriptPanel added : removedElements) {
 						this.scriptElements.add(0, added);
 						this.tabbedPane.add(added, 1);
 					}
@@ -270,9 +271,9 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			}
 			System.exit(0);
 		} else if (event.getSource().equals(this.newFile)) {
-			this.addReferenced(new Debug_ScriptElement(this, (String) null));
+			this.addReferenced(new ScriptPanel(this, (String) null));
 		} else if (event.getSource().equals(this.openFile)) {
-			Debug_ScriptElement element = new Debug_ScriptElement(this);
+			ScriptPanel element = new ScriptPanel(this);
 			if (element.hasFile()) {
 				this.addReferenced(element);
 			}
@@ -402,7 +403,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		return output;
 	}
 
-	public void addReferenced(Debug_ScriptElement element) {
+	public void addReferenced(ScriptPanel element) {
 		this.tabbedPane.add(element.getName(), element);
 		this.scriptElements.add(element);
 		this.tabbedPane.setSelectedIndex(this.tabbedPane.getComponents().length - 1);
@@ -425,8 +426,8 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		return this.priorityExecutingClass;
 	}
 
-	public Debug_ScriptElement getReferenced(String name) {
-		for (Debug_ScriptElement element : this.scriptElements) {
+	public ScriptPanel getReferenced(String name) {
+		for (ScriptPanel element : this.scriptElements) {
 			if (element.getFilename().equals(name)) {
 				return element;
 			}
@@ -434,7 +435,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		throw new IllegalArgumentException("Script element not found: " + name);
 	}
 
-	public List<Debug_ScriptElement> getScriptElements() {
+	public List<ScriptPanel> getScriptElements() {
 		return this.scriptElements;
 	}
 
@@ -518,7 +519,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.reset.setEnabled(true);
 	}
 
-	public void resetTitle(Debug_ScriptElement element) {
+	public void resetTitle(ScriptPanel element) {
 		this.tabbedPane.setTitleAt(this.scriptElements.indexOf(element) + 1, element.getName());
 	}
 
@@ -556,7 +557,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.tabbedPane.setTitleAt(i, title);
 	}
 
-	public void showReferenced(Debug_ScriptElement element) {
+	public void showReferenced(ScriptPanel element) {
 		this.tabbedPane.setSelectedIndex(this.scriptElements.indexOf(element) + 1);
 	}
 

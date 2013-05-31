@@ -6,8 +6,8 @@ package com.dafrito.rfe.script;
 import java.util.List;
 
 import com.dafrito.rfe.gui.debug.DebugEnvironment;
-import com.dafrito.rfe.gui.debug.Debug_ScriptElement;
 import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.gui.script.ScriptPanel;
 import com.dafrito.rfe.script.parsing.Parser;
 
 public class CompileThread extends Thread {
@@ -32,7 +32,7 @@ public class CompileThread extends Thread {
 			Parser.clearPreparseLists();
 			boolean compilationFailed = true;
 			for (int i = 0; i < this.debugEnvironment.getScriptElements().size(); i++) {
-				Debug_ScriptElement element = this.debugEnvironment.getScriptElements().get(i);
+				ScriptPanel element = this.debugEnvironment.getScriptElements().get(i);
 				element.saveFile();
 				if (!element.compile(this.scriptEnvironment)) {
 					compilationFailed = false;

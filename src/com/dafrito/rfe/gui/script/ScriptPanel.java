@@ -1,4 +1,4 @@
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.gui.script;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -32,13 +32,14 @@ import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.CompoundEdit;
 
+import com.dafrito.rfe.gui.debug.DebugEnvironment;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.strings.ExtensionFilter;
 
-public class Debug_ScriptElement extends JPanel implements UndoableEditListener, ListSelectionListener, ComponentListener, MouseListener {
+public class ScriptPanel extends JPanel implements UndoableEditListener, ListSelectionListener, ComponentListener, MouseListener {
 	private File file;
 	private boolean hasChanged, isValid;
 	private static int fileNumber = 1;
@@ -54,19 +55,19 @@ public class Debug_ScriptElement extends JPanel implements UndoableEditListener,
 	private List<String> displayedExceptions;
 	private String prefix = "";
 
-	public Debug_ScriptElement(DebugEnvironment debugger) {
+	public ScriptPanel(DebugEnvironment debugger) {
 		this.debugger = debugger;
 		if (this.selectFile(false)) {
 			this.isValid = this.openFile();
 		}
 	}
 
-	public Debug_ScriptElement(DebugEnvironment debugger, File file) {
+	public ScriptPanel(DebugEnvironment debugger, File file) {
 		this.debugger = debugger;
 		this.isValid = this.openFile(file);
 	}
 
-	public Debug_ScriptElement(DebugEnvironment debugger, String string) {
+	public ScriptPanel(DebugEnvironment debugger, String string) {
 		this.debugger = debugger;
 		if (string != null) {
 			this.file = new File(string);
