@@ -236,11 +236,19 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.filteredPanes.add("Log Output", this.logPanel);
 		this.filteredPanes.addChangeListener(this);
 
-		// Open all valid scripts in our working directory
-		File folder = new File(".");
+		openScripts(new File("."));
+	}
+
+	/**
+	 * Open all scripts in the specified directory. This will not recurse.
+	 * 
+	 * @param directory
+	 *            the directory to open
+	 */
+	public void openScripts(File directory) {
 		ExtensionFilter filter = new ExtensionFilter();
 		filter.addExtension("RiffScript");
-		File[] files = folder.listFiles(filter);
+		File[] files = directory.listFiles(filter);
 		for (File file : files) {
 			if (file.isFile()) {
 				this.addReferenced(new ScriptPanel(this, file));
