@@ -106,33 +106,6 @@ public class LogPanel extends JPanel {
 		}
 	}
 
-	public void sendToFilter() {
-		if (this.debugger.getFilteringOutput() == null) {
-			LogPanel listener;
-			listener = this.createListener();
-			if (listener == null) {
-				JOptionPane.showMessageDialog(null, "No filtering output defined.", "Undefined Filter", JOptionPane.WARNING_MESSAGE);
-			}
-			return;
-		}
-		Object[] array = null;
-		Object value = null;
-		Debug_TreeNode selected = this.getTreePanel().getSelectedNode();
-		if (selected != null) {
-			value = selected.getData().toString();
-			if (selected.getGroup() != null) {
-				value = selected.getGroup();
-				array = new Object[2];
-				array[0] = selected.getGroup();
-				array[1] = selected.getData();
-			}
-		}
-		Object obj = JOptionPane.showInputDialog(this, "Insert New Filter", "Adding Filter", JOptionPane.QUESTION_MESSAGE, null, array, value);
-		if (obj != null) {
-			this.debugger.getFilteringOutput().getTreePanel().getFilter().addFilter(obj);
-		}
-	}
-
 	public void clear() {
 		this.hotspotPanel.clear();
 		this.treePanel.reset();
