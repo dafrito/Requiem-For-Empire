@@ -101,9 +101,6 @@ public class LogPanel extends JPanel {
 			output.setSource(this.source);
 			output.clear();
 		}
-		if (this.debugger.getFilteringOutput() != null && this.debugger.getFilteringOutput().equals(this)) {
-			this.debugger.setFilteringOutput(null);
-		}
 	}
 
 	public void clear() {

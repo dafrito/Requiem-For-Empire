@@ -95,7 +95,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	private final LogTreePanel<Object> logPanel = new LogTreePanel<Object>("Log Panel");
 
 	private final List<ScriptPanel> scriptElements = new ArrayList<ScriptPanel>();
-	private LogPanel filtering;
 	final Map<String, List<LogPanel>> filteredOutputMap = new HashMap<String, List<LogPanel>>();
 	private String priorityExecutingClass;
 
@@ -418,10 +417,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 		this.filteredPanes.setSelectedIndex(this.filteredPanes.indexOfComponent(output));
 	}
 
-	public LogPanel getFilteringOutput() {
-		return this.filtering;
-	}
-
 	public String getPriorityExecutingClass() {
 		return this.priorityExecutingClass;
 	}
@@ -539,10 +534,6 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	public void setExceptionsMode(boolean value) {
 		this.exceptionsMode.setSelected(value);
 		this.ignoreMode.setSelected(!value);
-	}
-
-	public void setFilteringOutput(LogPanel output) {
-		this.filtering = output;
 	}
 
 	public void setPriorityExecutingClass(String template) {
