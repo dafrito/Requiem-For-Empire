@@ -103,15 +103,7 @@ public class Debugger {
 		if (message instanceof Nodeable) {
 			addNodeableNode(scope, (Nodeable) message);
 			if (message instanceof Exception) {
-				String exceptionName;
-				if (message instanceof ScriptException) {
-					exceptionName = ((ScriptException) message).getName();
-				} else if (message instanceof Exception_InternalError) {
-					exceptionName = ((Exception_InternalError) message).getMessage();
-				} else {
-					exceptionName = "Exception";
-				}
-				getDebugger().getUnfilteredOutput().getHotspotPanel().addHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
+				registerHotspot((Exception) message);
 			}
 			return true;
 		}
@@ -123,18 +115,23 @@ public class Debugger {
 		}
 		masterLog.log(new LogMessage<Object>(message));
 		getDebugInspector().addNode(new Debug_TreeNode(scope, message));
+
 		if (message instanceof Exception) {
-			String exceptionName;
-			if (message instanceof ScriptException) {
-				exceptionName = ((ScriptException) message).getName();
-			} else if (message instanceof Exception_InternalError) {
-				exceptionName = ((Exception_InternalError) message).getMessage();
-			} else {
-				exceptionName = "Exception";
-			}
-			getDebugger().getUnfilteredOutput().getHotspotPanel().addHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
+			registerHotspot((Exception) message);
 		}
 		return true;
+	}
+
+	private static void registerHotspot(Exception exception) {
+		String exceptionName;
+		if (exception instanceof ScriptException) {
+			exceptionName = ((ScriptException) exception).getName();
+		} else if (exception instanceof Exception_InternalError) {
+			exceptionName = ((Exception_InternalError) exception).getMessage();
+		} else {
+			exceptionName = "Exception";
+		}
+		getDebugger().getUnfilteredOutput().getHotspotPanel().addHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
 	}
 
 	public static boolean addNodeableNode(Object group, Nodeable nodeable) {
