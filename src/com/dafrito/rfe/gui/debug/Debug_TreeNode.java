@@ -199,7 +199,8 @@ public class Debug_TreeNode implements MutableTreeNode {
 		for (Debug_TreeNode node : this.getChildren()) {
 			flag = false;
 			for (int i = 0; i < data.size(); i++) {
-				if (node.getData().equals(data.get(i)) || (node.getGroup() != null && node.getGroup().equals(data.get(i)))) {
+				Object item = data.get(i);
+				if (node.getData().equals(item) || (node.getGroup() != null && node.getGroup().equals(item))) {
 					filtered.add(new Debug_TreeNode_Orphaned(node));
 					flag = true;
 					break;
