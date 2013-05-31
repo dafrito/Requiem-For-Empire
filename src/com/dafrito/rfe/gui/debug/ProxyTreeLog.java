@@ -21,8 +21,8 @@
  */
 package com.dafrito.rfe.gui.debug;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A {@link TreeLog} that distpatches events to other logs.
@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class ProxyTreeLog<T> implements TreeLog<T> {
 
-	List<TreeLog<? super T>> listeners = new ArrayList<>();
+	List<TreeLog<? super T>> listeners = new CopyOnWriteArrayList<>();
 
 	public void addListener(TreeLog<? super T> log) {
 		listeners.add(log);
