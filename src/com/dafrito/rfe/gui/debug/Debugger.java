@@ -91,8 +91,7 @@ public class Debugger {
 			return true;
 		}
 		if (message == null) {
-			getDebugInspector().addNode(new Debug_TreeNode(scope, "null"));
-			return true;
+			return addNode(scope, "null");
 		}
 		if (message.getClass().isAnnotationPresent(Inspectable.class)) {
 			NodeableInspector inspector = new NodeableInspector(getDebugInspector());
