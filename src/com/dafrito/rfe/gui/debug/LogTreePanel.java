@@ -33,13 +33,13 @@ import javax.swing.JTree;
  *            The type of logged message
  * 
  */
-public class NewLogPanel<T> extends JPanel {
+public class LogTreePanel<T> extends JPanel {
 
 	private final JTree messages = new JTree();
 
 	private final TreeBuildingTreeLog<T> log;
 
-	public NewLogPanel(T name) {
+	public LogTreePanel(T name) {
 		log = new TreeBuildingTreeLog<T>(name);
 
 		messages.setModel(log.getModel());

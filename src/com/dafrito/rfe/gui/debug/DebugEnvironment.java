@@ -91,7 +91,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 	private final JRadioButtonMenuItem exceptionsMode;
 	private final JRadioButtonMenuItem ignoreMode;
 
-	private final NewLogPanel<Object> logPanel = new NewLogPanel<Object>("Log Panel");
+	private final LogTreePanel<Object> logPanel = new LogTreePanel<Object>("Log Panel");
 
 	private final List<Debug_ScriptElement> scriptElements = new ArrayList<Debug_ScriptElement>();
 	private LogPanel filtering;
