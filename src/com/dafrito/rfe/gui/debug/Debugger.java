@@ -78,9 +78,6 @@ public class Debugger {
 	}
 
 	public static boolean openNode(String scopeGroup, String scope) {
-		if (getDebugger().isIgnoringThisThread()) {
-			return true;
-		}
 		masterLog.enter(scope, scopeGroup != null ? scopeGroup : scope);
 		return true;
 	}
@@ -90,9 +87,6 @@ public class Debugger {
 	}
 
 	public static boolean addNode(Object scope, Object message) {
-		if (getDebugger().isIgnoringThisThread()) {
-			return true;
-		}
 		if (message == null) {
 			return addNode(scope, "null");
 		}
@@ -179,9 +173,6 @@ public class Debugger {
 	}
 
 	public static boolean closeNode() {
-		if (getDebugger().isIgnoringThisThread()) {
-			return true;
-		}
 		masterLog.leave();
 		return true;
 	}
