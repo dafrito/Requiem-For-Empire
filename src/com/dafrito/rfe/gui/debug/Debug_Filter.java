@@ -24,7 +24,7 @@ public class Debug_Filter extends JPanel implements ActionListener {
 		this.setLayout(new BorderLayout());
 		JPanel filterButtons = new JPanel();
 		this.add(filterButtons, BorderLayout.NORTH);
-		filterButtons.setLayout(new GridLayout(2, 0));
+		filterButtons.setLayout(new GridLayout(filterButtons.getComponentCount(), 0));
 		filterButtons.add(this.addFilter = new JButton("Add Filter"));
 		filterButtons.add(this.removeFilter = new JButton("Remove Filter"));
 		this.add(new JScrollPane(this.filterList = new JList<Object>(this.filters)));
