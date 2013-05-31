@@ -58,7 +58,7 @@ public interface Inspector<T> {
 	 * @param note
 	 *            the comment that is made
 	 */
-	public void comment(String note);
+	public void comment(T note);
 
 	/**
 	 * Freeze this inspector, so any construction that's taken place can be

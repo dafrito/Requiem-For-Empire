@@ -102,7 +102,7 @@ public class Debugger {
 			return addNode(scope, "null");
 		}
 		if (message.getClass().isAnnotationPresent(Inspectable.class)) {
-			NodeableInspector inspector = new NodeableInspector(getDebugInspector());
+			NodeableInspector<Object> inspector = new NodeableInspector<Object>(masterLog);
 			Inspection.reflect(inspector, message);
 			inspector.close();
 			return true;

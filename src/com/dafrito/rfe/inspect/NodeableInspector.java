@@ -3,8 +3,8 @@
  */
 package com.dafrito.rfe.inspect;
 
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.gui.debug.TreeBuildingInspector;
+import com.dafrito.rfe.gui.debug.LogMessage;
+import com.dafrito.rfe.gui.debug.TreeLog;
 
 /**
  * An {@link Inspector} that records nodes using an underlying
@@ -13,65 +13,62 @@ import com.dafrito.rfe.gui.debug.TreeBuildingInspector;
  * framework.
  * 
  * @author Aaron Faanes
+ * @param <Message>
+ *            the type of log message
  * 
  */
-public class NodeableInspector implements Inspector<Object> {
+public class NodeableInspector<Message> implements Inspector<Message> {
 
-	private final TreeBuildingInspector builder;
+	private final TreeLog<? super Message> log;
 
 	private boolean frozen = false;
 
-	private NodeableInspector child;
+	private NodeableInspector<Message> child;
 
 	/**
 	 * Create a new {@link NodeableInspector} using the specified tree-builder.
 	 * 
-	 * @param builder
-	 *            the underlying builder. It's not used completely yet.
+	 * @param log
+	 *            the log that receives our inspected values
 	 */
-	public NodeableInspector(TreeBuildingInspector builder) {
-		if (builder == null) {
+	public NodeableInspector(TreeLog<? super Message> log) {
+		if (log == null) {
 			throw new NullPointerException("debugger must not be null");
 		}
-		this.builder = builder;
+		this.log = log;
 	}
 
 	@Override
-	public void field(String name, Object value) {
+	public void field(String name, Message value) {
 		this.ensureUnfrozen();
 		this.closeChild();
-		if (value instanceof Integer) {
-			// XXX This is a hack since we use Integer values as keys
-			// to cached entries. Since Inspector doesn't know anything about
-			// caching, we force the value to a string here.
-			//
-			// Once we get caching sorted out, we can remove this code.
-			value = value.toString();
-		}
-		assert Debugger.addSnapNode(name, value);
+		log.enter(name, null);
+		log.log(new LogMessage<Message>(value));
+		log.leave();
 	}
 
 	@Override
-	public void value(Object value) {
+	public void value(Message value) {
 		this.ensureUnfrozen();
 		this.closeChild();
-		assert Debugger.addNode(value);
+		log.log(new LogMessage<Message>(value));
 	}
 
 	@Override
-	public Inspector<Object> group(String groupName) {
+	public Inspector<Message> group(String groupName) {
 		this.ensureUnfrozen();
 		this.closeChild();
-		this.child = new NodeableInspector(this.builder);
-		assert Debugger.openNode(groupName);
+		this.child = new NodeableInspector<Message>(log);
+
+		log.enter(groupName, null);
 		return this.child;
 	}
 
 	@Override
-	public void comment(String note) {
+	public void comment(Message note) {
 		this.ensureUnfrozen();
 		this.closeChild();
-		assert Debugger.addNode(note);
+		log.log(new LogMessage<Message>(note));
 	}
 
 	private void ensureUnfrozen() {
@@ -93,7 +90,7 @@ public class NodeableInspector implements Inspector<Object> {
 		if (this.child == null) {
 			return;
 		}
-		this.builder.closeNode();
+		this.log.leave();
 		this.child.close();
 		this.child = null;
 	}

@@ -26,7 +26,7 @@ public class NoopInspector<T> implements Inspector<T> {
 	}
 
 	@Override
-	public void comment(String note) {
+	public void comment(T note) {
 	}
 
 	@Override
