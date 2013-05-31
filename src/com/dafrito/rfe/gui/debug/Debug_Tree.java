@@ -90,9 +90,6 @@ public class Debug_Tree extends JPanel {
 	public void closeNode() {
 		this.currentNode = (Debug_TreeNode) this.currentNode.getPracticalParent();
 		assert this.currentNode != null : "CurrentNode is null after closeNode - potentially a redundant closenode has caused us to leave the tree.";
-		if (this.currentNode.isRoot()) {
-			this.getFilter().setListening(false);
-		}
 	}
 
 	public Object[] getAvailableFilterArray() {

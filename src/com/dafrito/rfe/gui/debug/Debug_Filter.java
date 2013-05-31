@@ -16,7 +16,6 @@ public class Debug_Filter extends JPanel implements ActionListener {
 	private JButton addFilter, removeFilter;
 	private DefaultListModel<Object> filters = new DefaultListModel<Object>();
 	private JList<Object> filterList;
-	private boolean isListening;
 	private LogPanel listener;
 
 	public Debug_Filter(LogPanel listener) {
@@ -49,12 +48,8 @@ public class Debug_Filter extends JPanel implements ActionListener {
 		}
 	}
 
-	public boolean addFilter(Object filter) {
-		if (filter == null || this.getListener().getDebugger().isFilterUsed(filter.toString(), this.listener.getThreadName()) != null) {
-			return false;
-		}
+	public void addFilter(Object filter) {
 		this.filters.add(this.filters.size(), filter);
-		return true;
 	}
 
 	public DefaultListModel<Object> getFilters() {
@@ -72,26 +67,6 @@ public class Debug_Filter extends JPanel implements ActionListener {
 			}
 		}
 		return false;
-	}
-
-	public boolean isListening() {
-		if (this.getListener().isUnfiltered()) {
-			return true;
-		}
-		return this.isListening;
-	}
-
-	public void setListening(boolean listening) {
-		this.isListening = listening;
-	}
-
-	public void sniffNode(Debug_TreeNode node) {
-		for (int i = 0; i < this.filters.size(); i++) {
-			if (this.isListening == true) {
-				return;
-			}
-			this.isListening = node.getData().equals(this.filters.get(i)) || (node.getGroup() != null && node.getGroup().equals(this.filters.get(i)));
-		}
 	}
 
 	private static final long serialVersionUID = -3002302090734581411L;

@@ -30,10 +30,6 @@ public class Debugger {
 		return debugger;
 	}
 
-	public static TreeBuildingInspector getDebugInspector() {
-		return debugger.getInspector();
-	}
-
 	public static void setDebugger(DebugEnvironment debugger) {
 		if (Debugger.debugger == null) {
 			Debugger.debugger = debugger;
@@ -86,7 +82,6 @@ public class Debugger {
 			return true;
 		}
 		masterLog.enter(scope, scopeGroup != null ? scopeGroup : scope);
-		getDebugInspector().openNode(new Debug_TreeNode(scopeGroup, scope));
 		return true;
 	}
 
@@ -121,7 +116,6 @@ public class Debugger {
 			return addMapNode((Map<?, ?>) message);
 		}
 		masterLog.log(new LogMessage<Object>(message));
-		getDebugInspector().addNode(new Debug_TreeNode(scope, message));
 
 		if (message instanceof Exception) {
 			registerHotspot((Exception) message);
@@ -129,6 +123,8 @@ public class Debugger {
 		return true;
 	}
 
+	// TODO Remove this warning when we're ready to reimplement hotspots
+	@SuppressWarnings("unused")
 	private static void registerHotspot(Exception exception) {
 		String exceptionName;
 		if (exception instanceof ScriptException) {
@@ -138,7 +134,8 @@ public class Debugger {
 		} else {
 			exceptionName = "Exception";
 		}
-		getDebugger().getUnfilteredOutput().getHotspotPanel().addHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
+		// TODO Reimplement hotspots
+		// getDebugger().getUnfilteredOutput().getHotspotPanel().addHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
 	}
 
 	public static boolean addNodeableNode(Object group, Nodeable nodeable) {
@@ -186,7 +183,6 @@ public class Debugger {
 			return true;
 		}
 		masterLog.leave();
-		getDebugInspector().closeNode();
 		return true;
 	}
 

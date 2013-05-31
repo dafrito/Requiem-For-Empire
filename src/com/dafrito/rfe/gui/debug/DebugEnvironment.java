@@ -578,10 +578,4 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			this.setCanRedo(this.scriptElements.get(this.tabbedPane.getSelectedIndex() - 1).canRedo());
 		}
 	}
-
-	private final TreeBuildingInspector inspector = new TreeBuildingInspector(this);
-
-	public TreeBuildingInspector getInspector() {
-		return this.inspector;
-	}
 }
