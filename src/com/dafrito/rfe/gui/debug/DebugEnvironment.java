@@ -400,7 +400,7 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 			this.focusOnOutput(this.isFilterUsed(filter, source.getThreadName()));
 			return null;
 		}
-		LogPanel output = new LogPanel(source.getThreadName(), this, source, filter.toString());
+		LogPanel output = new LogPanel(source.getThreadName(), this, source);
 		output.getTreePanel().getFilter().addFilter(filter);
 		output.getTreePanel().refresh();
 		source.addChildOutput(output);

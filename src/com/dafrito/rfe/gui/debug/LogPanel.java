@@ -26,7 +26,7 @@ public class LogPanel extends JPanel {
 	protected boolean isListening = false;
 	private String threadName;
 
-	public LogPanel(String threadName, DebugEnvironment debugger, LogPanel source, String name) {
+	public LogPanel(String threadName, DebugEnvironment debugger, LogPanel source) {
 		this.threadName = threadName;
 		this.treePanel = new Debug_Tree(new Debug_Filter(this));
 		this.debugger = debugger;
