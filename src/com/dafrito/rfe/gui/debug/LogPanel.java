@@ -23,8 +23,9 @@ public class LogPanel extends JPanel {
 	private Debug_Tree treePanel;
 	private HotspotsPanel hotspotPanel;
 	private LogPanel source;
-	private java.util.List<LogPanel> childOutputs = new LinkedList<LogPanel>();
-	protected boolean isListening = false;
+
+	private List<LogPanel> childOutputs = new LinkedList<LogPanel>();
+
 	private String threadName;
 
 	public LogPanel(String threadName, DebugEnvironment debugger, LogPanel source) {
@@ -111,10 +112,6 @@ public class LogPanel extends JPanel {
 
 	public void setSource(LogPanel source) {
 		this.source = source;
-	}
-
-	public DebugEnvironment getDebugger() {
-		return this.debugger;
 	}
 
 	public HotspotsPanel getHotspotPanel() {
