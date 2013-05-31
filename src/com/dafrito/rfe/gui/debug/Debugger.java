@@ -177,6 +177,7 @@ public class Debugger {
 		if (getDebugger().isIgnoringThisThread()) {
 			return true;
 		}
+		masterLog.leave();
 		getDebugInspector().closeNode();
 		return true;
 	}
