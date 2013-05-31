@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.bluespot.logic.actors.Actor;
 import com.dafrito.rfe.gui.debug.cache.CommonString;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Inspection;
@@ -18,7 +19,12 @@ import com.dafrito.rfe.script.exceptions.ScriptException;
 public class Debugger {
 	private static DebugEnvironment debugger;
 
-	private static ProxyTreeLog<Object> masterLog = new ProxyTreeLog<Object>();
+	private static final ThreadLocalTreeLog<Object, ProxyTreeLog<Object>> masterLog = new ThreadLocalTreeLog<Object, ProxyTreeLog<Object>>() {
+		@Override
+		protected ProxyTreeLog<? super Object> newTreeLog(Thread thread) {
+			return new ProxyTreeLog<>();
+		}
+	};
 
 	public static DebugEnvironment getDebugger() {
 		return debugger;
@@ -35,18 +41,20 @@ public class Debugger {
 	}
 
 	/**
-	 * Immediately add the specified log.
+	 * Immediately add the specified listener. See
+	 * {@link ThreadLocalTreeLog#addListener(Actor)} for details.
 	 * <p>
 	 * I use <? super Object> here simply to remind myself that this is the type
 	 * I want in case I change from using Object at some point in the future.
 	 * Since it's Object right now, it's equivalent to <Object>.
 	 * 
-	 * @param log
-	 *            the log to add
+	 * @param listener
+	 *            the listener that will receive new logs for every thread
+	 * @see ThreadLocalTreeLog#addListener(Actor)
 	 * @see ProxyTreeLog#removeListener(TreeLog)
 	 */
-	public static void addListener(TreeLog<? super Object> log) {
-		masterLog.addListener(log);
+	public static void addListener(Actor<? super ProxyTreeLog<? super Object>> listener) {
+		masterLog.addListener(listener);
 	}
 
 	/**
@@ -56,12 +64,12 @@ public class Debugger {
 	 * I want in case I change from using Object at some point in the future.
 	 * Since it's Object right now, it's equivalent to <Object>.
 	 * 
-	 * @param log
-	 *            the log to remove
-	 * @see ProxyTreeLog#removeListener(TreeLog)
+	 * @param listener
+	 *            the listener to remove
+	 * @see ThreadLocalTreeLog#removeListener(Actor)
 	 */
-	public static void removeListener(TreeLog<? super Object> log) {
-		masterLog.removeListener(log);
+	public static void removeListener(Actor<? super ProxyTreeLog<? super Object>> listener) {
+		masterLog.removeListener(listener);
 	}
 
 	public static boolean openNode(CommonString scope) {
