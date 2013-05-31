@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -18,8 +17,7 @@ import javax.swing.tree.TreePath;
 public class LogPanel extends JPanel {
 	private DebugEnvironment debugger;
 
-	private JCheckBox isSynchronized, isCapturing, defaultFilter;
-	private JButton sendToFilter, createListener, refresh, jump;
+	private JButton createFilter, jump;
 
 	private Debug_Tree treePanel;
 	private HotspotsPanel hotspotPanel;
@@ -50,61 +48,16 @@ public class LogPanel extends JPanel {
 		hotspotAndFiltersPanel.add("Filters", this.treePanel.getFilter());
 		mainPanel.setRightComponent(hotspotAndFiltersPanel);
 
-		createListener = new JButton("Create Listener");
-		createListener.addActionListener(new ActionListener() {
+		createFilter = new JButton("Create filter");
+		createFilter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				createListener();
 			}
 		});
-		buttons.add(createListener);
+		buttons.add(createFilter);
 
-		sendToFilter = new JButton("Send to Filter");
-		sendToFilter.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				sendToFilter();
-			}
-		});
-		buttons.add(sendToFilter);
-
-		refresh = new JButton("Refresh");
-		refresh.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				getTreePanel().refresh();
-			}
-		});
-		buttons.add(refresh);
-
-		isSynchronized = new JCheckBox("Synchronized");
-		buttons.add(isSynchronized);
-		isSynchronized.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setSynchronized(isSynchronized.isSelected());
-			}
-		});
-
-		isCapturing = new JCheckBox("Capturing");
-		isCapturing.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setCapturing(isCapturing.isSelected());
-			}
-		});
-		buttons.add(isCapturing);
-
-		defaultFilter = new JCheckBox("Default Filter");
-		defaultFilter.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setFiltering(defaultFilter.isSelected());
-			}
-		});
-		buttons.add(defaultFilter);
-
-		jump = new JButton("Jump to Parent");
+		jump = new JButton("Show in parent");
 		jump.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -115,10 +68,6 @@ public class LogPanel extends JPanel {
 
 		if (this.isUnfiltered()) {
 			jump.setEnabled(false);
-			isSynchronized.setEnabled(false);
-			refresh.setEnabled(false);
-			isCapturing.setEnabled(false);
-			defaultFilter.setEnabled(false);
 			hotspotAndFiltersPanel.setEnabledAt(1, false);
 		}
 
@@ -163,8 +112,6 @@ public class LogPanel extends JPanel {
 			listener = this.createListener();
 			if (listener == null) {
 				JOptionPane.showMessageDialog(null, "No filtering output defined.", "Undefined Filter", JOptionPane.WARNING_MESSAGE);
-			} else {
-				listener.setFiltering(true);
 			}
 			return;
 		}
@@ -191,48 +138,8 @@ public class LogPanel extends JPanel {
 		this.treePanel.reset();
 	}
 
-	public void setCapturing(boolean isCapturing) {
-		this.isCapturing.setSelected(isCapturing);
-		if (this.isCapturing.isSelected()) {
-			this.refresh.setEnabled(false);
-			this.isSynchronized.setEnabled(false);
-			this.jump.setEnabled(false);
-		} else {
-			if (!this.defaultFilter.isSelected()) {
-				this.refresh.setEnabled(true);
-				this.isSynchronized.setEnabled(true);
-			}
-			this.jump.setEnabled(true);
-		}
-	}
-
-	public void setFiltering(boolean isFiltering) {
-		this.defaultFilter.setSelected(isFiltering);
-		if (this.defaultFilter.isSelected()) {
-			if (this.debugger.getFilteringOutput() != null) {
-				this.debugger.getFilteringOutput().setFiltering(false);
-			}
-			this.isSynchronized.setSelected(true);
-			this.isSynchronized.setEnabled(false);
-			this.debugger.setFilteringOutput(this);
-		} else {
-			this.debugger.setFilteringOutput(null);
-			if (!this.isCapturing.isSelected()) {
-				this.isSynchronized.setEnabled(true);
-			}
-		}
-	}
-
 	public void setSource(LogPanel source) {
 		this.source = source;
-	}
-
-	public boolean isSynchronizing() {
-		return this.isSynchronized.isSelected();
-	}
-
-	public void setSynchronized(boolean isSynchronized) {
-		this.isSynchronized.setSelected(isSynchronized);
 	}
 
 	public DebugEnvironment getDebugger() {
@@ -253,14 +160,6 @@ public class LogPanel extends JPanel {
 
 	public Debug_Tree getTreePanel() {
 		return this.treePanel;
-	}
-
-	public boolean isCapturing() {
-		return this.isCapturing.isSelected();
-	}
-
-	public boolean isFiltering() {
-		return this.defaultFilter.isSelected();
 	}
 
 	public boolean isUnfiltered() {

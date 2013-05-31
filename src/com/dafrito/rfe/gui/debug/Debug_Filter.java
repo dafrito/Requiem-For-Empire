@@ -78,10 +78,7 @@ public class Debug_Filter extends JPanel implements ActionListener {
 		if (this.getListener().isUnfiltered()) {
 			return true;
 		}
-		if (this.getListener().isCapturing() || this.getListener().isSynchronizing()) {
-			return this.isListening;
-		}
-		return false;
+		return this.isListening;
 	}
 
 	public void setListening(boolean listening) {

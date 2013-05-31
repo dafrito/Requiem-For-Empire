@@ -45,19 +45,6 @@ public class TreeBuildingInspector {
 			this.debugEnvironment.filteredPanes.add(threadName, this.debugEnvironment.filteredOutputMap.get(threadName).get(0));
 		}
 		for (LogPanel listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
-			if (listener.isCapturing()) {
-				if (!listener.getTreePanel().getFilter().isListening()) {
-					listener.getTreePanel().getFilter().sniffNode(node);
-					if (listener.getTreePanel().getFilter().isListening()) {
-						this.addNodeToOutput(node, setAsCurrent, listener);
-					}
-				} else {
-					this.addNodeToOutput(node, setAsCurrent, listener);
-				}
-				return;
-			}
-		}
-		for (LogPanel listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
 			this.addNodeToOutput(node.duplicate(), setAsCurrent, listener);
 		}
 	}
@@ -100,12 +87,6 @@ public class TreeBuildingInspector {
 	public void closeNode() {
 		if (this.debugEnvironment.isIgnoringThisThread()) {
 			return;
-		}
-		for (LogPanel listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
-			if (listener.isCapturing() && listener.getTreePanel().getFilter().isListening()) {
-				listener.getTreePanel().closeNode();
-				return;
-			}
 		}
 		for (LogPanel listener : this.debugEnvironment.filteredOutputMap.get(Thread.currentThread().getName())) {
 			if (listener.getTreePanel().getFilter().isListening()) {
