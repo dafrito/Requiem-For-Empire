@@ -24,7 +24,8 @@ public class EditorRunner implements Runnable {
 			throw new IllegalStateException("Runner must be run from EDT");
 		}
 		Components.LookAndFeel.GTK.activate();
-		JFrame frame = new DebugEnvironment(800, 600);
+		JFrame frame = new DebugEnvironment();
+		frame.setSize(800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Components.center(frame);
 		frame.setVisible(true);

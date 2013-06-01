@@ -114,9 +114,8 @@ public class DebugEnvironment extends JFrame implements ActionListener, ChangeLi
 
 	private ScriptEnvironment scriptEnvironment;
 
-	public DebugEnvironment(int width, int height) {
+	public DebugEnvironment() {
 		super("RFE Debugger");
-		this.setSize(width, height);
 		Debugger.setDebugger(this);
 		this.populateKnownThreads();
 
