@@ -30,7 +30,7 @@ public class EditorRunner implements Runnable {
 		Components.LookAndFeel.GTK.activate();
 		final LogViewer<Object> logFrame = new LogViewer<Object>();
 		logFrame.setSize(800, 600);
-		logFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		logFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Components.center(logFrame);
 		logFrame.setVisible(true);
 
@@ -44,7 +44,7 @@ public class EditorRunner implements Runnable {
 
 		JFrame scriptFrame = new ScriptEditor();
 		scriptFrame.setSize(800, 600);
-		scriptFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		scriptFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		scriptFrame.setLocationRelativeTo(logFrame);
 		scriptFrame.setVisible(true);
 	}
