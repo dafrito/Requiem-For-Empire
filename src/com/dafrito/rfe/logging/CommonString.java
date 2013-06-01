@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dafrito.rfe.gui.logging.cache;
+package com.dafrito.rfe.logging;
 
 /**
  * A collection of commonly used strings, cached for memory performance.

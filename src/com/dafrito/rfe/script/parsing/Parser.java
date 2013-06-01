@@ -15,7 +15,6 @@ import java.util.ListIterator;
 
 import com.bluespot.logic.iterators.LineIterator;
 import com.bluespot.logic.iterators.UnderlyingIOException;
-import com.dafrito.rfe.gui.logging.cache.CommonString;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.gui.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.gui.style.StylesheetBorderElement;
@@ -29,6 +28,7 @@ import com.dafrito.rfe.gui.style.dimensions.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetMagnitude;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageHeightElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageWidthElement;
+import com.dafrito.rfe.logging.CommonString;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;

@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.bluespot.logic.actors.Actor;
-import com.dafrito.rfe.gui.logging.cache.CommonString;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Inspection;
 import com.dafrito.rfe.inspect.Nodeable;
