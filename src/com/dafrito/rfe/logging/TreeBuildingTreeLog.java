@@ -24,6 +24,7 @@ package com.dafrito.rfe.logging;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
@@ -40,22 +41,25 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 
 	private final DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 
-	private TreeModel model = new DefaultTreeModel(root);
+	private DefaultTreeModel model = new DefaultTreeModel(root);
 
 	private DefaultMutableTreeNode cursor;
 
 	private int level = 0;
 
-	private List<DefaultInserter> inserterStack = new ArrayList<>();
+	private Inserter rootInserter;
+	private List<Inserter> inserterStack = new ArrayList<>();
 
-	public TreeBuildingTreeLog(String name) {
+	public TreeBuildingTreeLog(String name, Inserter rootInserter) {
 		root.setUserObject(name);
 
 		cursor = root;
-		System.out.println(cursor);
 
-		// Prime the inserter stack
-		inserterStack.add(new DefaultInserter());
+		this.rootInserter = rootInserter;
+	}
+
+	public TreeBuildingTreeLog(String name) {
+		this(name, new MergingInserter());
 	}
 
 	private DefaultMutableTreeNode newNode(LogMessage<? extends T> message) {
@@ -70,50 +74,95 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 		return (String) root.getUserObject();
 	}
 
-	public TreeModel getModel() {
+	public DefaultTreeModel getModel() {
 		return model;
+	}
+
+	public void addNodeAtCursor(DefaultMutableTreeNode node) {
+		model.insertNodeInto(node, cursor, cursor.getChildCount());
 	}
 
 	@Override
 	public void log(LogMessage<? extends T> message) {
-		cursor.add(newNode(message));
+		addNodeAtCursor(newNode(message));
 	}
 
 	@Override
 	public void enter(String scope, String scopeGroup) {
 		DefaultMutableTreeNode child = new DefaultMutableTreeNode(scope);
-		cursor = inserterStack.get(level++).enter(cursor, child, scopeGroup);
-		assert cursor != null : "Cursor must never be null";
+
 		if (level >= inserterStack.size()) {
 			assert level == inserterStack.size() : "Level must never be more than one ahead of the inserter stack";
-			inserterStack.add(new DefaultInserter());
+			inserterStack.add(newInserter());
 		}
+
+		cursor = inserterStack.get(level++).enter(this, child, scopeGroup);
+		assert cursor != null : "Cursor must never be null";
 	}
 
 	@Override
 	public void leave() {
 		if (cursor == root) {
-			// Do nothing. Pedantically, this is an error, but if the log is cleared, then
-			// we may end up with leave()'s that are leaving branches that we've already cleared.
-			// As a result, I prefer to be quiet here.
-			return;
+			throw new IllegalStateException("leave() must never be called when at root");
 		}
 		assert level >= 0 : "Level must be at least one before leaving";
-		cursor = inserterStack.get(level--).leave(cursor);
+		cursor = inserterStack.get(--level).leave(this);
 		assert cursor != null : "Cursor must never be null (it's possible the cursor tried to advance past the root";
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public DefaultMutableTreeNode getCursor() {
+		return cursor;
+	}
+
+	private Inserter newInserter() {
+		return rootInserter.newInserter();
 	}
 }
 
-class DefaultInserter {
+interface Inserter {
+
+	public Inserter newInserter();
+
+	public DefaultMutableTreeNode enter(TreeBuildingTreeLog<?> treeLog, DefaultMutableTreeNode child, String scopeGroup);
+
+	public DefaultMutableTreeNode leave(TreeBuildingTreeLog<?> treeLog);
+}
+
+class DefaultInserter implements Inserter {
+
+	@Override
+	public Inserter newInserter() {
+		return new DefaultInserter();
+	}
+
+	@Override
+	public DefaultMutableTreeNode enter(TreeBuildingTreeLog<?> treeLog, DefaultMutableTreeNode child, String scopeGroup) {
+		treeLog.addNodeAtCursor(child);
+		return child;
+	}
+
+	@Override
+	public DefaultMutableTreeNode leave(TreeBuildingTreeLog<?> treeLog) {
+		return (DefaultMutableTreeNode) treeLog.getCursor().getParent();
+	}
+}
+
+class MergingInserter implements Inserter {
 	private String scopeGroup;
 	private boolean merged;
 
-	public DefaultMutableTreeNode enter(DefaultMutableTreeNode cursor, DefaultMutableTreeNode child, String scopeGroup) {
+	@Override
+	public DefaultMutableTreeNode enter(TreeBuildingTreeLog<?> treeLog, DefaultMutableTreeNode child, String scopeGroup) {
+		DefaultMutableTreeNode cursor = treeLog.getCursor();
 		if (scopeGroup == null || this.scopeGroup != scopeGroup || cursor.isLeaf()) {
 			// No match, so invalidate ourselves.
 			this.scopeGroup = scopeGroup;
 			merged = false;
-			cursor.add(child);
+			treeLog.addNodeAtCursor(child);
 			return child;
 		}
 		DefaultMutableTreeNode lastChild = (DefaultMutableTreeNode) cursor.getLastChild();
@@ -124,19 +173,27 @@ class DefaultInserter {
 			merged = true;
 			// We've never merged before, so we need to create a new merge node and add the last child to it.
 			DefaultMutableTreeNode scopeGroupNode = new DefaultMutableTreeNode(scopeGroup);
+			treeLog.getModel().removeNodeFromParent(lastChild);
 			scopeGroupNode.add(lastChild);
 			scopeGroupNode.add(child);
+			treeLog.addNodeAtCursor(scopeGroupNode);
 		}
 		return child;
 	}
 
-	public DefaultMutableTreeNode leave(DefaultMutableTreeNode cursor) {
-		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) cursor.getParent();
+	@Override
+	public DefaultMutableTreeNode leave(TreeBuildingTreeLog<?> treeLog) {
+		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) treeLog.getCursor().getParent();
 		if (hasMerged()) {
 			assert parent != null : "A merged scope group must always have its merged node as its parent";
 			return (DefaultMutableTreeNode) parent.getParent();
 		}
 		return parent;
+	}
+
+	@Override
+	public Inserter newInserter() {
+		return new MergingInserter();
 	}
 
 	public boolean hasMerged() {

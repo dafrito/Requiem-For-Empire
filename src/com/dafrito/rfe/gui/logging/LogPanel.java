@@ -20,8 +20,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.TreePath;
 
+import com.dafrito.rfe.logging.BufferedTreeLog;
 import com.dafrito.rfe.logging.ProxyTreeLog;
 import com.dafrito.rfe.logging.TreeBuildingTreeLog;
 import com.dafrito.rfe.strings.NamedTreePath;
@@ -46,6 +48,7 @@ public class LogPanel<Message> extends JPanel {
 
 	private final JTree logTree = new JTree();
 
+	private BufferedTreeLog<Message> bufferedLog;
 	private TreeBuildingTreeLog<Message> treeBuilder;
 
 	private LogPanel<? extends Message> parent;
@@ -72,8 +75,18 @@ public class LogPanel<Message> extends JPanel {
 		setLayout(new BorderLayout());
 
 		treeBuilder = new TreeBuildingTreeLog<Message>(name);
-		log.addListener(treeBuilder);
 		logTree.setModel(treeBuilder.getModel());
+
+		bufferedLog = new BufferedTreeLog<>();
+		bufferedLog.setSink(treeBuilder);
+		bufferedLog.setNotifier(new Runnable() {
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(bufferedLog);
+			}
+		});
+
+		log.addListener(bufferedLog);
 
 		JSplitPane mainPanel = new JSplitPane();
 		mainPanel.setContinuousLayout(true);
@@ -210,7 +223,7 @@ public class LogPanel<Message> extends JPanel {
 	public ProxyTreeLog<? extends Message> getLog() {
 		return log;
 	}
-	
+
 	public boolean isRoot() {
 		return !hasParent();
 	}
