@@ -42,7 +42,7 @@ import com.dafrito.rfe.strings.NamedTreePath;
 public class LogPanel<Message> extends JPanel {
 	private LogViewer<Message> viewer;
 
-	private JButton createFilter, jump;
+	private JButton filterByMessage, jump;
 
 	private final JTree logTree = new JTree();
 
@@ -107,14 +107,19 @@ public class LogPanel<Message> extends JPanel {
 		jump.setEnabled(hasParent());
 		buttons.add(jump);
 
-		createFilter = new JButton("Create filter");
-		createFilter.addActionListener(new ActionListener() {
+		filterByMessage = new JButton("Filter by message");
+		filterByMessage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				createListener();
+				ProxyTreeLog<Message> childLog = new ProxyTreeLog<>();
+				log.addListener(childLog);
+
+				LogPanel<Message> panel = new LogPanel<>(viewer, childLog, "Child of " + treeBuilder.getName());
+
+				viewer.addLogPanel(panel);
 			}
 		});
-		buttons.add(createFilter);
+		buttons.add(filterByMessage);
 
 		return buttons;
 	}
@@ -178,15 +183,6 @@ public class LogPanel<Message> extends JPanel {
 				hotspotButtons.setLayout(new GridLayout(hotspotButtons.getComponentCount(), 0));*/
 
 		return new JScrollPane(hotspotsPanel);
-	}
-
-	public void createListener() {
-		ProxyTreeLog<Message> childLog = new ProxyTreeLog<>();
-		log.addListener(childLog);
-
-		LogPanel<Message> panel = new LogPanel<>(viewer, childLog, "Child of " + treeBuilder.getName());
-
-		viewer.addLogPanel(panel);
 	}
 
 	public void jump() {
