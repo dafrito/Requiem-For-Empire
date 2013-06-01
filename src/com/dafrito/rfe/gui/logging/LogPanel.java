@@ -205,7 +205,10 @@ public class LogPanel<Message> extends JPanel {
 
 	public void clear() {
 		this.hotspotPaths.clear();
-		this.treeBuilder.clear();
+		log.removeListener(this.treeBuilder);
+		this.treeBuilder = new TreeBuildingTreeLog<>(treeBuilder.getName());
+		log.addListener(treeBuilder);
+		logTree.setModel(treeBuilder.getModel());
 	}
 
 	public ProxyTreeLog<? extends Message> getLog() {
