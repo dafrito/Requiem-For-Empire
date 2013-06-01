@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.bluespot.logic.actors.Actor;
-import com.dafrito.rfe.gui.logging.Debug_TreeNode;
 import com.dafrito.rfe.gui.logging.cache.CommonString;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Inspection;
@@ -196,7 +195,6 @@ public class Logs {
 		System.gc();
 		System.out.println("Used Memory After GC : " + nf.format(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + " bytes (" + Logs.getFreePercentage() + "% free)");
 		System.out.println("Free Memory: " + nf.format(Runtime.getRuntime().freeMemory()) + " bytes");
-		Debug_TreeNode.report();
 	}
 
 	public static boolean atFullAllocation() {

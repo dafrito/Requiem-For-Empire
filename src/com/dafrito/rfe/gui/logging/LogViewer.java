@@ -25,6 +25,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,38 +45,37 @@ import com.dafrito.rfe.logging.ProxyTreeLog;
 
 /**
  * @author Aaron Faanes
+ * @param <Message>
+ *            the type of log message
  * 
  */
-public class LogViewer extends JFrame {
-	final JTabbedPane logPanels = new JTabbedPane();
+public class LogViewer<Message> extends JFrame {
+
+	/**
+	 * The list of {@link LogPanel}s that are shown by this viewer.
+	 */
+	private final JTabbedPane logPanelTabs = new JTabbedPane();
 
 	private final JLabel status = new JLabel();
 
 	private final JMenuBar menuBar = new JMenuBar();
 
-	final Map<String, List<LogPanel>> filteredOutputMap = new HashMap<String, List<LogPanel>>();
+	final Map<String, List<LogPanel<Message>>> filteredOutputMap = new HashMap<String, List<LogPanel<Message>>>();
 
 	public LogViewer() {
 		super("RFE Log Viewer");
 
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().add(this.status, BorderLayout.SOUTH);
-		this.getContentPane().add(this.logPanels);
+		this.getContentPane().add(this.logPanelTabs);
+
+		status.setText("No fucking time.");
 
 		this.setJMenuBar(this.menuBar);
 
 		JMenu listenerMenu = new JMenu("Listener");
 		this.menuBar.add(listenerMenu);
 		listenerMenu.setMnemonic('L');
-
-		JMenuItem createListener = new JMenuItem("Create Listener...", 'C');
-		createListener.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				((LogPanel) logPanels.getSelectedComponent()).promptCreateListener();
-			}
-		});
-		listenerMenu.add(createListener);
 
 		JMenuItem renameTab = new JMenuItem("Rename Tab...", 'N');
 		renameTab.addActionListener(new ActionListener() {
@@ -89,10 +89,10 @@ public class LogViewer extends JFrame {
 						JOptionPane.QUESTION_MESSAGE,
 						null,
 						null,
-						logPanels.getTitleAt(logPanels.getSelectedIndex())
+						logPanelTabs.getTitleAt(logPanelTabs.getSelectedIndex())
 						);
 				if (text != null) {
-					logPanels.setTitleAt(logPanels.getSelectedIndex(), text.toString());
+					logPanelTabs.setTitleAt(logPanelTabs.getSelectedIndex(), text.toString());
 				}
 			}
 		});
@@ -103,7 +103,7 @@ public class LogViewer extends JFrame {
 		clearTab.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((LogPanel) logPanels.getSelectedComponent()).clear();
+				getSelectedLogPanel().clear();
 			}
 
 		});
@@ -114,64 +114,83 @@ public class LogViewer extends JFrame {
 		removeTab.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((LogPanel) logPanels.getSelectedComponent()).removeTab();
-				filteredOutputMap.get(((LogPanel) logPanels.getSelectedComponent()).getThreadName()).remove(logPanels.getSelectedComponent());
-				logPanels.remove(logPanels.getSelectedComponent());
+				removeLogPanel(getSelectedLogPanel());
 			}
 		});
 		listenerMenu.add(removeTab);
-
-		Logs.addListener(new Actor<ProxyTreeLog<? super Object>>() {
-
-			@Override
-			public void receive(ProxyTreeLog<? super Object> log) {
-				String threadName = Thread.currentThread().getName();
-				LogTreePanel<Object> panel = new LogTreePanel<Object>(threadName);
-				logPanels.add(threadName, panel);
-				panel.addSource(log);
-			}
-		});
 	}
 
-	public LogPanel isFilterUsed(Object filter, String threadName) {
-		for (LogPanel listener : this.filteredOutputMap.get(threadName)) {
-			if (!listener.isUnfiltered() && listener.getTreePanel().getFilter().isFilterUsed(filter)) {
-				return listener;
-			}
-		}
-		return null;
+	@SuppressWarnings("unchecked")
+	private LogPanel<? extends Message> getSelectedLogPanel() {
+		return (LogPanel<? extends Message>) logPanelTabs.getSelectedComponent();
 	}
 
-	public LogPanel addOutputListener(LogPanel source, Object filter) {
-		if (filter == null || "".equals(filter)) {
+	/*
+		// TODO This is disabled until we get it implemented properly
+		
+		public LogPanel<Message> isFilterUsed(Object filter, String threadName) {
+			for (LogPanel<Message> listener : this.filteredOutputMap.get(threadName)) {
+				if (!listener.isRoot() && listener.getTreePanel().getFilter().isFilterUsed(filter)) {
+					return listener;
+				}
+			}
 			return null;
 		}
-		if (this.isFilterUsed(filter, source.getThreadName()) != null) {
-			JOptionPane.showMessageDialog(this, "An output listener has an identical filter to the one provided.", "Listener Already Exists", JOptionPane.INFORMATION_MESSAGE);
-			this.focusOnOutput(this.isFilterUsed(filter, source.getThreadName()));
-			return null;
+
+		public LogPanel addOutputListener(LogPanel source, Object filter) {
+			if (filter == null || "".equals(filter)) {
+				return null;
+			}
+			if (this.isFilterUsed(filter, source.getThreadName()) != null) {
+				JOptionPane.showMessageDialog(this, "An output listener has an identical filter to the one provided.", "Listener Already Exists", JOptionPane.INFORMATION_MESSAGE);
+				this.focusOnOutput(this.isFilterUsed(filter, source.getThreadName()));
+				return null;
+			}
+			LogPanel output = new LogPanel(source.getThreadName(), this, source);
+			output.getTreePanel().getFilter().addFilter(filter);
+			output.getTreePanel().refresh();
+			source.addChildOutput(output);
+			this.logPanelTabs.add(filter.toString(), output);
+			this.logPanelTabs.setSelectedIndex(this.logPanelTabs.getComponentCount() - 1);
+			this.filteredOutputMap.get(source.getThreadName()).add(output);
+			return output;
 		}
-		LogPanel output = new LogPanel(source.getThreadName(), this, source);
-		output.getTreePanel().getFilter().addFilter(filter);
-		output.getTreePanel().refresh();
-		source.addChildOutput(output);
-		this.logPanels.add(filter.toString(), output);
-		this.logPanels.setSelectedIndex(this.logPanels.getComponentCount() - 1);
-		this.filteredOutputMap.get(source.getThreadName()).add(output);
-		return output;
+
+		public void focusOnOutput(LogPanel output) {
+			assert output != null;
+			this.logPanelTabs.setSelectedIndex(this.logPanelTabs.indexOfComponent(output));
+		}
+
+		public Debug_TreeNode getUnfilteredCurrentNode() {
+			return this.getUnfilteredOutput().getTreePanel().getCurrentNode();
+		}
+
+		public LogPanel getUnfilteredOutput() {
+			return this.filteredOutputMap.get(Thread.currentThread().getName()).get(0);
+		}*/
+
+	public void addLogPanel(ProxyTreeLog<Message> log, String name) {
+		addLogPanel(new LogPanel<Message>(this, log, name));
 	}
 
-	public void focusOnOutput(LogPanel output) {
-		assert output != null;
-		this.logPanels.setSelectedIndex(this.logPanels.indexOfComponent(output));
+	/**
+	 * @param panel
+	 *            the panel to add
+	 * @param name
+	 *            the name of the new panel
+	 */
+	public void addLogPanel(LogPanel<Message> panel) {
+		if (panel == null) {
+			throw new NullPointerException("Panel must not be null");
+		}
+		logPanelTabs.add(panel);
 	}
 
-	public Debug_TreeNode getUnfilteredCurrentNode() {
-		return this.getUnfilteredOutput().getTreePanel().getCurrentNode();
-	}
-
-	public LogPanel getUnfilteredOutput() {
-		return this.filteredOutputMap.get(Thread.currentThread().getName()).get(0);
+	public void removeLogPanel(LogPanel<? extends Message> panel) {
+		if (panel == null) {
+			return;
+		}
+		logPanelTabs.remove(panel);
 	}
 
 	private static final long serialVersionUID = 4926830382755122234L;

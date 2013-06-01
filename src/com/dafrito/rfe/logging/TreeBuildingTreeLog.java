@@ -25,7 +25,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
-
 /**
  * A {@link TreeLog} that creates a {@link TreeModel}.
  * 
@@ -42,8 +41,8 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 
 	private DefaultMutableTreeNode cursor = root;
 
-	public TreeBuildingTreeLog(T rootMessage) {
-		root.setUserObject(rootMessage);
+	public TreeBuildingTreeLog(String name) {
+		root.setUserObject(name);
 	}
 
 	private DefaultMutableTreeNode newNode(LogMessage<? extends T> message) {
@@ -52,6 +51,10 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 			messageString = message.getMessage().toString();
 		}
 		return new DefaultMutableTreeNode(messageString);
+	}
+
+	public String getName() {
+		return (String) root.getUserObject();
 	}
 
 	public TreeModel getModel() {
@@ -72,7 +75,18 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 
 	@Override
 	public void leave() {
+		if (cursor == root) {
+			// Do nothing. Pedantically, this is an error, but if the log is cleared, then
+			// we may end up with leave()'s that are leaving branches that we've already cleared.
+			// As a result, I prefer to be quiet here.
+			return;
+		}
 		cursor = (DefaultMutableTreeNode) cursor.getParent();
+	}
+
+	public void clear() {
+		cursor = root;
+		root.removeAllChildren();
 	}
 
 }
