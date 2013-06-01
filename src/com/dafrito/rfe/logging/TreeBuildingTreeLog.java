@@ -21,6 +21,9 @@
  */
 package com.dafrito.rfe.logging;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
@@ -39,10 +42,20 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 
 	private TreeModel model = new DefaultTreeModel(root);
 
-	private DefaultMutableTreeNode cursor = root;
+	private DefaultMutableTreeNode cursor;
+
+	private int level = 0;
+
+	private List<DefaultInserter> inserterStack = new ArrayList<>();
 
 	public TreeBuildingTreeLog(String name) {
 		root.setUserObject(name);
+
+		cursor = root;
+		System.out.println(cursor);
+
+		// Prime the inserter stack
+		inserterStack.add(new DefaultInserter());
 	}
 
 	private DefaultMutableTreeNode newNode(LogMessage<? extends T> message) {
@@ -69,8 +82,12 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 	@Override
 	public void enter(String scope, String scopeGroup) {
 		DefaultMutableTreeNode child = new DefaultMutableTreeNode(scope);
-		cursor.add(child);
-		cursor = child;
+		cursor = inserterStack.get(level++).enter(cursor, child, scopeGroup);
+		assert cursor != null : "Cursor must never be null";
+		if (level >= inserterStack.size()) {
+			assert level == inserterStack.size() : "Level must never be more than one ahead of the inserter stack";
+			inserterStack.add(new DefaultInserter());
+		}
 	}
 
 	@Override
@@ -81,12 +98,48 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 			// As a result, I prefer to be quiet here.
 			return;
 		}
-		cursor = (DefaultMutableTreeNode) cursor.getParent();
+		assert level >= 0 : "Level must be at least one before leaving";
+		cursor = inserterStack.get(level--).leave(cursor);
+		assert cursor != null : "Cursor must never be null (it's possible the cursor tried to advance past the root";
+	}
+}
+
+class DefaultInserter {
+	private String scopeGroup;
+	private boolean merged;
+
+	public DefaultMutableTreeNode enter(DefaultMutableTreeNode cursor, DefaultMutableTreeNode child, String scopeGroup) {
+		if (scopeGroup == null || this.scopeGroup != scopeGroup || cursor.isLeaf()) {
+			// No match, so invalidate ourselves.
+			this.scopeGroup = scopeGroup;
+			merged = false;
+			cursor.add(child);
+			return child;
+		}
+		DefaultMutableTreeNode lastChild = (DefaultMutableTreeNode) cursor.getLastChild();
+		if (merged) {
+			// we've already merged before, so the last child is our merge node.
+			lastChild.add(child);
+		} else {
+			merged = true;
+			// We've never merged before, so we need to create a new merge node and add the last child to it.
+			DefaultMutableTreeNode scopeGroupNode = new DefaultMutableTreeNode(scopeGroup);
+			scopeGroupNode.add(lastChild);
+			scopeGroupNode.add(child);
+		}
+		return child;
 	}
 
-	public void clear() {
-		cursor = root;
-		root.removeAllChildren();
+	public DefaultMutableTreeNode leave(DefaultMutableTreeNode cursor) {
+		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) cursor.getParent();
+		if (hasMerged()) {
+			assert parent != null : "A merged scope group must always have its merged node as its parent";
+			return (DefaultMutableTreeNode) parent.getParent();
+		}
+		return parent;
 	}
 
+	public boolean hasMerged() {
+		return this.merged;
+	}
 }
