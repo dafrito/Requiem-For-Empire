@@ -3,6 +3,7 @@
  */
 package com.dafrito.rfe.gui.debug;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -17,24 +18,12 @@ import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 
 public class Debugger {
-	private static DebugEnvironment debugger;
-
 	private static final ThreadLocalTreeLog<Object, ProxyTreeLog<Object>> masterLog = new ThreadLocalTreeLog<Object, ProxyTreeLog<Object>>() {
 		@Override
 		protected ProxyTreeLog<? super Object> newTreeLog(Thread thread) {
 			return new ProxyTreeLog<>();
 		}
 	};
-
-	public static DebugEnvironment getDebugger() {
-		return debugger;
-	}
-
-	public static void setDebugger(DebugEnvironment debugger) {
-		if (Debugger.debugger == null) {
-			Debugger.debugger = debugger;
-		}
-	}
 
 	/**
 	 * Immediately add the specified listener. See
@@ -189,10 +178,6 @@ public class Debugger {
 		return true;
 	}
 
-	public static boolean isResetting() {
-		return getDebugger().isResetting();
-	}
-
 	public static void printException(Exception ex) {
 		System.err.println(ex);
 		if (ex instanceof ScriptException || ex instanceof Exception_InternalError) {
@@ -200,6 +185,17 @@ public class Debugger {
 		} else {
 			assert addSnapNode("Exceptions and Errors", "Exception", ex);
 		}
+	}
+
+	public static void report() {
+		System.out.println("Performance Report");
+		NumberFormat nf = NumberFormat.getInstance();
+		System.out.println("Maximum Memory Available: " + nf.format(Runtime.getRuntime().maxMemory()) + " bytes (" + Debugger.getAllocationPercentage() + "% allocated)");
+		System.out.println("Used Memory Before GC: " + nf.format(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + " bytes (" + Debugger.getFreePercentage() + "% free)");
+		System.gc();
+		System.out.println("Used Memory After GC : " + nf.format(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + " bytes (" + Debugger.getFreePercentage() + "% free)");
+		System.out.println("Free Memory: " + nf.format(Runtime.getRuntime().freeMemory()) + " bytes");
+		Debug_TreeNode.report();
 	}
 
 	public static boolean atFullAllocation() {

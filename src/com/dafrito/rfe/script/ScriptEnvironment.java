@@ -225,12 +225,6 @@ public class ScriptEnvironment {
 				template.initialize();
 			}
 			List<ScriptValue> params = Collections.emptyList();
-			if (Debugger.getDebugger().getPriorityExecutingClass() != null) {
-				if (this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()) != null && this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()).getFunction("main", params) != null) {
-					ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate(Debugger.getDebugger().getPriorityExecutingClass()), "main", params);
-					return;
-				}
-			}
 			List<String> templateNames = new ArrayList<String>();
 			for (Map.Entry<String, ScriptTemplate_Abstract> entry : this.templates.entrySet()) {
 				if (entry.getValue().getFunction("main", params) != null) {
@@ -250,7 +244,6 @@ public class ScriptEnvironment {
 			if (selection == null) {
 				return;
 			}
-			Debugger.getDebugger().setPriorityExecutingClass((String) selection);
 			assert Debugger.addNode(this);
 			ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate((String) selection), "main", params);
 		} catch (ScriptException ex) {

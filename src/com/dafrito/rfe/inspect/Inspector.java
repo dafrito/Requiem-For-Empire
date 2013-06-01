@@ -1,6 +1,5 @@
 package com.dafrito.rfe.inspect;
 
-import com.dafrito.rfe.gui.debug.DebugEnvironment;
 import com.dafrito.rfe.gui.debug.Debugger;
 
 /**

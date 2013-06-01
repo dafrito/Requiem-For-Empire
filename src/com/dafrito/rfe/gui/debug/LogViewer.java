@@ -1,0 +1,176 @@
+/**
+ * Copyright (c) 2013 Aaron Faanes
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package com.dafrito.rfe.gui.debug;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
+
+import com.bluespot.logic.actors.Actor;
+
+/**
+ * @author Aaron Faanes
+ * 
+ */
+public class LogViewer extends JFrame {
+	final JTabbedPane logPanels = new JTabbedPane();
+
+	private final JLabel status = new JLabel();
+
+	private final JMenuBar menuBar = new JMenuBar();
+
+	final Map<String, List<LogPanel>> filteredOutputMap = new HashMap<String, List<LogPanel>>();
+
+	public LogViewer() {
+		super("RFE Log Viewer");
+
+		this.getContentPane().setLayout(new BorderLayout());
+		this.getContentPane().add(this.status, BorderLayout.SOUTH);
+		this.getContentPane().add(this.logPanels);
+
+		this.setJMenuBar(this.menuBar);
+
+		JMenu listenerMenu = new JMenu("Listener");
+		this.menuBar.add(listenerMenu);
+		listenerMenu.setMnemonic('L');
+
+		JMenuItem createListener = new JMenuItem("Create Listener...", 'C');
+		createListener.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((LogPanel) logPanels.getSelectedComponent()).promptCreateListener();
+			}
+		});
+		listenerMenu.add(createListener);
+
+		JMenuItem renameTab = new JMenuItem("Rename Tab...", 'N');
+		renameTab.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object text = JOptionPane.showInputDialog(
+						null,
+						"Insert new output name",
+						"Rename Output",
+						JOptionPane.QUESTION_MESSAGE,
+						null,
+						null,
+						logPanels.getTitleAt(logPanels.getSelectedIndex())
+						);
+				if (text != null) {
+					logPanels.setTitleAt(logPanels.getSelectedIndex(), text.toString());
+				}
+			}
+		});
+		listenerMenu.add(renameTab);
+
+		JMenuItem clearTab = new JMenuItem("Clear Tab", 'C');
+		clearTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+		clearTab.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((LogPanel) logPanels.getSelectedComponent()).clear();
+			}
+
+		});
+		listenerMenu.add(clearTab);
+
+		JMenuItem removeTab = new JMenuItem("Remove Tab", 'R');
+		removeTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		removeTab.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((LogPanel) logPanels.getSelectedComponent()).removeTab();
+				filteredOutputMap.get(((LogPanel) logPanels.getSelectedComponent()).getThreadName()).remove(logPanels.getSelectedComponent());
+				logPanels.remove(logPanels.getSelectedComponent());
+			}
+		});
+		listenerMenu.add(removeTab);
+
+		Debugger.addListener(new Actor<ProxyTreeLog<? super Object>>() {
+
+			@Override
+			public void receive(ProxyTreeLog<? super Object> log) {
+				String threadName = Thread.currentThread().getName();
+				LogTreePanel<Object> panel = new LogTreePanel<Object>(threadName);
+				logPanels.add(threadName, panel);
+				panel.addSource(log);
+			}
+		});
+	}
+
+	public LogPanel isFilterUsed(Object filter, String threadName) {
+		for (LogPanel listener : this.filteredOutputMap.get(threadName)) {
+			if (!listener.isUnfiltered() && listener.getTreePanel().getFilter().isFilterUsed(filter)) {
+				return listener;
+			}
+		}
+		return null;
+	}
+
+	public LogPanel addOutputListener(LogPanel source, Object filter) {
+		if (filter == null || "".equals(filter)) {
+			return null;
+		}
+		if (this.isFilterUsed(filter, source.getThreadName()) != null) {
+			JOptionPane.showMessageDialog(this, "An output listener has an identical filter to the one provided.", "Listener Already Exists", JOptionPane.INFORMATION_MESSAGE);
+			this.focusOnOutput(this.isFilterUsed(filter, source.getThreadName()));
+			return null;
+		}
+		LogPanel output = new LogPanel(source.getThreadName(), this, source);
+		output.getTreePanel().getFilter().addFilter(filter);
+		output.getTreePanel().refresh();
+		source.addChildOutput(output);
+		this.logPanels.add(filter.toString(), output);
+		this.logPanels.setSelectedIndex(this.logPanels.getComponentCount() - 1);
+		this.filteredOutputMap.get(source.getThreadName()).add(output);
+		return output;
+	}
+
+	public void focusOnOutput(LogPanel output) {
+		assert output != null;
+		this.logPanels.setSelectedIndex(this.logPanels.indexOfComponent(output));
+	}
+
+	public Debug_TreeNode getUnfilteredCurrentNode() {
+		return this.getUnfilteredOutput().getTreePanel().getCurrentNode();
+	}
+
+	public LogPanel getUnfilteredOutput() {
+		return this.filteredOutputMap.get(Thread.currentThread().getName()).get(0);
+	}
+
+	private static final long serialVersionUID = 4926830382755122234L;
+}

@@ -16,7 +16,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.tree.TreePath;
 
 public class LogPanel extends JPanel {
-	private DebugEnvironment debugger;
+	private LogViewer debugger;
 
 	private JButton createFilter, jump;
 
@@ -28,7 +28,7 @@ public class LogPanel extends JPanel {
 
 	private String threadName;
 
-	public LogPanel(String threadName, DebugEnvironment debugger, LogPanel source) {
+	public LogPanel(String threadName, LogViewer debugger, LogPanel source) {
 		this.threadName = threadName;
 		this.treePanel = new Debug_Tree(new Debug_Filter(this));
 		this.debugger = debugger;

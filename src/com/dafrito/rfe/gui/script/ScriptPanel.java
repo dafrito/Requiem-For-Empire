@@ -32,7 +32,7 @@ import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.CompoundEdit;
 
-import com.dafrito.rfe.gui.debug.DebugEnvironment;
+import com.dafrito.rfe.gui.debug.ScriptEditor;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -43,7 +43,7 @@ public class ScriptPanel extends JPanel implements UndoableEditListener, ListSel
 	private File file;
 	private boolean hasChanged, isValid;
 	private static int fileNumber = 1;
-	private DebugEnvironment debugger;
+	private ScriptEditor debugger;
 	private JTextArea textArea;
 	private Stack<CompoundEdit> edits = new Stack<CompoundEdit>();
 	private Stack<CompoundEdit> undoneEdits = new Stack<CompoundEdit>();
@@ -55,19 +55,19 @@ public class ScriptPanel extends JPanel implements UndoableEditListener, ListSel
 	private List<String> displayedExceptions;
 	private String prefix = "";
 
-	public ScriptPanel(DebugEnvironment debugger) {
+	public ScriptPanel(ScriptEditor debugger) {
 		this.debugger = debugger;
 		if (this.selectFile(false)) {
 			this.isValid = this.openFile();
 		}
 	}
 
-	public ScriptPanel(DebugEnvironment debugger, File file) {
+	public ScriptPanel(ScriptEditor debugger, File file) {
 		this.debugger = debugger;
 		this.isValid = this.openFile(file);
 	}
 
-	public ScriptPanel(DebugEnvironment debugger, String string) {
+	public ScriptPanel(ScriptEditor debugger, String string) {
 		this.debugger = debugger;
 		if (string != null) {
 			this.file = new File(string);
