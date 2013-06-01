@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -58,16 +58,16 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 	}
 
 	public ScriptValue_Variable getVariable() throws ScriptException {
-		assert Debugger.openNode("Executing Variable Retrieval (" + this.name + ")");
+		assert Logs.openNode("Executing Variable Retrieval (" + this.name + ")");
 		ScriptValue_Variable variable;
 		if (this.template != null) {
-			assert Debugger.addSnapNode("Template", this.template);
+			assert Logs.addSnapNode("Template", this.template);
 			variable = ((ScriptTemplate_Abstract) this.template.getValue()).getVariable(this.name);
 		} else {
 			variable = this.getEnvironment().retrieveVariable(this.name);
 		}
 		assert variable != null : "Variable not found (" + this.name + ")";
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return variable;
 	}
 
@@ -79,12 +79,12 @@ public class ScriptExecutable_RetrieveVariable extends ScriptValue_Variable impl
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Variable-Placeholder (" + this.name + ")");
+		assert Logs.openNode("Variable-Placeholder (" + this.name + ")");
 		super.nodificate();
 		if (this.template != null) {
-			assert Debugger.addSnapNode("Reference Template", this.template);
+			assert Logs.addSnapNode("Reference Template", this.template);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override

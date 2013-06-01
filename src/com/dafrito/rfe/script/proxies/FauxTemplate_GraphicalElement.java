@@ -3,7 +3,7 @@ package com.dafrito.rfe.script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -32,24 +32,24 @@ public class FauxTemplate_GraphicalElement extends FauxTemplate {
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing Graphical Element Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing Graphical Element Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_GraphicalElement template = (FauxTemplate_GraphicalElement) rawTemplate;
 		ScriptValue returning;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing graphical element faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing graphical element faux template");
 		this.addConstructor(this.getType());
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here

@@ -1,4 +1,4 @@
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.gui.logging;
 
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -18,7 +18,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import com.dafrito.rfe.gui.debug.cache.CommonString;
+import com.dafrito.rfe.gui.logging.cache.CommonString;
 import com.dafrito.rfe.strings.NamedTreePath;
 
 public class Debug_Tree extends JPanel {

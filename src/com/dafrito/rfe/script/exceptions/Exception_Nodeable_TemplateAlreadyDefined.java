@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 
 public class Exception_Nodeable_TemplateAlreadyDefined extends ScriptException {
@@ -20,7 +20,7 @@ public class Exception_Nodeable_TemplateAlreadyDefined extends ScriptException {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addNode("The template, " + this.name + ", is already defined");
+		assert Logs.addNode("The template, " + this.name + ", is already defined");
 	}
 
 	@Override

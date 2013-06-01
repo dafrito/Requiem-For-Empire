@@ -1,4 +1,4 @@
-package com.dafrito.rfe.gui.debug.cache;
+package com.dafrito.rfe.gui.logging.cache;
 
 public class Debug_CacheElement implements Comparable<Debug_CacheElement> {
 	private int accesses = 1;

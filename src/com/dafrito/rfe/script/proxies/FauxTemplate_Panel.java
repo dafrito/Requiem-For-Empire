@@ -7,9 +7,9 @@ import java.util.List;
 
 import com.dafrito.rfe.gui.InterfaceElement;
 import com.dafrito.rfe.gui.InterfaceElement_Panel;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -45,54 +45,54 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing Panel Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing Panel Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Panel template = (FauxTemplate_Panel) rawTemplate;
 		ScriptValue returning;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Panel) this.createObject(ref, template);
 			}
 		} else if (name.equals("add")) {
 			template.getPanel().add(Conversions.getGraphicalElement(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("getTerrestrial")) {
 			returning = Conversions.wrapTerrestrial(ref.getEnvironment(), template.getPanel().getTerrestrial());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("setTerrestrial")) {
 			template.getPanel().setTerrestrial(Conversions.getTerrestrial(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setRiffDali")) {
 			template.getPanel().setRiffDali(Conversions.getTemplate(params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("drawRegion")) {
 			template.getPanel().drawRegion(Conversions.getDiscreteRegion(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("fillRegion")) {
 			template.getPanel().fillRegion(Conversions.getDiscreteRegion(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("drawTransformedRegion")) {
 			template.getPanel().drawTransformedRegion(Conversions.getDiscreteRegion(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("fillTransformedRegion")) {
 			template.getPanel().fillTransformedRegion(Conversions.getDiscreteRegion(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("drawString")) {
 			template.getPanel().drawString(Conversions.getString(this.getEnvironment(), params.get(0)), Conversions.getColor(this.getEnvironment(), params.get(1)), Conversions.getPoint(this.getEnvironment(), params.get(2)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -104,7 +104,7 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing panel faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing panel faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
@@ -152,7 +152,7 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
 		this.addFauxFunction("drawString", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -163,8 +163,8 @@ public class FauxTemplate_Panel extends FauxTemplate_InterfaceElement implements
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Panel Faux Template");
+		assert Logs.openNode("Panel Faux Template");
 		super.nodificate();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

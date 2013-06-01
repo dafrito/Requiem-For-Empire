@@ -8,8 +8,8 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 class VariableStack implements Nodeable {
@@ -24,10 +24,10 @@ class VariableStack implements Nodeable {
 	}
 
 	public synchronized void advanceNestedStack() {
-		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Nested Stack (Nested stack size before advance: " + this.nestedStacks.size() + ")");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Stack Advancements and Retreats", "Advancing Nested Stack (Nested stack size before advance: " + this.nestedStacks.size() + ")");
+		assert Logs.addNode(this);
 		this.nestedStacks.push(new HashMap<String, ScriptValue_Variable>());
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public synchronized ScriptValue_Variable getVariableFromStack(String name) {
@@ -41,22 +41,22 @@ class VariableStack implements Nodeable {
 
 	@Override
 	public synchronized void nodificate() {
-		assert Debugger.openNode("Variable Stack");
-		assert Debugger.openNode("Nested Stacks (" + this.nestedStacks.size() + " stack(s))");
+		assert Logs.openNode("Variable Stack");
+		assert Logs.openNode("Nested Stacks (" + this.nestedStacks.size() + " stack(s))");
 		for (Map<String, ScriptValue_Variable> map : this.nestedStacks) {
-			assert Debugger.openNode("Stack (" + map.size() + " variable(s))");
-			assert Debugger.addNode(map);
-			assert Debugger.closeNode();
+			assert Logs.openNode("Stack (" + map.size() + " variable(s))");
+			assert Logs.addNode(map);
+			assert Logs.closeNode();
 		}
-		assert Debugger.closeNode();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public synchronized void retreatNestedStack() {
 		assert this.nestedStacks.size() > 0;
-		assert Debugger.openNode("Stack Advancements and Retreats", "Retreating Nested Stack (Nested stack size before retreat: " + this.nestedStacks.size() + ")");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Stack Advancements and Retreats", "Retreating Nested Stack (Nested stack size before retreat: " + this.nestedStacks.size() + ")");
+		assert Logs.addNode(this);
 		this.nestedStacks.pop();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.values;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IncomparableObjects;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
@@ -41,7 +41,7 @@ public class ScriptValue_Null extends ScriptElement implements ScriptExecutable,
 
 	@Override
 	public void nodificate() {
-		assert Debugger.addNode("Null Script-Value");
+		assert Logs.addNode("Null Script-Value");
 	}
 
 	@Override

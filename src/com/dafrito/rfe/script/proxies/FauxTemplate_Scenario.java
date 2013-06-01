@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.dafrito.rfe.Scenario;
 import com.dafrito.rfe.Terrestrial;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -44,11 +44,11 @@ public class FauxTemplate_Scenario extends FauxTemplate implements ScriptConvert
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing scenario faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing scenario faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Scenario template = (FauxTemplate_Scenario) rawTemplate;
 		ScriptValue returning;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Scenario) this.createObject(ref, template);
@@ -57,24 +57,24 @@ public class FauxTemplate_Scenario extends FauxTemplate implements ScriptConvert
 			case 1:
 				template.getScenario().setTerrestrial(Conversions.getTerrestrial(this.getEnvironment(), params.get(0)));
 			case 0:
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 				return template;
 			}
 		} else if (name.equals("getTerrestrial")) {
 			returning = Conversions.wrapTerrestrial(ref.getEnvironment(), template.getScenario().getTerrestrial());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("setTerrestrial")) {
 			template.getScenario().setTerrestrial(Conversions.getTerrestrial(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("getScheduler")) {
 			returning = Conversions.wrapScheduler(this.getEnvironment(), template.getScenario().getScheduler());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -87,7 +87,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements ScriptConvert
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing scenario faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing scenario faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING)));
@@ -103,7 +103,7 @@ public class FauxTemplate_Scenario extends FauxTemplate implements ScriptConvert
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Terrestrial.TERRESTRIALSTRING)));
 		this.addFauxFunction("setTerrestrial", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("getScheduler", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scheduler.SCHEDULERSTRING), Collections.<ScriptValue> emptyList(), ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here

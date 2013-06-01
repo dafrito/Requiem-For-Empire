@@ -3,8 +3,8 @@ package com.dafrito.rfe.script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.FunctionNotFoundScriptException;
@@ -39,9 +39,9 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing Object Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
-		assert Debugger.addSnapNode("Template provided", rawTemplate);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.openNode("Faux Template Executions", "Executing Object Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.addSnapNode("Template provided", rawTemplate);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (params.size() != 0) {
 				throw new FunctionNotFoundScriptException(ref, name, params);
@@ -49,7 +49,7 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 			if (rawTemplate == null) {
 				rawTemplate = this.createObject(ref, rawTemplate);
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return rawTemplate;
 		}
 		throw new FunctionNotFoundScriptException(ref, name, params);
@@ -59,10 +59,10 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing object faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing object faux template");
 		this.addConstructor(this.getType());
 		this.disableFullCreation();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -73,8 +73,8 @@ public class FauxTemplate_Object extends FauxTemplate implements ScriptConvertib
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Object Faux Template");
+		assert Logs.openNode("Object Faux Template");
 		super.nodificate();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

@@ -3,8 +3,8 @@ package com.dafrito.rfe.script.operations;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.FunctionNotFoundScriptException;
@@ -21,25 +21,25 @@ import com.dafrito.rfe.script.values.ScriptValueType;
 
 public class ScriptExecutable_CallFunction extends ScriptElement implements ScriptExecutable, ScriptValue, Nodeable {
 	public static ScriptValue callFunction(ScriptEnvironment env, Referenced ref, ScriptValue object, String name, List<ScriptValue> params) throws ScriptException {
-		assert Debugger.openNode("Function Calls", "Calling Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
-		assert Debugger.openNode("Function Call Details");
+		assert Logs.openNode("Function Calls", "Calling Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Function Call Details");
 		// Get our object
 		if (object == null) {
 			object = env.getCurrentObject();
-			assert Debugger.addSnapNode("Reverting to current object", object);
+			assert Logs.addSnapNode("Reverting to current object", object);
 		} else {
-			assert Debugger.openNode("Getting object's core value");
+			assert Logs.openNode("Getting object's core value");
 			object = object.getValue();
-			assert Debugger.closeNode("Core value", object);
+			assert Logs.closeNode("Core value", object);
 		}
 		// Convert our values of questionable nestingness down to pure values
 		List<ScriptValue> baseList = new ArrayList<ScriptValue>();
 		if (params != null && !params.isEmpty()) {
-			assert Debugger.openNode("Getting parameters' core values");
+			assert Logs.openNode("Getting parameters' core values");
 			for (ScriptValue param : params) {
 				baseList.add(param.getValue());
 			}
-			assert Debugger.closeNode("Core value params", baseList);
+			assert Logs.closeNode("Core value params", baseList);
 		}
 		// Get our function
 		ScriptFunction function = ((ScriptTemplate_Abstract) object).getFunction(name, baseList);
@@ -54,8 +54,8 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 		if (functionTemplate.getType().equals(object.getType()) && !function.isStatic()) {
 			functionTemplate = (ScriptTemplate_Abstract) object;
 		}
-		assert Debugger.addSnapNode("Function", function);
-		assert Debugger.addSnapNode("Function's Template", functionTemplate);
+		assert Logs.addSnapNode("Function", function);
+		assert Logs.addSnapNode("Function's Template", functionTemplate);
 		if (!function.isStatic() && !(functionTemplate).isObject()) {
 			throw new FunctionNotFoundScriptException(ref, name, params);
 		}
@@ -67,7 +67,7 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 			((ScriptFunction_Faux) function).setFauxTemplate(functionTemplate);
 			((ScriptFunction_Faux) function).setTemplate((ScriptTemplate_Abstract) object);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		env.advanceStack((ScriptTemplate_Abstract) object, function);
 		env.getCurrentFunction().execute(ref, baseList);
 		ScriptValue returning = env.getCurrentFunction().getReturnValue();
@@ -79,7 +79,7 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 			}
 		}
 		env.retreatStack();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -128,9 +128,9 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Function Call (" + RiffScriptFunction.getDisplayableFunctionName(this.functionName) + ")");
-		assert Debugger.addSnapNode("Parameters", this.params);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Function Call (" + RiffScriptFunction.getDisplayableFunctionName(this.functionName) + ")");
+		assert Logs.addSnapNode("Parameters", this.params);
+		assert Logs.closeNode();
 	}
 
 	@Override

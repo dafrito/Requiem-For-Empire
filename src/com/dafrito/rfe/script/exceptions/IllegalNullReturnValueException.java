@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.ScriptFunction;
@@ -27,7 +27,7 @@ public class IllegalNullReturnValueException extends ScriptException {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addSnapNode("This function is attempting to return implicitly, even though it is of type, " + this.function.getReturnType(), this.function);
+		assert Logs.addSnapNode("This function is attempting to return implicitly, even though it is of type, " + this.function.getReturnType(), this.function);
 	}
 
 	@Override

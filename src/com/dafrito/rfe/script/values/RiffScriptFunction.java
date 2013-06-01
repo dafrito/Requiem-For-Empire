@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.gui.debug.cache.CommonString;
+import com.dafrito.rfe.gui.logging.cache.CommonString;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -14,12 +14,12 @@ import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 
 public class RiffScriptFunction implements Nodeable, ScriptFunction {
 	public static boolean areParametersConvertible(List<ScriptValue> parameters, List<ScriptValue> values) {
-		assert Debugger.openNode("Parameter-Convertibility Tests", "Parameter-Convertibility Test");
-		assert Debugger.addNode("Keys must be convertible to their function-param socket counterpart.");
-		assert Debugger.addSnapNode("Function-Parameter Sockets", parameters);
-		assert Debugger.addSnapNode("Parameter Keys", values);
+		assert Logs.openNode("Parameter-Convertibility Tests", "Parameter-Convertibility Test");
+		assert Logs.addNode("Keys must be convertible to their function-param socket counterpart.");
+		assert Logs.addSnapNode("Function-Parameter Sockets", parameters);
+		assert Logs.addSnapNode("Parameter Keys", values);
 		if (values.size() != parameters.size()) {
-			assert Debugger.closeNode("Parameter sizes do not match (" + values.size() + " and " + parameters.size() + ")");
+			assert Logs.closeNode("Parameter sizes do not match (" + values.size() + " and " + parameters.size() + ")");
 			return false;
 		}
 		for (int i = 0; i < values.size(); i++) {
@@ -29,29 +29,29 @@ public class RiffScriptFunction implements Nodeable, ScriptFunction {
 			}
 			ScriptValue value = values.get(i);
 			if (value != null && !value.isConvertibleTo(param.getType())) {
-				assert Debugger.closeNode("Parameters are not equal (" + param.getType() + " and " + value.getType() + ")");
+				assert Logs.closeNode("Parameters are not equal (" + param.getType() + " and " + value.getType() + ")");
 				return false;
 			}
 		}
-		assert Debugger.closeNode("Parameters match.");
+		assert Logs.closeNode("Parameters match.");
 		return true;
 	}
 
 	public static boolean areParametersEqual(List<ScriptValue> source, List<ScriptValue> list) {
-		assert Debugger.openNode("Parameter-Equality Tests", "Parameter-Equality Test");
-		assert Debugger.addSnapNode("Function-Parameter Sockets", source);
-		assert Debugger.addSnapNode("Parameter Keys", list);
+		assert Logs.openNode("Parameter-Equality Tests", "Parameter-Equality Test");
+		assert Logs.addSnapNode("Function-Parameter Sockets", source);
+		assert Logs.addSnapNode("Parameter Keys", list);
 		if (list.size() != source.size()) {
-			assert Debugger.closeNode("Parameter sizes do not match (" + list.size() + " and " + source.size() + ")");
+			assert Logs.closeNode("Parameter sizes do not match (" + list.size() + " and " + source.size() + ")");
 			return false;
 		}
 		for (int i = 0; i < list.size(); i++) {
 			if (!source.get(i).getType().equals(list.get(i).getType())) {
-				assert Debugger.closeNode("Parameters are not equal (" + source.get(i).getType() + " and " + list.get(i).getType() + ")");
+				assert Logs.closeNode("Parameters are not equal (" + source.get(i).getType() + " and " + list.get(i).getType() + ")");
 				return false;
 			}
 		}
-		assert Debugger.closeNode("Parameters match.");
+		assert Logs.closeNode("Parameters match.");
 		return true;
 	}
 
@@ -116,15 +116,15 @@ public class RiffScriptFunction implements Nodeable, ScriptFunction {
 	@Override
 	public void execute(Referenced ref, List<ScriptValue> valuesGiven) throws ScriptException {
 		String currNode = "Executing Function Expressions (" + this.expressions.size() + " expressions)";
-		assert Debugger.openNode("Function Expression Executions", currNode);
+		assert Logs.openNode("Function Expression Executions", currNode);
 		try {
 			if (valuesGiven != null && valuesGiven.size() > 0) {
-				assert Debugger.openNode("Assigning Initial Parameters (" + valuesGiven.size() + " parameter(s))");
+				assert Logs.openNode("Assigning Initial Parameters (" + valuesGiven.size() + " parameter(s))");
 				assert this.areParametersConvertible(valuesGiven) : "Parameters-convertible test failed in execute";
 				for (int i = 0; i < this.getParameters().size(); i++) {
 					this.getParameters().get(i).setValue(ref, valuesGiven.get(i));
 				}
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 			}
 			for (ScriptExecutable exec : this.expressions) {
 				exec.execute();
@@ -134,7 +134,7 @@ public class RiffScriptFunction implements Nodeable, ScriptFunction {
 				}
 			}
 		} finally {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 	}
 
@@ -170,34 +170,34 @@ public class RiffScriptFunction implements Nodeable, ScriptFunction {
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Script-Function (Returning " + this.type.getName() + ")");
+		assert Logs.openNode("Script-Function (Returning " + this.type.getName() + ")");
 		if (this.params != null && this.params.size() > 0) {
-			assert Debugger.addSnapNode("Parameters: " + this.params.size() + " parameter(s)", this.params);
+			assert Logs.addSnapNode("Parameters: " + this.params.size() + " parameter(s)", this.params);
 		}
 		if (this.expressions != null && this.expressions.size() > 0) {
-			assert Debugger.addSnapNode("Expressions: " + this.expressions.size() + " expression(s)", this.expressions);
+			assert Logs.addSnapNode("Expressions: " + this.expressions.size() + " expression(s)", this.expressions);
 		}
 		if (this.permission == null) {
-			Debugger.addNode(CommonString.PERMISSIONNULL);
+			Logs.addNode(CommonString.PERMISSIONNULL);
 		} else {
 			switch (this.permission) {
 			case PRIVATE:
-				assert Debugger.addNode(CommonString.PERMISSIONPRIVATE);
+				assert Logs.addNode(CommonString.PERMISSIONPRIVATE);
 				break;
 			case PROTECTED:
-				Debugger.addNode(CommonString.PERMISSIONPROTECTED);
+				Logs.addNode(CommonString.PERMISSIONPROTECTED);
 				break;
 			case PUBLIC:
-				Debugger.addNode(CommonString.PERMISSIONPUBLIC);
+				Logs.addNode(CommonString.PERMISSIONPUBLIC);
 				break;
 			default:
 				throw new AssertionError("Unexpected permission");
 			}
 		}
-		assert Debugger.addNode("Abstract: " + this.isAbstract);
-		assert Debugger.addNode("Static: " + this.isStatic);
-		assert Debugger.addNode("Return Value Reference: " + this.returnValue);
-		assert Debugger.closeNode();
+		assert Logs.addNode("Abstract: " + this.isAbstract);
+		assert Logs.addNode("Static: " + this.isStatic);
+		assert Logs.addNode("Return Value Reference: " + this.returnValue);
+		assert Logs.closeNode();
 	}
 
 	@Override
@@ -205,10 +205,10 @@ public class RiffScriptFunction implements Nodeable, ScriptFunction {
 		if (this.getReturnType().equals(ScriptKeywordType.VOID)) {
 			return;
 		}
-		assert Debugger.openNode("Setting Return-Value");
-		assert Debugger.addSnapNode("Function", this);
-		assert Debugger.addSnapNode("Value", value);
+		assert Logs.openNode("Setting Return-Value");
+		assert Logs.addSnapNode("Function", this);
+		assert Logs.addSnapNode("Value", value);
 		this.returnValue = value.castToType(ref, this.getReturnType());
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

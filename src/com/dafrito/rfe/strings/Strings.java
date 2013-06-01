@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 
 /**
  * @author Aaron Faanes
@@ -157,7 +157,7 @@ public final class Strings {
 				string += inputChar;
 			}
 		} catch (IOException e) {
-			Debugger.printException(e);
+			Logs.printException(e);
 			return null;
 		}
 	}

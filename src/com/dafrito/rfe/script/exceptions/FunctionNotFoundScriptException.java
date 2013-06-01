@@ -5,7 +5,7 @@ package com.dafrito.rfe.script.exceptions;
 
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
@@ -33,7 +33,7 @@ public class FunctionNotFoundScriptException extends ScriptException {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addNode("The function, " + RiffScriptFunction.getDisplayableFunctionName(this.name) + ", was not found");
+		assert Logs.addNode("The function, " + RiffScriptFunction.getDisplayableFunctionName(this.name) + ", was not found");
 	}
 
 	@Override

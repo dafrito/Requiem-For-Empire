@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.EuclideanPoint;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -48,11 +48,11 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing Point Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing Point Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Point template = (FauxTemplate_Point) rawTemplate;
 		ScriptValue returning = null;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Point) this.createObject(ref, template);
@@ -80,7 +80,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 		} else {
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -92,7 +92,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing point faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing point faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
@@ -109,7 +109,7 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 		this.addFauxFunction("setX", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("setY", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("setZ", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -120,10 +120,10 @@ public class FauxTemplate_Point extends FauxTemplate implements ScriptConvertibl
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Point Faux Template");
+		assert Logs.openNode("Point Faux Template");
 		super.nodificate();
-		assert Debugger.addNode(this.point);
-		assert Debugger.closeNode();
+		assert Logs.addNode(this.point);
+		assert Logs.closeNode();
 	}
 
 	public void setPoint(Point point) {

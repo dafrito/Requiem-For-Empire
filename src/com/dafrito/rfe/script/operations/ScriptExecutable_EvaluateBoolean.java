@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -24,7 +24,7 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 
 	@Override
 	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
-		assert Debugger.addNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
+		assert Logs.addNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
 		if (this.getType().equals(type)) {
 			return this;
 		}
@@ -34,19 +34,19 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue execute() throws ScriptException {
-		assert Debugger.openNode("Boolean Evaluations", "Executing Boolean Evaluation");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Boolean Evaluations", "Executing Boolean Evaluation");
+		assert Logs.addNode(this);
 		ScriptValue returning = null;
-		assert Debugger.openNode("Getting left value");
-		assert Debugger.addSnapNode("Left before resolution", this.lhs);
+		assert Logs.openNode("Getting left value");
+		assert Logs.addSnapNode("Left before resolution", this.lhs);
 		ScriptValue lhs = this.lhs.getValue();
-		assert Debugger.addSnapNode("Left", lhs);
-		assert Debugger.closeNode();
-		assert Debugger.openNode("Getting right value");
-		assert Debugger.addSnapNode("Right before resolution", this.rhs);
+		assert Logs.addSnapNode("Left", lhs);
+		assert Logs.closeNode();
+		assert Logs.openNode("Getting right value");
+		assert Logs.addSnapNode("Right before resolution", this.rhs);
 		ScriptValue rhs = this.rhs.getValue();
-		assert Debugger.addSnapNode("Right", rhs);
-		assert Debugger.closeNode();
+		assert Logs.addSnapNode("Right", rhs);
+		assert Logs.closeNode();
 		switch (this.comparison) {
 		case NONEQUIVALENCY:
 			returning = new ScriptValue_Boolean(this.getEnvironment(), !lhs.valuesEqual(this, rhs));
@@ -69,7 +69,7 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 		default:
 			throw new AssertionError("Invalid default");
 		}
-		assert Debugger.closeNode("Returned value", returning);
+		assert Logs.closeNode("Returned value", returning);
 		return returning;
 	}
 
@@ -91,10 +91,10 @@ public class ScriptExecutable_EvaluateBoolean extends ScriptElement implements S
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Boolean Expression (" + this.comparison + ")");
-		assert Debugger.addSnapNode("Left hand", this.lhs);
-		assert Debugger.addSnapNode("Right hand", this.rhs);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Boolean Expression (" + this.comparison + ")");
+		assert Logs.addSnapNode("Left hand", this.lhs);
+		assert Logs.addSnapNode("Right hand", this.rhs);
+		assert Logs.closeNode();
 	}
 
 	@Override

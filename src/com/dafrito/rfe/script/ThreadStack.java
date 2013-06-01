@@ -6,8 +6,8 @@ package com.dafrito.rfe.script;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.values.ScriptFunction;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
@@ -20,14 +20,14 @@ class ThreadStack implements Nodeable {
 
 	public synchronized void addVariable(String name, ScriptValue_Variable variable) {
 		if (variable == null) {
-			assert Debugger.openNode("Undefined Variable Stack Additions", "Adding Undefined Variable to the Stack (" + name + ")");
+			assert Logs.openNode("Undefined Variable Stack Additions", "Adding Undefined Variable to the Stack (" + name + ")");
 		} else {
-			assert Debugger.openNode("Variable Stack Additions", "Adding Variable to the Stack (" + name + ")");
-			assert Debugger.addNode(variable);
+			assert Logs.openNode("Variable Stack Additions", "Adding Variable to the Stack (" + name + ")");
+			assert Logs.addNode(variable);
 		}
-		assert Debugger.addNode(this);
+		assert Logs.addNode(this);
 		this.variableTable.addVariable(name, variable);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public synchronized void advanceNestedStack() {
@@ -35,12 +35,12 @@ class ThreadStack implements Nodeable {
 	}
 
 	public synchronized void advanceStack(ScriptTemplate_Abstract template, ScriptFunction fxn) throws ScriptException {
-		assert Debugger.openNode("Stack Advancements and Retreats", "Advancing Stack (Stack size before advance: " + this.functionStack.size() + ")");
+		assert Logs.openNode("Stack Advancements and Retreats", "Advancing Stack (Stack size before advance: " + this.functionStack.size() + ")");
 		assert (this.functionStack.size() == this.objectStack.size()) && (this.objectStack.size() == this.variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + this.functionStack.size() + " Object-stack: " + this.objectStack.size() + " Variable-stack: " + this.variableTable.getStacks().size();
 		if (template != null) {
-			assert Debugger.addSnapNode("Advancing object", template);
+			assert Logs.addSnapNode("Advancing object", template);
 		}
-		assert Debugger.addSnapNode("Advancing function", fxn);
+		assert Logs.addSnapNode("Advancing function", fxn);
 		if (template == null) {
 			template = this.getCurrentObject();
 		}
@@ -51,7 +51,7 @@ class ThreadStack implements Nodeable {
 		}
 		this.functionStack.push(fxn);
 		this.variableTable.advanceStack();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public synchronized ScriptFunction getCurrentFunction() {
@@ -74,11 +74,11 @@ class ThreadStack implements Nodeable {
 
 	@Override
 	public synchronized void nodificate() {
-		assert Debugger.openNode("Thread Stack");
-		assert Debugger.addNode(this.variableTable);
-		assert Debugger.addSnapNode("Object stack (" + this.objectStack.size() + ")", this.objectStack);
-		assert Debugger.addSnapNode("Function stack (" + this.functionStack.size() + ")", this.functionStack);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Thread Stack");
+		assert Logs.addNode(this.variableTable);
+		assert Logs.addSnapNode("Object stack (" + this.objectStack.size() + ")", this.objectStack);
+		assert Logs.addSnapNode("Function stack (" + this.functionStack.size() + ")", this.functionStack);
+		assert Logs.closeNode();
 	}
 
 	public synchronized void retreatNestedStack() {
@@ -86,7 +86,7 @@ class ThreadStack implements Nodeable {
 	}
 
 	public synchronized void retreatStack() {
-		assert Debugger.openNode("Stack Advancements and Retreats", "Retreating Stack (Stack size before retreat: " + this.functionStack.size() + ")");
+		assert Logs.openNode("Stack Advancements and Retreats", "Retreating Stack (Stack size before retreat: " + this.functionStack.size() + ")");
 		assert (this.functionStack.size() == this.objectStack.size()) && (this.objectStack.size() == this.variableTable.getStacks().size()) : "Stacks unequal: Function-stack: " + this.functionStack.size() + " Object-stack: " + this.objectStack.size() + " Variable-stack: " + this.variableTable.getStacks().size();
 		if (this.variableTable.getStacks().size() > 0) {
 			this.variableTable.retreatStack();
@@ -94,15 +94,15 @@ class ThreadStack implements Nodeable {
 		if (this.objectStack.size() > 0) {
 			this.objectStack.pop();
 			if (this.objectStack.size() > 0) {
-				assert Debugger.addSnapNode("New Current Object", this.objectStack.peek());
+				assert Logs.addSnapNode("New Current Object", this.objectStack.peek());
 			}
 		}
 		if (this.functionStack.size() > 0) {
 			this.functionStack.pop();
 			if (this.functionStack.size() > 0) {
-				assert Debugger.addSnapNode("New Current Function", this.functionStack.peek());
+				assert Logs.addSnapNode("New Current Function", this.functionStack.peek());
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

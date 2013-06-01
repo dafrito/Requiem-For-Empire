@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 
 public class Exception_Nodeable_VariableTypeAlreadyDefined extends ScriptException {
@@ -20,7 +20,7 @@ public class Exception_Nodeable_VariableTypeAlreadyDefined extends ScriptExcepti
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addNode("The variable type, " + this.type + ", has already been defined");
+		assert Logs.addNode("The variable type, " + this.type + ", has already been defined");
 	}
 
 	@Override

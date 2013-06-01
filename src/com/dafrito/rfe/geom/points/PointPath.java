@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.Scenario;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 
 public class PointPath extends Point implements Nodeable {
 	private List<Point> points = new LinkedList<Point>();
@@ -29,8 +29,8 @@ public class PointPath extends Point implements Nodeable {
 	}
 
 	public Point getCurrentPoint() {
-		assert Debugger.openNode("Path Point Retrievals", "Getting path point");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Path Point Retrievals", "Getting path point");
+		assert Logs.addNode(this);
 		while (this.points.size() > 1) {
 			double distance = (this.getScenario().getGameTime() - this.startTime) * this.getVelocity(this.movementCosts.get(0)); // distance traveled
 			double total = Points.getDistance(this.points.get(0), this.points.get(1));
@@ -47,10 +47,10 @@ public class PointPath extends Point implements Nodeable {
 					this.points.get(0).getY() + (this.points.get(1).getY() - this.points.get(0).getY()) * offset,
 					this.points.get(0).getZ() + (this.points.get(1).getZ() - this.points.get(0).getZ()) * offset
 					);
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return point;
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return this.points.get(0);
 	}
 
@@ -102,11 +102,11 @@ public class PointPath extends Point implements Nodeable {
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Path");
-		assert Debugger.addSnapNode("Points", this.points);
-		assert Debugger.addSnapNode("Movement Costs", this.movementCosts);
-		assert Debugger.addNode("Start time: " + this.startTime);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Path");
+		assert Logs.addSnapNode("Points", this.points);
+		assert Logs.addSnapNode("Movement Costs", this.movementCosts);
+		assert Logs.addNode("Start time: " + this.startTime);
+		assert Logs.closeNode();
 	}
 
 	public void removeLastPoint() {

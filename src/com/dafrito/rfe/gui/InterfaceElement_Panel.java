@@ -13,12 +13,12 @@ import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.geom.DiscreteRegion;
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.EuclideanPoint;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.event.RiffInterface_DragEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseListener;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Inspectable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -145,11 +145,11 @@ public class InterfaceElement_Panel extends InterfaceElement implements ScriptCo
 		} else {
 			regions = this.terrestrial.getTree().getRegionList();
 		}
-		assert Debugger.openNode("Painting Panel Elements (" + this.elements.size() + " element(s), " + regions.size() + " region(s))");
+		assert Logs.openNode("Painting Panel Elements (" + this.elements.size() + " element(s), " + regions.size() + " region(s))");
 		super.paint(g2d);
-		assert Debugger.addNode("X-offset: " + this.offset.getX());
-		assert Debugger.addNode("Y-offset: " + this.offset.getY());
-		assert Debugger.addNode("Zoom factor: " + this.offset.getZ());
+		assert Logs.addNode("X-offset: " + this.offset.getX());
+		assert Logs.addNode("Y-offset: " + this.offset.getY());
+		assert Logs.addNode("Zoom factor: " + this.offset.getZ());
 		try {
 			List<ScriptValue> params = new LinkedList<ScriptValue>();
 			params.add(this.convert(this.getEnvironment()));
@@ -176,7 +176,7 @@ public class InterfaceElement_Panel extends InterfaceElement implements ScriptCo
 		}
 		g2d.setColor(this.getBackgroundColor());
 		g2d.draw(this.getDrawingBounds());
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override

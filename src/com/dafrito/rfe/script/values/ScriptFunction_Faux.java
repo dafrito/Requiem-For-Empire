@@ -2,8 +2,8 @@ package com.dafrito.rfe.script.values;
 
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -45,25 +45,25 @@ public class ScriptFunction_Faux extends RiffScriptFunction implements ScriptFun
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Faux Script-Function (" + RiffScriptFunction.getDisplayableFunctionName(this.name) + ")");
+		assert Logs.openNode("Faux Script-Function (" + RiffScriptFunction.getDisplayableFunctionName(this.name) + ")");
 		super.nodificate();
-		assert Debugger.addNode("Faux Template Type: " + this.fauxTemplate.getType());
-		assert Debugger.closeNode();
+		assert Logs.addNode("Faux Template Type: " + this.fauxTemplate.getType());
+		assert Logs.closeNode();
 	}
 
 	public void setFauxTemplate(ScriptTemplate_Abstract template) {
-		assert Debugger.openNode("Faux Function Referenced-Template Changes", "Changing Faux-Function Object");
-		assert Debugger.addNode(this);
-		assert Debugger.addSnapNode("New object", template);
+		assert Logs.openNode("Faux Function Referenced-Template Changes", "Changing Faux-Function Object");
+		assert Logs.addNode(this);
+		assert Logs.addSnapNode("New object", template);
 		this.fauxTemplate = (FauxTemplate) template;
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void setTemplate(ScriptTemplate_Abstract template) {
-		assert Debugger.openNode("Faux Function Object Changes", "Changing Object");
-		assert Debugger.addNode(this);
-		assert Debugger.addSnapNode("New object", template);
+		assert Logs.openNode("Faux Function Object Changes", "Changing Object");
+		assert Logs.addNode(this);
+		assert Logs.addSnapNode("New object", template);
 		this.object = template;
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

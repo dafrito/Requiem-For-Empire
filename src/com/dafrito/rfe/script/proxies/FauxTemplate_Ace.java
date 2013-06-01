@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.Ace;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -41,10 +41,10 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing ace faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing ace faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Ace template = (FauxTemplate_Ace) rawTemplate;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Ace) this.createObject(ref, template);
@@ -53,19 +53,19 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<
 			params.clear();
 		} else if (name.equals("setEfficiency")) {
 			template.getAce().setEfficiency(Conversions.getDouble(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("getEfficiency")) {
 			ScriptValue returning = Conversions.wrapDouble(this.getEnvironment(), template.getAce().getEfficiency());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getArchetype")) {
 			ScriptValue returning = Conversions.wrapArchetype(this.getEnvironment(), template.getAce().getArchetype());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		}
 		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -76,7 +76,7 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing ace faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing ace faux template");
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING)));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
@@ -89,7 +89,7 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<
 		fxnParams = new LinkedList<ScriptValue>();
 		this.addFauxFunction("getEfficiency", ScriptValueType.DOUBLE, new LinkedList<ScriptValue>(), ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("getArchetype", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Archetype.ARCHETYPESTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -100,10 +100,10 @@ public class FauxTemplate_Ace extends FauxTemplate implements ScriptConvertible<
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Ace Faux Script-Element");
+		assert Logs.openNode("Ace Faux Script-Element");
 		super.nodificate();
-		assert Debugger.addNode(this.ace);
-		assert Debugger.closeNode();
+		assert Logs.addNode(this.ace);
+		assert Logs.closeNode();
 	}
 
 	public void setAce(Ace ace) {

@@ -2,8 +2,8 @@ package com.dafrito.rfe.script.values;
 
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -153,9 +153,9 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Template Placeholder (" + this.name + ")");
-		assert Debugger.addSnapNode("Referenced Template", this.getTemplate());
-		assert Debugger.closeNode();
+		assert Logs.openNode("Template Placeholder (" + this.name + ")");
+		assert Logs.addSnapNode("Referenced Template", this.getTemplate());
+		assert Logs.closeNode();
 	}
 
 	@Override

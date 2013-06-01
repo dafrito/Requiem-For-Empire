@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 
@@ -21,7 +21,7 @@ class Exception_Nodeable_InvalidAbstractFunctionCall extends ScriptException {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addSnapNode("A call was made to an abstract function in this template", this.template);
+		assert Logs.addSnapNode("A call was made to an abstract function in this template", this.template);
 	}
 
 	@Override

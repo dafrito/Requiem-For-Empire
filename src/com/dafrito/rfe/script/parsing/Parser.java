@@ -15,8 +15,7 @@ import java.util.ListIterator;
 
 import com.bluespot.logic.iterators.LineIterator;
 import com.bluespot.logic.iterators.UnderlyingIOException;
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.gui.debug.cache.CommonString;
+import com.dafrito.rfe.gui.logging.cache.CommonString;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.gui.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.gui.style.StylesheetBorderElement;
@@ -30,6 +29,7 @@ import com.dafrito.rfe.gui.style.dimensions.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetMagnitude;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageHeightElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageWidthElement;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateNotFound;
@@ -127,36 +127,36 @@ public final class Parser {
 
 	private static List<Exception> preparseFile(ScriptEnvironment env, String filename, List<Object> stringList) {
 		List<Exception> exceptions = new ArrayList<Exception>();
-		assert Debugger.openNode("File Preparsing", "Preparsing file (" + filename + ")");
+		assert Logs.openNode("File Preparsing", "Preparsing file (" + filename + ")");
 		try {
-			assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
+			assert Logs.addSnapNode(CommonString.ELEMENTS, stringList);
 			preparseElements(env, preparseList(stringList));
-			assert Debugger.addNode("Preparsed successfully");
+			assert Logs.addNode("Preparsed successfully");
 		} catch (ScriptException ex) {
-			Debugger.printException(ex);
+			Logs.printException(ex);
 			exceptions.add(ex);
 		} catch (Exception_InternalError ex) {
-			Debugger.printException(ex);
+			Logs.printException(ex);
 			exceptions.add(ex);
 		} finally {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		return exceptions;
 	}
 
 	private static ScriptExecutable_ParseFunction preparseFunction(ScriptEnvironment env, final ScriptTemplate_Abstract object, List<Object> modifiers, ScriptGroup paramGroup, ScriptGroup body, String name) throws ScriptException {
 		if (name.equals("")) {
-			assert Debugger.openNode("Preparsing Functions", "Preparsing Function (constructor)");
+			assert Logs.openNode("Preparsing Functions", "Preparsing Function (constructor)");
 		} else {
-			assert Debugger.openNode("Preparsing Functions", "Preparsing Function (" + name + ")");
+			assert Logs.openNode("Preparsing Functions", "Preparsing Function (" + name + ")");
 		}
 		if (object == null) {
 			throw new NullPointerException("object must not be null");
 		}
-		assert Debugger.addSnapNode("Reference Template", object);
-		assert Debugger.addSnapNode("Modifiers", modifiers);
-		assert Debugger.addSnapNode("Parameters", paramGroup);
-		assert Debugger.addSnapNode("Body", body);
+		assert Logs.addSnapNode("Reference Template", object);
+		assert Logs.addSnapNode("Modifiers", modifiers);
+		assert Logs.addSnapNode("Parameters", paramGroup);
+		assert Logs.addSnapNode("Body", body);
 		ScriptExecutable_ParseFunction function;
 		assert env != null : "ScriptEnvironment for parseFunction is null.";
 		ScriptValueType returnType = null;
@@ -175,13 +175,13 @@ public final class Parser {
 				}
 				ScriptKeyword keyword = (ScriptKeyword) modifiers.get(i);
 				if (keyword.equals(ScriptKeywordType.STATIC)) {
-					assert Debugger.addNode("Modifier Parsing", "Static modifier found");
+					assert Logs.addNode("Modifier Parsing", "Static modifier found");
 					isStatic = true;
 				} else if (keyword.equals(ScriptKeywordType.ABSTRACT)) {
-					assert Debugger.addNode("Modifier Parsing", "Abstract modifier found");
+					assert Logs.addNode("Modifier Parsing", "Abstract modifier found");
 					isAbstract = true;
 				} else if (keyword.equals(ScriptKeywordType.PRIVATE) || keyword.equals(ScriptKeywordType.PUBLIC) || keyword.equals(ScriptKeywordType.PROTECTED)) {
-					assert Debugger.addNode("Modifier Parsing", "Permission modifier found (" + keyword + ")");
+					assert Logs.addNode("Modifier Parsing", "Permission modifier found (" + keyword + ")");
 					permission = keyword.getType();
 				} else {
 					if (ScriptValueType.isReturnablePrimitiveType(keyword.getValueType()) && returnType == null) {
@@ -222,30 +222,30 @@ public final class Parser {
 		}
 		if (functionName == null) {
 			function = new ScriptExecutable_ParseFunction(ref, returnType, object, functionName, parseParamGroup(env, paramGroup, object.getType()), permission, true, false, body);
-			assert Debugger.addSnapNode("Function parsed is a constructor (" + returnType + ")", function);
+			assert Logs.addSnapNode("Function parsed is a constructor (" + returnType + ")", function);
 		} else if (returnType != null) {
 			function = new ScriptExecutable_ParseFunction(ref, returnType, object, functionName, parseParamGroup(env, paramGroup, object.getType()), permission, isStatic, isAbstract, body);
-			assert Debugger.addSnapNode("Function parsed is a regular function with a primitive return type (" + returnType + ")", function);
+			assert Logs.addSnapNode("Function parsed is a regular function with a primitive return type (" + returnType + ")", function);
 		} else {
 			throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(modifiers.size() - 1), "Function parameters");
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return function;
 	}
 
 	private static List<Object> createGroupings(List<Object> stringList, CharacterGroup group) throws ScriptException {
-		assert Debugger.openNode("Character-Group Parsing", "Creating Groupings (" + group + ")");
-		assert Debugger.addSnapNode(CommonString.ELEMENTS, stringList);
-		assert Debugger.addSnapNode("Character Group", group);
+		assert Logs.openNode("Character-Group Parsing", "Creating Groupings (" + group + ")");
+		assert Logs.addSnapNode(CommonString.ELEMENTS, stringList);
+		assert Logs.addSnapNode("Character Group", group);
 		stringList = removeSingleLineGroupings(stringList, group);
 		boolean foundGroup = false;
 		for (int i = 0; i < stringList.size(); i++) {
 			Object obj = stringList.get(i);
 			if (obj instanceof ScriptGroup) {
 				if (group.isRecursive()) {
-					assert Debugger.openNode("Group found - recursing to parse");
+					assert Logs.openNode("Group found - recursing to parse");
 					((ScriptGroup) obj).setElements(createGroupings(((ScriptGroup) obj).getElements(), group));
-					assert Debugger.closeNode();
+					assert Logs.closeNode();
 				}
 				continue;
 			}
@@ -257,7 +257,7 @@ public final class Parser {
 			if (j == -1) {
 				continue;
 			}
-			assert Debugger.addSnapNode("Found closing character - searching backwards for opening character", scriptLine);
+			assert Logs.addSnapNode("Found closing character - searching backwards for opening character", scriptLine);
 			assert foundGroup = true;
 			List<Object> newList = new LinkedList<Object>();
 			newList.add(new ScriptLine(scriptLine.getString().substring(0, j), scriptLine, (short) 0));
@@ -280,7 +280,7 @@ public final class Parser {
 					i--;
 					continue;
 				}
-				assert Debugger.addSnapNode("Found opening character", backwardScriptLine);
+				assert Logs.addSnapNode("Found opening character", backwardScriptLine);
 				newList.add(new ScriptLine(
 						backwardScriptLine.getString().substring(x + group.getStart().length()),
 						backwardScriptLine,
@@ -288,18 +288,18 @@ public final class Parser {
 						));
 				backwardScriptLine.setString(backwardScriptLine.getString().substring(0, x));
 				Collections.reverse(newList);
-				assert Debugger.openNode("Recursing to parse elements in newly created group");
+				assert Logs.openNode("Recursing to parse elements in newly created group");
 				stringList.add(i, new ScriptGroup((Referenced) newList.get(0), createGroupings(newList, group), group));
-				assert Debugger.closeNode();
-				assert Debugger.openNode("Recursing to parse remaining elements");
+				assert Logs.closeNode();
+				assert Logs.openNode("Recursing to parse remaining elements");
 				List<Object> list = createGroupings(stringList, group);
-				assert Debugger.closeNode();
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
+				assert Logs.closeNode();
 				return list;
 			}
 		}
 		if (!foundGroup) {
-			assert Debugger.closeNode("No group found - naturally returning");
+			assert Logs.closeNode("No group found - naturally returning");
 		}
 		return stringList;
 	}
@@ -309,8 +309,8 @@ public final class Parser {
 		if (location == -1) {
 			return null;
 		}
-		assert Debugger.openNode("Operator Parsing", ScriptOperatorType.parse(operator) + " found in script-line: " + line.getString());
-		assert Debugger.addNode(line);
+		assert Logs.openNode("Operator Parsing", ScriptOperatorType.parse(operator) + " found in script-line: " + line.getString());
+		assert Logs.addNode(line);
 		List<Object> list = new LinkedList<Object>();
 		String string = line.getString().substring(0, location).trim();
 		String originalString = line.getString();
@@ -323,7 +323,7 @@ public final class Parser {
 		if (string.length() > 0) {
 			list.add(new ScriptLine(string, line, (short) (location + operator.length())));
 		}
-		assert Debugger.closeNode("Split-string list formed from operator parse", list);
+		assert Logs.closeNode("Split-string list formed from operator parse", list);
 		return list;
 	}
 
@@ -461,26 +461,26 @@ public final class Parser {
 	}
 
 	private static List<Object> removeEmptyScriptLines(List<Object> list) {
-		assert Debugger.openNode("Empty Script-Line Removals", "Empty Script-Line Removal");
-		assert Debugger.addSnapNode(CommonString.ELEMENTS, list);
+		assert Logs.openNode("Empty Script-Line Removals", "Empty Script-Line Removal");
+		assert Logs.addSnapNode(CommonString.ELEMENTS, list);
 		Iterator<Object> iter = list.iterator();
 		while (iter.hasNext()) {
 			Object element = iter.next();
 			if (element instanceof ScriptGroup) {
-				assert Debugger.openNode("Found script-group - recursing to parse");
+				assert Logs.openNode("Found script-group - recursing to parse");
 				((ScriptGroup) element).setElements(removeEmptyScriptLines(((ScriptGroup) element).getElements()));
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 				continue;
 			}
 			if (!(element instanceof ScriptLine)) {
 				continue;
 			}
 			if (((ScriptLine) element).getString().trim().length() == 0) {
-				assert Debugger.addSnapNode("Removing line", element);
+				assert Logs.addSnapNode("Removing line", element);
 				iter.remove();
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return list;
 	}
 
@@ -522,7 +522,7 @@ public final class Parser {
 			if (number.matches("^[0-9]*px$")) {
 				String numString = ((ScriptLine) lineList.get(i)).getString().substring(0, ((ScriptLine) lineList.get(i)).getString().length() - 2);
 				ScriptValue_Numeric scriptShort = new ScriptValue_Numeric(line.getEnvironment(), Short.parseShort(numString));
-				assert Debugger.addSnapNode("Number Extractions", "Short numeric value parsed (" + number + ")", scriptShort);
+				assert Logs.addSnapNode("Number Extractions", "Short numeric value parsed (" + number + ")", scriptShort);
 				lineList.remove(i);
 				lineList.add(i, scriptShort);
 				continue;
@@ -562,7 +562,7 @@ public final class Parser {
 			if (number.length() > 3 && number.substring(number.length() - 2).equals("em")) {
 				number = number.substring(0, number.length() - 2);
 				ScriptValue_Numeric scriptFloat = new ScriptValue_Numeric(line.getEnvironment(), Float.parseFloat(number) * 14);
-				assert Debugger.addSnapNode("Number Extractions", "Float numeric value parsed (" + number + ")", scriptFloat);
+				assert Logs.addSnapNode("Number Extractions", "Float numeric value parsed (" + number + ")", scriptFloat);
 				lineList.remove(i);
 				lineList.remove(i);
 				lineList.add(i, scriptFloat);
@@ -570,14 +570,14 @@ public final class Parser {
 			}
 			if (number.charAt(number.length() - 1) == 'f') {
 				ScriptValue_Numeric scriptFloat = new ScriptValue_Numeric(line.getEnvironment(), Float.parseFloat(number));
-				assert Debugger.addSnapNode("Number Extractions", "Float numeric value parsed (" + number + ")", scriptFloat);
+				assert Logs.addSnapNode("Number Extractions", "Float numeric value parsed (" + number + ")", scriptFloat);
 				lineList.remove(i);
 				lineList.add(i, scriptFloat);
 				continue;
 			}
 			if (number.indexOf(".") != -1) {
 				ScriptValue_Numeric scriptDouble = new ScriptValue_Numeric(line.getEnvironment(), Double.parseDouble(number));
-				assert Debugger.addSnapNode("Number Extractions", "Double numeric value parsed (" + number + ")", scriptDouble);
+				assert Logs.addSnapNode("Number Extractions", "Double numeric value parsed (" + number + ")", scriptDouble);
 				lineList.remove(i);
 				lineList.add(i, scriptDouble);
 				continue;
@@ -590,13 +590,13 @@ public final class Parser {
 			}
 			if (number.length() < 10) {
 				ScriptValue_Numeric scriptInt = new ScriptValue_Numeric(line.getEnvironment(), Integer.parseInt(number));
-				assert Debugger.addSnapNode("Number Extractions", "Integer numeric value parsed (" + number + ")", scriptInt);
+				assert Logs.addSnapNode("Number Extractions", "Integer numeric value parsed (" + number + ")", scriptInt);
 				lineList.remove(i);
 				lineList.add(i, scriptInt);
 				continue;
 			}
 			ScriptValue_Numeric scriptLong = new ScriptValue_Numeric(line.getEnvironment(), Long.parseLong(number));
-			assert Debugger.addSnapNode("Number Extractions", "Long numeric value parsed (" + number + ")", scriptLong);
+			assert Logs.addSnapNode("Number Extractions", "Long numeric value parsed (" + number + ")", scriptLong);
 			lineList.remove(i);
 			lineList.add(i, scriptLong);
 		}
@@ -604,7 +604,7 @@ public final class Parser {
 	}
 
 	private static List<ScriptExecutable> parseBodyList(ScriptEnvironment env, List<Object> bodyElements, ScriptValueType type) throws ScriptException {
-		assert Debugger.openNode("Body List Parsing", "Parsing Body List (" + bodyElements.size() + " element(s))");
+		assert Logs.openNode("Body List Parsing", "Parsing Body List (" + bodyElements.size() + " element(s))");
 		List<Object> elements = new LinkedList<Object>();
 		List<ScriptExecutable> statementBodyList = new LinkedList<ScriptExecutable>();
 		for (int j = 0; j < bodyElements.size(); j++) {
@@ -626,13 +626,13 @@ public final class Parser {
 		if (elements.size() != 0) {
 			statementBodyList.add(parseExpression(env, elements, false, type));
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return statementBodyList;
 	}
 
 	public static List<Exception> parseElements(ScriptEnvironment env) {
 		List<Exception> exceptions = new ArrayList<Exception>();
-		assert Debugger.openNode("Element Parsing", "Parsing Elements");
+		assert Logs.openNode("Element Parsing", "Parsing Elements");
 		try {
 			List<ScriptTemplate_Abstract> queuedTemplates = new LinkedList<ScriptTemplate_Abstract>();
 			for (TemplateParams params : classParams) {
@@ -644,13 +644,13 @@ public final class Parser {
 				queuedTemplates.get(i).initializeFunctions(classParams.get(i).getDebugReference());
 			}
 		} catch (ScriptException ex) {
-			Debugger.printException(ex);
+			Logs.printException(ex);
 			exceptions.add(ex);
 		} catch (Exception_InternalError ex) {
-			Debugger.printException(ex);
+			Logs.printException(ex);
 			exceptions.add(ex);
 		} finally {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		return exceptions;
 	}
@@ -675,13 +675,13 @@ public final class Parser {
 			}
 			if (obj.equals(ScriptKeywordType.NULL)) {
 				ScriptExecutable returnValue = new ScriptValue_Null((Referenced) obj);
-				assert Debugger.addSnapNode("Expression Parsing", "'null' keyword parsed", returnValue);
+				assert Logs.addSnapNode("Expression Parsing", "'null' keyword parsed", returnValue);
 				return returnValue;
 			}
 			// This keyword
 			if (obj.equals(ScriptKeywordType.THIS)) {
 				ScriptExecutable returnValue = new ScriptExecutable_RetrieveCurrentObject((Referenced) obj, type);
-				assert Debugger.addSnapNode("Expression Parsing", "'this' keyword parsed", returnValue);
+				assert Logs.addSnapNode("Expression Parsing", "'this' keyword parsed", returnValue);
 				return returnValue;
 			}
 			// Returns!
@@ -694,7 +694,7 @@ public final class Parser {
 				} else {
 					returnValue = new ScriptExecutable_ReturnValue(ref, (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type));
 				}
-				assert Debugger.addSnapNode("Expression Parsing", "Return value parsed", returnValue);
+				assert Logs.addSnapNode("Expression Parsing", "Return value parsed", returnValue);
 				return returnValue;
 			}
 			if (obj instanceof ScriptGroup) {
@@ -709,7 +709,7 @@ public final class Parser {
 					} else if (groupList.get(0) instanceof ScriptKeyword) {
 						caster = new ScriptExecutable_CastExpression((Referenced) groupList.get(0), ((ScriptKeyword) groupList.get(0)).getValueType(), parseExpression(env, list, automaticallyAddToStack, type));
 					}
-					assert Debugger.addSnapNode("Expression Parsing", "Cast Expression Parsed", caster);
+					assert Logs.addSnapNode("Expression Parsing", "Cast Expression Parsed", caster);
 					return caster;
 				}
 				list.add(i, parseExpression(env, groupList, automaticallyAddToStack, type));
@@ -761,7 +761,7 @@ public final class Parser {
 						}
 						list.remove(i + 2);
 					}
-					assert Debugger.addSnapNode("Expression Parsing", "Variable creation element parsed", exec);
+					assert Logs.addSnapNode("Expression Parsing", "Variable creation element parsed", exec);
 					if (automaticallyAddToStack && env.getCurrentObject() != null && env.getCurrentObject().isConstructing()) {
 						if (isStatic) {
 							env.getCurrentObject().addTemplatePreconstructorExpression(exec);
@@ -791,7 +791,7 @@ public final class Parser {
 					throw new Exception_Nodeable_TemplateNotFound((ScriptLine) nextObj, ((ScriptLine) nextObj).getString());
 				}
 				ScriptExecutable returnValue = new ScriptExecutable_CallFunction((Referenced) obj, new ScriptExecutable_RetrieveVariable((Referenced) obj, null, ((ScriptLine) nextObj).getString(), env.retrieveVariable(((ScriptLine) nextObj).getString()).getType()), "", parseParamGroup(env, (ScriptGroup) list.get(i + 2), type));
-				assert Debugger.addSnapNode("Object construction element parsed", returnValue);
+				assert Logs.addSnapNode("Object construction element parsed", returnValue);
 				list.remove(i);
 				list.remove(i);
 				list.remove(i);
@@ -821,11 +821,11 @@ public final class Parser {
 					if (list.size() == 1 && list.get(0) instanceof ScriptValue) {
 						returnValue = new ScriptExecutable_EvaluateBoolean((Referenced) obj, left, (ScriptValue) list.get(i), ((ScriptOperator) obj).getType());
 						list.remove(i);
-						assert Debugger.addSnapNode("Expression Parsing", "Boolean expression parsed", returnValue);
+						assert Logs.addSnapNode("Expression Parsing", "Boolean expression parsed", returnValue);
 						return returnValue;
 					}
 					returnValue = new ScriptExecutable_EvaluateBoolean((Referenced) obj, left, (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType());
-					assert Debugger.addSnapNode("Expression Parsing", "Boolean expression parsed", returnValue);
+					assert Logs.addSnapNode("Expression Parsing", "Boolean expression parsed", returnValue);
 					return returnValue;
 				case PERIOD:
 					if (i < 1 || !(list.get(i - 1) instanceof ScriptValue)) {
@@ -843,11 +843,11 @@ public final class Parser {
 					if (list.get(i) instanceof ScriptGroup) {
 						ScriptGroup group = (ScriptGroup) list.get(i);
 						returnValue = new ScriptExecutable_CallFunction(group, left, name.getString(), parseParamGroup(env, group.getElements(), type));
-						assert Debugger.addSnapNode("Expression Parsing", "Object function call parsed", returnValue);
+						assert Logs.addSnapNode("Expression Parsing", "Object function call parsed", returnValue);
 						list.remove(i);
 					} else {
 						returnValue = new ScriptExecutable_RetrieveVariable(name, left, name.getString(), env.getTemplate(left.getType()).getVariable(name.getString()).getType());
-						assert Debugger.addSnapNode("Expression Parsing", "Object member-variable placeholder parsed", returnValue);
+						assert Logs.addSnapNode("Expression Parsing", "Object member-variable placeholder parsed", returnValue);
 					}
 					list.add(i, returnValue);
 					return parseExpression(env, list, automaticallyAddToStack, type);
@@ -864,7 +864,7 @@ public final class Parser {
 					} else {
 						returnValue = new ScriptExecutable_AssignValue((Referenced) lhs, lhs, (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type));
 					}
-					assert Debugger.addSnapNode("Expression Parsing", "Variable assignment expression parsed", returnValue);
+					assert Logs.addSnapNode("Expression Parsing", "Variable assignment expression parsed", returnValue);
 					return returnValue;
 				case PLUS:
 				case MINUS:
@@ -883,7 +883,7 @@ public final class Parser {
 					} else {
 						returnValue = new ScriptExecutable_EvaluateMathExpression((Referenced) obj, left, (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType());
 					}
-					assert Debugger.addSnapNode("Expression Parsing", "Mathematical expression parsed", returnValue);
+					assert Logs.addSnapNode("Expression Parsing", "Mathematical expression parsed", returnValue);
 					return returnValue;
 				case PLUSEQUALS:
 				case MINUSEQUALS:
@@ -902,7 +902,7 @@ public final class Parser {
 					} else {
 						returnValue = new ScriptExecutable_EvalAssignMathExpression((Referenced) lhs, lhs, (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType());
 					}
-					assert Debugger.addSnapNode("Expression Parsing", "Mathematical assignment expression parsed", returnValue);
+					assert Logs.addSnapNode("Expression Parsing", "Mathematical assignment expression parsed", returnValue);
 					return returnValue;
 				case INCREMENT:
 				case DECREMENT:
@@ -911,7 +911,7 @@ public final class Parser {
 						// Post-increment
 						i--;
 						returnValue = new ScriptExecutable_AutoMathematicator((Referenced) list.get(i + 1), (ScriptValue) list.get(i), ((ScriptOperator) obj).getType(), true);
-						assert Debugger.addSnapNode("Expression Parsing", "Auto-mathematicator parsed", returnValue);
+						assert Logs.addSnapNode("Expression Parsing", "Auto-mathematicator parsed", returnValue);
 						list.remove(i);
 						list.remove(i);
 						return returnValue;
@@ -919,7 +919,7 @@ public final class Parser {
 						// Pre-increment
 						list.remove(i);
 						returnValue = new ScriptExecutable_AutoMathematicator((Referenced) list.get(i), (ScriptValue) parseExpression(env, list, automaticallyAddToStack, type), ((ScriptOperator) obj).getType(), false);
-						assert Debugger.addSnapNode("Expression Parsing", "Auto-mathematicator parsed", returnValue);
+						assert Logs.addSnapNode("Expression Parsing", "Auto-mathematicator parsed", returnValue);
 						return returnValue;
 					}
 				default:
@@ -932,17 +932,17 @@ public final class Parser {
 				if (nextObj == null || nextObj instanceof ScriptOperator) {
 					// It's a variable we've previously defined
 					if (env.retrieveVariable(((ScriptLine) obj).getString()) == null) {
-						Debugger.addSnapNode("Environment before exception", env);
+						Logs.addSnapNode("Environment before exception", env);
 						throw new Exception_Nodeable_VariableNotFound((Referenced) obj, ((ScriptLine) obj).getString());
 					}
 					list.remove(i);
 					returnValue = new ScriptExecutable_RetrieveVariable((Referenced) obj, null, ((ScriptLine) obj).getString(), env.retrieveVariable(((ScriptLine) obj).getString()).getType());
 					list.add(i, returnValue);
 					if (nextObj == null) {
-						assert Debugger.addSnapNode("Expression Parsing", "Variable placeholder parsed", returnValue);
+						assert Logs.addSnapNode("Expression Parsing", "Variable placeholder parsed", returnValue);
 						return (ScriptExecutable) list.get(i);
 					}
-					assert Debugger.addSnapNode("Expression Parsing", "Variable placeholder parsed", returnValue);
+					assert Logs.addSnapNode("Expression Parsing", "Variable placeholder parsed", returnValue);
 					return parseExpression(env, list, automaticallyAddToStack, type);
 				}
 				if (nextObj instanceof ScriptGroup) {
@@ -953,7 +953,7 @@ public final class Parser {
 						list.remove(i);
 						list.remove(i);
 						list.add(i, fxnCall);
-						assert Debugger.addSnapNode("Expression Parsing", "Function call parsed", fxnCall);
+						assert Logs.addSnapNode("Expression Parsing", "Function call parsed", fxnCall);
 						return fxnCall;
 					}
 				}
@@ -976,7 +976,7 @@ public final class Parser {
 						i--;
 					}
 					ScriptExecutable_CreateVariable creator = new ScriptExecutable_CreateVariable((Referenced) obj, ScriptValueType.createType((ScriptLine) obj, ((ScriptLine) obj).getString()), ((ScriptLine) list.get(i + 1)).getString(), permission);
-					assert Debugger.addSnapNode("Expression Parsing", "Variable creation element parsed", creator);
+					assert Logs.addSnapNode("Expression Parsing", "Variable creation element parsed", creator);
 					if (automaticallyAddToStack && env.getCurrentObject() != null && env.getCurrentObject().isConstructing()) {
 						if (isStatic) {
 							env.getCurrentObject().addTemplatePreconstructorExpression(creator);
@@ -999,8 +999,8 @@ public final class Parser {
 	}
 
 	private static ScriptExecutable parseFlowElement(ScriptEnvironment env, List<Object> list, ScriptValueType type) throws ScriptException {
-		assert Debugger.openNode("Flow Element Parsing", "Parsing Flow Element");
-		assert Debugger.addSnapNode(CommonString.ELEMENTS, list);
+		assert Logs.openNode("Flow Element Parsing", "Parsing Flow Element");
+		assert Logs.addSnapNode(CommonString.ELEMENTS, list);
 		for (int i = 0; i < list.size(); i++) {
 			Object obj = list.get(i);
 			if (obj instanceof ScriptExecutable) {
@@ -1023,7 +1023,7 @@ public final class Parser {
 					}
 					List<ScriptExecutable> bodyList = parseBodyList(env, ((ScriptGroup) list.get(i)).getElements(), type);
 					ScriptExecutable_ForStatement forStatement = new ScriptExecutable_ForStatement(parameterList.get(0), parameterList.get(1), parameterList.get(2), bodyList);
-					assert Debugger.closeNode("For statement parsed", forStatement);
+					assert Logs.closeNode("For statement parsed", forStatement);
 					env.retreatNestedStack();
 					return forStatement;
 				}
@@ -1050,7 +1050,7 @@ public final class Parser {
 					} else {
 						throw new Exception_Nodeable_UnexpectedType(env, list.get(i), "Keyword or code group");
 					}
-					Debugger.closeNode("'Else' script group parsed", previous);
+					Logs.closeNode("'Else' script group parsed", previous);
 					env.retreatNestedStack();
 					return null;
 				}
@@ -1062,12 +1062,12 @@ public final class Parser {
 					list.remove(i);
 					env.retreatNestedStack();
 					if (i < list.size() && list.get(i) instanceof ScriptKeyword && list.get(i).equals(ScriptKeywordType.ELSE)) {
-						assert Debugger.openNode("Found else keyword, recursing...");
+						assert Logs.openNode("Found else keyword, recursing...");
 						list.add(i, exec);
 						parseFlowElement(env, list, type);
-						Debugger.closeNode();
+						Logs.closeNode();
 					}
-					Debugger.closeNode("If group parsed", exec);
+					Logs.closeNode("If group parsed", exec);
 					return exec;
 				}
 			}
@@ -1076,7 +1076,7 @@ public final class Parser {
 	}
 
 	public static ScriptFunction parseFunction(ScriptExecutable_ParseFunction function, ScriptValueType type) throws ScriptException {
-		assert Debugger.openNode("Parsing Functions", "Parsing Function (" + RiffScriptFunction.getDisplayableFunctionName(function.getName()) + ")");
+		assert Logs.openNode("Parsing Functions", "Parsing Function (" + RiffScriptFunction.getDisplayableFunctionName(function.getName()) + ")");
 		ScriptFunction fxn;
 		if (function.getName() == null || function.getName().equals("")) {
 			fxn = new ScriptFunction_Constructor(function.getReturnType(), function.getParameters(), function.getPermission());
@@ -1084,14 +1084,14 @@ public final class Parser {
 			fxn = new RiffScriptFunction(function.getReturnType(), function.getParameters(), function.getPermission(), function.isAbstract(), function.isStatic());
 		}
 		fxn.addExpressions(parseBodyList(function.getEnvironment(), function.getBody().getElements(), type));
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return fxn;
 	}
 
 	private static ScriptExecutable_IfStatement parseIfStatement(Referenced ref, List<Object> list, ScriptValue value, int i, ScriptValueType type) throws ScriptException {
-		assert Debugger.openNode("If-Statement Parsing", "Parsing 'if' Statement (" + list.size() + " element(s))");
-		assert Debugger.addSnapNode("Boolean-Testing-Value", value);
-		assert Debugger.addSnapNode("Body Elements", list);
+		assert Logs.openNode("If-Statement Parsing", "Parsing 'if' Statement (" + list.size() + " element(s))");
+		assert Logs.addSnapNode("Boolean-Testing-Value", value);
+		assert Logs.addSnapNode("Body Elements", list);
 		if (value == null) {
 			if (!(list.get(i) instanceof ScriptGroup)) {
 				throw new Exception_Nodeable_UnexpectedType(ref, list.get(i), "Param group");
@@ -1103,13 +1103,13 @@ public final class Parser {
 			throw new Exception_Nodeable_UnexpectedType(ref, list.get(i), "Curly group");
 		}
 		ScriptExecutable_IfStatement statement = new ScriptExecutable_IfStatement(ref, value, parseBodyList(ref.getEnvironment(), ((ScriptGroup) list.get(i)).getElements(), type));
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return statement;
 	}
 
 	private static List<ScriptValue> parseParamGroup(ScriptEnvironment env, List<Object> elementsList, ScriptValueType type) throws ScriptException {
-		assert Debugger.openNode("Parameter-Group Parsing", "Parsing Parameter-Group (" + elementsList.size() + " element(s) in group)");
-		assert Debugger.addSnapNode(CommonString.ELEMENTS, elementsList);
+		assert Logs.openNode("Parameter-Group Parsing", "Parsing Parameter-Group (" + elementsList.size() + " element(s) in group)");
+		assert Logs.addSnapNode(CommonString.ELEMENTS, elementsList);
 		Iterator<Object> iter = elementsList.iterator();
 		List<ScriptValue> groupList = new LinkedList<ScriptValue>();
 		List<Object> currentParamList = new LinkedList<Object>();
@@ -1135,7 +1135,7 @@ public final class Parser {
 			}
 		}
 		env.retreatNestedStack();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return groupList;
 	}
 
@@ -1144,9 +1144,9 @@ public final class Parser {
 	}
 
 	private static Stylesheet parseStylesheet(Referenced ref, ScriptEnvironment env, ScriptGroup group) throws ScriptException {
-		assert Debugger.openNode("Stylesheet Parsing", "Parsing Stylesheet");
+		assert Logs.openNode("Stylesheet Parsing", "Parsing Stylesheet");
 		List<Object> elements = group.getElements();
-		assert Debugger.addSnapNode("Elements (" + elements.size() + " element(s))", elements);
+		assert Logs.addSnapNode("Elements (" + elements.size() + " element(s))", elements);
 		Stylesheet stylesheet = new Stylesheet(ref.getEnvironment(), true);
 		for (int i = 0; i < elements.size(); i++) {
 			if (elements.get(i) instanceof ScriptOperator && ((ScriptOperator) elements.get(i)).getType() == ScriptOperatorType.SEMICOLON) {
@@ -1177,7 +1177,7 @@ public final class Parser {
 				} else {
 					colorElem = Stylesheets.getColor(((ScriptLine) elements.get(offset)).getString());
 				}
-				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Color stylesheet-element parsed", colorElem);
+				assert Logs.addSnapNode("Stylesheet Element Parsing", "Color stylesheet-element parsed", colorElem);
 				stylesheet.addElement(StylesheetProperty.COLOR, colorElem);
 				i += offset - i;
 				continue;
@@ -1188,7 +1188,7 @@ public final class Parser {
 				assert ((ScriptOperator) elements.get(offset)).getType() == ScriptOperatorType.COLON;
 				offset++;
 				fontSizeElem = new StylesheetFontSizeElement(((ScriptValue_Numeric) elements.get(offset)).intValue());
-				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Font size stylesheet-element parsed", fontSizeElem);
+				assert Logs.addSnapNode("Stylesheet Element Parsing", "Font size stylesheet-element parsed", fontSizeElem);
 				stylesheet.addElement(StylesheetProperty.FONTSIZE, fontSizeElem);
 				i += offset - i;
 				continue;
@@ -1205,7 +1205,7 @@ public final class Parser {
 					assert elements.get(offset) instanceof ScriptValue_Numeric : "Should be a numeric value: " + elements.get(offset);
 					widthElem = new StylesheetAbsoluteWidthElement(((ScriptValue_Numeric) elements.get(offset)).intValue());
 				}
-				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Width stylesheet-element parsed", widthElem);
+				assert Logs.addSnapNode("Stylesheet Element Parsing", "Width stylesheet-element parsed", widthElem);
 				stylesheet.addElement(StylesheetProperty.WIDTH, widthElem);
 				i += offset - i;
 				continue;
@@ -1222,7 +1222,7 @@ public final class Parser {
 					assert elements.get(offset) instanceof ScriptValue_Numeric : "Should be a numeric value: " + elements.get(offset);
 					heightElem = new StylesheetAbsoluteHeightElement(((ScriptValue_Numeric) elements.get(offset)).intValue());
 				}
-				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Height stylesheet-element parsed", heightElem);
+				assert Logs.addSnapNode("Stylesheet Element Parsing", "Height stylesheet-element parsed", heightElem);
 				stylesheet.addElement(StylesheetProperty.HEIGHT, heightElem);
 				i += offset - i;
 				continue;
@@ -1234,7 +1234,7 @@ public final class Parser {
 				offset++;
 				assert elements.get(offset) instanceof ScriptValue_Numeric : "This element should be a ScriptValue_Numeric: " + elements.get(offset);
 				marginElem = new StylesheetMarginElement(((ScriptValue_Numeric) elements.get(offset)).intValue());
-				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Margin stylesheet-element parsed", marginElem);
+				assert Logs.addSnapNode("Stylesheet Element Parsing", "Margin stylesheet-element parsed", marginElem);
 				if (key.equals("margin")) {
 					stylesheet.addElement(StylesheetProperty.MARGINBOTTOM, marginElem);
 					stylesheet.addElement(StylesheetProperty.MARGINTOP, marginElem);
@@ -1259,7 +1259,7 @@ public final class Parser {
 				offset++;
 				assert elements.get(offset) instanceof ScriptValue_Numeric : "This element should be a ScriptValue_Numeric: " + elements.get(offset);
 				paddingElem = new StylesheetPaddingElement(((ScriptValue_Numeric) elements.get(offset)).intValue());
-				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Padding stylesheet-element parsed", paddingElem);
+				assert Logs.addSnapNode("Stylesheet Element Parsing", "Padding stylesheet-element parsed", paddingElem);
 				if (key.equals("padding")) {
 					stylesheet.addElement(StylesheetProperty.PADDINGBOTTOM, paddingElem);
 					stylesheet.addElement(StylesheetProperty.PADDINGTOP, paddingElem);
@@ -1318,7 +1318,7 @@ public final class Parser {
 					}
 				}
 				borderElem = new StylesheetBorderElement(width, style, color);
-				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Border stylesheet-element parsed", borderElem);
+				assert Logs.addSnapNode("Stylesheet Element Parsing", "Border stylesheet-element parsed", borderElem);
 				if (key.equals("border")) {
 					stylesheet.addElement(StylesheetProperty.BORDERBOTTOM, borderElem);
 					stylesheet.addElement(StylesheetProperty.BORDERTOP, borderElem);
@@ -1352,20 +1352,20 @@ public final class Parser {
 					color = Stylesheets.getColor(((ScriptLine) elements.get(offset)).getString());
 				}
 				StylesheetBackgroundColorElement bgColorElem = new StylesheetBackgroundColorElement(color);
-				assert Debugger.addSnapNode("Stylesheet Element Parsing", "Background color stylesheet-element parsed", bgColorElem);
+				assert Logs.addSnapNode("Stylesheet Element Parsing", "Background color stylesheet-element parsed", bgColorElem);
 				stylesheet.addElement(StylesheetProperty.BACKGROUNDCOLOR, bgColorElem);
 				i += offset - i;
 				continue;
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return stylesheet;
 	}
 
 	// Object-oriented parsing functions
 	private static void preparseElements(ScriptEnvironment env, List<Object> lineList) throws ScriptException {
-		assert Debugger.openNode("Preparsing Elements", "Preparsing Elements (" + lineList.size() + " element(s))");
-		assert Debugger.addSnapNode(CommonString.ELEMENTS, lineList);
+		assert Logs.openNode("Preparsing Elements", "Preparsing Elements (" + lineList.size() + " element(s))");
+		assert Logs.addSnapNode(CommonString.ELEMENTS, lineList);
 		List<Object> modifiers = new LinkedList<Object>();
 		for (int i = 0; i < lineList.size(); i++) {
 			Referenced element = (Referenced) lineList.get(i);
@@ -1416,25 +1416,25 @@ public final class Parser {
 		if (modifiers.size() != 0) {
 			throw new Exception_Nodeable_UnknownModifier((Referenced) lineList.get(lineList.size() - 1), modifiers);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	private static ScriptTemplate_Abstract preparseTemplate(Referenced ref, ScriptEnvironment env, List<Object> modifiers, ScriptGroup body, String className) throws ScriptException {
-		assert Debugger.openNode("Template Preparsing", "Preparsing Template (" + className + ")");
-		assert Debugger.addSnapNode("Modifiers (" + modifiers.size() + " modifier(s))", modifiers);
-		assert Debugger.addSnapNode("Template Body (" + body.getElements().size() + " element(s))", body);
+		assert Logs.openNode("Template Preparsing", "Preparsing Template (" + className + ")");
+		assert Logs.addSnapNode("Modifiers (" + modifiers.size() + " modifier(s))", modifiers);
+		assert Logs.addSnapNode("Template Body (" + body.getElements().size() + " element(s))", body);
 		String extendedClass = null;
 		List<ScriptValueType> implemented = new LinkedList<ScriptValueType>();
 		for (int i = 0; i < modifiers.size(); i++) {
 			ScriptElement obj = (ScriptElement) modifiers.get(i);
-			assert Debugger.addSnapNode("(" + i + ") Current element", obj);
+			assert Logs.addSnapNode("(" + i + ") Current element", obj);
 			if (modifiers.get(i) instanceof ScriptKeyword) {
 				if (modifiers.get(i).equals(ScriptKeywordType.EXTENDS)) {
 					if (i >= modifiers.size() - 1 || !(modifiers.get(i + 1) instanceof ScriptLine)) {
 						throw new Exception_Nodeable_UnexpectedType(env, modifiers.get(i), "Class type");
 					}
 					extendedClass = ((ScriptLine) modifiers.get(i + 1)).getString();
-					assert Debugger.addNode("Extended class parsed (" + extendedClass + ")");
+					assert Logs.addNode("Extended class parsed (" + extendedClass + ")");
 					modifiers.remove(i);
 					modifiers.remove(i);
 					i--;
@@ -1503,7 +1503,7 @@ public final class Parser {
 		}
 		env.retreatStack();
 		template.setConstructing(false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return template;
 	}
 
@@ -1547,31 +1547,31 @@ public final class Parser {
 			}
 			offset = endGroup + 1;
 		}
-		assert Debugger.openNode("Single-Line Grouping Removals", "Removing Single-Line Groupings (Syntax: " + openChar + "..." + closingChar + " )");
-		assert Debugger.addNode(line);
-		assert Debugger.addNode("Allowed to Recurse: " + recurse);
+		assert Logs.openNode("Single-Line Grouping Removals", "Removing Single-Line Groupings (Syntax: " + openChar + "..." + closingChar + " )");
+		assert Logs.addNode(line);
+		assert Logs.addNode("Allowed to Recurse: " + recurse);
 		List<Object> list = new LinkedList<Object>();
 		List<Object> itemList = new LinkedList<Object>();
 		ScriptLine newGroup = new ScriptLine(string.substring(beginGroup + openChar.length()), line, (short) (beginGroup + openChar.length()));
-		assert Debugger.openNode("Recursing for left-side groups.");
+		assert Logs.openNode("Recursing for left-side groups.");
 		list.addAll(removeSingleLineGroupings(
 				new ScriptLine(line.getString().substring(0, beginGroup), line, (short) 0),
 				group));
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		itemList.add(newGroup);
 		list.add(new ScriptGroup(line, itemList, group));
-		assert Debugger.openNode("Recursing for right-side groups.");
+		assert Logs.openNode("Recursing for right-side groups.");
 		list.addAll(removeSingleLineGroupings(
 				new ScriptLine(line.getString().substring(endGroup + closingChar.length()), line, (short) (endGroup + closingChar.length())),
 				group));
-		assert Debugger.closeNode();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
+		assert Logs.closeNode();
 		return list;
 	}
 
 	private static List<Object> splitByWhitespace(List<Object> list) {
-		assert Debugger.openNode("Split-By-Whitespace List Operations", "Splitting lines in list by whitespace (" + list.size() + " element(s))");
-		assert Debugger.addSnapNode("Elements", list);
+		assert Logs.openNode("Split-By-Whitespace List Operations", "Splitting lines in list by whitespace (" + list.size() + " element(s))");
+		assert Logs.addSnapNode("Elements", list);
 		for (int i = 0; i < list.size(); i++) {
 			Object obj = list.get(i);
 			if (obj instanceof ScriptGroup) {
@@ -1584,17 +1584,17 @@ public final class Parser {
 			list.remove(i);
 			list.addAll(i, splitByWhitespace((ScriptLine) obj));
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return list;
 	}
 
 	private static List<Object> splitByWhitespace(ScriptLine line) {
-		assert Debugger.openNode("Split-By-Whitespace Operations", "Splitting line by whitespace (" + line.getLineNumber() + ":'" + line.getString() + "')");
-		assert Debugger.addSnapNode("Line", line);
+		assert Logs.openNode("Split-By-Whitespace Operations", "Splitting line by whitespace (" + line.getLineNumber() + ":'" + line.getString() + "')");
+		assert Logs.addSnapNode("Line", line);
 		List<Object> list = new LinkedList<Object>();
 		if (line.getString().indexOf(" ") == -1 && line.getString().indexOf("\t") == -1) {
 			list.add(line);
-			assert Debugger.closeNode("Line contains no whitespace.");
+			assert Logs.closeNode("Line contains no whitespace.");
 			return list;
 		}
 		String string = line.getString();
@@ -1617,7 +1617,7 @@ public final class Parser {
 		if (nextWord.length() > 0) {
 			list.add(new ScriptLine(nextWord, line, offset));
 		}
-		assert Debugger.closeNode("Returning list", list);
+		assert Logs.closeNode("Returning list", list);
 		return list;
 	}
 

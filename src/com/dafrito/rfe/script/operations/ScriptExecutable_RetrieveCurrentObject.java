@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -53,7 +53,7 @@ public class ScriptExecutable_RetrieveCurrentObject extends ScriptValue_Variable
 	}
 
 	public ScriptValue_Variable getVariable() throws ScriptException {
-		assert Debugger.addNode("Executing Current Object Retrieval");
+		assert Logs.addNode("Executing Current Object Retrieval");
 		return new ScriptValue_Variable(this.getEnvironment(), this.getType(), this.getEnvironment().getCurrentObject(), this.getPermission());
 	}
 
@@ -65,9 +65,9 @@ public class ScriptExecutable_RetrieveCurrentObject extends ScriptValue_Variable
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Current Object Placeholder");
+		assert Logs.openNode("Current Object Placeholder");
 		super.nodificate();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override

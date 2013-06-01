@@ -25,7 +25,6 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import com.dafrito.rfe.geom.points.Points;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.event.KeyEvent_KeyDown;
 import com.dafrito.rfe.gui.event.KeyEvent_KeyUp;
 import com.dafrito.rfe.gui.event.RiffInterface_ClickEvent;
@@ -33,6 +32,7 @@ import com.dafrito.rfe.gui.event.RiffInterface_DragEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_Event;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseDownEvent;
 import com.dafrito.rfe.gui.event.RiffInterface_MouseUpEvent;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 /**
@@ -107,14 +107,14 @@ public class Interface extends JPanel {
 			@Override
 			public synchronized void keyPressed(KeyEvent e) {
 				KeyEvent_KeyDown event = new KeyEvent_KeyDown(e.getKeyCode());
-				assert Debugger.addNode(event);
+				assert Logs.addNode(event);
 				queuedEvents.add(event);
 			}
 
 			@Override
 			public synchronized void keyReleased(KeyEvent e) {
 				KeyEvent_KeyUp event = new KeyEvent_KeyUp(e.getKeyCode());
-				assert Debugger.addNode(event);
+				assert Logs.addNode(event);
 				queuedEvents.add(event);
 			}
 		});
@@ -124,7 +124,7 @@ public class Interface extends JPanel {
 			@Override
 			public synchronized void mouseClicked(MouseEvent e) {
 				RiffInterface_ClickEvent event = new RiffInterface_ClickEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()), e.getClickCount());
-				assert Debugger.addNode(event);
+				assert Logs.addNode(event);
 				queuedEvents.add(event);
 				lastX = e.getX();
 				lastY = e.getY();
@@ -134,7 +134,7 @@ public class Interface extends JPanel {
 			@Override
 			public synchronized void mousePressed(MouseEvent e) {
 				RiffInterface_MouseDownEvent event = new RiffInterface_MouseDownEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()));
-				assert Debugger.addNode(event);
+				assert Logs.addNode(event);
 				queuedEvents.add(event);
 				lastX = e.getX();
 				lastY = e.getY();
@@ -144,7 +144,7 @@ public class Interface extends JPanel {
 			@Override
 			public synchronized void mouseReleased(MouseEvent e) {
 				RiffInterface_MouseUpEvent event = new RiffInterface_MouseUpEvent(e.getX(), e.getY(), MouseButton.getButton(e.getButton()));
-				assert Debugger.addNode(event);
+				assert Logs.addNode(event);
 				queuedEvents.add(event);
 				lastX = -1;
 				lastY = -1;
@@ -163,7 +163,7 @@ public class Interface extends JPanel {
 					distance *= -1;
 				}
 				RiffInterface_DragEvent event = new RiffInterface_DragEvent(e.getX(), e.getY(), lastButton, e.getX() - lastX, e.getY() - lastY, distance);
-				assert Debugger.addNode(event);
+				assert Logs.addNode(event);
 				queuedEvents.add(event);
 				lastX = e.getX();
 				lastY = e.getY();
@@ -178,7 +178,7 @@ public class Interface extends JPanel {
 	}
 
 	private void flushQueue() {
-		assert Debugger.addNode("Flushing Event Queue (" + this.queuedEvents.size() + " event(s))");
+		assert Logs.addNode("Flushing Event Queue (" + this.queuedEvents.size() + " event(s))");
 		while (!this.queuedEvents.isEmpty()) {
 			this.rootElement.dispatchEvent(this.queuedEvents.pop());
 		}

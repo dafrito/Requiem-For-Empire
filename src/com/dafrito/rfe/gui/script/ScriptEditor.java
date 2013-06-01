@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.gui.script;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -38,7 +38,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-import com.dafrito.rfe.gui.script.ScriptPanel;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.CompileThread;
 import com.dafrito.rfe.script.ExecutionThread;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -155,7 +155,7 @@ public class ScriptEditor extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Debugger.report();
+				Logs.report();
 			}
 		});
 		fileMenu.add(report);

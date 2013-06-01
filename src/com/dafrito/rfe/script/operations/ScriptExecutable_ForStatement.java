@@ -2,8 +2,8 @@ package com.dafrito.rfe.script.operations;
 
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -28,31 +28,31 @@ public class ScriptExecutable_ForStatement extends ScriptElement implements Scri
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue execute() throws ScriptException {
-		assert Debugger.openNode("For-Statement Executions", "Executing For-Statement");
+		assert Logs.openNode("For-Statement Executions", "Executing For-Statement");
 		this.getEnvironment().advanceNestedStack();
-		assert Debugger.openNode("Initializing");
+		assert Logs.openNode("Initializing");
 		this.initializer.execute();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		while (((ScriptValue_Boolean) this.tester.execute().getValue()).getBooleanValue()) {
-			assert Debugger.openNode("Looping", "Looping iteration");
+			assert Logs.openNode("Looping", "Looping iteration");
 			this.getEnvironment().advanceNestedStack();
 			for (ScriptExecutable exec : this.expressions) {
 				exec.execute();
 				if (exec instanceof Returnable && ((Returnable) exec).shouldReturn()) {
 					this.returnValue = ((Returnable) exec).getReturnValue();
 					this.shouldReturn = true;
-					assert Debugger.closeNode();
+					assert Logs.closeNode();
 					return null;
 				}
 			}
 			this.getEnvironment().retreatNestedStack();
-			assert Debugger.closeNode();
-			assert Debugger.openNode("Executing repeater");
+			assert Logs.closeNode();
+			assert Logs.openNode("Executing repeater");
 			this.repeater.execute();
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		this.getEnvironment().retreatNestedStack();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return null;
 	}
 
@@ -66,12 +66,12 @@ public class ScriptExecutable_ForStatement extends ScriptElement implements Scri
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Script For-Statement");
-		assert Debugger.addSnapNode("Initializer", this.initializer);
-		assert Debugger.addSnapNode("Boolean expression", this.tester);
-		assert Debugger.addSnapNode("Repeating expression", this.repeater);
-		assert Debugger.addSnapNode("Expressions", this.expressions);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Script For-Statement");
+		assert Logs.addSnapNode("Initializer", this.initializer);
+		assert Logs.addSnapNode("Boolean expression", this.tester);
+		assert Logs.addSnapNode("Repeating expression", this.repeater);
+		assert Logs.addSnapNode("Expressions", this.expressions);
+		assert Logs.closeNode();
 	}
 
 	// Returnable implementation

@@ -3,8 +3,8 @@
  */
 package com.dafrito.rfe.inspect;
 
-import com.dafrito.rfe.gui.debug.LogMessage;
-import com.dafrito.rfe.gui.debug.TreeLog;
+import com.dafrito.rfe.logging.LogMessage;
+import com.dafrito.rfe.logging.TreeLog;
 
 /**
  * An {@link Inspector} that records nodes using an underlying

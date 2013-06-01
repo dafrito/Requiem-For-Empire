@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.actions.Scheduler;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -41,11 +41,11 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing scheduler faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing scheduler faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Scheduler template = (FauxTemplate_Scheduler) rawTemplate;
 		ScriptValue returning;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Scheduler) this.createObject(ref, template);
@@ -54,7 +54,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 			case 1:
 				template.getScheduler().setDefaultListener(Conversions.getSchedulerListener(params.get(0)));
 			case 0:
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 				return template;
 			}
 		} else if (name.equals("schedule")) {
@@ -63,19 +63,19 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 				listener = Conversions.getTemplate(params.get(2));
 			}
 			template.getScheduler().schedule(Conversions.getNumber(this.getEnvironment(), params.get(0)).longValue(), Conversions.getAsset(this.getEnvironment(), params.get(1)), listener);
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setDefaultListener")) {
 			template.getScheduler().setDefaultListener(Conversions.getSchedulerListener(params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("start")) {
 			template.getScheduler().start();
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -87,7 +87,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing scheduler faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing scheduler faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> params = new LinkedList<ScriptValue>();
 		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_SchedulerListener.SCHEDULERLISTENERSTRING)));
@@ -108,7 +108,7 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 		this.addFauxFunction("setDefaultListener", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, false, false);
 		params = new LinkedList<ScriptValue>();
 		this.addFauxFunction("start", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -119,10 +119,10 @@ public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, Sc
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Scheduler Faux Template");
+		assert Logs.openNode("Scheduler Faux Template");
 		super.nodificate();
-		assert Debugger.addNode(this.scheduler);
-		assert Debugger.closeNode();
+		assert Logs.addNode(this.scheduler);
+		assert Logs.closeNode();
 	}
 
 	public void setScheduler(Scheduler scheduler) {

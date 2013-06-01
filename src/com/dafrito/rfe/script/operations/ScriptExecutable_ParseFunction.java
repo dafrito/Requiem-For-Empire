@@ -2,8 +2,8 @@ package com.dafrito.rfe.script.operations;
 
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -105,10 +105,10 @@ public class ScriptExecutable_ParseFunction extends ScriptElement implements Scr
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Unparsed Script-Function (" + RiffScriptFunction.getDisplayableFunctionName(this.name) + ")");
-		assert Debugger.addNode("Static: " + this.isStatic);
-		assert Debugger.addSnapNode("Body", this.body);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Unparsed Script-Function (" + RiffScriptFunction.getDisplayableFunctionName(this.name) + ")");
+		assert Logs.addNode("Static: " + this.isStatic);
+		assert Logs.addSnapNode("Body", this.body);
+		assert Logs.closeNode();
 	}
 
 	@Override

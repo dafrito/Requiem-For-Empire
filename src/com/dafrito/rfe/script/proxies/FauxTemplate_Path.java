@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.PointPath;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -41,10 +41,10 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing Path Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing Path Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Path template = (FauxTemplate_Path) rawTemplate;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Path) this.createObject(ref, template);
@@ -55,18 +55,18 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 			params.clear();
 		} else if (name.equals("getTotalTime")) {
 			ScriptValue returning = Conversions.wrapLong(this.getEnvironment(), ((PointPath) template.getPoint()).getTotalTime());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		}
 		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing path faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing path faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Scenario.SCENARIOSTRING)));
@@ -74,7 +74,7 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
 		this.addFauxFunction("getTotalTime", ScriptValueType.LONG, new LinkedList<ScriptValue>(), ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -85,8 +85,8 @@ public class FauxTemplate_Path extends FauxTemplate_Point implements ScriptConve
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Path Faux Script-Element");
+		assert Logs.openNode("Path Faux Script-Element");
 		super.nodificate();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

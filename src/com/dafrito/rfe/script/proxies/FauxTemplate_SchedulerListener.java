@@ -3,8 +3,8 @@ package com.dafrito.rfe.script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -31,11 +31,11 @@ public class FauxTemplate_SchedulerListener extends FauxTemplate implements Node
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing scheduler listener faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
-		assert Debugger.addSnapNode("Template provided", rawTemplate);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.openNode("Faux Template Executions", "Executing scheduler listener faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.addSnapNode("Template provided", rawTemplate);
+		assert Logs.addSnapNode("Parameters provided", params);
 		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, rawTemplate);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -43,14 +43,14 @@ public class FauxTemplate_SchedulerListener extends FauxTemplate implements Node
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing scheduler listener faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing scheduler listener faux template");
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
 		List<ScriptValue> params = new LinkedList<ScriptValue>();
 		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.LONG));
 		params.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Asset.ASSETSTRING)));
 		this.addFauxFunction("iterate", ScriptValueType.VOID, params, ScriptKeywordType.PUBLIC, true, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -61,8 +61,8 @@ public class FauxTemplate_SchedulerListener extends FauxTemplate implements Node
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Scheduler listener faux template");
+		assert Logs.openNode("Scheduler listener faux template");
 		super.nodificate();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

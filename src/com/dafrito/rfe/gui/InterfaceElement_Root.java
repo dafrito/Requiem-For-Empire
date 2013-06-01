@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.event.KeyEvent_KeyDown;
 import com.dafrito.rfe.gui.event.KeyEvent_KeyUp;
 import com.dafrito.rfe.gui.event.RiffInterface_ClickEvent;
@@ -23,6 +22,7 @@ import com.dafrito.rfe.gui.style.StylesheetProperty;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetAbsoluteHeightElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetMagnitude;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class InterfaceElement_Root extends InterfaceElement implements Interface_Container {
@@ -38,12 +38,12 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 
 	@Override
 	public void add(GraphicalElement element) {
-		assert Debugger.openNode("Interface-Element Addition");
-		assert Debugger.addSnapNode("This Element", this);
-		assert Debugger.addSnapNode("Added Element", element);
+		assert Logs.openNode("Interface-Element Addition");
+		assert Logs.addSnapNode("This Element", this);
+		assert Logs.addSnapNode("Added Element", element);
 		this.elements.add(element);
 		element.setParent(this);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void add(RiffInterface_MouseListener element) {
@@ -119,7 +119,7 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 				((RiffInterface_MouseListener) this.focusedElement).riffMouseEvent(event);
 			}
 		} else {
-			assert Debugger.addNode("No applicable listener found");
+			assert Logs.addNode("No applicable listener found");
 		}
 	}
 
@@ -189,15 +189,15 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Root Interface Element");
+		assert Logs.openNode("Root Interface Element");
 		super.nodificate();
-		assert Debugger.addSnapNode("Elements: " + this.elements.size() + " element(s)", this.elements);
-		assert Debugger.closeNode();
+		assert Logs.addSnapNode("Elements: " + this.elements.size() + " element(s)", this.elements);
+		assert Logs.closeNode();
 	}
 
 	@Override
 	public void paint(Graphics2D g2d) {
-		assert Debugger.openNode("Paint Operations", "Painting operation: " + this.getElements().size() + " element(s)");
+		assert Logs.openNode("Paint Operations", "Painting operation: " + this.getElements().size() + " element(s)");
 		this.setXAnchor(0);
 		this.setYAnchor(0);
 		super.paint(g2d);
@@ -224,7 +224,7 @@ public class InterfaceElement_Root extends InterfaceElement implements Interface
 			}
 			element.paint(g2d);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void repaint() {

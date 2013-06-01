@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -36,8 +36,8 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue execute() throws ScriptException {
-		assert Debugger.openNode("Combo-Boolean Evaluations", "Evaluating Combo-Boolean Expression (" + this.operator + ")");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Combo-Boolean Evaluations", "Evaluating Combo-Boolean Expression (" + this.operator + ")");
+		assert Logs.addNode(this);
 		if (this.lhs.isConvertibleTo(ScriptValueType.BOOLEAN)) {
 			throw new ClassCastScriptException(this, this.lhs, ScriptValueType.BOOLEAN);
 		}
@@ -74,10 +74,10 @@ public class ScriptExecutable_EvaluateComboBoolean extends ScriptElement impleme
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Combo Boolean Expression");
-		assert Debugger.addSnapNode("Left side", this.lhs);
-		assert Debugger.addSnapNode("Right side", this.rhs);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Combo Boolean Expression");
+		assert Logs.addSnapNode("Left side", this.lhs);
+		assert Logs.addSnapNode("Right side", this.rhs);
+		assert Logs.closeNode();
 	}
 
 	@Override

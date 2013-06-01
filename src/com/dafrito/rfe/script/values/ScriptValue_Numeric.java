@@ -1,8 +1,8 @@
 package com.dafrito.rfe.script.values;
 
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.gui.debug.cache.CommonString;
+import com.dafrito.rfe.gui.logging.cache.CommonString;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
@@ -18,34 +18,34 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 		// If type is a long, all numeric types but int and short are valid
 		// If type is a float, only floats and doubles are valid
 		// If type is a double, only another double is valid
-		assert Debugger.openNode("Type-Match Tests", "Checking for Type-Match (" + base + " to " + cast + ")");
+		assert Logs.openNode("Type-Match Tests", "Checking for Type-Match (" + base + " to " + cast + ")");
 		if (ScriptValueType.isNumericType(base)) {
 			if (!ScriptValueType.isNumericType(cast)) {
-				assert Debugger.closeNode("Potential destination-type is not numeric, returning false.");
+				assert Logs.closeNode("Potential destination-type is not numeric, returning false.");
 				return false;
 			}
 			if (base.equals(cast)) {
-				assert Debugger.closeNode("Potential destination-type is equal to source, returning true.");
+				assert Logs.closeNode("Potential destination-type is equal to source, returning true.");
 				return true;
 			}
 			if (base.equals(ScriptKeywordType.SHORT)) {
-				assert Debugger.closeNode("Source-type is a short; all numeric types are valid casts, returning true.");
+				assert Logs.closeNode("Source-type is a short; all numeric types are valid casts, returning true.");
 				return true;
 			}
 			if (base.equals(ScriptKeywordType.INT)) {
-				assert Debugger.closeNode("Source-type is an integer; all numeric types are valid casts, returning true.");
+				assert Logs.closeNode("Source-type is an integer; all numeric types are valid casts, returning true.");
 				return true;
 			}
 			if (base.equals(ScriptKeywordType.LONG) && !cast.equals(ScriptKeywordType.SHORT) && !cast.equals(ScriptKeywordType.INT)) {
-				assert Debugger.closeNode("Source-type is a long, and destination-type is a long or of higher precision, returning true.");
+				assert Logs.closeNode("Source-type is a long, and destination-type is a long or of higher precision, returning true.");
 				return true;
 			}
 			if (base.equals(ScriptKeywordType.FLOAT) && cast.equals(ScriptKeywordType.DOUBLE)) {
-				assert Debugger.closeNode("Source-type is a float, and cast is a double, so returning type.");
+				assert Logs.closeNode("Source-type is a float, and cast is a double, so returning type.");
 				return true;
 			}
 		}
-		assert Debugger.closeNode("Invalid cast, returning false.");
+		assert Logs.closeNode("Invalid cast, returning false.");
 		return false;
 	}
 
@@ -82,7 +82,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 
 	@Override
 	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
-		assert Debugger.openNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
+		assert Logs.openNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
 		ScriptValue value;
 		ScriptEnvironment environment = this.getEnvironment();
 		if (ref != null) {
@@ -107,7 +107,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 		default:
 			throw new ClassCastScriptException(ref, this, type);
 		}
-		assert Debugger.closeNode("Returned value", this);
+		assert Logs.closeNode("Returned value", this);
 		return value;
 	}
 
@@ -122,8 +122,8 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 	}
 
 	public Number decrement(Referenced ref, ScriptValue value) throws ScriptException {
-		assert Debugger.openNode("Numeric Value Decrements", "Decrementing Numeric Value");
-		assert Debugger.addSnapNode("Number before decrement", value);
+		assert Logs.openNode("Numeric Value Decrements", "Decrementing Numeric Value");
+		assert Logs.addSnapNode("Number before decrement", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
 		switch (this.getType().getKeywordType()) {
 		case SHORT:
@@ -144,13 +144,13 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 		default:
 			throw new ClassCastScriptException(ref, this, value);
 		}
-		assert Debugger.closeNode("Number after decrement", "" + number);
+		assert Logs.closeNode("Number after decrement", "" + number);
 		return number;
 	}
 
 	public Number divide(Referenced ref, ScriptValue value) throws ScriptException {
-		assert Debugger.openNode("Numeric Value Divisions", "Dividing Numeric Value");
-		assert Debugger.addSnapNode("Number before division", value);
+		assert Logs.openNode("Numeric Value Divisions", "Dividing Numeric Value");
+		assert Logs.addSnapNode("Number before division", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
 		if (number.doubleValue() == 0) {
 			throw new DivisionByZeroScriptException(ref);
@@ -174,7 +174,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 		default:
 			throw new ClassCastScriptException(ref, this, value);
 		}
-		assert Debugger.closeNode("Number after division", "" + number);
+		assert Logs.closeNode("Number after division", "" + number);
 		return number;
 	}
 
@@ -212,8 +212,8 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 	}
 
 	public Number increment(Referenced ref, ScriptValue value) throws ScriptException {
-		assert Debugger.openNode("Numeric Value Increments", "Incrementing Numeric Value");
-		assert Debugger.addSnapNode("Number before increment", value);
+		assert Logs.openNode("Numeric Value Increments", "Incrementing Numeric Value");
+		assert Logs.addSnapNode("Number before increment", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
 		switch (this.getType().getKeywordType()) {
 		case SHORT:
@@ -234,7 +234,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 		default:
 			throw new ClassCastScriptException(ref, this, value);
 		}
-		assert Debugger.closeNode("Number after increment", "" + number);
+		assert Logs.closeNode("Number after increment", "" + number);
 		return number;
 	}
 
@@ -252,8 +252,8 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 	}
 
 	public Number modulus(Referenced ref, ScriptValue value) throws ScriptException {
-		assert Debugger.openNode("Numeric Value Modulations", "Modulating Numeric Value");
-		assert Debugger.addSnapNode("Number before modulus", value);
+		assert Logs.openNode("Numeric Value Modulations", "Modulating Numeric Value");
+		assert Logs.addSnapNode("Number before modulus", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
 		if (number.doubleValue() == 0) {
 			throw new DivisionByZeroScriptException(ref);
@@ -277,13 +277,13 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 		default:
 			throw new ClassCastScriptException(ref, this, value);
 		}
-		assert Debugger.closeNode("Number after modulus", "" + number);
+		assert Logs.closeNode("Number after modulus", "" + number);
 		return number;
 	}
 
 	public Number multiply(Referenced ref, ScriptValue value) throws ScriptException {
-		assert Debugger.openNode("Numeric Value Multiplications", "Multiplying Numeric Value");
-		assert Debugger.addSnapNode("Number before multiplication", value);
+		assert Logs.openNode("Numeric Value Multiplications", "Multiplying Numeric Value");
+		assert Logs.addSnapNode("Number before multiplication", value);
 		Number number = ((ScriptValue_Numeric) value.castToType(ref, this.getType())).getNumericValue();
 		switch (this.getType().getKeywordType()) {
 		case SHORT:
@@ -304,7 +304,7 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 		default:
 			throw new ClassCastScriptException(ref, this, value);
 		}
-		assert Debugger.closeNode("Number after multiplication", "" + number);
+		assert Logs.closeNode("Number after multiplication", "" + number);
 		return number;
 	}
 
@@ -312,30 +312,30 @@ public class ScriptValue_Numeric implements ScriptValue, ScriptConvertible<Numbe
 	public void nodificate() {
 		switch (this.getType().getKeywordType()) {
 		case SHORT:
-			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUESHORT);
+			assert Logs.openNode(CommonString.NUMERICSCRIPTVALUESHORT);
 			break;
 		case INT:
-			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUEINT);
+			assert Logs.openNode(CommonString.NUMERICSCRIPTVALUEINT);
 			break;
 		case LONG:
-			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUELONG);
+			assert Logs.openNode(CommonString.NUMERICSCRIPTVALUELONG);
 			break;
 		case FLOAT:
-			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUEFLOAT);
+			assert Logs.openNode(CommonString.NUMERICSCRIPTVALUEFLOAT);
 			break;
 		case DOUBLE:
-			assert Debugger.openNode(CommonString.NUMERICSCRIPTVALUEDOUBLE);
+			assert Logs.openNode(CommonString.NUMERICSCRIPTVALUEDOUBLE);
 			break;
 		default:
 			throw new AssertionError("Invalid default");
 		}
 		if (this.number == null) {
-			assert Debugger.addNode("Numeric value: null");
+			assert Logs.addNode("Numeric value: null");
 		} else {
-			assert Debugger.addNode("Numeric value: " + this.number.doubleValue());
+			assert Logs.addNode("Numeric value: " + this.number.doubleValue());
 		}
-		assert Debugger.addNode("Reference: " + this);
-		assert Debugger.closeNode();
+		assert Logs.addNode("Reference: " + this);
+		assert Logs.closeNode();
 	}
 
 	public ScriptValue setNumericValue(Number value) {

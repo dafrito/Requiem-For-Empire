@@ -19,25 +19,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.dafrito.rfe.gui.debug;
-
-import com.bluespot.logic.predicates.Predicate;
-import com.bluespot.logic.predicates.Predicates;
+package com.dafrito.rfe.logging;
 
 /**
  * @author Aaron Faanes
  * @param <T>
  *            the type of log message
- * 
  */
-public class GuardedTreeLog<T> implements TreeLog<T> {
+public abstract class ScopeGuardedTreeLog<T> implements TreeLog<T> {
 
-	private Predicate<? super LogMessage<?>> guard;
-
+	int levels;
 	private TreeLog<? super T> sink;
 
-	public void setGuard(Predicate<? super LogMessage<?>> guard) {
-		this.guard = guard;
+	protected abstract boolean allowEntry(String scope, String scopeGroup);
+
+	private boolean isAccepting() {
+		return levels > 0;
+	}
+
+	@Override
+	public void log(LogMessage<? extends T> message) {
+		if (isAccepting()) {
+			sink.log(message);
+		}
+	}
+
+	@Override
+	public void enter(String scope, String scopeGroup) {
+		if (levels == 0 && !allowEntry(scope, scopeGroup)) {
+			return;
+		}
+		++levels;
+		sink.enter(scope, scopeGroup);
+	}
+
+	@Override
+	public void leave() {
+		sink.leave();
+		--levels;
 	}
 
 	public TreeLog<? super T> getSink() {
@@ -49,29 +68,5 @@ public class GuardedTreeLog<T> implements TreeLog<T> {
 
 	public void setSink(TreeLog<? super T> sink) {
 		this.sink = sink;
-	}
-
-	public Predicate<? super LogMessage<?>> getGuard() {
-		if (this.guard == null) {
-			return Predicates.always();
-		}
-		return this.guard;
-	}
-
-	@Override
-	public void log(LogMessage<? extends T> message) {
-		if (getGuard().test(message)) {
-			sink.log(message);
-		}
-	}
-
-	@Override
-	public void enter(String scope, String scopeGroup) {
-		sink.enter(scope, scopeGroup);
-	}
-
-	@Override
-	public void leave() {
-		sink.leave();
 	}
 }

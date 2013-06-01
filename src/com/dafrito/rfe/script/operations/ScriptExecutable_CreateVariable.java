@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -31,11 +31,11 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue execute() throws ScriptException {
-		assert Debugger.openNode("Creating Variable (" + this.name + ")");
+		assert Logs.openNode("Creating Variable (" + this.name + ")");
 		ScriptValue_Variable value;
 		this.getEnvironment().getCurrentObject().addVariable(this, this.name, value = new ScriptValue_Variable(this.getEnvironment(), this.getType(), this.getPermission()));
-		assert Debugger.addSnapNode("Variable Created", value);
-		assert Debugger.closeNode();
+		assert Logs.addSnapNode("Variable Created", value);
+		assert Logs.closeNode();
 		return value;
 	}
 
@@ -74,9 +74,9 @@ public class ScriptExecutable_CreateVariable extends ScriptValue_Variable implem
 	// Nodeable implementation
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Variable-Creation Script-Element (" + this.name + ")");
+		assert Logs.openNode("Variable-Creation Script-Element (" + this.name + ")");
 		super.nodificate();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override

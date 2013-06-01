@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.gui.style.StylesheetBackgroundColorElement;
 import com.dafrito.rfe.gui.style.StylesheetBorderElement;
@@ -19,6 +18,7 @@ import com.dafrito.rfe.gui.style.dimensions.StylesheetAbsoluteHeightElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetAbsoluteWidthElement;
 import com.dafrito.rfe.gui.style.dimensions.StylesheetMagnitude;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
 
@@ -228,10 +228,10 @@ public class InterfaceElement implements Nodeable, GraphicalElement {
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Interface Element");
-		assert Debugger.addSnapNode("Unique Stylesheet", this.uniqueStylesheet);
-		assert Debugger.addSnapNode("Class Stylesheet", this.classStylesheet);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Interface Element");
+		assert Logs.addSnapNode("Unique Stylesheet", this.uniqueStylesheet);
+		assert Logs.addSnapNode("Class Stylesheet", this.classStylesheet);
+		assert Logs.closeNode();
 	}
 
 	@Override
@@ -287,13 +287,13 @@ public class InterfaceElement implements Nodeable, GraphicalElement {
 
 	@Override
 	public void setPreferredWidth(int width) {
-		assert Debugger.openNode("Setting Preferred Width (" + width + ")");
-		assert Debugger.addSnapNode("Element", this);
+		assert Logs.openNode("Setting Preferred Width (" + width + ")");
+		assert Logs.addSnapNode("Element", this);
 		if (null == this.getUniqueStylesheet()) {
 			this.uniqueStylesheet = new Stylesheet(this.environment);
 		}
 		this.getUniqueStylesheet().addElement(StylesheetProperty.WIDTH, new StylesheetAbsoluteWidthElement(width));
-		Debugger.closeNode();
+		Logs.closeNode();
 	}
 
 	public void setUniqueStylesheet(Stylesheet sheet) {

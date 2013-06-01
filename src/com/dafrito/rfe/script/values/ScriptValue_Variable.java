@@ -1,8 +1,8 @@
 package com.dafrito.rfe.script.values;
 
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.gui.debug.cache.CommonString;
+import com.dafrito.rfe.gui.logging.cache.CommonString;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -94,16 +94,16 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 
 	@Override
 	public ScriptValue getValue() throws ScriptException {
-		assert Debugger.openNode("Variable Value Retrievals", "Retrieving Variable's Value");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Variable Value Retrievals", "Retrieving Variable's Value");
+		assert Logs.addNode(this);
 		ScriptValue returning;
 		if (this.value != null) {
 			returning = this.value.getValue();
 		} else {
 			returning = null;
 		}
-		assert Debugger.addSnapNode("Value", returning);
-		assert Debugger.closeNode();
+		assert Logs.addSnapNode("Value", returning);
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -114,52 +114,52 @@ public class ScriptValue_Variable implements ScriptValue, Nodeable {
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Script Variable (" + this.getType() + ")");
+		assert Logs.openNode("Script Variable (" + this.getType() + ")");
 		if (this.value != null) {
-			assert Debugger.addSnapNode("Referenced element (" + this.value.getType() + ")", this.value);
+			assert Logs.addSnapNode("Referenced element (" + this.value.getType() + ")", this.value);
 		} else {
-			assert Debugger.addNode(CommonString.REFERENCEDELEMENTNULL);
+			assert Logs.addNode(CommonString.REFERENCEDELEMENTNULL);
 		}
 		if (this.permission == null) {
-			Debugger.addNode(CommonString.PERMISSIONNULL);
+			Logs.addNode(CommonString.PERMISSIONNULL);
 		} else {
 			switch (this.permission) {
 			case PRIVATE:
-				assert Debugger.addNode(CommonString.PERMISSIONPRIVATE);
+				assert Logs.addNode(CommonString.PERMISSIONPRIVATE);
 				break;
 			case PROTECTED:
-				Debugger.addNode(CommonString.PERMISSIONPROTECTED);
+				Logs.addNode(CommonString.PERMISSIONPROTECTED);
 				break;
 			case PUBLIC:
-				Debugger.addNode(CommonString.PERMISSIONPUBLIC);
+				Logs.addNode(CommonString.PERMISSIONPUBLIC);
 				break;
 			default:
 				throw new AssertionError("Unexpected permission");
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public ScriptValue setReference(Referenced ref, ScriptValue value) throws ScriptException {
-		assert Debugger.openNode("Reference Assignments", "Setting Variable Reference");
+		assert Logs.openNode("Reference Assignments", "Setting Variable Reference");
 		if (!ScriptValueType.isPrimitiveType(this.getType())) {
-			assert Debugger.addNode("Assigning reference");
-			assert Debugger.addSnapNode("Variable", this);
-			assert Debugger.openNode("Retrieving value");
+			assert Logs.addNode("Assigning reference");
+			assert Logs.addSnapNode("Variable", this);
+			assert Logs.openNode("Retrieving value");
 			value = value.getValue();
-			assert Debugger.closeNode("Value", value);
+			assert Logs.closeNode("Value", value);
 			if (value == null) {
 				this.value = null;
 			} else {
 				this.value = value.castToType(ref, this.getType());
 			}
-			assert Debugger.closeNode("Reference assignment operation completed", this);
+			assert Logs.closeNode("Reference assignment operation completed", this);
 			return this.value;
 		}
-		assert Debugger.openNode("Assigning value...");
+		assert Logs.openNode("Assigning value...");
 		this.value = this.value.setValue(ref, value.castToType(ref, this.getType()));
-		assert Debugger.closeNode();
-		assert Debugger.closeNode("Value assignment operation completed", this);
+		assert Logs.closeNode();
+		assert Logs.closeNode("Value assignment operation completed", this);
 		return this.value;
 	}
 

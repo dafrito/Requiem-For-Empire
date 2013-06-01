@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Color;
 
 public class Exception_Nodeable_InvalidColorRange extends ScriptException {
@@ -22,8 +22,8 @@ public class Exception_Nodeable_InvalidColorRange extends ScriptException {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addNode("The number provided cannot be decoded to create a valid color (" + this.invalid + ")");
-		assert Debugger.addSnapNode("Template", this.template);
+		assert Logs.addNode("The number provided cannot be decoded to create a valid color (" + this.invalid + ")");
+		assert Logs.addSnapNode("Template", this.template);
 	}
 
 	@Override

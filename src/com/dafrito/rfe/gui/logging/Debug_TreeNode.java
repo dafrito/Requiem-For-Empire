@@ -1,4 +1,4 @@
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.gui.logging;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,8 +16,8 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import com.dafrito.rfe.Incrementor;
-import com.dafrito.rfe.gui.debug.cache.CommonString;
-import com.dafrito.rfe.gui.debug.cache.Debug_CacheElement;
+import com.dafrito.rfe.gui.logging.cache.CommonString;
+import com.dafrito.rfe.gui.logging.cache.Debug_CacheElement;
 import com.dafrito.rfe.strings.NamedTreePath;
 
 public class Debug_TreeNode implements MutableTreeNode {

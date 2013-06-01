@@ -19,13 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.gui.logging;
 
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+
+import com.dafrito.rfe.logging.ProxyTreeLog;
+import com.dafrito.rfe.logging.TreeBuildingTreeLog;
 
 /**
  * @author Aaron Faanes

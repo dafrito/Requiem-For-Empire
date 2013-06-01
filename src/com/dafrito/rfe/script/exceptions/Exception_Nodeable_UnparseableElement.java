@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 
 public class Exception_Nodeable_UnparseableElement extends ScriptException {
@@ -20,7 +20,7 @@ public class Exception_Nodeable_UnparseableElement extends ScriptException {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addNode("A syntax error has occurred here, or near here, and the script is unparseable (Thrown from: " + this.source + ")");
+		assert Logs.addNode("A syntax error has occurred here, or near here, and the script is unparseable (Thrown from: " + this.source + ")");
 	}
 
 	@Override

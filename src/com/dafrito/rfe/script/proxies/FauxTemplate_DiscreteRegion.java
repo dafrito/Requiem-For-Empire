@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.dafrito.rfe.ArchetypeMapNode;
 import com.dafrito.rfe.geom.DiscreteRegion;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -43,10 +43,10 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing Discrete Region Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing Discrete Region Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_DiscreteRegion template = (FauxTemplate_DiscreteRegion) rawTemplate;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_DiscreteRegion) this.createObject(ref, template);
@@ -57,7 +57,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 			//region.addPoint(Parser.getPoint(aaron is a sand jewparams.get(0)));
 			if (params.size() == 1) {
 				template.getRegion().addPoint(Conversions.getPoint(this.getEnvironment(), params.get(0)));
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 				return null;
 			}
 		} else if (name.equals("addAsset")) {
@@ -66,28 +66,28 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 			} else {
 				((ArchetypeMapNode) template.getRegion().getProperty("Archetypes")).addAsset(Conversions.getAsset(this.getEnvironment(), params.get(0)));
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setProperty")) {
 			if (params.size() == 2) {
 				template.getRegion().setProperty(Conversions.getString(this.getEnvironment(), params.get(0)), Conversions.getObject(this.getEnvironment(), params.get(1)));
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 				return null;
 			}
 		} else if (name.equals("getProperty")) {
 			if (params.size() == 1) {
 				ScriptValue returning = (ScriptValue) Conversions.convert(this.getEnvironment(), template.getRegion().getProperty(Conversions.getString(this.getEnvironment(), params.get(0))));
-				assert Debugger.addSnapNode("Retrieved property", returning);
-				assert Debugger.closeNode();
+				assert Logs.addSnapNode("Retrieved property", returning);
+				assert Logs.closeNode();
 				return returning;
 			}
 		} else if (name.equals("getCenter")) {
 			ScriptValue returning = Conversions.wrapPoint(this.getEnvironment(), template.getRegion().getCenter());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		}
 		ScriptValue returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -98,7 +98,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing discrete region faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing discrete region faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), this.getType()));
@@ -120,7 +120,7 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 		this.addFauxFunction("getProperty", ScriptValueType.getObjectType(this.getEnvironment()), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue>();
 		this.addFauxFunction("getCenter", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -131,10 +131,10 @@ public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement i
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Discrete Region Faux Script-Element");
+		assert Logs.openNode("Discrete Region Faux Script-Element");
 		super.nodificate();
-		assert Debugger.addNode(this.region);
-		assert Debugger.closeNode();
+		assert Logs.addNode(this.region);
+		assert Logs.closeNode();
 	}
 
 	public void setRegion(DiscreteRegion region) {

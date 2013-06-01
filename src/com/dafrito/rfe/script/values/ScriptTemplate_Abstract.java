@@ -3,8 +3,8 @@ package com.dafrito.rfe.script.values;
 import java.util.Collections;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -109,28 +109,28 @@ public abstract class ScriptTemplate_Abstract implements ScriptValue, Nodeable {
 		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
 			return this.getEnvironment().getTemplate(this.getType()).isConvertibleTo(type);
 		}
-		assert Debugger.openNode("Value Type Match Test", "Checking for Type-Match (" + this.getType() + " to " + type + ")");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Value Type Match Test", "Checking for Type-Match (" + this.getType() + " to " + type + ")");
+		assert Logs.addNode(this);
 		if (this.getType().equals(type)) {
-			assert Debugger.closeNode("Direct match.");
+			assert Logs.closeNode("Direct match.");
 			return true;
 		}
 		if (this.getInterfaces() != null) {
 			for (ScriptValueType scriptInterface : this.getInterfaces()) {
 				if (ScriptValueType.isConvertibleTo(this.getEnvironment(), scriptInterface, type)) {
-					assert Debugger.closeNode("Interface type match.");
+					assert Logs.closeNode("Interface type match.");
 					return true;
 				}
 			}
 		}
-		assert Debugger.openNode("No type match, checking extended classes for match.");
+		assert Logs.openNode("No type match, checking extended classes for match.");
 		if (this.getExtendedClass() != null && this.getExtendedClass().isConvertibleTo(type)) {
-			assert Debugger.closeNode();
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
+			assert Logs.closeNode();
 			return true;
 		}
-		assert Debugger.closeNode();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
+		assert Logs.closeNode();
 		return false;
 	}
 

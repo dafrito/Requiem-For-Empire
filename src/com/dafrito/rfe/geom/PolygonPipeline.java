@@ -3,7 +3,7 @@ package com.dafrito.rfe.geom;
 import java.util.List;
 
 import com.dafrito.rfe.Terrestrial;
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 
 public class PolygonPipeline extends Thread {
 	public static final String POLYGONPIPELINESTRING = "Polygon Pipeline";
@@ -26,18 +26,18 @@ public class PolygonPipeline extends Thread {
 
 	@Override
 	public void run() {
-		Debugger.hitStopWatch();
-		assert Debugger.openNode("Polygon Pipeline Executions", "Executing Polygon Pipeline");
-		assert Debugger.addNode(this.region);
+		Logs.hitStopWatch();
+		assert Logs.openNode("Polygon Pipeline Executions", "Executing Polygon Pipeline");
+		assert Logs.addNode(this.region);
 		List<DiscreteRegion> polygonList = Polygons.convertPolyToConvex(this.region);
 		if (polygonList == null) {
-			assert Debugger.closeNode("Region was degenerate");
+			assert Logs.closeNode("Region was degenerate");
 			return;
 		}
 		polygonList = Polygons.joinPolygons(polygonList);
 		polygonList = Polygons.optimizePolygons(polygonList);
 		this.terrestrial.addValidatedRegions(polygonList);
-		assert Debugger.closeNode();
-		Debugger.hitStopWatch();
+		assert Logs.closeNode();
+		Logs.hitStopWatch();
 	}
 }

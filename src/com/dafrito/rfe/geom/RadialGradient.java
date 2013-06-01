@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Points;
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 
 public class RadialGradient<T extends GradientValue<T>> implements Gradient<T> {
 	private static final int polygonVertices = 4;
@@ -61,7 +61,7 @@ public class RadialGradient<T extends GradientValue<T>> implements Gradient<T> {
 		double radius = 0;
 		DiscreteRegion lastRegion = null;
 		for (double i = 1.0d; i > 0.0d; i -= precision) {
-			assert Debugger.addNode("Entering sequence. i is at: " + i);
+			assert Logs.addNode("Entering sequence. i is at: " + i);
 			radius += precision * this.getRadius();
 			DiscreteRegion newRegion = new DiscreteRegion();
 			newRegion.setProperty(this.getGradientValue().getName(), this.getGradientValue().sample(i));

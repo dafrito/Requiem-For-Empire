@@ -3,8 +3,8 @@ package com.dafrito.rfe.script.exceptions;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -129,9 +129,9 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 		if (!debug) {
 			return;
 		}
-		assert Debugger.openNode("Exceptions and Errors", this.getMessage());
+		assert Logs.openNode("Exceptions and Errors", this.getMessage());
 		if (this.object != null) {
-			assert Debugger.addNode(this.object);
+			assert Logs.addNode(this.object);
 		}
 		StringWriter writer;
 		this.printStackTrace(new PrintWriter(writer = new StringWriter()));
@@ -141,25 +141,25 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 		for (int i = 0; i < messages.length; i++) {
 			if (!flag && messages[i].trim().indexOf("at") == 0) {
 				flag = true;
-				assert Debugger.openNode("Call-stack");
+				assert Logs.openNode("Call-stack");
 			}
 			if (flag && added == 5) {
-				assert Debugger.openNode("Full Call-Stack");
+				assert Logs.openNode("Full Call-Stack");
 			}
 			if (messages[i].trim().indexOf("^") != 0) {
-				assert Debugger.addNode(messages[i].trim());
+				assert Logs.addNode(messages[i].trim());
 			}
 			if (flag) {
 				added++;
 			}
 		}
 		if (added > 5) {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		if (flag) {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override

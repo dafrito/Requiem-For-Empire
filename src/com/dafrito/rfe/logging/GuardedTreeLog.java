@@ -19,59 +19,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.logging;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
+import com.bluespot.logic.predicates.Predicate;
+import com.bluespot.logic.predicates.Predicates;
 
 /**
- * A {@link TreeLog} that creates a {@link TreeModel}.
- * 
  * @author Aaron Faanes
  * @param <T>
- *            the type of message
+ *            the type of log message
  * 
  */
-public class TreeBuildingTreeLog<T> implements TreeLog<T> {
+public class GuardedTreeLog<T> implements TreeLog<T> {
 
-	private final DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+	private Predicate<? super LogMessage<?>> guard;
 
-	private TreeModel model = new DefaultTreeModel(root);
+	private TreeLog<? super T> sink;
 
-	private DefaultMutableTreeNode cursor = root;
-
-	public TreeBuildingTreeLog(T rootMessage) {
-		root.setUserObject(rootMessage);
+	public void setGuard(Predicate<? super LogMessage<?>> guard) {
+		this.guard = guard;
 	}
 
-	private DefaultMutableTreeNode newNode(LogMessage<? extends T> message) {
-		String messageString = "";
-		if (message != null && message.getMessage() != null) {
-			messageString = message.getMessage().toString();
+	public TreeLog<? super T> getSink() {
+		if (sink == null) {
+			return NoopTreeLog.instance();
 		}
-		return new DefaultMutableTreeNode(messageString);
+		return sink;
 	}
 
-	public TreeModel getModel() {
-		return model;
+	public void setSink(TreeLog<? super T> sink) {
+		this.sink = sink;
+	}
+
+	public Predicate<? super LogMessage<?>> getGuard() {
+		if (this.guard == null) {
+			return Predicates.always();
+		}
+		return this.guard;
 	}
 
 	@Override
 	public void log(LogMessage<? extends T> message) {
-		cursor.add(newNode(message));
+		if (getGuard().test(message)) {
+			sink.log(message);
+		}
 	}
 
 	@Override
 	public void enter(String scope, String scopeGroup) {
-		DefaultMutableTreeNode child = new DefaultMutableTreeNode(scope);
-		cursor.add(child);
-		cursor = child;
+		sink.enter(scope, scopeGroup);
 	}
 
 	@Override
 	public void leave() {
-		cursor = (DefaultMutableTreeNode) cursor.getParent();
+		sink.leave();
 	}
-
 }

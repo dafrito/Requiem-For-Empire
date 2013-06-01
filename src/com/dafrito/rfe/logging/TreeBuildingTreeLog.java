@@ -19,50 +19,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.logging;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+
 
 /**
- * A {@link TreeLog} that distpatches events to other logs.
+ * A {@link TreeLog} that creates a {@link TreeModel}.
  * 
  * @author Aaron Faanes
  * @param <T>
  *            the type of message
  * 
  */
-public class ProxyTreeLog<T> implements TreeLog<T> {
+public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 
-	List<TreeLog<? super T>> listeners = new CopyOnWriteArrayList<>();
+	private final DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 
-	public void addListener(TreeLog<? super T> log) {
-		listeners.add(log);
+	private TreeModel model = new DefaultTreeModel(root);
+
+	private DefaultMutableTreeNode cursor = root;
+
+	public TreeBuildingTreeLog(T rootMessage) {
+		root.setUserObject(rootMessage);
 	}
 
-	public void removeListener(TreeLog<? super T> log) {
-		listeners.remove(log);
+	private DefaultMutableTreeNode newNode(LogMessage<? extends T> message) {
+		String messageString = "";
+		if (message != null && message.getMessage() != null) {
+			messageString = message.getMessage().toString();
+		}
+		return new DefaultMutableTreeNode(messageString);
+	}
+
+	public TreeModel getModel() {
+		return model;
 	}
 
 	@Override
 	public void log(LogMessage<? extends T> message) {
-		for (TreeLog<? super T> log : listeners) {
-			log.log(message);
-		}
+		cursor.add(newNode(message));
 	}
 
 	@Override
 	public void enter(String scope, String scopeGroup) {
-		for (TreeLog<? super T> log : listeners) {
-			log.enter(scope, scopeGroup);
-		}
+		DefaultMutableTreeNode child = new DefaultMutableTreeNode(scope);
+		cursor.add(child);
+		cursor = child;
 	}
 
 	@Override
 	public void leave() {
-		for (TreeLog<? super T> log : listeners) {
-			log.leave();
-		}
+		cursor = (DefaultMutableTreeNode) cursor.getParent();
 	}
 
 }

@@ -3,9 +3,9 @@ package com.dafrito.rfe.script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheets;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -29,10 +29,10 @@ public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing RiffDali Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing RiffDali Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		ScriptValue returning = null;
-		assert Debugger.addSnapNode("Template provided", rawTemplate);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", rawTemplate);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name.equals("parseColor")) {
 			returning = Conversions.wrapColor(this.getEnvironment(), Stylesheets.getColor(Conversions.getString(this.getEnvironment(), params.get(0))));
 		} else if (name.equals("paintPanel")) {
@@ -46,7 +46,7 @@ public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 		} else {
 			returning = this.getExtendedFauxClass().execute(ref, name, params, rawTemplate);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -54,7 +54,7 @@ public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing RiffDali faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing RiffDali faux template");
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
 		List<ScriptValue> fxnParams = FauxTemplate.createEmptyParamList();
@@ -65,13 +65,13 @@ public class FauxTemplate_RiffDali extends FauxTemplate implements Nodeable {
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_List.LISTSTRING)));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_List.LISTSTRING)));
 		this.addFauxFunction("paintPanel", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("RiffDali Faux Template");
+		assert Logs.openNode("RiffDali Faux Template");
 		super.nodificate();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

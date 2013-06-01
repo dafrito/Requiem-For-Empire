@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.Terrain;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -43,115 +43,115 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing terrain faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing terrain faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Terrain template = (FauxTemplate_Terrain) rawTemplate;
 		ScriptValue returning = null;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Terrain) this.createObject(ref, template);
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return template;
 		} else if (name.equals("getBrushDensityWeight")) {
 			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getBrushDensityWeight());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getElevationWeight")) {
 			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getElevationWeight());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getGroundCohesionWeight")) {
 			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getGroundCohesionWeight());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getTemperatureWeight")) {
 			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getTemperatureWeight());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getWaterDepthWeight")) {
 			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getWaterDepthWeight());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getBrushDensity")) {
 			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getBrushDensity());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getElevation")) {
 			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getElevation());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getGroundCohesion")) {
 			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getGroundCohesion());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getTemperature")) {
 			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getTemperature());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getWaterDepth")) {
 			returning = Conversions.wrapDouble(ref.getEnvironment(), template.getTerrain().getWaterDepth());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("setBrushDensityWeight")) {
 			template.getTerrain().setBrushDensityWeight(Conversions.getDouble(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setElevationWeight")) {
 			template.getTerrain().setElevationWeight(Conversions.getDouble(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setGroundCohesionWeight")) {
 			template.getTerrain().setGroundCohesionWeight(Conversions.getDouble(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setTemperatureWeight")) {
 			template.getTerrain().setTemperatureWeight(Conversions.getDouble(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setWaterDepthWeight")) {
 			template.getTerrain().setWaterDepthWeight(Conversions.getDouble(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setBrushDensity")) {
 			template.getTerrain().setBrushDensity(Conversions.getDouble(this.getEnvironment(), params.get(0)));
 			if (params.size() == 2) {
 				template.getTerrain().setBrushDensityWeight(Conversions.getDouble(this.getEnvironment(), params.get(1)));
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setElevation")) {
 			template.getTerrain().setElevation(Conversions.getDouble(this.getEnvironment(), params.get(0)));
 			if (params.size() == 2) {
 				template.getTerrain().setElevationWeight(Conversions.getDouble(this.getEnvironment(), params.get(1)));
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setGroundCohesion")) {
 			template.getTerrain().setGroundCohesion(Conversions.getDouble(this.getEnvironment(), params.get(0)));
 			if (params.size() == 2) {
 				template.getTerrain().setGroundCohesionWeight(Conversions.getDouble(this.getEnvironment(), params.get(1)));
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setTemperature")) {
 			template.getTerrain().setTemperature(Conversions.getDouble(this.getEnvironment(), params.get(0)));
 			if (params.size() == 2) {
 				template.getTerrain().setTemperatureWeight(Conversions.getDouble(this.getEnvironment(), params.get(1)));
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setWaterDepth")) {
 			template.getTerrain().setWaterDepth(Conversions.getDouble(this.getEnvironment(), params.get(0)));
 			if (params.size() == 2) {
 				template.getTerrain().setWaterDepthWeight(Conversions.getDouble(this.getEnvironment(), params.get(1)));
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -163,7 +163,7 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing terrain faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing terrain faux template");
 		this.addConstructor(this.getType());
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
@@ -197,7 +197,7 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 		this.addFauxFunction("setGroundCohesion", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("setTemperature", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("setWaterDepth", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -208,10 +208,10 @@ public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, Scri
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Terrain Faux Template");
+		assert Logs.openNode("Terrain Faux Template");
 		super.nodificate();
-		assert Debugger.addNode(this.terrain);
-		assert Debugger.closeNode();
+		assert Logs.addNode(this.terrain);
+		assert Logs.closeNode();
 	}
 
 	public void setTerrain(Terrain terrain) {

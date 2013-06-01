@@ -19,34 +19,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.logging;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * A {@link TreeLog} that does nothing.
+ * A {@link TreeLog} that distpatches events to other logs.
  * 
  * @author Aaron Faanes
+ * @param <T>
+ *            the type of message
  * 
  */
-public class NoopTreeLog implements TreeLog<Object> {
+public class ProxyTreeLog<T> implements TreeLog<T> {
+
+	List<TreeLog<? super T>> listeners = new CopyOnWriteArrayList<>();
+
+	public void addListener(TreeLog<? super T> log) {
+		listeners.add(log);
+	}
+
+	public void removeListener(TreeLog<? super T> log) {
+		listeners.remove(log);
+	}
 
 	@Override
-	public void log(LogMessage<? extends Object> message) {
-		// Intentionally do nothing.
+	public void log(LogMessage<? extends T> message) {
+		for (TreeLog<? super T> log : listeners) {
+			log.log(message);
+		}
 	}
 
 	@Override
 	public void enter(String scope, String scopeGroup) {
-		// Intentionally do nothing.
+		for (TreeLog<? super T> log : listeners) {
+			log.enter(scope, scopeGroup);
+		}
 	}
 
 	@Override
 	public void leave() {
-		// Intentionally do nothing.
+		for (TreeLog<? super T> log : listeners) {
+			log.leave();
+		}
 	}
 
-	private static NoopTreeLog INSTANCE;
-
-	public static TreeLog<Object> instance() {
-		return INSTANCE;
-	}
 }

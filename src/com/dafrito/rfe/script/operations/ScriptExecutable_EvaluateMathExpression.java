@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.DivisionByZeroScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -54,8 +54,8 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 
 	@Override
 	public ScriptValue getValue() throws ScriptException {
-		assert Debugger.openNode("Mathematic Expressions", "Executing Mathematic Expression");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Mathematic Expressions", "Executing Mathematic Expression");
+		assert Logs.addNode(this);
 		ScriptValue_Numeric left = (ScriptValue_Numeric) this.lhs.getValue();
 		ScriptValue_Numeric right = (ScriptValue_Numeric) this.rhs.getValue();
 		if ((this.operator == ScriptOperatorType.DIVIDE || this.operator == ScriptOperatorType.MODULUS) && right.getNumericValue().doubleValue() == 0.0d) {
@@ -81,7 +81,7 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 		default:
 			throw new AssertionError("Unexpected default");
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -92,10 +92,10 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Mathematical Expression Evaluator (" + this.operator + ")");
-		assert Debugger.addNode("Left", this.lhs);
-		assert Debugger.addNode("Right", this.rhs);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Mathematical Expression Evaluator (" + this.operator + ")");
+		assert Logs.addNode("Left", this.lhs);
+		assert Logs.addNode("Right", this.rhs);
+		assert Logs.closeNode();
 	}
 
 	@Override

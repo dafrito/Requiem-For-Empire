@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.dafrito.rfe.Terrestrial;
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 
 public class SplitterThread extends Thread {
 	private DiscreteRegionBSPNode root;
@@ -34,9 +34,9 @@ public class SplitterThread extends Thread {
 
 	@Override
 	public void run() {
-		Debugger.hitStopWatch();
-		assert Debugger.openNode("Splitter Thread Executions", "Executing Splitter Thread (" + this.regions.size() + " region(s))");
-		assert Debugger.addSnapNode("Regions (" + this.regions.size() + " region(s))", this.regions);
+		Logs.hitStopWatch();
+		assert Logs.openNode("Splitter Thread Executions", "Executing Splitter Thread (" + this.regions.size() + " region(s))");
+		assert Logs.addSnapNode("Regions (" + this.regions.size() + " region(s))", this.regions);
 		for (DiscreteRegion region : this.regions) {
 			this.root = Polygons.removeOverlappingPolygons(this.root, region, this.recurse);
 			if (!this.recurse) {
@@ -52,19 +52,19 @@ public class SplitterThread extends Thread {
 				thisRegion.addRegionNeighbors(polygons);
 			}
 			if (!neighbors.equals(polygons)) {
-				assert Debugger.openNode("Neighbors list does not match poly-list");
-				assert Debugger.addNode("If the BSP tree is intended to be valid at all points within its maximum bounds, then this is an error.");
-				assert Debugger.addNode("Otherwise, it can be safely ignored.");
-				assert Debugger.addSnapNode("Neighbors (" + neighbors.size() + " neighbor(s))", neighbors);
-				assert Debugger.addSnapNode("Polygons (" + polygons.size() + " polygon(s))", polygons);
+				assert Logs.openNode("Neighbors list does not match poly-list");
+				assert Logs.addNode("If the BSP tree is intended to be valid at all points within its maximum bounds, then this is an error.");
+				assert Logs.addNode("Otherwise, it can be safely ignored.");
+				assert Logs.addSnapNode("Neighbors (" + neighbors.size() + " neighbor(s))", neighbors);
+				assert Logs.addSnapNode("Polygons (" + polygons.size() + " polygon(s))", polygons);
 				neighbors.removeAll(polygons);
-				assert Debugger.addSnapNode("Offending polygons", neighbors);
-				assert Debugger.closeNode();
+				assert Logs.addSnapNode("Offending polygons", neighbors);
+				assert Logs.closeNode();
 				this.root.addToTempList(neighbors);
 			}
 		}
 		this.terrestrial.decrementOpenThreads();
-		assert Debugger.closeNode(this.root);
-		Debugger.hitStopWatch();
+		assert Logs.closeNode(this.root);
+		Logs.hitStopWatch();
 	}
 }

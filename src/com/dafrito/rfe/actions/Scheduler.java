@@ -12,8 +12,8 @@ import java.util.TreeSet;
 import javax.swing.Timer;
 
 import com.dafrito.rfe.Asset;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Inspectable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
@@ -53,8 +53,8 @@ public class Scheduler implements ActionListener {
 			while (iter.hasNext()) {
 				ScheduledEvent event = iter.next();
 				if (event.getTime() <= this.gameTime) {
-					assert Debugger.openNode("Event Iteration", "Iterating event");
-					assert Debugger.addNode(event);
+					assert Logs.openNode("Event Iteration", "Iterating event");
+					assert Logs.addNode(event);
 					ScriptTemplate_Abstract listener = event.getListener();
 					if (listener == null) {
 						listener = this.getDefaultListener();
@@ -63,7 +63,7 @@ public class Scheduler implements ActionListener {
 					params.add(Conversions.wrapLong(this.getEnvironment(), differential));
 					params.add(Conversions.wrapAsset(this.getEnvironment(), event.getAsset()));
 					ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, listener, "iterate", params);
-					assert Debugger.closeNode();
+					assert Logs.closeNode();
 					iter.remove();
 				}
 			}
@@ -112,7 +112,7 @@ public class Scheduler implements ActionListener {
 
 	public void schedule(long time, Asset asset, ScriptTemplate_Abstract listener) {
 		ScheduledEvent event = new ScheduledEvent(this.getCurrentGameTime() + time, asset, listener);
-		assert Debugger.addSnapNode("Scheduler Additions", "Adding event to scheduler", event);
+		assert Logs.addSnapNode("Scheduler Additions", "Adding event to scheduler", event);
 		if (this.inProgress) {
 			this.tempList.add(event);
 		} else {

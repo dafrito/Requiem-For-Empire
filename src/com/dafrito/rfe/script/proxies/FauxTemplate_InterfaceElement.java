@@ -4,9 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.gui.InterfaceElement;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -46,11 +46,11 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing Interface Element Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing Interface Element Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_InterfaceElement template = (FauxTemplate_InterfaceElement) rawTemplate;
 		ScriptValue returning;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		ScriptValue value;
 		if (name == null || name.equals("")) {
 			if (template == null) {
@@ -68,24 +68,24 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 			}
 		} else if (name.equals("getUniqueStylesheet")) {
 			returning = Conversions.wrapStylesheet(this.getEnvironment(), template.getElement().getUniqueStylesheet());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getClassStylesheet")) {
 			returning = Conversions.wrapStylesheet(this.getEnvironment(), template.getElement().getClassStylesheet());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("setUniqueStylesheet")) {
 			template.getElement().setUniqueStylesheet(Conversions.getStylesheet(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setClassStylesheet")) {
 			template.getElement().setClassStylesheet(Conversions.getStylesheet(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		}
 		params.clear();
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -97,7 +97,7 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing interface element faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing interface element faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
@@ -114,7 +114,7 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
 		this.addFauxFunction("setUniqueStylesheet", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("setClassStylesheet", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -125,21 +125,21 @@ public class FauxTemplate_InterfaceElement extends FauxTemplate implements Nodea
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Interface Element Faux Template");
+		assert Logs.openNode("Interface Element Faux Template");
 		super.nodificate();
 		if (this.getElement() == null) {
-			assert Debugger.addNode("Interface Element: null");
+			assert Logs.addNode("Interface Element: null");
 		} else {
-			assert Debugger.addNode(this.getElement());
+			assert Logs.addNode(this.getElement());
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void setElement(InterfaceElement element) {
-		assert Debugger.openNode("Interface Element Faux Template Changes", "Changing Interface Element");
-		assert Debugger.addNode(this);
-		assert Debugger.addNode(element);
+		assert Logs.openNode("Interface Element Faux Template Changes", "Changing Interface Element");
+		assert Logs.addNode(this);
+		assert Logs.addNode(element);
 		this.element = element;
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

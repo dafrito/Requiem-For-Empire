@@ -2,8 +2,8 @@ package com.dafrito.rfe.script.operations;
 
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -27,7 +27,7 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue execute() throws ScriptException {
-		assert Debugger.openNode("If-Statement Executions", "Executing If-Statements");
+		assert Logs.openNode("If-Statement Executions", "Executing If-Statements");
 		if (((ScriptValue_Boolean) this.testingValue.getValue()).getBooleanValue()) {
 			this.getEnvironment().advanceNestedStack();
 			for (ScriptExecutable exec : this.expressions) {
@@ -35,7 +35,7 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 				if (exec instanceof Returnable && ((Returnable) exec).shouldReturn()) {
 					this.returnValue = ((Returnable) exec).getReturnValue();
 					this.shouldReturn = true;
-					assert Debugger.closeNode();
+					assert Logs.closeNode();
 					return null;
 				}
 			}
@@ -45,7 +45,7 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 				this.elseStatement.execute();
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return null;
 	}
 
@@ -59,11 +59,11 @@ public class ScriptExecutable_IfStatement extends ScriptElement implements Scrip
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Script If-Statement");
-		assert Debugger.addSnapNode("Testing Expression", this.testingValue);
-		assert Debugger.addSnapNode("Expressions", this.expressions);
-		assert Debugger.addSnapNode("Else statement", this.elseStatement);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Script If-Statement");
+		assert Logs.addSnapNode("Testing Expression", this.testingValue);
+		assert Logs.addSnapNode("Expressions", this.expressions);
+		assert Logs.addSnapNode("Else statement", this.elseStatement);
+		assert Logs.closeNode();
 	}
 
 	public void setElseStatement(ScriptExecutable_IfStatement statement) {

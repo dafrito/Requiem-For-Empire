@@ -1,6 +1,6 @@
 package com.dafrito.rfe.inspect;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 
 /**
  * Allows inspection of arbitrary content.
@@ -12,7 +12,7 @@ import com.dafrito.rfe.gui.debug.Debugger;
  * @author Aaron Faanes
  * @param <T>
  *            the common super-type of visited elements.
- * @see Debugger
+ * @see Logs
  * @see DebugEnvironment
  */
 public interface Inspector<T> {

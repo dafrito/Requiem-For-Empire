@@ -11,8 +11,8 @@ import com.dafrito.rfe.ArchetypeMapNode;
 import com.dafrito.rfe.Asset;
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.Points;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 
 public class DiscreteRegionBSPNode implements Nodeable {
 	private final Point pointA;
@@ -37,73 +37,73 @@ public class DiscreteRegionBSPNode implements Nodeable {
 	}
 
 	public synchronized void addLine(DiscreteRegion owner, Point pointA, Point pointB) {
-		assert Debugger.openNode("BSP Line Additions", "Adding line to BSP tree (" + pointA + ", " + pointB + ")");
-		assert Debugger.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
+		assert Logs.openNode("BSP Line Additions", "Adding line to BSP tree (" + pointA + ", " + pointB + ")");
+		assert Logs.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
 		PointSideStruct struct = Polygons.getPointSideList(this.pointA, this.pointB, pointA, pointB);
-		assert Debugger.addNode(struct);
+		assert Logs.addNode(struct);
 		if (Polygons.testForColinearity(pointA, pointB, this.pointA, this.pointB) || struct.isColinear()) {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return;
 		}
 		if (struct.isLessThan()) {
-			assert Debugger.addNode("Line is less than this node's line.");
+			assert Logs.addNode("Line is less than this node's line.");
 			if (this.leftNode != null) {
-				assert Debugger.openNode("Deferring to left node");
+				assert Logs.openNode("Deferring to left node");
 				this.leftNode.addLine(owner, pointA, pointB);
-				assert Debugger.closeNode();
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
+				assert Logs.closeNode();
 				return;
 			}
 			this.leftNode = new DiscreteRegionBSPNode(this.root, pointA, pointB);
-			assert Debugger.addNode("Creating new left node.", this.leftNode);
+			assert Logs.addNode("Creating new left node.", this.leftNode);
 			this.leftNode.categorizeRegion(owner);
 		} else if (struct.isGreaterThan()) {
-			assert Debugger.addNode("Line is greater than this node's line.");
+			assert Logs.addNode("Line is greater than this node's line.");
 			if (this.rightNode != null) {
-				assert Debugger.openNode("Deferring to right node");
+				assert Logs.openNode("Deferring to right node");
 				this.rightNode.addLine(owner, pointA, pointB);
-				assert Debugger.closeNode();
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
+				assert Logs.closeNode();
 				return;
 			}
 			this.rightNode = new DiscreteRegionBSPNode(this.root, pointA, pointB);
-			assert Debugger.addNode("Creating new right node.", this.rightNode);
+			assert Logs.addNode("Creating new right node.", this.rightNode);
 			this.rightNode.categorizeRegion(owner);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public synchronized void addRegion(DiscreteRegion region) {
-		assert Debugger.openNode("BSP Region Additions", "Adding region to BSP tree");
-		assert Debugger.addNode(region);
-		assert Debugger.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
+		assert Logs.openNode("BSP Region Additions", "Adding region to BSP tree");
+		assert Logs.addNode(region);
+		assert Logs.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
 		Polygons.optimizePolygon(region);
 		PointSideStruct struct = Polygons.getPointSideList(region, this.pointA, this.pointB);
 		if (struct.isStraddling()) {
-			assert Debugger.addNode("Region is straddling this node's line, splitting.");
+			assert Logs.addNode("Region is straddling this node's line, splitting.");
 			this.root.removeRegion(region);
 			DiscreteRegion splitPolygon = Polygons.splitPolygonUsingEdge(region, this.pointA, this.pointB, true);
 			if (splitPolygon == null) {
-				assert Debugger.addNode("Unexpected null region from split.");
-				assert Debugger.addNode(struct);
+				assert Logs.addNode("Unexpected null region from split.");
+				assert Logs.addNode(struct);
 			}
 			this.root.addRegion(region);
 			this.root.addRegion(splitPolygon);
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return;
 		}
 		if (struct.isLessThan()) {
-			assert Debugger.addNode("Region is less than this node's line.");
+			assert Logs.addNode("Region is less than this node's line.");
 			if (struct.hasIndeterminates()) {
-				assert Debugger.addNode("Region has points that are colinear with this node's line, so adding it to left neighbors.");
+				assert Logs.addNode("Region has points that are colinear with this node's line, so adding it to left neighbors.");
 				this.leftNeighbors.add(region);
 				region.addRegionNeighbors(this.rightNeighbors);
 			}
 			if (this.leftNode != null) {
-				assert Debugger.openNode("Deferring to left node");
+				assert Logs.openNode("Deferring to left node");
 				this.leftNode.addRegion(region);
-				assert Debugger.closeNode();
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
+				assert Logs.closeNode();
 				return;
 			}
 			List<Point> pointList = region.getPoints();
@@ -111,17 +111,17 @@ public class DiscreteRegionBSPNode implements Nodeable {
 				this.addLine(region, pointList.get(i), pointList.get((i + 1) % pointList.size()));
 			}
 		} else if (struct.isGreaterThan()) {
-			assert Debugger.addNode("Region is greater than this node's line.");
+			assert Logs.addNode("Region is greater than this node's line.");
 			if (struct.hasIndeterminates()) {
-				assert Debugger.addNode("Region has points that are colinear with this node's line, so adding it to right neighbors.");
+				assert Logs.addNode("Region has points that are colinear with this node's line, so adding it to right neighbors.");
 				this.rightNeighbors.add(region);
 				region.addRegionNeighbors(this.leftNeighbors);
 			}
 			if (this.rightNode != null) {
-				assert Debugger.openNode("Deferring to right node");
+				assert Logs.openNode("Deferring to right node");
 				this.rightNode.addRegion(region);
-				assert Debugger.closeNode();
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
+				assert Logs.closeNode();
 				return;
 			}
 			List<Point> pointList = region.getPoints();
@@ -129,7 +129,7 @@ public class DiscreteRegionBSPNode implements Nodeable {
 				this.addLine(region, pointList.get(i), pointList.get((i + 1) % pointList.size()));
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public synchronized void addRegions(Collection<DiscreteRegion> regions) {
@@ -139,37 +139,37 @@ public class DiscreteRegionBSPNode implements Nodeable {
 	}
 
 	public synchronized void addToTempList(Collection<DiscreteRegion> regions) {
-		assert Debugger.addSnapNode("Temporary Region List Additions", "Adding regions to temporary region list", regions);
+		assert Logs.addSnapNode("Temporary Region List Additions", "Adding regions to temporary region list", regions);
 		this.tempList.addAll(regions);
 	}
 
 	public synchronized void addToTempList(DiscreteRegion region) {
-		assert Debugger.addSnapNode("Temporary Region List Additions", "Adding region to temporary region list", region);
+		assert Logs.addSnapNode("Temporary Region List Additions", "Adding region to temporary region list", region);
 		this.tempList.add(region);
 	}
 
 	public synchronized void categorizeRegion(DiscreteRegion region) {
-		assert Debugger.openNode("Region Categorizations", "Categorizing Region");
-		assert Debugger.addNode(region);
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Region Categorizations", "Categorizing Region");
+		assert Logs.addNode(region);
+		assert Logs.addNode(this);
 		Polygons.optimizePolygon(region);
 		PointSideStruct struct = Polygons.getPointSideList(region, this.pointA, this.pointB);
-		assert Debugger.addNode(struct);
+		assert Logs.addNode(struct);
 		if (struct.isLessThan() && struct.hasIndeterminates()) {
-			assert Debugger.addNode("Region has points which are less than or equal to this node's line, adding to left neighbors.");
+			assert Logs.addNode("Region has points which are less than or equal to this node's line, adding to left neighbors.");
 			this.leftNeighbors.add(region);
 			region.addRegionNeighbors(this.rightNeighbors);
 		}
 		if (struct.isGreaterThan() && struct.hasIndeterminates()) {
-			assert Debugger.addNode("Region has points which are greater than or equal to this node's line, adding to right neighbors.");
+			assert Logs.addNode("Region has points which are greater than or equal to this node's line, adding to right neighbors.");
 			this.rightNeighbors.add(region);
 			region.addRegionNeighbors(this.leftNeighbors);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public synchronized void clearTempList() {
-		assert Debugger.addNode("Clearing temporary region list");
+		assert Logs.addNode("Clearing temporary region list");
 		this.tempList.clear();
 	}
 
@@ -191,38 +191,38 @@ public class DiscreteRegionBSPNode implements Nodeable {
 	}
 
 	public synchronized Set<DiscreteRegion> getPotentialList(DiscreteRegion region) {
-		assert Debugger.openNode("BSP Potential List Creations", "Retrieving Potentially-Intersecting List");
-		assert Debugger.addSnapNode("Testing Region", region);
-		assert Debugger.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
+		assert Logs.openNode("BSP Potential List Creations", "Retrieving Potentially-Intersecting List");
+		assert Logs.addSnapNode("Testing Region", region);
+		assert Logs.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
 		Polygons.optimizePolygon(region);
 		PointSideStruct struct = Polygons.getPointSideList(region, this.pointA, this.pointB);
 		if (struct.isStraddling()) {
-			assert Debugger.addNode("Region is straddling this line, returning full list.");
+			assert Logs.addNode("Region is straddling this line, returning full list.");
 			Set<DiscreteRegion> polys = new HashSet<DiscreteRegion>();
 			polys.addAll(this.getRegionList());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return polys;
 		} else if (struct.isLessThan()) {
-			assert Debugger.addNode("Region is less than this line.");
+			assert Logs.addNode("Region is less than this line.");
 			if (this.leftNode != null) {
-				assert Debugger.openNode("Deferring to left node");
+				assert Logs.openNode("Deferring to left node");
 				Set<DiscreteRegion> returnList = this.leftNode.getPotentialList(region);
-				assert Debugger.closeNode();
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
+				assert Logs.closeNode();
 				return returnList;
 			}
-			assert Debugger.closeNode("Left node is null, so returning left neighbors.", this.leftNeighbors);
+			assert Logs.closeNode("Left node is null, so returning left neighbors.", this.leftNeighbors);
 			return this.leftNeighbors;
 		} else if (struct.isGreaterThan()) {
-			assert Debugger.addNode("Region is greater than this line.");
+			assert Logs.addNode("Region is greater than this line.");
 			if (this.rightNode != null) {
-				assert Debugger.openNode("Deferring to right node");
+				assert Logs.openNode("Deferring to right node");
 				Set<DiscreteRegion> returnList = this.rightNode.getPotentialList(region);
-				assert Debugger.closeNode();
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
+				assert Logs.closeNode();
 				return returnList;
 			}
-			assert Debugger.closeNode("Right node is null, so returning right neighbors.", this.rightNeighbors);
+			assert Logs.closeNode("Right node is null, so returning right neighbors.", this.rightNeighbors);
 			return this.rightNeighbors;
 		}
 		throw new AssertionError("Defaulted in getPotentialList in DiscreteRegionBSPNode");
@@ -252,42 +252,42 @@ public class DiscreteRegionBSPNode implements Nodeable {
 	}
 
 	public Set<DiscreteRegion> getRegions(Point point) {
-		assert Debugger.openNode("BSP Polygon Retrievals", "Finding polygon by point: " + point);
+		assert Logs.openNode("BSP Polygon Retrievals", "Finding polygon by point: " + point);
 		double value = Polygons.testPointAgainstLine(point, this.pointA, this.pointB);
-		assert Debugger.addNode("Point-side test result: " + value);
+		assert Logs.addNode("Point-side test result: " + value);
 		Set<DiscreteRegion> polyList = new HashSet<DiscreteRegion>();
 		if (Points.isGreaterThan(value, 0.0d)) {
-			assert Debugger.addNode("Value is greater than zero.");
+			assert Logs.addNode("Value is greater than zero.");
 			if (this.rightNode != null) {
-				assert Debugger.openNode("Deferring to right node");
+				assert Logs.openNode("Deferring to right node");
 				Set<DiscreteRegion> set = this.rightNode.getRegions(point);
-				assert Debugger.closeNode();
-				assert Debugger.closeNode("Returning region set (" + set.size() + " region(s))", set);
+				assert Logs.closeNode();
+				assert Logs.closeNode("Returning region set (" + set.size() + " region(s))", set);
 				return set;
 			} else {
-				assert Debugger.addSnapNode("Adding all right neighbors.", this.rightNeighbors);
+				assert Logs.addSnapNode("Adding all right neighbors.", this.rightNeighbors);
 				polyList.addAll(this.rightNeighbors);
 			}
 		}
 		if (Points.isLessThan(value, 0.0d)) {
-			assert Debugger.addNode("Value is less than zero.");
+			assert Logs.addNode("Value is less than zero.");
 			if (this.leftNode != null) {
-				assert Debugger.openNode("Deferring to left node");
+				assert Logs.openNode("Deferring to left node");
 				Set<DiscreteRegion> set = this.leftNode.getRegions(point);
-				assert Debugger.closeNode();
-				assert Debugger.closeNode("Returning region set (" + set.size() + " region(s))", set);
+				assert Logs.closeNode();
+				assert Logs.closeNode("Returning region set (" + set.size() + " region(s))", set);
 				return set;
 			} else {
-				assert Debugger.addSnapNode("Adding all left neighbors.", this.leftNeighbors);
+				assert Logs.addSnapNode("Adding all left neighbors.", this.leftNeighbors);
 				polyList.addAll(this.leftNeighbors);
 			}
 		}
 		if (Points.areEqual(Point.System.EUCLIDEAN, value, 0.0d)) {
-			assert Debugger.addNode("Value is equal to zero, adding both lists.");
+			assert Logs.addNode("Value is equal to zero, adding both lists.");
 			polyList.addAll(this.leftNeighbors);
 			polyList.addAll(this.rightNeighbors);
 		}
-		assert Debugger.closeNode("Returning region set (" + polyList.size() + " region(s))", polyList);
+		assert Logs.closeNode("Returning region set (" + polyList.size() + " region(s))", polyList);
 		return polyList;
 	}
 
@@ -297,67 +297,67 @@ public class DiscreteRegionBSPNode implements Nodeable {
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("BSP Tree Node (" + this.pointA + ", " + this.pointB + ")");
-		assert Debugger.addSnapNode("Left Neighbors", this.leftNeighbors);
-		assert Debugger.addSnapNode("Right Neighbors", this.rightNeighbors);
+		assert Logs.openNode("BSP Tree Node (" + this.pointA + ", " + this.pointB + ")");
+		assert Logs.addSnapNode("Left Neighbors", this.leftNeighbors);
+		assert Logs.addSnapNode("Right Neighbors", this.rightNeighbors);
 		if (this.leftNode == null) {
-			assert Debugger.addNode("Left node: null");
+			assert Logs.addNode("Left node: null");
 		} else {
-			assert Debugger.addSnapNode("Left node", this.leftNode);
+			assert Logs.addSnapNode("Left node", this.leftNode);
 		}
 		if (this.rightNode == null) {
-			assert Debugger.addNode("Right node: null");
+			assert Logs.addNode("Right node: null");
 		} else {
-			assert Debugger.addSnapNode("Right node", this.rightNode);
+			assert Logs.addSnapNode("Right node", this.rightNode);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public synchronized void removeFromTempList(DiscreteRegion region) {
-		assert Debugger.addSnapNode("Temporary Region List Removals", "Removing region from temporary region list", region);
+		assert Logs.addSnapNode("Temporary Region List Removals", "Removing region from temporary region list", region);
 		this.tempList.remove(region);
 	}
 
 	public synchronized void removeRegion(DiscreteRegion region) {
-		assert Debugger.openNode("BSP Region Removals", "Removing region from BSP tree");
-		assert Debugger.addNode(region);
-		assert Debugger.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
+		assert Logs.openNode("BSP Region Removals", "Removing region from BSP tree");
+		assert Logs.addNode(region);
+		assert Logs.addSnapNode("Current node (" + this.pointA + ", " + this.pointB + ")", this);
 		PointSideStruct struct = Polygons.getPointSideList(region, this.pointA, this.pointB);
-		assert Debugger.addNode(struct);
+		assert Logs.addNode(struct);
 		if (struct.isLessThan()) {
-			assert Debugger.addNode("Region is less than this node's line.");
+			assert Logs.addNode("Region is less than this node's line.");
 			if (struct.hasIndeterminates()) {
-				assert Debugger.addNode("Removing region from left neighbors.");
+				assert Logs.addNode("Removing region from left neighbors.");
 				this.leftNeighbors.remove(region);
 				Iterator<DiscreteRegion> polys = this.rightNeighbors.iterator();
 				while (polys.hasNext()) {
 					(polys.next()).removeRegionNeighbor(region);
 				}
-				assert Debugger.addSnapNode("Left neighbors", this.leftNeighbors);
+				assert Logs.addSnapNode("Left neighbors", this.leftNeighbors);
 			}
 			if (this.leftNode != null) {
-				assert Debugger.openNode("Deferring to left node");
+				assert Logs.openNode("Deferring to left node");
 				this.leftNode.removeRegion(region);
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 			}
 		}
 		if (struct.isGreaterThan()) {
-			assert Debugger.addNode("Region is greater than this node's line.");
+			assert Logs.addNode("Region is greater than this node's line.");
 			if (struct.hasIndeterminates()) {
-				assert Debugger.addNode("Removing region from right neighbors.");
+				assert Logs.addNode("Removing region from right neighbors.");
 				this.rightNeighbors.remove(region);
 				Iterator<DiscreteRegion> polys = this.leftNeighbors.iterator();
 				while (polys.hasNext()) {
 					(polys.next()).removeRegionNeighbor(region);
 				}
-				assert Debugger.addSnapNode("Left neighbors", this.rightNeighbors);
+				assert Logs.addSnapNode("Left neighbors", this.rightNeighbors);
 			}
 			if (this.rightNode != null) {
-				assert Debugger.openNode("Deferring to right node");
+				assert Logs.openNode("Deferring to right node");
 				this.rightNode.removeRegion(region);
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

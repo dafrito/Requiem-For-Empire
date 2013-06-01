@@ -9,8 +9,8 @@ import com.dafrito.rfe.geom.Polygons;
 import com.dafrito.rfe.geom.RiffIntersectionPoint;
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.EuclideanPoint;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class GraphicalElement_Line extends InterfaceElement implements Nodeable {
@@ -42,16 +42,16 @@ public class GraphicalElement_Line extends InterfaceElement implements Nodeable 
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Line Graphical Element");
-		assert Debugger.addNode("First point: " + this.pointA);
-		assert Debugger.addNode("Second point: " + this.pointB);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Line Graphical Element");
+		assert Logs.addNode("First point: " + this.pointA);
+		assert Logs.addNode("Second point: " + this.pointB);
+		assert Logs.closeNode();
 	}
 
 	@Override
 	public void paint(Graphics2D g2d) {
-		assert Debugger.openNode("Line Painting Operations", "Painting Line Element");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Line Painting Operations", "Painting Line Element");
+		assert Logs.addNode(this);
 		Point offset;
 		if (this.getParent() instanceof InterfaceElement_Panel) {
 			offset = ((InterfaceElement_Panel) this.getParent()).getOffset();
@@ -95,10 +95,10 @@ public class GraphicalElement_Line extends InterfaceElement implements Nodeable 
 				translatedPointA = intersections.get(0).getIntersection();
 			}
 		}
-		assert Debugger.addNode("Translated first point: " + translatedPointA);
-		assert Debugger.addNode("Translated second point: " + translatedPointB);
+		assert Logs.addNode("Translated first point: " + translatedPointA);
+		assert Logs.addNode("Translated second point: " + translatedPointB);
 		g2d.draw(new java.awt.geom.Line2D.Double(translatedPointA.getX(), translatedPointA.getY(), translatedPointB.getX(), translatedPointB.getY()));
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void setPointA(Point point) {

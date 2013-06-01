@@ -1,11 +1,11 @@
-package com.dafrito.rfe;
+package com.dafrito.rfe.gui;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import com.bluespot.swing.Components;
-import com.dafrito.rfe.gui.debug.LogViewer;
-import com.dafrito.rfe.gui.debug.ScriptEditor;
+import com.dafrito.rfe.gui.logging.LogViewer;
+import com.dafrito.rfe.gui.script.ScriptEditor;
 
 /**
  * Create a new editing environment.

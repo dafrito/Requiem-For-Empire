@@ -9,9 +9,9 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Inspectable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateAlreadyDefined;
 import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableTypeAlreadyDefined;
@@ -66,7 +66,7 @@ public class ScriptEnvironment {
 	}
 
 	public void initialize() {
-		assert Debugger.openNode("Initializing Script Environment");
+		assert Logs.openNode("Initializing Script Environment");
 		try {
 			this.addType(null, "void", ScriptValueType.VOID);
 			this.addType(null, "boolean", ScriptValueType.BOOLEAN);
@@ -130,7 +130,7 @@ public class ScriptEnvironment {
 		} catch (ScriptException ex) {
 			throw new Exception_InternalError("Exception occurred during script initialization: " + ex);
 		} finally {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 	}
 
@@ -170,7 +170,7 @@ public class ScriptEnvironment {
 	}
 
 	public void addType(Referenced ref, String name, ScriptValueType keyword) throws ScriptException {
-		assert Debugger.addNode("Variable-Type Additions", "Adding variable type name to the variable-map (" + name + ")");
+		assert Logs.addNode("Variable-Type Additions", "Adding variable type name to the variable-map (" + name + ")");
 		if (this.variableTypes.containsKey(name)) {
 			throw new Exception_Nodeable_VariableTypeAlreadyDefined(ref, name);
 		}
@@ -218,7 +218,7 @@ public class ScriptEnvironment {
 	}
 
 	public void execute() {
-		assert Debugger.openNode("Executing Script-Environment (Default Run)");
+		assert Logs.openNode("Executing Script-Environment (Default Run)");
 		try {
 			this.clearStacks();
 			for (ScriptTemplate_Abstract template : this.templates.values()) {
@@ -244,14 +244,14 @@ public class ScriptEnvironment {
 			if (selection == null) {
 				return;
 			}
-			assert Debugger.addNode(this);
+			assert Logs.addNode(this);
 			ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate((String) selection), "main", params);
 		} catch (ScriptException ex) {
-			Debugger.printException(ex);
+			Logs.printException(ex);
 		} catch (Exception_InternalError ex) {
-			Debugger.printException(ex);
+			Logs.printException(ex);
 		} finally {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 	}
 
@@ -271,32 +271,32 @@ public class ScriptEnvironment {
 
 	// Variable functions
 	public ScriptValue_Variable retrieveVariable(String name) throws ScriptException {
-		assert Debugger.openNode("Variable Retrievals", "Retrieving Variable (" + name + ")");
+		assert Logs.openNode("Variable Retrievals", "Retrieving Variable (" + name + ")");
 		ScriptValue_Variable value = null;
 		if (value == null) {
-			assert Debugger.addSnapNode("Checking current variable stack", this.threads.get());
+			assert Logs.addSnapNode("Checking current variable stack", this.threads.get());
 			value = this.getVariableFromStack(name);
 		}
 		if (value == null) {
-			assert Debugger.openNode("Checking current object for valid variable");
-			assert Debugger.addNode(this.getCurrentObject());
+			assert Logs.openNode("Checking current object for valid variable");
+			assert Logs.addNode(this.getCurrentObject());
 			value = this.getCurrentObject().getVariable(name);
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		if (value == null) {
-			assert Debugger.openNode("Checking static template stack");
-			assert Debugger.addNode(this.getTemplate(name));
+			assert Logs.openNode("Checking static template stack");
+			assert Logs.addNode(this.getTemplate(name));
 			if (this.getTemplate(name) != null) {
 				value = this.getTemplate(name).getStaticReference();
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		if (value == null) {
-			assert Debugger.addNode("Value not found");
+			assert Logs.addNode("Value not found");
 		} else {
-			assert Debugger.addSnapNode("Value found", value);
+			assert Logs.addSnapNode("Value found", value);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return value;
 	}
 
@@ -312,13 +312,13 @@ public class ScriptEnvironment {
 	}
 
 	public void reset() {
-		assert Debugger.openNode("Resetting Environment");
+		assert Logs.openNode("Resetting Environment");
 		this.variableTypes.clear();
 		this.templates.clear();
 		this.clearStacks();
 		System.gc();
 		this.initialize();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 }

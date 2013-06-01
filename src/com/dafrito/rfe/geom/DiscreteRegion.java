@@ -14,8 +14,8 @@ import java.util.Set;
 
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.EuclideanPoint;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 /**
@@ -43,13 +43,13 @@ import com.dafrito.rfe.script.ScriptEnvironment;
  */
 public class DiscreteRegion implements Nodeable {
 	public static void paint(Graphics2D g2d, DiscreteRegion transformedRegion, Rectangle bounds, boolean fill) {
-		assert Debugger.openNode("Discrete-Region Painting", "Painting Discrete Region");
-		assert Debugger.addNode(transformedRegion);
+		assert Logs.openNode("Discrete-Region Painting", "Painting Discrete Region");
+		assert Logs.addNode(transformedRegion);
 		Polygons.optimizePolygon(transformedRegion);
 		transformedRegion = Polygons.clip(transformedRegion, Polygons.convertToRegion(transformedRegion.getEnvironment(), bounds));
 		if (transformedRegion != null) {
 			// Draw transformed line
-			assert Debugger.addSnapNode("Clipped Region", transformedRegion);
+			assert Logs.addSnapNode("Clipped Region", transformedRegion);
 			if (fill) {
 				if (transformedRegion.getProperty("Color") != null) {
 					g2d.setColor((Color) transformedRegion.getProperty("Color"));
@@ -68,12 +68,12 @@ public class DiscreteRegion implements Nodeable {
 				g2d.drawPolygon(Polygons.convertToPolygon(transformedRegion));
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public static DiscreteRegion transform(DiscreteRegion region, Point offset, Rectangle bounds, boolean zoom) {
-		assert Debugger.openNode("Discrete-Region Transformation", "Transforming Discrete Region");
-		assert Debugger.addNode(region);
+		assert Logs.openNode("Discrete-Region Transformation", "Transforming Discrete Region");
+		assert Logs.addNode(region);
 		// Offset translation
 		List<Point> points = new ArrayList<Point>(region.getPoints());
 		DiscreteRegion transformedRegion = new DiscreteRegion(region.getEnvironment());
@@ -81,7 +81,7 @@ public class DiscreteRegion implements Nodeable {
 		for (Point point : points) {
 			transformedRegion.addPoint(transformPoint(region.getEnvironment(), point, offset, bounds, zoom));
 		}
-		assert Debugger.closeNode("Transformed Region", transformedRegion);
+		assert Logs.closeNode("Transformed Region", transformedRegion);
 		return transformedRegion;
 	}
 
@@ -116,7 +116,7 @@ public class DiscreteRegion implements Nodeable {
 	}
 
 	public DiscreteRegion(DiscreteRegion otherRegion) {
-		assert Debugger.openNode("Discrete Region Creation", "Creating discrete region (Duplicating otherRegion)");
+		assert Logs.openNode("Discrete Region Creation", "Creating discrete region (Duplicating otherRegion)");
 		this.environment = otherRegion.getEnvironment();
 		this.points.addAll(otherRegion.getPoints());
 		this.leftExtreme = otherRegion.getLeftExtreme();
@@ -126,33 +126,33 @@ public class DiscreteRegion implements Nodeable {
 		this.isOptimized = otherRegion.isOptimized();
 		this.version = otherRegion.getVersion();
 		this.properties.putAll(otherRegion.getProperties());
-		assert Debugger.closeNode("Region created", this);
+		assert Logs.closeNode("Region created", this);
 	}
 
 	public DiscreteRegion(ScriptEnvironment env) {
-		assert Debugger.openNode("Discrete Region Creation", "Creating discrete region (Script environment provided)");
+		assert Logs.openNode("Discrete Region Creation", "Creating discrete region (Script environment provided)");
 		if (env == null) {
-			assert Debugger.addNode("ScriptEnvironment: null");
+			assert Logs.addNode("ScriptEnvironment: null");
 		} else {
-			assert Debugger.addNode(env);
+			assert Logs.addNode(env);
 		}
 		this.environment = env;
 		this.resetExtrema();
-		assert Debugger.closeNode("Region created", this);
+		assert Logs.closeNode("Region created", this);
 	}
 
 	public DiscreteRegion(ScriptEnvironment env, Map<String, Object> prop) {
-		assert Debugger.openNode("Discrete Region Creation", "Creating discrete region (Script environment and properties provided)");
+		assert Logs.openNode("Discrete Region Creation", "Creating discrete region (Script environment and properties provided)");
 		this.environment = env;
 		this.properties.putAll(prop);
-		assert Debugger.closeNode("Region created", this);
+		assert Logs.closeNode("Region created", this);
 	}
 
 	public void addNeighbor(DiscreteRegion region) {
 		if (region.equals(this)) {
 			return;
 		}
-		assert Debugger.addSnapNode("Discrete Region Neighbor Additions", "Adding this region as a neighbor", region);
+		assert Logs.addSnapNode("Discrete Region Neighbor Additions", "Adding this region as a neighbor", region);
 		this.neighbors.add(region);
 	}
 
@@ -160,29 +160,29 @@ public class DiscreteRegion implements Nodeable {
 		if (point == null) {
 			return;
 		}
-		assert Debugger.openNode("Discrete Region Point Additions", "Adding point to discrete region (" + point + ")");
+		assert Logs.openNode("Discrete Region Point Additions", "Adding point to discrete region (" + point + ")");
 		this.testExtrema(point);
 		this.points.add(point);
 		this.resetIntersectionMap();
-		assert Debugger.closeNode(this);
+		assert Logs.closeNode(this);
 	}
 
 	public void addPointAt(int location, Point point) {
-		assert Debugger.openNode("Discrete Region Point Additions", "Adding point to discrete region (" + point + ") at index (" + location + ")");
+		assert Logs.openNode("Discrete Region Point Additions", "Adding point to discrete region (" + point + ") at index (" + location + ")");
 		this.testExtrema(point);
 		this.points.add(location, point);
-		assert Debugger.addSnapNode("New point list", this.points);
+		assert Logs.addSnapNode("New point list", this.points);
 		this.resetIntersectionMap();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void addRegionNeighbor(DiscreteRegion region) {
 		if (region.equals(this)) {
 			return;
 		}
-		assert Debugger.openNode("Discrete Region Neighbor Evaluations", "Checking for neighbor status");
-		assert Debugger.addSnapNode("This region", this);
-		assert Debugger.addSnapNode("Potential neighbor", region);
+		assert Logs.openNode("Discrete Region Neighbor Evaluations", "Checking for neighbor status");
+		assert Logs.addSnapNode("This region", this);
+		assert Logs.addSnapNode("Potential neighbor", region);
 		List<Point> regionPoints = region.getPoints();
 		for (int i = 0; i < this.points.size(); i++) {
 			Point pointA = this.points.get(i);
@@ -200,7 +200,7 @@ public class DiscreteRegion implements Nodeable {
 				this.neighbors.add(region);
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void addRegionNeighbors(Collection<DiscreteRegion> regions) {
@@ -210,23 +210,23 @@ public class DiscreteRegion implements Nodeable {
 	}
 
 	public void addRegionToMap(DiscreteRegion region) {
-		assert Debugger.addSnapNode("Intersection Map Additions", "Adding this region to intersection map", region);
+		assert Logs.addSnapNode("Intersection Map Additions", "Adding this region to intersection map", region);
 		this.intersectionMap.put(region, region.getVersion());
 	}
 
 	public boolean checkClearedRegionMap(DiscreteRegion region) {
-		assert Debugger.openNode("Checking cleared intersection map for region");
-		assert Debugger.addNode("If found, this means that the region does not intersect this region and all further testing can be omitted.");
-		assert Debugger.addSnapNode("Region to find", region);
+		assert Logs.openNode("Checking cleared intersection map for region");
+		assert Logs.addNode("If found, this means that the region does not intersect this region and all further testing can be omitted.");
+		assert Logs.addSnapNode("Region to find", region);
 		if (this.intersectionMap.get(region) == null) {
-			assert Debugger.closeNode("Region not found");
+			assert Logs.closeNode("Region not found");
 			return false;
 		}
 		if (this.intersectionMap.get(region) == region.getVersion()) {
-			assert Debugger.closeNode("Region found and version is identical.");
+			assert Logs.closeNode("Region found and version is identical.");
 			return true;
 		} else {
-			assert Debugger.closeNode("Region's version differs from our saved version, returning false.");
+			assert Logs.closeNode("Region's version differs from our saved version, returning false.");
 			return false;
 		}
 	}
@@ -303,51 +303,51 @@ public class DiscreteRegion implements Nodeable {
 	// Nodeable implementation
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Discrete Region (" + this.points.size() + " point(s))");
-		assert Debugger.addSnapNode("Points (" + this.points.size() + " point(s))", this.points);
+		assert Logs.openNode("Discrete Region (" + this.points.size() + " point(s))");
+		assert Logs.addSnapNode("Points (" + this.points.size() + " point(s))", this.points);
 		if (this.properties.size() == 1) {
-			assert Debugger.addSnapNode("Property Map (1 property)", this.properties);
+			assert Logs.addSnapNode("Property Map (1 property)", this.properties);
 		} else {
-			assert Debugger.addSnapNode("Property Map (" + this.properties.size() + " properties)", this.properties);
+			assert Logs.addSnapNode("Property Map (" + this.properties.size() + " properties)", this.properties);
 		}
-		assert Debugger.openNode("Details");
-		assert Debugger.addNode("Script environment reference: " + this.environment);
-		assert Debugger.openNode("Bounds");
-		assert Debugger.addNode("Left bound: " + this.leftExtreme);
-		assert Debugger.addNode("Right bound: " + this.rightExtreme);
-		assert Debugger.addNode("Top bound: " + this.topExtreme);
-		assert Debugger.addNode("Bottom bound: " + this.bottomExtreme);
-		assert Debugger.closeNode();
-		assert Debugger.addNode("Version: " + this.version);
-		assert Debugger.addNode("Optimized: " + this.isOptimized);
+		assert Logs.openNode("Details");
+		assert Logs.addNode("Script environment reference: " + this.environment);
+		assert Logs.openNode("Bounds");
+		assert Logs.addNode("Left bound: " + this.leftExtreme);
+		assert Logs.addNode("Right bound: " + this.rightExtreme);
+		assert Logs.addNode("Top bound: " + this.topExtreme);
+		assert Logs.addNode("Bottom bound: " + this.bottomExtreme);
+		assert Logs.closeNode();
+		assert Logs.addNode("Version: " + this.version);
+		assert Logs.addNode("Optimized: " + this.isOptimized);
 		if (this.neighbors != null && this.neighbors.size() > 0) {
-			assert Debugger.openNode("Neighbors (" + this.neighbors.size() + " neighbor(s))");
+			assert Logs.openNode("Neighbors (" + this.neighbors.size() + " neighbor(s))");
 			for (DiscreteRegion region : this.neighbors) {
-				assert Debugger.openNode("Discrete Region (" + region.getPoints().size() + " point(s))");
-				assert Debugger.addSnapNode("Points (" + region.getPoints().size() + " point(s))", this.points);
+				assert Logs.openNode("Discrete Region (" + region.getPoints().size() + " point(s))");
+				assert Logs.addSnapNode("Points (" + region.getPoints().size() + " point(s))", this.points);
 				if (this.properties.size() == 1) {
-					assert Debugger.addSnapNode("Property Map (1 property)", region.getProperties());
+					assert Logs.addSnapNode("Property Map (1 property)", region.getProperties());
 				} else {
-					assert Debugger.addSnapNode("Property Map (" + region.getProperties().size() + " properties)", region.getProperties());
+					assert Logs.addSnapNode("Property Map (" + region.getProperties().size() + " properties)", region.getProperties());
 				}
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
-		assert Debugger.addSnapNode("Intersection Map", this.intersectionMap);
-		assert Debugger.addNode("Mid-point: " + this.midPoint);
-		assert Debugger.addNode("Interior point: " + this.interiorPoint);
-		assert Debugger.closeNode();
-		assert Debugger.closeNode();
+		assert Logs.addSnapNode("Intersection Map", this.intersectionMap);
+		assert Logs.addNode("Mid-point: " + this.midPoint);
+		assert Logs.addNode("Interior point: " + this.interiorPoint);
+		assert Logs.closeNode();
+		assert Logs.closeNode();
 	}
 
 	private void recalculateExtrema() {
-		assert Debugger.openNode("Extrema Recalculations", "Recalculating extrema");
+		assert Logs.openNode("Extrema Recalculations", "Recalculating extrema");
 		this.resetExtrema();
 		for (Point point : this.points) {
 			this.testExtrema(point);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void recheckNeighbors() {
@@ -365,14 +365,14 @@ public class DiscreteRegion implements Nodeable {
 		if (!this.points.contains(point)) {
 			return;
 		}
-		assert Debugger.openNode("Discrete Region Point Removals", "Removing this point from discrete region (" + point + ")");
+		assert Logs.openNode("Discrete Region Point Removals", "Removing this point from discrete region (" + point + ")");
 		this.points.remove(point);
 		if (point.getX() == this.leftExtreme || point.getX() == this.rightExtreme || point.getY() == this.topExtreme || point.getY() == this.bottomExtreme) {
 			this.recalculateExtrema();
 		}
-		assert Debugger.addSnapNode("New point list", this.points);
+		assert Logs.addSnapNode("New point list", this.points);
 		this.resetIntersectionMap();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void removeRegionNeighbor(DiscreteRegion region) {
@@ -380,7 +380,7 @@ public class DiscreteRegion implements Nodeable {
 	}
 
 	private void resetExtrema() {
-		assert Debugger.addNode("Extrema Settings", "Resetting extrema.");
+		assert Logs.addNode("Extrema Settings", "Resetting extrema.");
 		this.leftExtreme = java.lang.Double.POSITIVE_INFINITY;
 		this.rightExtreme = java.lang.Double.NEGATIVE_INFINITY;
 		this.topExtreme = this.rightExtreme;
@@ -388,7 +388,7 @@ public class DiscreteRegion implements Nodeable {
 	}
 
 	public void resetIntersectionMap() {
-		assert Debugger.addNode("Resetting discrete region's intersection map");
+		assert Logs.addNode("Resetting discrete region's intersection map");
 		this.intersectionMap.clear();
 		this.interiorPoint = this.midPoint = null;
 		this.version++;
@@ -401,7 +401,7 @@ public class DiscreteRegion implements Nodeable {
 	}
 
 	public void reversePoints() {
-		assert Debugger.addNode("Reversing points");
+		assert Logs.addNode("Reversing points");
 		Collections.reverse(this.points);
 	}
 
@@ -410,14 +410,14 @@ public class DiscreteRegion implements Nodeable {
 	}
 
 	public void setPointList(Collection<Point> pointList) {
-		assert Debugger.openNode("Setting this discrete region's point list to a provided one");
-		assert Debugger.addSnapNode("Old point list", this.points);
+		assert Logs.openNode("Setting this discrete region's point list to a provided one");
+		assert Logs.addSnapNode("Old point list", this.points);
 		this.points.clear();
 		this.points.addAll(pointList);
 		this.recalculateExtrema();
 		this.resetIntersectionMap();
-		assert Debugger.addSnapNode("New point list", this.points);
-		assert Debugger.closeNode();
+		assert Logs.addSnapNode("New point list", this.points);
+		assert Logs.closeNode();
 	}
 
 	public void setProperties(Map<String, Object> prop) {
@@ -431,19 +431,19 @@ public class DiscreteRegion implements Nodeable {
 
 	private void testExtrema(Point point) {
 		if (point.getX() < this.leftExtreme) {
-			assert Debugger.addNode("Extrema Settings", "Setting left extrema to (" + point.getX() + ") from (" + this.leftExtreme + ")");
+			assert Logs.addNode("Extrema Settings", "Setting left extrema to (" + point.getX() + ") from (" + this.leftExtreme + ")");
 			this.leftExtreme = point.getX();
 		}
 		if (point.getX() > this.rightExtreme) {
-			assert Debugger.addNode("Extrema Settings", "Setting right extrema to (" + point.getX() + ") from (" + this.rightExtreme + ")");
+			assert Logs.addNode("Extrema Settings", "Setting right extrema to (" + point.getX() + ") from (" + this.rightExtreme + ")");
 			this.rightExtreme = point.getX();
 		}
 		if (point.getY() < this.bottomExtreme) {
-			assert Debugger.addNode("Extrema Settings", "Setting bottom extrema to (" + point.getY() + ") from (" + this.bottomExtreme + ")");
+			assert Logs.addNode("Extrema Settings", "Setting bottom extrema to (" + point.getY() + ") from (" + this.bottomExtreme + ")");
 			this.bottomExtreme = point.getY();
 		}
 		if (point.getY() > this.topExtreme) {
-			assert Debugger.addNode("Extrema Settings", "Setting top extrema to (" + point.getY() + ") from (" + this.topExtreme + ")");
+			assert Logs.addNode("Extrema Settings", "Setting top extrema to (" + point.getY() + ") from (" + this.topExtreme + ")");
 			this.topExtreme = point.getY();
 		}
 	}

@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.ScriptValue;
 
@@ -22,9 +22,9 @@ public class Exception_Nodeable_IncomparableObjects extends ScriptException {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addNode("The following two objects/primitives are incomparable.");
-		assert Debugger.addNode(this.lhs);
-		assert Debugger.addNode(this.rhs);
+		assert Logs.addNode("The following two objects/primitives are incomparable.");
+		assert Logs.addNode(this.lhs);
+		assert Logs.addNode(this.rhs);
 	}
 
 	@Override

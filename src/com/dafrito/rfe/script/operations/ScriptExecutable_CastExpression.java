@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -27,10 +27,10 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 	@Override
 	public ScriptValue execute() throws ScriptException {
 		ScriptValue left = this.castExpression.execute().getValue();
-		assert Debugger.openNode("Cast Expression Executions", "Executing cast to " + this.getType());
-		assert Debugger.addSnapNode("Value", left);
+		assert Logs.openNode("Cast Expression Executions", "Executing cast to " + this.getType());
+		assert Logs.addSnapNode("Value", left);
 		ScriptValue value = this.castExpression.execute().castToType(this, this.getType());
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return value;
 	}
 
@@ -52,9 +52,9 @@ public class ScriptExecutable_CastExpression extends ScriptElement implements Sc
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Script Cast Expression (To type: " + this.getType() + ")");
-		assert Debugger.addSnapNode("Cast Expression", this.castExpression);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Script Cast Expression (To type: " + this.getType() + ")");
+		assert Logs.addSnapNode("Cast Expression", this.castExpression);
+		assert Logs.closeNode();
 	}
 
 	@Override

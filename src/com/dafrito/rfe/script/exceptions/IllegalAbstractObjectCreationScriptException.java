@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 
 public class IllegalAbstractObjectCreationScriptException extends ScriptException {
@@ -18,7 +18,7 @@ public class IllegalAbstractObjectCreationScriptException extends ScriptExceptio
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addNode("An abstract object is trying to be instantiated.");
+		assert Logs.addNode("An abstract object is trying to be instantiated.");
 	}
 
 	@Override

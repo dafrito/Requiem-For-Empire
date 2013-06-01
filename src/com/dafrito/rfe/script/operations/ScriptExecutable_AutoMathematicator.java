@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -30,14 +30,14 @@ public class ScriptExecutable_AutoMathematicator extends ScriptElement implement
 	// ScriptExecutable implementation
 	@Override
 	public ScriptValue execute() throws ScriptException {
-		assert Debugger.openNode("Auto-Mathematicator Executions", "Executing Auto-Mathematicator");
+		assert Logs.openNode("Auto-Mathematicator Executions", "Executing Auto-Mathematicator");
 		ScriptValue returning;
 		if (this.operator == ScriptOperatorType.INCREMENT) {
 			returning = ((ScriptValue_Numeric) this.value.getValue()).setNumericValue(((ScriptValue_Numeric) this.value.getValue()).increment(this));
 		} else {
 			returning = ((ScriptValue_Numeric) this.value.getValue()).setNumericValue(((ScriptValue_Numeric) this.value.getValue()).decrement(this));
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -69,19 +69,19 @@ public class ScriptExecutable_AutoMathematicator extends ScriptElement implement
 	public void nodificate() {
 		if (this.operator == ScriptOperatorType.INCREMENT) {
 			if (this.isPost) {
-				assert Debugger.openNode("Auto-Mathematicators", "Auto-Mathematicator(Post-Incrementing)");
+				assert Logs.openNode("Auto-Mathematicators", "Auto-Mathematicator(Post-Incrementing)");
 			} else {
-				assert Debugger.openNode("Auto-Mathematicators", "Auto-Mathematicator(Pre-Incrementing)");
+				assert Logs.openNode("Auto-Mathematicators", "Auto-Mathematicator(Pre-Incrementing)");
 			}
 		} else {
 			if (this.isPost) {
-				assert Debugger.openNode("Auto-Mathematicators", "Auto-Mathematicator(Post-Decrementing)");
+				assert Logs.openNode("Auto-Mathematicators", "Auto-Mathematicator(Post-Decrementing)");
 			} else {
-				assert Debugger.openNode("Auto-Mathematicators", "Auto-Mathematicator(Pre-Decrementing)");
+				assert Logs.openNode("Auto-Mathematicators", "Auto-Mathematicator(Pre-Decrementing)");
 			}
 		}
-		assert Debugger.addSnapNode("Value", this.value);
-		assert Debugger.closeNode();
+		assert Logs.addSnapNode("Value", this.value);
+		assert Logs.closeNode();
 	}
 
 	@Override

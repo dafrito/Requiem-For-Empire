@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.dafrito.rfe.Ace;
 import com.dafrito.rfe.Asset;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -43,11 +43,11 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing Asset Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing Asset Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		try {
 			FauxTemplate_Asset template = (FauxTemplate_Asset) rawTemplate;
-			assert Debugger.addSnapNode("Template provided", template);
-			assert Debugger.addSnapNode("Parameters provided", params);
+			assert Logs.addSnapNode("Template provided", template);
+			assert Logs.addSnapNode("Parameters provided", params);
 			if (name == null || name.equals("")) {
 				if (template == null) {
 					template = (FauxTemplate_Asset) this.createObject(ref, template);
@@ -85,7 +85,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 			}
 			return this.getExtendedFauxClass().execute(ref, name, params, template);
 		} finally {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 	}
 
@@ -96,7 +96,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing asset faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing asset faux template");
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
 		this.addConstructor(this.getType(), fxnParams);
@@ -119,7 +119,7 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
 		this.addFauxFunction("setLocation", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -130,10 +130,10 @@ public class FauxTemplate_Asset extends FauxTemplate implements ScriptConvertibl
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Asset Faux Script-Element");
+		assert Logs.openNode("Asset Faux Script-Element");
 		super.nodificate();
-		assert Debugger.addNode(this.asset);
-		assert Debugger.closeNode();
+		assert Logs.addNode(this.asset);
+		assert Logs.closeNode();
 	}
 
 	public void setAsset(Asset asset) {

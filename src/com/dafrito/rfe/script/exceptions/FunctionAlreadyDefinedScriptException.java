@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.RiffScriptFunction;
 
@@ -21,7 +21,7 @@ public class FunctionAlreadyDefinedScriptException extends ScriptException {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addNode("The function, " + RiffScriptFunction.getDisplayableFunctionName(this.name) + ", is already defined");
+		assert Logs.addNode("The function, " + RiffScriptFunction.getDisplayableFunctionName(this.name) + ", is already defined");
 	}
 
 	@Override

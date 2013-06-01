@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script.exceptions;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 
@@ -23,7 +23,7 @@ public class Exception_Nodeable_UnimplementedFunction extends ScriptException {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addSnapNode("The abstract function, " + this.name + ", is unimplemented", this.template);
+		assert Logs.addSnapNode("The abstract function, " + this.name + ", is unimplemented", this.template);
 	}
 
 	@Override

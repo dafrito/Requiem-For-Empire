@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.logging;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -9,7 +9,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.bluespot.logic.actors.Actor;
-import com.dafrito.rfe.gui.debug.cache.CommonString;
+import com.dafrito.rfe.gui.logging.Debug_TreeNode;
+import com.dafrito.rfe.gui.logging.cache.CommonString;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.inspect.Inspection;
 import com.dafrito.rfe.inspect.Nodeable;
@@ -17,7 +18,7 @@ import com.dafrito.rfe.inspect.NodeableInspector;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 
-public class Debugger {
+public class Logs {
 	private static final ThreadLocalTreeLog<Object, ProxyTreeLog<Object>> masterLog = new ThreadLocalTreeLog<Object, ProxyTreeLog<Object>>() {
 		@Override
 		protected ProxyTreeLog<? super Object> newTreeLog(Thread thread) {
@@ -190,10 +191,10 @@ public class Debugger {
 	public static void report() {
 		System.out.println("Performance Report");
 		NumberFormat nf = NumberFormat.getInstance();
-		System.out.println("Maximum Memory Available: " + nf.format(Runtime.getRuntime().maxMemory()) + " bytes (" + Debugger.getAllocationPercentage() + "% allocated)");
-		System.out.println("Used Memory Before GC: " + nf.format(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + " bytes (" + Debugger.getFreePercentage() + "% free)");
+		System.out.println("Maximum Memory Available: " + nf.format(Runtime.getRuntime().maxMemory()) + " bytes (" + Logs.getAllocationPercentage() + "% allocated)");
+		System.out.println("Used Memory Before GC: " + nf.format(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + " bytes (" + Logs.getFreePercentage() + "% free)");
 		System.gc();
-		System.out.println("Used Memory After GC : " + nf.format(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + " bytes (" + Debugger.getFreePercentage() + "% free)");
+		System.out.println("Used Memory After GC : " + nf.format(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + " bytes (" + Logs.getFreePercentage() + "% free)");
 		System.out.println("Free Memory: " + nf.format(Runtime.getRuntime().freeMemory()) + " bytes");
 		Debug_TreeNode.report();
 	}
@@ -215,10 +216,10 @@ public class Debugger {
 	/**
 	 * Hit a stopwatch named {@code Thread.currentThread().getName()}.
 	 * 
-	 * @see Debugger#hitStopWatch(String)
+	 * @see Logs#hitStopWatch(String)
 	 */
 	public static void hitStopWatch() {
-		Debugger.hitStopWatch(Thread.currentThread().getName());
+		Logs.hitStopWatch(Thread.currentThread().getName());
 	}
 
 	/**

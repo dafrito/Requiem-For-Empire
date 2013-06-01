@@ -4,9 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.gui.InterfaceElement_Rectangle;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -33,21 +33,21 @@ public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implem
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing Rectangle Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing Rectangle Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Rectangle template = (FauxTemplate_Rectangle) rawTemplate;
 		ScriptValue returning;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Rectangle) this.createObject(ref, template);
 			}
 			this.getExtendedFauxClass().execute(ref, name, params, template);
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return template;
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -55,7 +55,7 @@ public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implem
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing rectangle faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing rectangle faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), Stylesheet.STYLESHEETSTRING)));
@@ -66,7 +66,7 @@ public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implem
 		this.addConstructor(this.getType(), fxnParams);
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -77,8 +77,8 @@ public class FauxTemplate_Rectangle extends FauxTemplate_InterfaceElement implem
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Rectangle Faux Template");
+		assert Logs.openNode("Rectangle Faux Template");
 		super.nodificate();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 }

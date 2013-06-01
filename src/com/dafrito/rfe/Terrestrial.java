@@ -16,7 +16,7 @@ import com.dafrito.rfe.geom.SplitterThread;
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.PointPath;
 import com.dafrito.rfe.geom.points.Points;
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -47,18 +47,18 @@ public class Terrestrial implements Serializable {
 		if (regions == null || regions.size() == 0) {
 			return;
 		}
-		assert Debugger.openNode("Validated Region Additions", "Adding Validated Regions (" + regions.size() + " region(s))");
+		assert Logs.openNode("Validated Region Additions", "Adding Validated Regions (" + regions.size() + " region(s))");
 		if (this.getTree() == null) {
 			this.setTree(new DiscreteRegionBSPNode(regions.get(0)));
 			if (regions.size() == 1) {
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 				this.decrementOpenThreads();
 				return;
 			}
 		}
 		SplitterThread thread = new SplitterThread(this, this.getTree(), regions, true);
 		thread.start();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void decrementOpenThreads() {
@@ -72,7 +72,7 @@ public class Terrestrial implements Serializable {
 			} catch (InterruptedException ex) {
 			}
 		}
-		assert Debugger.openNode("Pathfinding", "Getting path (" + currentPoint + " to " + destinationPoint + ")");
+		assert Logs.openNode("Pathfinding", "Getting path (" + currentPoint + " to " + destinationPoint + ")");
 		PointPath path = new PointPath(scenario);
 		DiscreteRegion startingRegion;
 		assert this.getTree() != null : "BSP Tree is null!";
@@ -95,42 +95,42 @@ public class Terrestrial implements Serializable {
 			} else {
 				ticker++;
 			}
-			assert Debugger.openNode("Pathfinder iteration " + ticker);
-			assert Debugger.addSnapNode("Current region", currentRegion);
+			assert Logs.openNode("Pathfinder iteration " + ticker);
+			assert Logs.addSnapNode("Current region", currentRegion);
 			if (currentRegion.getNeighbors().size() == 0) {
-				assert Debugger.closeNode("Current region has no neighbors, returning null list");
+				assert Logs.closeNode("Current region has no neighbors, returning null list");
 				path = null;
 				break;
 			}
 			availableNeighbors.clear();
 			nearestNeighborPoints.clear();
-			assert Debugger.openNode("Current region's neighbors (" + currentRegion.getNeighbors().size() + " neighbor(s))");
+			assert Logs.openNode("Current region's neighbors (" + currentRegion.getNeighbors().size() + " neighbor(s))");
 			for (DiscreteRegion neighbor : currentRegion.getNeighbors()) {
-				assert Debugger.openNode("Discrete Region (" + neighbor.getPoints().size() + " point(s))");
-				assert Debugger.addSnapNode("Properties", neighbor.getProperties());
-				assert Debugger.addSnapNode("Points", neighbor.getPoints());
-				assert Debugger.closeNode();
+				assert Logs.openNode("Discrete Region (" + neighbor.getPoints().size() + " point(s))");
+				assert Logs.addSnapNode("Properties", neighbor.getProperties());
+				assert Logs.addSnapNode("Points", neighbor.getPoints());
+				assert Logs.closeNode();
 			}
-			assert Debugger.closeNode();
-			assert Debugger.openNode("Getting valid neighbors");
+			assert Logs.closeNode();
+			assert Logs.openNode("Getting valid neighbors");
 			for (DiscreteRegion neighbor : currentRegion.getNeighbors()) {
 				if (used.contains(neighbor)) {
 					continue;
 				}
-				assert Debugger.addSnapNode("Placing neighbor in neighbors list", neighbor);
-				assert Debugger.openNode("Retrieving nearest colinear point");
+				assert Logs.addSnapNode("Placing neighbor in neighbors list", neighbor);
+				assert Logs.openNode("Retrieving nearest colinear point");
 				Point[] line = Polygons.getAdjacentEdge(currentRegion, neighbor);
 				Point point = Polygons.getMinimumPointBetweenLine(line[0], line[1], currentPoint);
-				assert Debugger.addNode("Adding neighbor and point (" + point + ")", neighbor);
+				assert Logs.addNode("Adding neighbor and point (" + point + ")", neighbor);
 				availableNeighbors.add(neighbor);
 				nearestNeighborPoints.add(point);
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 			}
-			assert Debugger.closeNode("Available neighbors (" + availableNeighbors.size() + " neighbor(s))", availableNeighbors);
+			assert Logs.closeNode("Available neighbors (" + availableNeighbors.size() + " neighbor(s))", availableNeighbors);
 			if (availableNeighbors.isEmpty()) {
-				assert Debugger.addNode("Stepping back");
+				assert Logs.addNode("Stepping back");
 				if (currentRegion.equals(startingRegion)) {
-					assert Debugger.closeNode("No route available.");
+					assert Logs.closeNode("No route available.");
 					path = null;
 					break;
 				}
@@ -138,48 +138,48 @@ public class Terrestrial implements Serializable {
 				used.add(currentRegion);
 				assert regionPath.size() != 0;
 				currentRegion = regionPath.pop();
-				assert Debugger.closeNode("No neighbors available, stepping back");
+				assert Logs.closeNode("No neighbors available, stepping back");
 				continue;
 			}
 			movementCosts.clear();
-			assert Debugger.openNode("Getting movement costs (" + availableNeighbors.size() + " neighbor(s))");
+			assert Logs.openNode("Getting movement costs (" + availableNeighbors.size() + " neighbor(s))");
 			for (DiscreteRegion region : availableNeighbors) {
 				params.clear();
 				params.add(Conversions.wrapDiscreteRegion(env, region));
 				params.add(Conversions.wrapAsset(env, asset));
 				movementCosts.add(Conversions.getDouble(env, ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
 			}
-			assert Debugger.closeNode("Movement costs", movementCosts);
+			assert Logs.closeNode("Movement costs", movementCosts);
 			double minimumValue = Double.POSITIVE_INFINITY;
 			int optimum = -1;
-			assert Debugger.openNode("Getting optimum region (" + availableNeighbors.size() + " option(s))");
+			assert Logs.openNode("Getting optimum region (" + availableNeighbors.size() + " option(s))");
 			for (int i = 0; i < availableNeighbors.size(); i++) {
 				double value = Points.getDistance(currentPoint, nearestNeighborPoints.get(i)) * path.getLastMovementCost();
-				assert Debugger.addNode("Movement cost from current location to border of current region (" + value + ")");
+				assert Logs.addNode("Movement cost from current location to border of current region (" + value + ")");
 				value += Points.getDistance(nearestNeighborPoints.get(i), destinationPoint) * movementCosts.get(i);
-				assert Debugger.addSnapNode("Current neighbor (Total movement cost: " + value + ")", availableNeighbors.get(i));
+				assert Logs.addSnapNode("Current neighbor (Total movement cost: " + value + ")", availableNeighbors.get(i));
 				if (Points.isLessThan(value, minimumValue)) {
-					assert Debugger.addNode("Value is less than current minimum, setting as new value (" + minimumValue + " to " + value + ")");
+					assert Logs.addNode("Value is less than current minimum, setting as new value (" + minimumValue + " to " + value + ")");
 					minimumValue = value;
 					optimum = i;
 				}
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			currentPoint = nearestNeighborPoints.get(optimum);
 			path.addPoint(currentPoint, movementCosts.get(optimum));
 			used.add(currentRegion);
 			currentRegion = availableNeighbors.get(optimum);
-			assert Debugger.addSnapNode("New optimum region (At optimum point: " + currentPoint + ")", currentRegion);
+			assert Logs.addSnapNode("New optimum region (At optimum point: " + currentPoint + ")", currentRegion);
 			regionPath.push(currentRegion);
-			assert Debugger.addSnapNode("Region Path", regionPath);
-			assert Debugger.closeNode("Current path", path);
+			assert Logs.addSnapNode("Region Path", regionPath);
+			assert Logs.closeNode("Current path", path);
 		}
 		if (path != null) {
 			params.clear();
 			params.add(Conversions.wrapDiscreteRegion(env, destination));
 			params.add(Conversions.wrapAsset(env, asset));
 			path.addPoint(destinationPoint, Conversions.getDouble(env, ScriptExecutable_CallFunction.callFunction(env, null, evaluator, "evaluateMovementCost", params)));
-			assert Debugger.closeNode("Path", path);
+			assert Logs.closeNode("Path", path);
 		} else {
 			throw new NoSuchElementException("No route available");
 		}

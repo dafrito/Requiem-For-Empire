@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dafrito.rfe.gui.Interface;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -35,28 +35,28 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable {
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing interface faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing interface faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Interface template = (FauxTemplate_Interface) rawTemplate;
 		ScriptValue returning;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Interface) this.createObject(ref, template);
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return template;
 		} else if (name.equals("add")) {
 			template.getInterface().getRoot().add(Conversions.getElement(this.getEnvironment(), params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("getRoot")) {
 			returning = Conversions.wrapElement(this.getEnvironment(), template.getInterface().getRoot());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -68,7 +68,7 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable {
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing interface faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing interface faux template");
 		this.addConstructor(this.getType());
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
@@ -77,7 +77,7 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable {
 		this.addFauxFunction("add", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = new LinkedList<ScriptValue>();
 		this.addFauxFunction("getRoot", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_InterfaceElement.INTERFACEELEMENTSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -88,9 +88,9 @@ public class FauxTemplate_Interface extends FauxTemplate implements Nodeable {
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Interface Faux Template");
+		assert Logs.openNode("Interface Faux Template");
 		super.nodificate();
-		assert Debugger.addNode(this.riffInterface);
-		assert Debugger.closeNode();
+		assert Logs.addNode(this.riffInterface);
+		assert Logs.closeNode();
 	}
 }

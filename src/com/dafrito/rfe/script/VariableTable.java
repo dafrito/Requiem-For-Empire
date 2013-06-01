@@ -6,8 +6,8 @@ package com.dafrito.rfe.script;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.values.ScriptValue_Variable;
 
 class VariableTable implements Nodeable {
@@ -36,9 +36,9 @@ class VariableTable implements Nodeable {
 
 	@Override
 	public synchronized void nodificate() {
-		assert Debugger.openNode("Variable Table");
-		assert Debugger.addSnapNode("Variable Stacks (" + this.stacks.size() + " stack(s))", this.stacks);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Variable Table");
+		assert Logs.addSnapNode("Variable Stacks (" + this.stacks.size() + " stack(s))", this.stacks);
+		assert Logs.closeNode();
 	}
 
 	public synchronized void retreatNestedStack() {

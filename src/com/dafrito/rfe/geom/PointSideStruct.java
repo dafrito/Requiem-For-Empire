@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 import com.dafrito.rfe.geom.points.Point;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 
 class PointSideStruct implements Nodeable {
 	private final List<Point> left;
@@ -84,20 +84,20 @@ class PointSideStruct implements Nodeable {
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Point-Side Test Results");
-		assert Debugger.addSnapNode("Left-side Points (Weight: " + this.leftWeight + "): " + this.left.size() + " element(s)", this.left);
-		assert Debugger.addSnapNode("Right-side Points (Weight: " + this.rightWeight + "): " + this.right.size() + " element(s)", this.right);
-		assert Debugger.addSnapNode("Indeterminate Points: " + this.indeterminates.size() + " element(s)", this.indeterminates);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Point-Side Test Results");
+		assert Logs.addSnapNode("Left-side Points (Weight: " + this.leftWeight + "): " + this.left.size() + " element(s)", this.left);
+		assert Logs.addSnapNode("Right-side Points (Weight: " + this.rightWeight + "): " + this.right.size() + " element(s)", this.right);
+		assert Logs.addSnapNode("Indeterminate Points: " + this.indeterminates.size() + " element(s)", this.indeterminates);
+		assert Logs.closeNode();
 	}
 
 	public void validate() {
 		if (Math.abs(this.rightWeight) < Math.pow(10, -5) && this.right.size() > 0) {
-			assert Debugger.addNode("Right-side list is insignificant, clearing.");
+			assert Logs.addNode("Right-side list is insignificant, clearing.");
 			this.right.clear();
 		}
 		if (Math.abs(this.leftWeight) < Math.pow(10, -5) && this.left.size() > 0) {
-			assert Debugger.addNode("Left-side list is insignificant, clearing.");
+			assert Logs.addNode("Left-side list is insignificant, clearing.");
 			this.left.clear();
 		}
 	}

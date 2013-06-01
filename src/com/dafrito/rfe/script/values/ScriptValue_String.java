@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.values;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
@@ -19,7 +19,7 @@ public class ScriptValue_String implements ScriptValue, ScriptConvertible<String
 
 	@Override
 	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
-		assert Debugger.addNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
+		assert Logs.addNode("Type Casting", "Casting (" + this.getType() + " to " + type + ")");
 		if (this.getType().equals(type)) {
 			return this;
 		}
@@ -59,17 +59,17 @@ public class ScriptValue_String implements ScriptValue, ScriptConvertible<String
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("String Script-Value (" + this.getStringValue().length() + " character(s): " + this.getStringValue());
-		assert Debugger.addSnapNode("Reference", super.toString());
-		assert Debugger.closeNode();
+		assert Logs.openNode("String Script-Value (" + this.getStringValue().length() + " character(s): " + this.getStringValue());
+		assert Logs.addSnapNode("Reference", super.toString());
+		assert Logs.closeNode();
 	}
 
 	@Override
 	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
-		assert Debugger.openNode("Value Assignments", "Setting String Value");
-		assert Debugger.addSnapNode("Former value", this);
+		assert Logs.openNode("Value Assignments", "Setting String Value");
+		assert Logs.addSnapNode("Former value", this);
 		this.value = ((ScriptValue_String) value.castToType(ref, this.getType())).getStringValue();
-		assert Debugger.closeNode("New value", this);
+		assert Logs.closeNode("New value", this);
 		return this;
 	}
 

@@ -19,54 +19,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.logging;
 
 /**
+ * A {@link TreeLog} that does nothing.
+ * 
  * @author Aaron Faanes
- * @param <T>
- *            the type of log message
+ * 
  */
-public abstract class ScopeGuardedTreeLog<T> implements TreeLog<T> {
-
-	int levels;
-	private TreeLog<? super T> sink;
-
-	protected abstract boolean allowEntry(String scope, String scopeGroup);
-
-	private boolean isAccepting() {
-		return levels > 0;
-	}
+public class NoopTreeLog implements TreeLog<Object> {
 
 	@Override
-	public void log(LogMessage<? extends T> message) {
-		if (isAccepting()) {
-			sink.log(message);
-		}
+	public void log(LogMessage<? extends Object> message) {
+		// Intentionally do nothing.
 	}
 
 	@Override
 	public void enter(String scope, String scopeGroup) {
-		if (levels == 0 && !allowEntry(scope, scopeGroup)) {
-			return;
-		}
-		++levels;
-		sink.enter(scope, scopeGroup);
+		// Intentionally do nothing.
 	}
 
 	@Override
 	public void leave() {
-		sink.leave();
-		--levels;
+		// Intentionally do nothing.
 	}
 
-	public TreeLog<? super T> getSink() {
-		if (sink == null) {
-			return NoopTreeLog.instance();
-		}
-		return sink;
-	}
+	private static NoopTreeLog INSTANCE;
 
-	public void setSink(TreeLog<? super T> sink) {
-		this.sink = sink;
+	public static TreeLog<Object> instance() {
+		return INSTANCE;
 	}
 }

@@ -6,8 +6,8 @@ import java.util.List;
 import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.EuclideanPoint;
 import com.dafrito.rfe.gui.GraphicalElement_Line;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -44,11 +44,11 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing Line Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing Line Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Line template = (FauxTemplate_Line) rawTemplate;
 		ScriptValue returning = null;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Line) this.createObject(ref, template);
@@ -64,7 +64,7 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 			}
 			params.clear();
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getX1")) {
 			returning = Conversions.wrapDouble(this.getEnvironment(), template.getPointA().getX());
@@ -93,7 +93,7 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 		} else {
 			returning = this.getExtendedFauxClass().execute(ref, name, params, template);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -109,7 +109,7 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing line faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing line faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
@@ -141,7 +141,7 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 		this.addFauxFunction("getY1", ScriptValueType.DOUBLE, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("getX2", ScriptValueType.DOUBLE, fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		this.addFauxFunction("getY2", ScriptValueType.DOUBLE, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -152,11 +152,11 @@ public class FauxTemplate_Line extends FauxTemplate_InterfaceElement implements 
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Line Faux Template");
+		assert Logs.openNode("Line Faux Template");
 		super.nodificate();
-		assert Debugger.addNode("Point A: " + this.getPointA());
-		assert Debugger.addNode("Point B: " + this.getPointB());
-		assert Debugger.closeNode();
+		assert Logs.addNode("Point A: " + this.getPointA());
+		assert Logs.addNode("Point B: " + this.getPointB());
+		assert Logs.closeNode();
 	}
 
 	public void setPointA(Point point) {

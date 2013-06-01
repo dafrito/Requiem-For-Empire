@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.gui.logging;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -39,6 +39,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import com.bluespot.logic.actors.Actor;
+import com.dafrito.rfe.logging.Logs;
+import com.dafrito.rfe.logging.ProxyTreeLog;
 
 /**
  * @author Aaron Faanes
@@ -119,7 +121,7 @@ public class LogViewer extends JFrame {
 		});
 		listenerMenu.add(removeTab);
 
-		Debugger.addListener(new Actor<ProxyTreeLog<? super Object>>() {
+		Logs.addListener(new Actor<ProxyTreeLog<? super Object>>() {
 
 			@Override
 			public void receive(ProxyTreeLog<? super Object> log) {

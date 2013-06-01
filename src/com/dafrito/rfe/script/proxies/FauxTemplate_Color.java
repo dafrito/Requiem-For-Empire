@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheets;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -44,11 +44,11 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing color faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing color faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Color template = (FauxTemplate_Color) rawTemplate;
 		ScriptValue returning;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Color) this.createObject(ref, template);
@@ -92,15 +92,15 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 			params.clear();
 		} else if (name.equals("getRed")) {
 			returning = Conversions.wrapInt(this.getEnvironment(), template.getColor().getRed());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getGreen")) {
 			returning = Conversions.wrapInt(this.getEnvironment(), template.getColor().getGreen());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("getBlue")) {
 			returning = Conversions.wrapInt(this.getEnvironment(), template.getColor().getBlue());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		} else if (name.equals("setRed")) {
 			int value = 0;
@@ -110,7 +110,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 				value = Conversions.getInteger(this.getEnvironment(), params.get(0));
 			}
 			template.setColor(new java.awt.Color(value, template.getColor().getGreen(), template.getColor().getBlue()));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setGreen")) {
 			int value = 0;
@@ -120,7 +120,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 				value = Conversions.getInteger(this.getEnvironment(), params.get(0));
 			}
 			template.setColor(new java.awt.Color(template.getColor().getRed(), value, template.getColor().getBlue()));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setBlue")) {
 			int value = 0;
@@ -130,15 +130,15 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 				value = Conversions.getInteger(this.getEnvironment(), params.get(0));
 			}
 			template.setColor(new java.awt.Color(template.getColor().getRed(), template.getColor().getGreen(), value));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("setColor")) {
 			template.setColor(Stylesheets.getColor(Conversions.getString(this.getEnvironment(), params.get(0))));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -149,7 +149,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing color faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing color faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
@@ -186,7 +186,7 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 		fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.STRING));
 		this.addFauxFunction("setColor", ScriptValueType.VOID, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -197,14 +197,14 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Color Faux Template");
+		assert Logs.openNode("Color Faux Template");
 		super.nodificate();
 		if (this.color == null) {
-			assert Debugger.addNode("Color: null");
+			assert Logs.addNode("Color: null");
 		} else {
-			assert Debugger.addNode("Color: " + Stylesheets.getColorName(this.color));
+			assert Logs.addNode("Color: " + Stylesheets.getColorName(this.color));
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void setColor(java.awt.Color color) {

@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.operations;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptElement;
@@ -46,9 +46,9 @@ public class ScriptExecutable_InvertBoolean extends ScriptElement implements Scr
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Boolean Inverter");
-		assert Debugger.addSnapNode("Value", this.value);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Boolean Inverter");
+		assert Logs.addSnapNode("Value", this.value);
+		assert Logs.closeNode();
 	}
 
 	@Override

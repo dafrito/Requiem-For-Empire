@@ -1,4 +1,4 @@
-package com.dafrito.rfe.gui.debug;
+package com.dafrito.rfe.gui.logging;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;

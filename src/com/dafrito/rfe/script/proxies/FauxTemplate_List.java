@@ -3,9 +3,9 @@ package com.dafrito.rfe.script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.gui.debug.cache.CommonString;
+import com.dafrito.rfe.gui.logging.cache.CommonString;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -41,11 +41,11 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing List Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing List Faux Template Function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_List template = (FauxTemplate_List) rawTemplate;
 		ScriptValue returning;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_List) this.createObject(ref, template);
@@ -53,21 +53,21 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 			params.clear();
 		} else if (name.equals("add")) {
 			template.getList().add(params.get(0).getValue());
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("addAll")) {
 			template.getList().addAll(Conversions.getList(params.get(0)));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("get")) {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return template.getList().get(Conversions.getInteger(this.getEnvironment(), params.get(0)));
 		} else if (name.equals("size")) {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return Conversions.wrapInt(this.getEnvironment(), template.getList().size());
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -79,7 +79,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing list faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing list faux template");
 		this.addConstructor(this.getType());
 		this.disableFullCreation();
 		this.getExtendedClass().initialize();
@@ -94,7 +94,7 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 		this.addFauxFunction("get", ScriptValueType.getObjectType(this.getEnvironment()), fxnParams, ScriptKeywordType.PUBLIC, false, false);
 		fxnParams = FauxTemplate.createEmptyParamList();
 		this.addFauxFunction("size", ScriptValueType.INT, fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -106,13 +106,13 @@ public class FauxTemplate_List extends FauxTemplate implements ScriptConvertible
 	@Override
 	public void nodificate() {
 		if (this.list == null) {
-			assert Debugger.openNode("List Faux Template (0 element(s))");
+			assert Logs.openNode("List Faux Template (0 element(s))");
 		} else {
-			assert Debugger.openNode("List Faux Template (" + this.list.size() + " element(s))");
+			assert Logs.openNode("List Faux Template (" + this.list.size() + " element(s))");
 		}
 		super.nodificate();
-		assert Debugger.addSnapNode(CommonString.ELEMENTS, this.list);
-		assert Debugger.closeNode();
+		assert Logs.addSnapNode(CommonString.ELEMENTS, this.list);
+		assert Logs.closeNode();
 	}
 
 	public void setList(List<ScriptValue> list) {

@@ -12,7 +12,7 @@ import com.dafrito.rfe.geom.points.Point;
 import com.dafrito.rfe.geom.points.EuclideanPoint;
 import com.dafrito.rfe.geom.points.PolarPoint;
 import com.dafrito.rfe.geom.points.Points;
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class Polygons {
@@ -26,35 +26,35 @@ public class Polygons {
 	}
 
 	public static void assertCCWPolygon(DiscreteRegion region) {
-		assert Debugger.openNode("CCW Polygon Assertions", "Asserting CCW-rotation of region.");
-		assert Debugger.addSnapNode("Tested region", region);
+		assert Logs.openNode("CCW Polygon Assertions", "Asserting CCW-rotation of region.");
+		assert Logs.addSnapNode("Tested region", region);
 		if (region.isOptimized()) {
-			assert Debugger.closeNode("Region already optimized, returning.");
+			assert Logs.closeNode("Region already optimized, returning.");
 			return;
 		}
-		assert Debugger.addSnapNode("Interior point", region.getInteriorPoint());
+		assert Logs.addSnapNode("Interior point", region.getInteriorPoint());
 		PointSideStruct struct = Polygons.getPointSideList(region, region.getInteriorPoint());
 		if (struct.hasIndeterminates()) {
-			assert Debugger.closeNode("Unanticipated colinear values in assertCCWPolygon.");
+			assert Logs.closeNode("Unanticipated colinear values in assertCCWPolygon.");
 			return;
 		}
 		if (struct.getLeftPoints().isEmpty()) {
 			region.reversePoints();
-			assert Debugger.closeNode("Polygon is clockwise, so reversing points and returning.");
+			assert Logs.closeNode("Polygon is clockwise, so reversing points and returning.");
 		} else if (struct.getRightPoints().isEmpty()) {
-			assert Debugger.closeNode("Polygon is CCW, so returning.");
+			assert Logs.closeNode("Polygon is CCW, so returning.");
 		}
 	}
 
 	public static DiscreteRegion clip(DiscreteRegion region, DiscreteRegion clip) {
-		assert Debugger.openNode("Clipping operations", "Clipping region");
-		assert Debugger.addSnapNode("Clip", clip);
-		assert Debugger.addSnapNode("Unclipped Region", region);
+		assert Logs.openNode("Clipping operations", "Clipping region");
+		assert Logs.addSnapNode("Clip", clip);
+		assert Logs.addSnapNode("Unclipped Region", region);
 		DiscreteRegion clippedRegion = new DiscreteRegion(region);
 		optimizePolygon(clippedRegion);
 		optimizePolygon(clip);
 		if (!getBoundingRectIntersection(clippedRegion, clip)) {
-			assert Debugger.closeNode("Region is entirely outside the clip,returning null.");
+			assert Logs.closeNode("Region is entirely outside the clip,returning null.");
 			return null;
 		}
 		List<Point> points = clip.getPoints();
@@ -63,82 +63,82 @@ public class Polygons {
 			if (struct.getLeftPoints().size() != 0 && struct.getRightPoints().size() != 0) {
 				DiscreteRegion interim = splitPolygonUsingEdge(clippedRegion, points.get(i), points.get((i + 1) % points.size()), true);
 				if (interim != null) {
-					assert Debugger.openNode("Testing for polygon which is still valid");
+					assert Logs.openNode("Testing for polygon which is still valid");
 					struct = getPointSideList(clippedRegion, points.get(i), points.get((i + 1) % points.size()));
-					assert Debugger.closeNode();
+					assert Logs.closeNode();
 					if (struct.getLeftPoints().size() != 0) {
 						clippedRegion = interim;
 					}
-					assert Debugger.addSnapNode("Valid polygon", clippedRegion);
+					assert Logs.addSnapNode("Valid polygon", clippedRegion);
 				}
 			}
 		}
 		if (!getBoundingRectIntersection(clippedRegion, clip)) {
-			assert Debugger.closeNode("Region is entirely outside the clip,returning null.");
+			assert Logs.closeNode("Region is entirely outside the clip,returning null.");
 			return null;
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return clippedRegion;
 	}
 
 	// Confirms that the line formed by the two points is an interior line.
 	public static boolean confirmInteriorLine(Point pointA, Point pointB, DiscreteRegion region) {
 		List<Point> pointList = region.getPoints();
-		assert Debugger.openNode("ConfirmInteriorLine", "Confirming interior line with these points: " + pointA + ", " + pointB);
-		assert Debugger.addSnapNode("Region", region);
-		assert Debugger.addNode("Testing for intersections.");
+		assert Logs.openNode("ConfirmInteriorLine", "Confirming interior line with these points: " + pointA + ", " + pointB);
+		assert Logs.addSnapNode("Region", region);
+		assert Logs.addNode("Testing for intersections.");
 		for (int i = 0; i < pointList.size(); i++) {
 			Point testPointA = pointList.get(i);
 			Point testPointB = pointList.get((i + 1) % pointList.size());
 			if ((testPointA.equals(pointA) && testPointB.equals(pointB)) || (testPointA.equals(pointB) && testPointB.equals(pointA))) {
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
 				return false;
 			}
 			IntersectionPoint intersect = Polygons.getIntersection(pointA, pointB, testPointA, testPointB);
 			if (intersect != null && !intersect.isTangent()) {
-				assert Debugger.addNode("Testing line intersected the polygon, returning false.");
-				assert Debugger.closeNode("Failing line: " + testPointA + ", " + testPointB);
+				assert Logs.addNode("Testing line intersected the polygon, returning false.");
+				assert Logs.closeNode("Failing line: " + testPointA + ", " + testPointB);
 				return false;
 			}
 		}
-		assert Debugger.addNode("Checking for crosses.");
+		assert Logs.addNode("Checking for crosses.");
 		int crosses = Polygons.getCrosses(pointA.getX() + (pointB.getX() - pointA.getX()) / 2, pointA.getY() + (pointB.getY() - pointA.getY()) / 2, region);
 		if (crosses == 0 || crosses % 2 == 0) {
-			assert Debugger.closeNode("Cross-test failed, returning false.");
+			assert Logs.closeNode("Cross-test failed, returning false.");
 			return false;
 		}
-		assert Debugger.closeNode("Interior line confirmed, returning true.");
+		assert Logs.closeNode("Interior line confirmed, returning true.");
 		return true;
 	}
 
 	// This process converts a concave polygon to a list of convex polygons.
 	public static List<DiscreteRegion> convertPolyToConvex(DiscreteRegion originalRegion) {
-		assert Debugger.openNode("Polygon-to-convex conversions", "Attempting to convert this region into convex parts...");
-		assert Debugger.addSnapNode("Region", originalRegion);
+		assert Logs.openNode("Polygon-to-convex conversions", "Attempting to convert this region into convex parts...");
+		assert Logs.addSnapNode("Region", originalRegion);
 		DiscreteRegion region = Polygons.optimizePolygon(originalRegion);
-		assert Debugger.addSnapNode("Optimized region", region);
+		assert Logs.addSnapNode("Optimized region", region);
 		if (region == null) {
 			return null;
 		}
 		List<DiscreteRegion> convexPolygons = new LinkedList<DiscreteRegion>();
 		if (Polygons.isPolygonConvex(region) == true) {
-			assert Debugger.closeNode("This polygon is convex, so adding it to the list and returning.");
+			assert Logs.closeNode("This polygon is convex, so adding it to the list and returning.");
 			convexPolygons.add(region);
 			return convexPolygons;
 		}
-		assert Debugger.addNode("This polygon is concave. Attempting to subdivide...");
+		assert Logs.addNode("This polygon is concave. Attempting to subdivide...");
 		DiscreteRegion testRegion;
 		List<Point> pointList = region.getPoints();
 		for (int i = 0; i < pointList.size(); i++) {
 			boolean alreadyCreated = false;
-			assert Debugger.openNode("Triangle Formations", "Attempting to form a triangle from these points");
-			assert Debugger.openNode("Points");
-			assert Debugger.addSnapNode("First point", pointList.get(i));
-			assert Debugger.addSnapNode("Second point", pointList.get((i + 1) % pointList.size()));
-			assert Debugger.addSnapNode("Third point", pointList.get((i + 2) % pointList.size()));
-			assert Debugger.closeNode(); // Node: Points
+			assert Logs.openNode("Triangle Formations", "Attempting to form a triangle from these points");
+			assert Logs.openNode("Points");
+			assert Logs.addSnapNode("First point", pointList.get(i));
+			assert Logs.addSnapNode("Second point", pointList.get((i + 1) % pointList.size()));
+			assert Logs.addSnapNode("Third point", pointList.get((i + 2) % pointList.size()));
+			assert Logs.closeNode(); // Node: Points
 			if (Polygons.confirmInteriorLine(pointList.get(i), pointList.get((i + 2) % pointList.size()), region) == false) {
-				assert Debugger.closeNode("Failed interior-line test."); // Node: Triangle Formations
+				assert Logs.closeNode("Failed interior-line test."); // Node: Triangle Formations
 				continue;
 			}
 			testRegion = new DiscreteRegion(region.getEnvironment(), region.getProperties());
@@ -152,18 +152,18 @@ public class Polygons {
 				}
 			}
 			if (alreadyCreated) {
-				assert Debugger.closeNode("Polygon already created."); // Node: Triangle Formations
+				assert Logs.closeNode("Polygon already created."); // Node: Triangle Formations
 				continue;
 			}
-			assert Debugger.addSnapNode("Removing this point", pointList.get((i + 1) % pointList.size()));
+			assert Logs.addSnapNode("Removing this point", pointList.get((i + 1) % pointList.size()));
 			region.removePoint(pointList.get((i + 1) % pointList.size()));
-			assert Debugger.addSnapNode("Yielding the new triangle and this remaining region: ", region);
+			assert Logs.addSnapNode("Yielding the new triangle and this remaining region: ", region);
 			convexPolygons.add(testRegion);
 			convexPolygons.addAll(Polygons.convertPolyToConvex(region));
-			assert Debugger.closeNode(); // Node: Triangle Formations
+			assert Logs.closeNode(); // Node: Triangle Formations
 			break;
 		}
-		assert Debugger.closeNode(); // Node: Convex conversions
+		assert Logs.closeNode(); // Node: Convex conversions
 		return convexPolygons;
 	}
 
@@ -196,54 +196,54 @@ public class Polygons {
 	}
 
 	public static Point findMiddlePoint(Point pointA, Point pointB, Point pointC) {
-		assert Debugger.openNode("Middle-Point Searches", "Finding middle point");
-		assert Debugger.openNode("Points");
-		assert Debugger.addSnapNode("Point A", pointA);
-		assert Debugger.addSnapNode("Point B", pointB);
-		assert Debugger.addSnapNode("Point C", pointC);
-		assert Debugger.closeNode(); // Node: Points
+		assert Logs.openNode("Middle-Point Searches", "Finding middle point");
+		assert Logs.openNode("Points");
+		assert Logs.addSnapNode("Point A", pointA);
+		assert Logs.addSnapNode("Point B", pointB);
+		assert Logs.addSnapNode("Point C", pointC);
+		assert Logs.closeNode(); // Node: Points
 		if (Polygons.getBoundingRectIntersection(Math.min(pointA.getX(), pointB.getX()), Math.max(pointA.getX(), pointB.getX()), Math.min(pointA.getY(), pointB.getY()), Math.max(pointA.getY(), pointB.getY()), pointC, true)) {
-			assert Debugger.closeNode("Returning point C.");
+			assert Logs.closeNode("Returning point C.");
 			return pointC;
 		}
 		if (Polygons.getBoundingRectIntersection(Math.min(pointA.getX(), pointC.getX()), Math.max(pointA.getX(), pointC.getX()), Math.min(pointA.getY(), pointC.getY()), Math.max(pointA.getY(), pointC.getY()), pointB, true)) {
-			assert Debugger.closeNode("Returning point B.");
+			assert Logs.closeNode("Returning point B.");
 			return pointB;
 		}
-		assert Debugger.closeNode("Returning point A.");
+		assert Logs.closeNode("Returning point A.");
 		return pointA;
 	}
 
 	public static Point[] getAdjacentEdge(DiscreteRegion region, DiscreteRegion neighbor) {
-		assert Debugger.openNode("Adjacent Edge Finding", "Finding Adjacent Edge");
-		assert Debugger.addSnapNode("Region", region);
-		assert Debugger.addSnapNode("Neighbor", neighbor);
+		assert Logs.openNode("Adjacent Edge Finding", "Finding Adjacent Edge");
+		assert Logs.addSnapNode("Region", region);
+		assert Logs.addSnapNode("Neighbor", neighbor);
 		List<Point> pointList = region.getPoints();
 		IntersectionPoint intersect = null;
 		for (int i = 0; i < pointList.size(); i++) {
 			List<Point> otherPointList = neighbor.getPoints();
 			Point pointA = pointList.get(i);
 			Point pointB = pointList.get((i + 1) % pointList.size());
-			assert Debugger.openNode("Line-by-Line Tests", "Control points: " + pointA + ", " + pointB);
+			assert Logs.openNode("Line-by-Line Tests", "Control points: " + pointA + ", " + pointB);
 			for (int j = 0; j < otherPointList.size(); j++) {
 				Point pointC = otherPointList.get(j);
 				Point pointD = otherPointList.get((j + 1) % otherPointList.size());
-				assert Debugger.openNode("Testing points (" + pointC + ", " + pointD + ")");
+				assert Logs.openNode("Testing points (" + pointC + ", " + pointD + ")");
 				PointSideStruct struct = Polygons.getPointSideList(pointA, pointB, pointC, pointD);
 				if (struct.getIndeterminates().size() == 2) {
 					Point minPoint, otherMinPoint;
 					IntersectionPoint thisIntersect = Polygons.getIntersection(pointA, pointB, pointC, pointD);
 					if (thisIntersect != null && !Polygons.getBoundingRectIntersection(pointA, pointB, pointC, pointD, false)) {
 						intersect = thisIntersect;
-						assert Debugger.closeNode("They intersect on a tangent, saving and continuing (Intersection: " + thisIntersect + ")");
+						assert Logs.closeNode("They intersect on a tangent, saving and continuing (Intersection: " + thisIntersect + ")");
 						continue;
 					}
 					if ((pointA.equals(pointC) && pointB.equals(pointD)) || (pointA.equals(pointD) && pointB.equals(pointC))) {
-						assert Debugger.addNode("Lines are identical.");
+						assert Logs.addNode("Lines are identical.");
 						minPoint = pointA;
 						otherMinPoint = pointB;
 					} else {
-						assert Debugger.addNode("Finding middle points...");
+						assert Logs.addNode("Finding middle points...");
 						if (pointA.equals(pointC)) {
 							minPoint = findMiddlePoint(pointA, pointB, pointD);
 							otherMinPoint = pointC;
@@ -264,23 +264,23 @@ public class Polygons {
 					Point[] pointArray = new Point[2];
 					pointArray[0] = minPoint;
 					pointArray[1] = otherMinPoint;
-					assert Debugger.closeNode();
-					assert Debugger.closeNode();
-					assert Debugger.closeNode("Returning point array", pointArray);
+					assert Logs.closeNode();
+					assert Logs.closeNode();
+					assert Logs.closeNode("Returning point array", pointArray);
 					return pointArray;
 				}
-				assert Debugger.closeNode("No colinearity found, continuing.");
+				assert Logs.closeNode("No colinearity found, continuing.");
 			}
-			assert Debugger.closeNode("No conclusive matches found for this point.");
+			assert Logs.closeNode("No conclusive matches found for this point.");
 		}
 		if (intersect != null) {
 			Point[] pointArray = new Point[2];
 			pointArray[0] = intersect.getPoint();
 			pointArray[1] = intersect.getPoint();
-			assert Debugger.closeNode("Returning point array", pointArray);
+			assert Logs.closeNode("Returning point array", pointArray);
 			return pointArray;
 		}
-		assert Debugger.closeNode("They share no adjacent edge, returning null.");
+		assert Logs.closeNode("They share no adjacent edge, returning null.");
 		return null;
 	}
 
@@ -397,7 +397,7 @@ public class Polygons {
 
 	// Tests how many times a line, using the coord's as the first point, and the extreme right point of the poly, crosses any other border.
 	public static int getCrosses(double xCoord, double yCoord, DiscreteRegion region) {
-		assert Debugger.openNode("GetCrosses", "Testing for crosses for x-coord:" + xCoord + " and y-coord: " + yCoord);
+		assert Logs.openNode("GetCrosses", "Testing for crosses for x-coord:" + xCoord + " and y-coord: " + yCoord);
 		List<Point> pointList = region.getPoints();
 		int crosses = 0;
 		double xExtremeCoord = Double.NEGATIVE_INFINITY;
@@ -407,7 +407,7 @@ public class Polygons {
 			}
 		}
 		xExtremeCoord += 1.0f;
-		assert Debugger.addNode("This line extends to x-coord: " + xExtremeCoord + " and y-coord: " + yCoord);
+		assert Logs.addNode("This line extends to x-coord: " + xExtremeCoord + " and y-coord: " + yCoord);
 		Point crossExtremePoint = createPoint(pointList.get(0), "Extreme right-point", xExtremeCoord, yCoord, 0.0d);
 		Point crossMidPoint = createPoint(pointList.get(0), "MidPoint", xCoord, yCoord, 0.0d);
 		List<Point> overlappedVertices = new LinkedList<Point>();
@@ -433,7 +433,7 @@ public class Polygons {
 			}
 			crosses++;
 		}
-		assert Debugger.closeNode("Total Crosses: " + crosses);
+		assert Logs.closeNode("Total Crosses: " + crosses);
 		return crosses;
 	}
 
@@ -445,10 +445,10 @@ public class Polygons {
 	// Extends a line, provided by the two points, in both directions so that their x coordinates are equal to the left and right double values provided with correct slope.
 	public static List<Point> getExtensionPoints(Point pointA, Point pointB, DiscreteRegion region) {
 		List<Point> pointList = new LinkedList<Point>();
-		assert Debugger.openNode("Point extensions", "Extending these points");
-		assert Debugger.addSnapNode("Point A", pointA);
-		assert Debugger.addSnapNode("Point B", pointB);
-		assert Debugger.addSnapNode("Region", region);
+		assert Logs.openNode("Point extensions", "Extending these points");
+		assert Logs.addSnapNode("Point A", pointA);
+		assert Logs.addSnapNode("Point B", pointB);
+		assert Logs.addSnapNode("Region", region);
 		double YValue = Polygons.getExtensionPoint(pointA, pointB, region.getLeftExtreme() - 1.0d);
 		double XValue = region.getLeftExtreme() - 1.0d;
 		if (Points.isGreaterThan(YValue, region.getTopExtreme())) {
@@ -469,44 +469,44 @@ public class Polygons {
 			XValue = (YValue - pointA.getY()) / Polygons.getSlope(pointA, pointB) + pointA.getX();
 		}
 		pointList.add(createPoint(pointA, pointB.getName(), XValue, YValue, 0.0d));
-		assert Debugger.addSnapNode("Extended Point A", pointList.get(0));
-		assert Debugger.addSnapNode("Extended Point B", pointList.get(1));
-		assert Debugger.closeNode();
+		assert Logs.addSnapNode("Extended Point A", pointList.get(0));
+		assert Logs.addSnapNode("Extended Point B", pointList.get(1));
+		assert Logs.closeNode();
 		return pointList;
 	}
 
 	// Tests if (pointA, pointB) intersects (testPointA, testPointB), and returns the point if it does.
 	public static IntersectionPoint getIntersection(Point pointA, Point pointB, Point testPointA, Point testPointB) {
-		assert Debugger.openNode("Intersection Tests (Line vs Line)", "Intersection Test: Line against Line");
-		assert Debugger.addNode("Control Points: " + pointA + ", " + pointB);
-		assert Debugger.addNode("Test Points: " + testPointA + ", " + testPointB);
+		assert Logs.openNode("Intersection Tests (Line vs Line)", "Intersection Test: Line against Line");
+		assert Logs.addNode("Control Points: " + pointA + ", " + pointB);
+		assert Logs.addNode("Test Points: " + testPointA + ", " + testPointB);
 		boolean tangentFlag = false;
 		// Check for invalid lines.
 		if (pointA.equals(pointB)) {
-			assert Debugger.closeNode("First control point is equal to second control point, returning null.");
+			assert Logs.closeNode("First control point is equal to second control point, returning null.");
 			return null;
 		}
 		if (testPointA.equals(testPointB)) {
-			assert Debugger.closeNode("First test point is equal to second test point, returning null.");
+			assert Logs.closeNode("First test point is equal to second test point, returning null.");
 			return null;
 		}
 		if ((pointA.equals(testPointB) && pointB.equals(testPointA)) || (pointA.equals(testPointA) && pointB.equals(testPointB))) {
-			assert Debugger.closeNode("These lines are equal, returning null.");
+			assert Logs.closeNode("These lines are equal, returning null.");
 			return null;
 		}
 		if (pointA.equals(testPointA) || pointA.equals(testPointB)) {
 			IntersectionPoint returning = new IntersectionPoint(pointA, true);
-			assert Debugger.closeNode("First control point is equal to one of the test points, yielding a tangent, so returning that tangent.", returning);
+			assert Logs.closeNode("First control point is equal to one of the test points, yielding a tangent, so returning that tangent.", returning);
 			return returning;
 		}
 		if (pointB.equals(testPointA) || pointB.equals(testPointB)) {
 			IntersectionPoint returning = new IntersectionPoint(pointB, true);
-			assert Debugger.closeNode("Second control point is equal to one of the test points, yielding a tangent, so returning that tangent.", returning);
+			assert Logs.closeNode("Second control point is equal to one of the test points, yielding a tangent, so returning that tangent.", returning);
 			return returning;
 		}
 		// Test for colinearity of these points.
 		if (Polygons.testForColinearity(pointA, pointB, testPointA, testPointB)) {
-			assert Debugger.closeNode("These lines are colinear, returning null.");
+			assert Logs.closeNode("These lines are colinear, returning null.");
 			return null;
 		}
 		// Get slopes.
@@ -514,219 +514,219 @@ public class Polygons {
 		double testSlope = Polygons.getSlope(testPointA, testPointB);
 		// Test for infinite slopes, and if found, get real intersection points.
 		if (Math.abs(slope) == Double.POSITIVE_INFINITY) {
-			assert Debugger.addNode("Slope of the control points is infinite.");
+			assert Logs.addNode("Slope of the control points is infinite.");
 			if (Points.isGreaterThan(pointA.getX(), Math.max(testPointA.getX(), testPointB.getX()))) {
-				assert Debugger.closeNode("The X-value is greater than the maximum X-value of the test points, returning null.");
+				assert Logs.closeNode("The X-value is greater than the maximum X-value of the test points, returning null.");
 				return null;
 			} else if (Points.areEqual(pointA, pointA.getX(), Math.max(testPointA.getX(), testPointB.getX()))) {
-				assert Debugger.addNode("The X-value is equal to the maximum X-value of the test points, setting tangent flag.");
+				assert Logs.addNode("The X-value is equal to the maximum X-value of the test points, setting tangent flag.");
 				tangentFlag = true;
 			}
 			if (Points.isLessThan(pointA.getX(), Math.min(testPointA.getX(), testPointB.getX()))) {
-				assert Debugger.closeNode("The X-value is less than the minimum X-value of the test points, returning null.");
+				assert Logs.closeNode("The X-value is less than the minimum X-value of the test points, returning null.");
 				return null;
 			} else if (Points.areEqual(pointA, pointA.getX(), Math.min(testPointA.getX(), testPointB.getX()))) {
-				assert Debugger.addNode("The X-value is equal to the minimum X-value of the test points, setting tangent flag.");
+				assert Logs.addNode("The X-value is equal to the minimum X-value of the test points, setting tangent flag.");
 				tangentFlag = true;
 			}
 			double yIntersection = testSlope * (pointA.getX() - testPointA.getX()) + testPointA.getY();
 			if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, testSlope)) {
-				assert Debugger.addNode("The testSlope is not zero.");
+				assert Logs.addNode("The testSlope is not zero.");
 				if (Points.isLessThan(yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
-					assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the testPoints, returning null.");
+					assert Logs.closeNode("The Y-intercept is less than the minimum of the Y-values of the testPoints, returning null.");
 					return null;
 				} else if (Points.areEqual(testPointA, yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
-					assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the testPoints, setting tangent flag.");
+					assert Logs.addNode("The Y-intercept is equal to the minimum of the Y-values of the testPoints, setting tangent flag.");
 					tangentFlag = true;
 				}
 				if (Points.isGreaterThan(yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
-					assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the testPoints, returning null.");
+					assert Logs.closeNode("The Y-intercept is greater than the maximum of the Y-values of the testPoints, returning null.");
 					return null;
 				} else if (Points.areEqual(testPointA, yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
-					assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the testpoints, setting tangent flag.");
+					assert Logs.addNode("The Y-intercept is equal to the maximum of the Y-values of the testpoints, setting tangent flag.");
 					tangentFlag = true;
 				}
 			}
 			if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, slope)) {
-				assert Debugger.addNode("The slope is not zero.");
+				assert Logs.addNode("The slope is not zero.");
 				if (Points.isLessThan(yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
-					assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the control points, returning null.");
+					assert Logs.closeNode("The Y-intercept is less than the minimum of the Y-values of the control points, returning null.");
 					return null;
 				} else if (Points.areEqual(testPointA, yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
-					assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the control points, setting tangent flag.");
+					assert Logs.addNode("The Y-intercept is equal to the minimum of the Y-values of the control points, setting tangent flag.");
 					tangentFlag = true;
 				}
 				if (Points.isGreaterThan(yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
-					assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the control points, returning null.");
+					assert Logs.closeNode("The Y-intercept is greater than the maximum of the Y-values of the control points, returning null.");
 					return null;
 				} else if (Points.areEqual(testPointA, yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
-					assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the control points, setting tangent flag.");
+					assert Logs.addNode("The Y-intercept is equal to the maximum of the Y-values of the control points, setting tangent flag.");
 					tangentFlag = true;
 				}
 			}
 			Point intersectPoint = createPoint(pointA, String.format("(%s, %s)+(%s, %s)", pointA.getName(), pointB.getName(), testPointA.getName(), testPointB.getName()), pointA.getX(), yIntersection, 0.0f);
 			IntersectionPoint point = new IntersectionPoint(intersectPoint, tangentFlag);
 			if (tangentFlag) {
-				assert Debugger.closeNode("These lines intersect, but only on a tangent: " + intersectPoint, point);
+				assert Logs.closeNode("These lines intersect, but only on a tangent: " + intersectPoint, point);
 			} else {
-				assert Debugger.closeNode("These lines intersect: " + intersectPoint, point);
+				assert Logs.closeNode("These lines intersect: " + intersectPoint, point);
 			}
 			return point;
 		}
 		if (Math.abs(testSlope) == Double.POSITIVE_INFINITY) {
-			assert Debugger.addNode("Slope of the test points is infinite.");
+			assert Logs.addNode("Slope of the test points is infinite.");
 			if (Points.isGreaterThan(testPointA.getX(), Math.max(pointA.getX(), pointB.getX()))) {
-				assert Debugger.closeNode("The X-value is greater than the maximum X-value of the control points, returning null.");
+				assert Logs.closeNode("The X-value is greater than the maximum X-value of the control points, returning null.");
 				return null;
 			} else if (Points.areEqual(testPointA, testPointA.getX(), Math.max(pointA.getX(), pointB.getX()))) {
-				assert Debugger.addNode("The X-value is equal to the maximum X-value of the control points, setting tangent flag.");
+				assert Logs.addNode("The X-value is equal to the maximum X-value of the control points, setting tangent flag.");
 				tangentFlag = true;
 			}
 			if (Points.isLessThan(testPointA.getX(), Math.min(pointA.getX(), pointB.getX()))) {
-				assert Debugger.closeNode("The X-value is less than the minimum X-value of the control points, returning null.");
+				assert Logs.closeNode("The X-value is less than the minimum X-value of the control points, returning null.");
 				return null;
 			} else if (Points.areEqual(testPointA, testPointA.getX(), Math.min(pointA.getX(), pointB.getX()))) {
-				assert Debugger.addNode("The X-value is equal to the minimum X-value of the control points, setting tangent flag.");
+				assert Logs.addNode("The X-value is equal to the minimum X-value of the control points, setting tangent flag.");
 				tangentFlag = true;
 			}
 			double yIntersection = slope * (testPointA.getX() - pointA.getX()) + pointA.getY();
 			if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, testSlope)) {
-				assert Debugger.addNode("The testSlope is not zero.");
+				assert Logs.addNode("The testSlope is not zero.");
 				if (Points.isLessThan(yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
-					assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the testPoints, returning null.");
+					assert Logs.closeNode("The Y-intercept is less than the minimum of the Y-values of the testPoints, returning null.");
 					return null;
 				} else if (Points.areEqual(testPointA, yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
-					assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the testPoints, setting tangent flag.");
+					assert Logs.addNode("The Y-intercept is equal to the minimum of the Y-values of the testPoints, setting tangent flag.");
 					tangentFlag = true;
 				}
 				if (Points.isGreaterThan(yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
-					assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the testPoints, returning null.");
+					assert Logs.closeNode("The Y-intercept is greater than the maximum of the Y-values of the testPoints, returning null.");
 					return null;
 				} else if (Points.areEqual(testPointA, yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
-					assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the testpoints, setting tangent flag.");
+					assert Logs.addNode("The Y-intercept is equal to the maximum of the Y-values of the testpoints, setting tangent flag.");
 					tangentFlag = true;
 				}
 			}
 			if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, slope)) {
-				assert Debugger.addNode("The slope is not zero.");
+				assert Logs.addNode("The slope is not zero.");
 				if (Points.isLessThan(yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
-					assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the control points, returning null.");
+					assert Logs.closeNode("The Y-intercept is less than the minimum of the Y-values of the control points, returning null.");
 					return null;
 				} else if (Points.areEqual(testPointA, yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
-					assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the control points, setting tangent flag.");
+					assert Logs.addNode("The Y-intercept is equal to the minimum of the Y-values of the control points, setting tangent flag.");
 					tangentFlag = true;
 				}
 				if (Points.isGreaterThan(yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
-					assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the control points, returning null.");
+					assert Logs.closeNode("The Y-intercept is greater than the maximum of the Y-values of the control points, returning null.");
 					return null;
 				} else if (Points.areEqual(testPointA, yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
-					assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the control points, setting tangent flag.");
+					assert Logs.addNode("The Y-intercept is equal to the maximum of the Y-values of the control points, setting tangent flag.");
 					tangentFlag = true;
 				}
 			}
 			Point intersectPoint = createPoint(pointA, "(" + pointA.getName() + "," + pointB.getName() + ")+(" + testPointA.getName() + "," + testPointB.getName() + ")", testPointA.getX(), yIntersection, 0.0f);
 			IntersectionPoint returning = new IntersectionPoint(intersectPoint, tangentFlag);
 			if (tangentFlag) {
-				assert Debugger.closeNode("These lines intersect, but only on a tangent: " + intersectPoint, returning);
+				assert Logs.closeNode("These lines intersect, but only on a tangent: " + intersectPoint, returning);
 			} else {
-				assert Debugger.closeNode("These lines intersect: " + intersectPoint, returning);
+				assert Logs.closeNode("These lines intersect: " + intersectPoint, returning);
 			}
 			return returning;
 		}
 		// Bounding rect testing of the two lines.
 		if (Points.isLessThan(Math.max(pointB.getX(), pointA.getX()), Math.min(testPointA.getX(), testPointB.getX()))) {
-			assert Debugger.closeNode("The maximum x-value of the control points is less than the minimum X-value of the testPoints, returning null.");
+			assert Logs.closeNode("The maximum x-value of the control points is less than the minimum X-value of the testPoints, returning null.");
 			return null;
 		} else if (Points.areEqual(testPointA, Math.max(pointB.getX(), pointA.getX()), Math.min(testPointA.getX(), testPointB.getX()))) {
-			assert Debugger.addNode("The maximum x-value of the control points is equal to the minimum X-value of the testPoints, setting tangent flag.");
+			assert Logs.addNode("The maximum x-value of the control points is equal to the minimum X-value of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
 		if (Points.isGreaterThan(Math.min(pointB.getX(), pointA.getX()), Math.max(testPointA.getX(), testPointB.getX()))) {
-			assert Debugger.closeNode("The minimum x-value of the control points is greater than the maximum X-value of the testPoints, returning null.");
+			assert Logs.closeNode("The minimum x-value of the control points is greater than the maximum X-value of the testPoints, returning null.");
 			return null;
 		} else if (Points.areEqual(testPointA, Math.min(pointB.getX(), pointA.getX()), Math.max(testPointA.getX(), testPointB.getX()))) {
-			assert Debugger.addNode("The minimum x-value of the control points is equal to the maximum X-value of the testPoints, setting tangent flag.");
+			assert Logs.addNode("The minimum x-value of the control points is equal to the maximum X-value of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
 		if (Points.isLessThan(Math.max(pointA.getY(), pointB.getY()), Math.min(testPointA.getY(), testPointB.getY()))) {
-			assert Debugger.closeNode("The maximum Y-value of the control points is less than the minimum Y-value of the testPoints, returning null.");
+			assert Logs.closeNode("The maximum Y-value of the control points is less than the minimum Y-value of the testPoints, returning null.");
 			return null;
 		} else if (Points.areEqual(testPointA, Math.max(pointA.getY(), pointB.getY()), Math.min(testPointA.getY(), testPointB.getY()))) {
-			assert Debugger.addNode("The maximum Y-value of the control points is equal to the minimum  Y-value of the testPoints, setting tangent flag.");
+			assert Logs.addNode("The maximum Y-value of the control points is equal to the minimum  Y-value of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
 		if (Points.isGreaterThan(Math.min(pointA.getY(), pointB.getY()), Math.max(testPointA.getY(), testPointB.getY()))) {
-			assert Debugger.closeNode("The minimum Y-value of the control points is greater than the maximum Y-value of the testPoints, returning null.");
+			assert Logs.closeNode("The minimum Y-value of the control points is greater than the maximum Y-value of the testPoints, returning null.");
 			return null;
 		} else if (Points.areEqual(testPointA, Math.min(pointA.getY(), pointB.getY()), Math.max(testPointA.getY(), testPointB.getY()))) {
-			assert Debugger.addNode("The minimum Y-value of the control points is equal to than the maximum Y-value of the testPoints, setting tangent flag.");
+			assert Logs.addNode("The minimum Y-value of the control points is equal to than the maximum Y-value of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
 		// X-intersection testing.
 		double xIntersection = ((-slope * pointA.getX() + pointA.getY()) - (-testSlope * testPointA.getX() + testPointA.getY())) / (testSlope - slope);
-		assert Debugger.addNode("The X-intercept between these two points is: " + xIntersection);
+		assert Logs.addNode("The X-intercept between these two points is: " + xIntersection);
 		if (Points.isLessThan(xIntersection, Math.min(testPointA.getX(), testPointB.getX()))) {
-			assert Debugger.closeNode("The X-intercept is less than the minimum of the X-values of the testPoints, returning null.");
+			assert Logs.closeNode("The X-intercept is less than the minimum of the X-values of the testPoints, returning null.");
 			return null;
 		} else if (Points.areEqual(testPointA, xIntersection, Math.min(testPointA.getX(), testPointB.getX()))) {
-			assert Debugger.addNode("The X-intercept is equal to the minimum of the X-values of the testPoints, setting tangent flag.");
+			assert Logs.addNode("The X-intercept is equal to the minimum of the X-values of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
 		if (Points.isGreaterThan(xIntersection, Math.max(testPointA.getX(), testPointB.getX()))) {
-			assert Debugger.closeNode("The X-intercept is greater than the maximum of the X-values of the testPoints, returning null.");
+			assert Logs.closeNode("The X-intercept is greater than the maximum of the X-values of the testPoints, returning null.");
 			return null;
 		} else if (Points.areEqual(testPointA, xIntersection, Math.max(testPointA.getX(), testPointB.getX()))) {
-			assert Debugger.addNode("The X-intercept is equal to the maximum of the X-values of the testPoints, setting tangent flag.");
+			assert Logs.addNode("The X-intercept is equal to the maximum of the X-values of the testPoints, setting tangent flag.");
 			tangentFlag = true;
 		}
 		if (Points.isLessThan(xIntersection, Math.min(pointA.getX(), pointB.getX()))) {
-			assert Debugger.closeNode("The X-intercept is less than the minimum of the X-values of the control points, returning null.");
+			assert Logs.closeNode("The X-intercept is less than the minimum of the X-values of the control points, returning null.");
 			return null;
 		} else if (Points.areEqual(testPointA, xIntersection, Math.min(pointA.getX(), pointB.getX()))) {
-			assert Debugger.addNode("The X-intercept is equal to the minimum of the X-values of the control points, setting tangent flag.");
+			assert Logs.addNode("The X-intercept is equal to the minimum of the X-values of the control points, setting tangent flag.");
 			tangentFlag = true;
 		}
 		if (Points.isGreaterThan(xIntersection, Math.max(pointA.getX(), pointB.getX()))) {
-			assert Debugger.closeNode("The X-intercept is greater than the maximum of the X-values of the control points, returning null.");
+			assert Logs.closeNode("The X-intercept is greater than the maximum of the X-values of the control points, returning null.");
 			return null;
 		} else if (Points.areEqual(testPointA, xIntersection, Math.max(pointA.getX(), pointB.getX()))) {
-			assert Debugger.addNode("The X-intercept is equal to the maximum of the X-values of the control points, setting tangent flag.");
+			assert Logs.addNode("The X-intercept is equal to the maximum of the X-values of the control points, setting tangent flag.");
 			tangentFlag = true;
 		}
 		// Y-intersection testing.
 		double yIntersection = slope * xIntersection + (-slope * pointA.getX() + pointA.getY());
-		assert Debugger.addNode("The Y-intercept between these two points is: " + yIntersection);
+		assert Logs.addNode("The Y-intercept between these two points is: " + yIntersection);
 		if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, testSlope)) {
-			assert Debugger.addNode("The testSlope is not zero.");
+			assert Logs.addNode("The testSlope is not zero.");
 			if (Points.isLessThan(yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
-				assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the testPoints, returning null.");
+				assert Logs.closeNode("The Y-intercept is less than the minimum of the Y-values of the testPoints, returning null.");
 				return null;
 			} else if (Points.areEqual(testPointA, yIntersection, Math.min(testPointA.getY(), testPointB.getY()))) {
-				assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the testPoints, setting tangent flag.");
+				assert Logs.addNode("The Y-intercept is equal to the minimum of the Y-values of the testPoints, setting tangent flag.");
 				tangentFlag = true;
 			}
 			if (Points.isGreaterThan(yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
-				assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the testPoints, returning null.");
+				assert Logs.closeNode("The Y-intercept is greater than the maximum of the Y-values of the testPoints, returning null.");
 				return null;
 			} else if (Points.areEqual(testPointA, yIntersection, Math.max(testPointA.getY(), testPointB.getY()))) {
-				assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the testpoints, setting tangent flag.");
+				assert Logs.addNode("The Y-intercept is equal to the maximum of the Y-values of the testpoints, setting tangent flag.");
 				tangentFlag = true;
 			}
 		}
 		if (!Points.areEqual(Point.System.EUCLIDEAN, 0.0d, slope)) {
-			assert Debugger.addNode("The slope is not zero.");
+			assert Logs.addNode("The slope is not zero.");
 			if (Points.isLessThan(yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
-				assert Debugger.closeNode("The Y-intercept is less than the minimum of the Y-values of the control points, returning null.");
+				assert Logs.closeNode("The Y-intercept is less than the minimum of the Y-values of the control points, returning null.");
 				return null;
 			} else if (Points.areEqual(testPointA, yIntersection, Math.min(pointA.getY(), pointB.getY()))) {
-				assert Debugger.addNode("The Y-intercept is equal to the minimum of the Y-values of the control points, setting tangent flag.");
+				assert Logs.addNode("The Y-intercept is equal to the minimum of the Y-values of the control points, setting tangent flag.");
 				tangentFlag = true;
 			}
 			if (Points.isGreaterThan(yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
-				assert Debugger.closeNode("The Y-intercept is greater than the maximum of the Y-values of the control points, returning null.");
+				assert Logs.closeNode("The Y-intercept is greater than the maximum of the Y-values of the control points, returning null.");
 				return null;
 			} else if (Points.areEqual(testPointA, yIntersection, Math.max(pointA.getY(), pointB.getY()))) {
-				assert Debugger.addNode("The Y-intercept is equal to the maximum of the Y-values of the control points, setting tangent flag.");
+				assert Logs.addNode("The Y-intercept is equal to the maximum of the Y-values of the control points, setting tangent flag.");
 				tangentFlag = true;
 			}
 		}
@@ -734,22 +734,22 @@ public class Polygons {
 		IntersectionPoint returning = new IntersectionPoint(intersectPoint, tangentFlag);
 		// New point creation of intersection.
 		if (tangentFlag) {
-			assert Debugger.closeNode("These lines intersect, but only on a tangent: " + intersectPoint, returning);
+			assert Logs.closeNode("These lines intersect, but only on a tangent: " + intersectPoint, returning);
 		} else {
-			assert Debugger.closeNode("These lines intersect: " + intersectPoint, returning);
+			assert Logs.closeNode("These lines intersect: " + intersectPoint, returning);
 		}
 		return returning;
 	}
 
 	// Tests for intersections of this line provided by the two points against the lines of the region provided.
 	public static List<RiffIntersectionPoint> getIntersections(Point pointA, Point pointB, DiscreteRegion region) {
-		assert Debugger.openNode("Intersection Tests (Line vs Region)", "Intersection Test: Line against Region");
-		assert Debugger.addNode(region);
-		assert Debugger.addNode("Line: " + pointA + ", " + pointB);
+		assert Logs.openNode("Intersection Tests (Line vs Region)", "Intersection Test: Line against Region");
+		assert Logs.addNode(region);
+		assert Logs.addNode("Line: " + pointA + ", " + pointB);
 		List<Point> pointList = region.getPoints();
 		List<RiffIntersectionPoint> intersectPoints = new LinkedList<RiffIntersectionPoint>();
 		if (!Polygons.getBoundingRectIntersection(pointA, pointB, region)) {
-			assert Debugger.closeNode("Bounding-rect test between the line and the region returned false, returning empty list.");
+			assert Logs.closeNode("Bounding-rect test between the line and the region returned false, returning empty list.");
 			return intersectPoints;
 		}
 		for (int i = 0; i < pointList.size(); i++) {
@@ -790,7 +790,7 @@ public class Polygons {
 				assert Debugger.addSnapNode("Adding this intersect point",intersectPoints.get(intersectPoints.size()-1));
 			}*/
 		}
-		assert Debugger.closeNode("Returning list (" + intersectPoints.size() + " intersection(s))", intersectPoints);
+		assert Logs.closeNode("Returning list (" + intersectPoints.size() + " intersection(s))", intersectPoints);
 		return intersectPoints;
 	}
 
@@ -802,31 +802,31 @@ public class Polygons {
 	}
 
 	public static Point getMinimumPointBetweenLine(Point pointA, Point pointB, Point source) {
-		assert Debugger.openNode("Minimum Point Searches", "Getting minimum point");
-		assert Debugger.addSnapNode("Source", source);
-		assert Debugger.addSnapNode("Point A", pointA);
-		assert Debugger.addSnapNode("Point B", pointB);
+		assert Logs.openNode("Minimum Point Searches", "Getting minimum point");
+		assert Logs.addSnapNode("Source", source);
+		assert Logs.addSnapNode("Point A", pointA);
+		assert Logs.addSnapNode("Point B", pointB);
 		if (pointA.equals(pointB)) {
-			assert Debugger.closeNode("PointA is equal to PointB, returning pointA.");
+			assert Logs.closeNode("PointA is equal to PointB, returning pointA.");
 			return pointA;
 		}
 		double omegaValue = ((source.getX() - pointA.getX()) * (pointB.getX() - pointA.getX()) + (source.getY() - pointA.getY()) * (pointB.getY() - pointA.getY())) / Math.pow(Points.getDistance(pointA, pointB), 2);
 		double xValue = pointA.getX() + omegaValue * (pointB.getX() - pointA.getX());
 		double yValue = pointA.getY() + omegaValue * (pointB.getY() - pointA.getY());
 		Point minimumPoint = createPoint(pointA, null, xValue, yValue, 0.0d);
-		assert Debugger.addSnapNode("Yielded point", minimumPoint);
+		assert Logs.addSnapNode("Yielded point", minimumPoint);
 		try {
 			return Polygons.findMiddlePoint(pointA, pointB, minimumPoint);
 		} finally {
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 	}
 
 	public static PointSideStruct getPointSideList(DiscreteRegion region, Point testPoint) {
 		List<Point> pointList = region.getPoints();
-		assert Debugger.openNode("Point-Side Tests", "Point-Side Test (Point vs. Region)");
-		assert Debugger.addNode("Test-Point: " + testPoint);
-		assert Debugger.addSnapNode("Testing-Region", region);
+		assert Logs.openNode("Point-Side Tests", "Point-Side Test (Point vs. Region)");
+		assert Logs.addNode("Test-Point: " + testPoint);
+		assert Logs.addSnapNode("Testing-Region", region);
 		PointSideStruct struct = new PointSideStruct();
 		for (int k = 0; k < pointList.size(); k++) {
 			Point linePointA = pointList.get(k);
@@ -838,14 +838,14 @@ public class Polygons {
 			doPointSideTest(struct, testPoint, Polygons.testPointAgainstLine(testPoint, linePointA, linePointB));
 		}
 		struct.validate();
-		assert Debugger.closeNode(struct);
+		assert Logs.closeNode(struct);
 		return struct;
 	}
 
 	public static PointSideStruct getPointSideList(DiscreteRegion region, Point linePointA, Point linePointB) {
-		assert Debugger.openNode("Point-Side Tests", "Point-Side Test (Region vs. Line)");
-		assert Debugger.addSnapNode("Test-Line", linePointA + ", " + linePointB);
-		assert Debugger.addSnapNode("Region", region);
+		assert Logs.openNode("Point-Side Tests", "Point-Side Test (Region vs. Line)");
+		assert Logs.addSnapNode("Test-Line", linePointA + ", " + linePointB);
+		assert Logs.addSnapNode("Region", region);
 		List<Point> pointList = region.getPoints();
 		PointSideStruct struct = new PointSideStruct();
 		for (int k = 0; k < pointList.size(); k++) {
@@ -857,14 +857,14 @@ public class Polygons {
 			doPointSideTest(struct, testPoint, Polygons.testPointAgainstLine(testPoint, linePointA, linePointB));
 		}
 		struct.validate();
-		assert Debugger.closeNode(struct);
+		assert Logs.closeNode(struct);
 		return struct;
 	}
 
 	public static PointSideStruct getPointSideList(Point linePointA, Point linePointB, Point testPointA, Point testPointB) {
-		assert Debugger.openNode("Point-Side Tests", "Point-Side Test (Line vs. Line)");
-		assert Debugger.addSnapNode("First-Line", linePointA + ", " + linePointB);
-		assert Debugger.addSnapNode("Test-Line", testPointA + ", " + testPointB);
+		assert Logs.openNode("Point-Side Tests", "Point-Side Test (Line vs. Line)");
+		assert Logs.addSnapNode("First-Line", linePointA + ", " + linePointB);
+		assert Logs.addSnapNode("Test-Line", testPointA + ", " + testPointB);
 		PointSideStruct struct = new PointSideStruct();
 		if (Polygons.testForColinearity(linePointA, linePointB, testPointA)) {
 			struct.addIndeterminate(testPointA);
@@ -877,7 +877,7 @@ public class Polygons {
 			doPointSideTest(struct, testPointB, Polygons.testPointAgainstLine(testPointB, linePointA, linePointB));
 		}
 		struct.validate();
-		assert Debugger.closeNode(struct);
+		assert Logs.closeNode(struct);
 		return struct;
 	}
 
@@ -1028,12 +1028,12 @@ public class Polygons {
 		if (region.isOptimized()) {
 			return region;
 		}
-		assert Debugger.openNode("Optimizing Polygons", "Optimizing Polygon");
-		assert Debugger.addNode(region);
+		assert Logs.openNode("Optimizing Polygons", "Optimizing Polygon");
+		assert Logs.addNode(region);
 		List<Point> pointList = region.getPoints();
 		// Fail if not at least a triangle
 		if (pointList.size() < 3) {
-			assert Debugger.closeNode("Polygon invalid because it has less than 3 points, returning null.");
+			assert Logs.closeNode("Polygon invalid because it has less than 3 points, returning null.");
 			return null;
 		}
 		Polygons.assertCCWPolygon(region);
@@ -1044,7 +1044,7 @@ public class Polygons {
 					continue;
 				}
 				if (pointList.get(i).equals(pointList.get(j))) {
-					assert Debugger.addNode("Overlapping Point Removal", "Removing this point because it is redundant: " + pointList.get(j));
+					assert Logs.addNode("Overlapping Point Removal", "Removing this point because it is redundant: " + pointList.get(j));
 					pointList.remove(j);
 					j--;
 				}
@@ -1053,7 +1053,7 @@ public class Polygons {
 		// Remove all unnecessary points.
 		for (int i = 0; i < pointList.size(); i++) {
 			if (pointList.size() < 3) {
-				assert Debugger.closeNode("Polygon invalid because it has less than 3 points, returning null.");
+				assert Logs.closeNode("Polygon invalid because it has less than 3 points, returning null.");
 				return null;
 			}
 			Point pointA = pointList.get(i);
@@ -1074,8 +1074,8 @@ public class Polygons {
 						if (y == pointC.getY()) {
 							if (Points.getDistance(pointA, pointB) + Points.getDistance(pointB, pointC) == Points.getDistance(pointA, pointC)) {
 								if (Polygons.confirmInteriorLine(pointA, pointC, region)) {
-									assert Debugger.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointB);
-									assert Debugger.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointA + ", " + pointC);
+									assert Logs.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointB);
+									assert Logs.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointA + ", " + pointC);
 									pointList.remove(j);
 									j--;
 								}
@@ -1083,16 +1083,16 @@ public class Polygons {
 							}
 						} else if (Points.getDistance(pointB, pointC) + Points.getDistance(pointA, pointC) == Points.getDistance(pointA, pointB)) {
 							if (Polygons.confirmInteriorLine(pointA, pointB, region)) {
-								assert Debugger.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointC);
-								assert Debugger.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointA + ", " + pointB);
+								assert Logs.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointC);
+								assert Logs.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointA + ", " + pointB);
 								pointList.remove(k);
 								k--;
 							}
 							continue;
 						} else if (Points.getDistance(pointB, pointA) + Points.getDistance(pointA, pointC) == Points.getDistance(pointC, pointB)) {
 							if (Polygons.confirmInteriorLine(pointC, pointB, region)) {
-								assert Debugger.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointA);
-								assert Debugger.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointC + ", " + pointB);
+								assert Logs.addNode("Redundant Colinear Point Removals", "Removing this point:" + pointA);
+								assert Logs.addNode("Redundant Colinear Point Removals", "More optimal line: " + pointC + ", " + pointB);
 								pointList.remove(i);
 								i--;
 							}
@@ -1112,18 +1112,18 @@ public class Polygons {
 				if (point == null || point.isTangent()) {
 					continue;
 				}
-				assert Debugger.closeNode("Polygon intersects itself and is invalid, returning null.");
+				assert Logs.closeNode("Polygon intersects itself and is invalid, returning null.");
 				return null;
 			}
 		}
 		// Fail if not at least a triangle
 		if (pointList.size() < 3) {
-			assert Debugger.closeNode("Polygon invalid because it has less than 3 points, returning null.");
+			assert Logs.closeNode("Polygon invalid because it has less than 3 points, returning null.");
 			return null;
 		}
 		region.setPointList(pointList);
 		region.setOptimized(true);
-		assert Debugger.closeNode("Optimization complete", region);
+		assert Logs.closeNode("Optimization complete", region);
 		return region;
 	}
 
@@ -1164,43 +1164,43 @@ public class Polygons {
 	 * @return the node of the created BSP tree
 	 */
 	public static DiscreteRegionBSPNode removeOverlappingPolygons(DiscreteRegionBSPNode root, DiscreteRegion region, boolean recurse) {
-		assert Debugger.openNode("Overlapping Polygon Removals", "Removing Overlapping Polygons");
+		assert Logs.openNode("Overlapping Polygon Removals", "Removing Overlapping Polygons");
 		if (region == null || root == null) {
-			assert Debugger.closeNode("Region or root are null, returning root.");
+			assert Logs.closeNode("Region or root are null, returning root.");
 			return root;
 		}
-		assert Debugger.addNode(region);
+		assert Logs.addNode(region);
 		Set<DiscreteRegion> potentialList = root.getPotentialList(region);
 		//RiffPolygonToolbox.snapVertices(potentialList, region);
 		if (potentialList == null || potentialList.size() == 0) {
-			assert Debugger.addNode("Potential intersection list from BSP tree is null or zero-size, adding region to tree.");
+			assert Logs.addNode("Potential intersection list from BSP tree is null or zero-size, adding region to tree.");
 			root.addRegion(region);
 			root.removeFromTempList(region);
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return root;
 		}
 		List<Point> regionPoints = region.getPoints();
 		Iterator<DiscreteRegion> iter = potentialList.iterator();
-		assert Debugger.openNode("Beginning overlap-check sequence...");
+		assert Logs.openNode("Beginning overlap-check sequence...");
 		while (iter.hasNext()) {
 			DiscreteRegion otherRegion = iter.next();
-			assert Debugger.addSnapNode("Compared region", otherRegion);
+			assert Logs.addSnapNode("Compared region", otherRegion);
 			if (otherRegion != region && otherRegion.equals(region)) {
-				assert Debugger.addNode("Regions are equal, adding this regions assets to that and returning root.");
+				assert Logs.addNode("Regions are equal, adding this regions assets to that and returning root.");
 				otherRegion.setProperty("Archetypes", region.getProperty("Archetypes"));
-				assert Debugger.closeNode();
-				assert Debugger.closeNode();
+				assert Logs.closeNode();
+				assert Logs.closeNode();
 				return root;
 			}
 			List<Point> otherRegionPoints = otherRegion.getPoints();
 			if (region.checkClearedRegionMap(otherRegion)) {
-				assert Debugger.addNode("Cleared-region check returned true.");
+				assert Logs.addNode("Cleared-region check returned true.");
 				potentialList.remove(otherRegion);
 				iter = potentialList.iterator();
 				continue;
 			}
 			if (!Polygons.getBoundingRectIntersection(region, otherRegion)) {
-				assert Debugger.addNode("Polygons do not intersect with their bounding rects.");
+				assert Logs.addNode("Polygons do not intersect with their bounding rects.");
 				region.addRegionToMap(otherRegion);
 				otherRegion.addRegionToMap(region);
 				potentialList.remove(otherRegion);
@@ -1208,145 +1208,145 @@ public class Polygons {
 				continue;
 			}
 			if (!Polygons.testforRegionPointSideIntersection(region, otherRegion) && !Polygons.testforRegionPointSideIntersection(otherRegion, region)) {
-				assert Debugger.addNode("Polygons do not intersect according to the point-side polygon test.");
+				assert Logs.addNode("Polygons do not intersect according to the point-side polygon test.");
 				region.addRegionToMap(otherRegion);
 				otherRegion.addRegionToMap(region);
 				potentialList.remove(otherRegion);
 				iter = potentialList.iterator();
 				continue;
 			}
-			assert Debugger.openNode("Beginning primary line-by-line overlap-check sequence.");
+			assert Logs.openNode("Beginning primary line-by-line overlap-check sequence.");
 			for (int k = 0; k < regionPoints.size(); k++) {
-				assert Debugger.addNode("Now testing using this potentially intersecting line: " + regionPoints.get(k) + ", " + regionPoints.get((k + 1) % regionPoints.size()));
+				assert Logs.addNode("Now testing using this potentially intersecting line: " + regionPoints.get(k) + ", " + regionPoints.get((k + 1) % regionPoints.size()));
 				if (!Polygons.getBoundingRectIntersection(regionPoints.get(k), regionPoints.get((k + 1) % regionPoints.size()), otherRegion)) {
-					assert Debugger.addNode("The current line's bounding rect does not overlap the other region's.");
+					assert Logs.addNode("The current line's bounding rect does not overlap the other region's.");
 					continue;
 				}
 				DiscreteRegion splittingRegion = new DiscreteRegion(otherRegion);
 				DiscreteRegion newRegion = Polygons.splitPolygonUsingEdge(splittingRegion, regionPoints.get(k), regionPoints.get((k + 1) % regionPoints.size()), false);
 				if (newRegion == null) {
-					assert Debugger.addNode("New-region is null, continuing...");
+					assert Logs.addNode("New-region is null, continuing...");
 					continue;
 				} else {
-					assert Debugger.openNode("Split-test confirmed and new region created.");
-					assert Debugger.addSnapNode("New region", newRegion);
-					assert Debugger.addSnapNode("Other region", splittingRegion);
-					assert Debugger.addSnapNode("Original region", otherRegion);
-					assert Debugger.closeNode();
+					assert Logs.openNode("Split-test confirmed and new region created.");
+					assert Logs.addSnapNode("New region", newRegion);
+					assert Logs.addSnapNode("Other region", splittingRegion);
+					assert Logs.addSnapNode("Original region", otherRegion);
+					assert Logs.closeNode();
 					root.removeRegion(otherRegion);
 					if (recurse) {
-						assert Debugger.addNode("Recursing.");
+						assert Logs.addNode("Recursing.");
 						root = Polygons.removeOverlappingPolygons(root, splittingRegion, recurse);
 						root = Polygons.removeOverlappingPolygons(root, newRegion, recurse);
 						root = Polygons.removeOverlappingPolygons(root, region, recurse);
-						assert Debugger.closeNode();
-						assert Debugger.closeNode();
-						assert Debugger.closeNode();
+						assert Logs.closeNode();
+						assert Logs.closeNode();
+						assert Logs.closeNode();
 						return root;
 					} else {
 						root.addToTempList(splittingRegion);
 						root.addToTempList(newRegion);
 						root.addToTempList(region);
-						assert Debugger.closeNode();
-						assert Debugger.closeNode();
-						assert Debugger.closeNode();
+						assert Logs.closeNode();
+						assert Logs.closeNode();
+						assert Logs.closeNode();
 						return root;
 					}
 				}
 			}
-			assert Debugger.closeNode();
-			assert Debugger.openNode("Beginning counter line-by-line overlap-check sequence.");
+			assert Logs.closeNode();
+			assert Logs.openNode("Beginning counter line-by-line overlap-check sequence.");
 			for (int k = 0; k < otherRegionPoints.size(); k++) {
-				assert Debugger.addNode("Now testing using this potentially intersecting line: " + otherRegionPoints.get(k) + ", " + otherRegionPoints.get((k + 1) % otherRegionPoints.size()));
+				assert Logs.addNode("Now testing using this potentially intersecting line: " + otherRegionPoints.get(k) + ", " + otherRegionPoints.get((k + 1) % otherRegionPoints.size()));
 				if (!Polygons.getBoundingRectIntersection(otherRegionPoints.get(k), otherRegionPoints.get((k + 1) % otherRegionPoints.size()), region)) {
-					assert Debugger.addNode("The current line's bounding rect does not overlap the other region's.");
+					assert Logs.addNode("The current line's bounding rect does not overlap the other region's.");
 					continue;
 				}
 				DiscreteRegion oldRegion = new DiscreteRegion(region);
 				DiscreteRegion newRegion = Polygons.splitPolygonUsingEdge(region, otherRegionPoints.get(k), otherRegionPoints.get((k + 1) % otherRegionPoints.size()), false);
 				if (newRegion == null) {
-					assert Debugger.addNode("New-region is null.");
+					assert Logs.addNode("New-region is null.");
 					continue;
 				} else {
-					assert Debugger.openNode("Split-test confirmed and new region created.");
-					assert Debugger.addSnapNode("New region", newRegion);
-					assert Debugger.addSnapNode("Other region", oldRegion);
-					assert Debugger.addSnapNode("Original region", otherRegion);
-					assert Debugger.closeNode();
+					assert Logs.openNode("Split-test confirmed and new region created.");
+					assert Logs.addSnapNode("New region", newRegion);
+					assert Logs.addSnapNode("Other region", oldRegion);
+					assert Logs.addSnapNode("Original region", otherRegion);
+					assert Logs.closeNode();
 					if (recurse) {
-						assert Debugger.addNode("Recursing.");
+						assert Logs.addNode("Recursing.");
 						root = Polygons.removeOverlappingPolygons(root, newRegion, recurse);
 						root = Polygons.removeOverlappingPolygons(root, region, recurse);
-						assert Debugger.closeNode();
-						assert Debugger.closeNode();
-						assert Debugger.closeNode();
+						assert Logs.closeNode();
+						assert Logs.closeNode();
+						assert Logs.closeNode();
 						return root;
 					} else {
 						root.addToTempList(newRegion);
 						root.addToTempList(region);
-						assert Debugger.closeNode();
-						assert Debugger.closeNode();
-						assert Debugger.closeNode();
+						assert Logs.closeNode();
+						assert Logs.closeNode();
+						assert Logs.closeNode();
 						return root;
 					}
 				}
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			region.addRegionToMap(otherRegion);
 			otherRegion.addRegionToMap(region);
 		}
-		assert Debugger.closeNode("Region passed all overlapping tests, clearing from temp-list and adding to BSP tree, then returning.");
+		assert Logs.closeNode("Region passed all overlapping tests, clearing from temp-list and adding to BSP tree, then returning.");
 		root.removeFromTempList(region);
 		root.addRegion(region);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return root;
 	}
 
 	public static void snapVertices(List<DiscreteRegion> polygons, DiscreteRegion region) {
-		assert Debugger.openNode("Testing for snappable vertices.");
-		assert Debugger.addSnapNode("Region to be snapped", region);
+		assert Logs.openNode("Testing for snappable vertices.");
+		assert Logs.addSnapNode("Region to be snapped", region);
 		List<Point> regionPoints = region.getPoints();
 		for (int i = 0; i < polygons.size(); i++) {
 			List<Point> pointList = polygons.get(i).getPoints();
 			for (int k = 0; k < pointList.size(); k++) {
 				for (int l = 0; l < regionPoints.size(); l++) {
 					if (pointList.get(k).equals(regionPoints.get(l))) {
-						assert Debugger.openNode("Equality found");
-						assert Debugger.addSnapNode("Correct point", pointList.get(k));
-						assert Debugger.addSnapNode("Point to be snapped", regionPoints.get(l));
+						assert Logs.openNode("Equality found");
+						assert Logs.addSnapNode("Correct point", pointList.get(k));
+						assert Logs.addSnapNode("Point to be snapped", regionPoints.get(l));
 						regionPoints.get(l).setPosition(pointList.get(k));
-						assert Debugger.closeNode();
+						assert Logs.closeNode();
 					}
 				}
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public static DiscreteRegion splitPolygonUsingEdge(DiscreteRegion otherRegion, Point pointA, Point pointB, boolean hyperPlane) {
-		assert Debugger.openNode("Polygon Plane-Splitting Operations", "Polygon Plane-Splitting");
-		assert Debugger.addNode("Splitting edge: " + pointA + ", " + pointB);
-		assert Debugger.addSnapNode("Region to split", otherRegion);
-		assert Debugger.addNode("Hyperplane: " + hyperPlane);
+		assert Logs.openNode("Polygon Plane-Splitting Operations", "Polygon Plane-Splitting");
+		assert Logs.addNode("Splitting edge: " + pointA + ", " + pointB);
+		assert Logs.addSnapNode("Region to split", otherRegion);
+		assert Logs.addNode("Hyperplane: " + hyperPlane);
 		List<Point> otherRegionPoints = otherRegion.getPoints();
 		List<Point> extendedPointsList = Polygons.getExtensionPoints(pointA, pointB, otherRegion);
 		List<RiffIntersectionPoint> intersectedList = Polygons.getIntersections(extendedPointsList.get(0), extendedPointsList.get(1), otherRegion);
 		if (intersectedList.size() != 2) {
-			assert Debugger.closeNode("No, insufficient, or too many intersections found, returning null.");
+			assert Logs.closeNode("No, insufficient, or too many intersections found, returning null.");
 			return null;
 		}
 		if (!hyperPlane && !Polygons.getBoundingRectIntersection(pointA, pointB, intersectedList.get(0).getIntersection(), intersectedList.get(1).getIntersection())) {
-			assert Debugger.closeNode("Bounding rect test failed between splitting edge and intersecting points, returning null.");
+			assert Logs.closeNode("Bounding rect test failed between splitting edge and intersecting points, returning null.");
 			return null;
 		}
-		assert Debugger.addSnapNode("Valid intersections found, so creating new polygon.", intersectedList);
+		assert Logs.addSnapNode("Valid intersections found, so creating new polygon.", intersectedList);
 		DiscreteRegion newRegion = new DiscreteRegion(otherRegion.getEnvironment(), otherRegion.getProperties());
 		newRegion.addPoint(intersectedList.get(0).getIntersection());
 		for (int q = Math.min(intersectedList.get(0).getListOffset(), intersectedList.get(1).getListOffset()); q < Math.max(intersectedList.get(0).getListOffset(), intersectedList.get(1).getListOffset()); q++) {
 			newRegion.addPoint(otherRegionPoints.get(q + 1));
 		}
 		newRegion.addPoint(intersectedList.get(1).getIntersection());
-		assert Debugger.addSnapNode("New region formed.", newRegion);
+		assert Logs.addSnapNode("New region formed.", newRegion);
 		if (intersectedList.get(0).getListOffset() < intersectedList.get(1).getListOffset()) {
 			otherRegion.addPointAt(intersectedList.get(0).getListOffset() + 1, intersectedList.get(0).getIntersection());
 			otherRegion.addPointAt(intersectedList.get(1).getListOffset() + 2, intersectedList.get(1).getIntersection());
@@ -1354,15 +1354,15 @@ public class Polygons {
 			otherRegion.addPointAt(intersectedList.get(1).getListOffset() + 1, intersectedList.get(0).getIntersection());
 			otherRegion.addPointAt(intersectedList.get(0).getListOffset() + 2, intersectedList.get(1).getIntersection());
 		}
-		assert Debugger.addSnapNode("Old region after intersect-point addition", otherRegion);
+		assert Logs.addSnapNode("Old region after intersect-point addition", otherRegion);
 		for (int q = Math.min(intersectedList.get(0).getListOffset(), intersectedList.get(1).getListOffset()); q < Math.max(intersectedList.get(0).getListOffset(), intersectedList.get(1).getListOffset()); q++) {
 			otherRegion.removePoint((2 + Math.min(intersectedList.get(0).getListOffset(), intersectedList.get(1).getListOffset())) % otherRegion.getPoints().size());
-			assert Debugger.addSnapNode("Point-Removals", "Current State", otherRegion);
+			assert Logs.addSnapNode("Point-Removals", "Current State", otherRegion);
 		}
-		assert Debugger.addSnapNode("Old region", otherRegion);
+		assert Logs.addSnapNode("Old region", otherRegion);
 		Polygons.optimizePolygon(otherRegion);
 		Polygons.optimizePolygon(newRegion);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return newRegion;
 	}
 
@@ -1384,60 +1384,60 @@ public class Polygons {
 	}
 
 	public static boolean testForColinearity(Point pointA, Point pointB, Point testPointA, Point testPointB) {
-		assert Debugger.openNode("Colinearity Tests", "Testing for colinearity");
-		assert Debugger.openNode("Lines", "First Line");
-		assert Debugger.addSnapNode("Point A", pointA);
-		assert Debugger.addSnapNode("Point B", pointB);
-		assert Debugger.closeNode();
-		assert Debugger.openNode("Lines", "Test Line");
-		assert Debugger.addSnapNode("Test Point A", testPointA);
-		assert Debugger.addSnapNode("Test Point B", testPointB);
-		assert Debugger.closeNode();
+		assert Logs.openNode("Colinearity Tests", "Testing for colinearity");
+		assert Logs.openNode("Lines", "First Line");
+		assert Logs.addSnapNode("Point A", pointA);
+		assert Logs.addSnapNode("Point B", pointB);
+		assert Logs.closeNode();
+		assert Logs.openNode("Lines", "Test Line");
+		assert Logs.addSnapNode("Test Point A", testPointA);
+		assert Logs.addSnapNode("Test Point B", testPointB);
+		assert Logs.closeNode();
 		if ((pointA.equals(testPointA) && pointB.equals(testPointB)) || (pointA.equals(testPointB) && pointB.equals(testPointA))) {
-			assert Debugger.closeNode("Lines are equal, returning true.");
+			assert Logs.closeNode("Lines are equal, returning true.");
 			return true;
 		}
 		if (!Polygons.areSlopesEqual(pointA, pointB, testPointA, testPointB)) {
-			assert Debugger.closeNode("Slopes are not equal, so returning false.");
+			assert Logs.closeNode("Slopes are not equal, so returning false.");
 			return false;
 		}
-		assert Debugger.addNode("Slopes are equal, so beginning point-slope test.");
+		assert Logs.addNode("Slopes are equal, so beginning point-slope test.");
 		double pointSlopeTest = Polygons.getSlope(pointA, pointB) * (testPointA.getX() - pointA.getX()) + pointA.getY();
-		assert Debugger.addNode("First point-slope test: " + pointSlopeTest);
-		assert Debugger.addNode("Expected value: " + testPointA.getY());
+		assert Logs.addNode("First point-slope test: " + pointSlopeTest);
+		assert Logs.addNode("Expected value: " + testPointA.getY());
 		if (!Points.areEqual(Point.System.EUCLIDEAN, pointSlopeTest, testPointA.getY())) {
-			assert Debugger.closeNode("First point failed point-slope test, so returning false.");
+			assert Logs.closeNode("First point failed point-slope test, so returning false.");
 			return false;
 		}
 		pointSlopeTest = Polygons.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY();
-		assert Debugger.addNode("Second point-slope test: " + pointSlopeTest);
-		assert Debugger.addNode("Expected value: " + testPointB.getY());
+		assert Logs.addNode("Second point-slope test: " + pointSlopeTest);
+		assert Logs.addNode("Expected value: " + testPointB.getY());
 		if (!Points.areEqual(Point.System.EUCLIDEAN, Polygons.getSlope(pointA, pointB) * (testPointB.getX() - pointA.getX()) + pointA.getY(), testPointB.getY())) {
-			assert Debugger.closeNode("Second point failed point-slope test, so returning false.");
+			assert Logs.closeNode("Second point failed point-slope test, so returning false.");
 			return false;
 		}
-		assert Debugger.closeNode("They are colinear.");
+		assert Logs.closeNode("They are colinear.");
 		return true;
 	}
 
 	public static boolean testforRegionPointSideIntersection(DiscreteRegion region, DiscreteRegion otherRegion) {
-		assert Debugger.openNode("Point-Side Intersection Tests", "Testing for point-side intersection between these two regions.");
-		assert Debugger.addSnapNode("Region A", region);
-		assert Debugger.addSnapNode("Region B", otherRegion);
+		assert Logs.openNode("Point-Side Intersection Tests", "Testing for point-side intersection between these two regions.");
+		assert Logs.addSnapNode("Region A", region);
+		assert Logs.addSnapNode("Region B", otherRegion);
 		List<Point> regionList = region.getPoints();
-		assert Debugger.addNode("Beginning line-by-line point-side check.");
+		assert Logs.addNode("Beginning line-by-line point-side check.");
 		for (int i = 0; i < regionList.size(); i++) {
 			PointSideStruct struct = Polygons.getPointSideList(otherRegion, regionList.get(i), regionList.get((i + 1) % regionList.size()));
 			if (struct.isGreaterThan()) {
-				assert Debugger.openNode("Qualifying line found");
-				assert Debugger.addSnapNode("Point A", regionList.get(i));
-				assert Debugger.addSnapNode("Point B", regionList.get((i + 1) % regionList.size()));
-				assert Debugger.closeNode();
-				assert Debugger.closeNode("This line guarantees a pass of the point-side test, returning false.");
+				assert Logs.openNode("Qualifying line found");
+				assert Logs.addSnapNode("Point A", regionList.get(i));
+				assert Logs.addSnapNode("Point B", regionList.get((i + 1) % regionList.size()));
+				assert Logs.closeNode();
+				assert Logs.closeNode("This line guarantees a pass of the point-side test, returning false.");
 				return false;
 			}
 		}
-		assert Debugger.closeNode("These polygons may intersect, returning true.");
+		assert Logs.closeNode("These polygons may intersect, returning true.");
 		return true;
 	}
 

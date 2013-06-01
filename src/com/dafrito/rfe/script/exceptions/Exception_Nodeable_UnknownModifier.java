@@ -5,7 +5,7 @@ package com.dafrito.rfe.script.exceptions;
 
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 
 public class Exception_Nodeable_UnknownModifier extends ScriptException {
@@ -22,7 +22,7 @@ public class Exception_Nodeable_UnknownModifier extends ScriptException {
 
 	@Override
 	public void getExtendedInformation() {
-		assert Debugger.addSnapNode("These modifiers (or what are believed to be modifiers) are unparseable to the compiler", this.modifiers);
+		assert Logs.addSnapNode("These modifiers (or what are believed to be modifiers) are unparseable to the compiler", this.modifiers);
 	}
 
 	@Override

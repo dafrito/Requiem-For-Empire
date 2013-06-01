@@ -5,9 +5,9 @@ package com.dafrito.rfe.script;
 
 import java.util.List;
 
-import com.dafrito.rfe.gui.debug.Debugger;
-import com.dafrito.rfe.gui.debug.ScriptEditor;
+import com.dafrito.rfe.gui.script.ScriptEditor;
 import com.dafrito.rfe.gui.script.ScriptPanel;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Parser;
 
 public class CompileThread extends Thread {
@@ -26,7 +26,7 @@ public class CompileThread extends Thread {
 
 	@Override
 	public void run() {
-		Debugger.hitStopWatch();
+		Logs.hitStopWatch();
 		try {
 			this.scriptEnvironment.reset();
 			Parser.clearPreparseLists();
@@ -47,8 +47,8 @@ public class CompileThread extends Thread {
 			if (exceptions.isEmpty()) {
 				this.scriptEditor.canExecute(true);
 				this.scriptEditor.setStatus("All files compiled successfully.");
-				Debugger.hitStopWatch();
-				assert Debugger.addSnapNode("Compile successful", this.scriptEnvironment);
+				Logs.hitStopWatch();
+				assert Logs.addSnapNode("Compile successful", this.scriptEnvironment);
 				if (this.shouldExecute) {
 					ExecutionThread thread = new ExecutionThread(this.scriptEnvironment);
 					thread.start();
@@ -58,7 +58,7 @@ public class CompileThread extends Thread {
 				this.scriptEditor.addExceptions(exceptions);
 			}
 		} finally {
-			Debugger.hitStopWatch();
+			Logs.hitStopWatch();
 		}
 	}
 }

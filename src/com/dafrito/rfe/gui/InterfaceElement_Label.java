@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 
 public class InterfaceElement_Label extends InterfaceElement implements Nodeable {
@@ -40,19 +40,19 @@ public class InterfaceElement_Label extends InterfaceElement implements Nodeable
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Label Interface Element");
+		assert Logs.openNode("Label Interface Element");
 		super.nodificate();
-		assert Debugger.addNode("Label: " + this.string);
-		assert Debugger.closeNode();
+		assert Logs.addNode("Label: " + this.string);
+		assert Logs.closeNode();
 	}
 
 	@Override
 	public void paint(Graphics2D g2d) {
-		assert Debugger.openNode("Label Painting Operations", "Painting Label");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Label Painting Operations", "Painting Label");
+		assert Logs.addNode(this);
 		super.paint(g2d);
 		g2d.drawString(this.string, this.getXAnchor(), this.getYAnchor() + this.getInternalHeight());
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override

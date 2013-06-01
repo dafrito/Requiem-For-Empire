@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.dafrito.rfe.Terrestrial;
 import com.dafrito.rfe.geom.DiscreteRegion;
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
@@ -44,31 +44,31 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 	// Template will be null if the object is exactly of this type and is constructing, and thus must be created then
 	@Override
 	public ScriptValue execute(Referenced ref, String name, List<ScriptValue> params, ScriptTemplate_Abstract rawTemplate) throws ScriptException {
-		assert Debugger.openNode("Faux Template Executions", "Executing terrestrial faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.openNode("Faux Template Executions", "Executing terrestrial faux template function (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
 		FauxTemplate_Terrestrial template = (FauxTemplate_Terrestrial) rawTemplate;
 		ScriptValue returning;
-		assert Debugger.addSnapNode("Template provided", template);
-		assert Debugger.addSnapNode("Parameters provided", params);
+		assert Logs.addSnapNode("Template provided", template);
+		assert Logs.addSnapNode("Parameters provided", params);
 		if (name == null || name.equals("")) {
 			if (template == null) {
 				template = (FauxTemplate_Terrestrial) this.createObject(ref, template);
 			}
 			template.setTerrestrial(new Terrestrial(Conversions.getDouble(this.getEnvironment(), params.get(0))));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return template;
 		} else if (name.equals("add")) {
 			DiscreteRegion region = Conversions.getDiscreteRegion(this.getEnvironment(), params.get(0));
-			assert Debugger.addSnapNode("Adding discrete region to terrestrial", region);
+			assert Logs.addSnapNode("Adding discrete region to terrestrial", region);
 			template.getTerrestrial().add(region);
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return null;
 		} else if (name.equals("getPath")) {
 			returning = Conversions.wrapPath(this.getEnvironment(), template.getTerrestrial().getPath(this.getEnvironment(), Conversions.getScenario(this.getEnvironment(), params.get(0)), Conversions.getTemplate(params.get(1)), Conversions.getAsset(this.getEnvironment(), params.get(2)), Conversions.getPoint(this.getEnvironment(), params.get(3)), Conversions.getPoint(this.getEnvironment(), params.get(4))));
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return returning;
 		}
 		returning = this.getExtendedFauxClass().execute(ref, name, params, template);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return returning;
 	}
 
@@ -80,7 +80,7 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 	// All functions must be defined here. All function bodies are defined in 'execute'.
 	@Override
 	public void initialize() throws ScriptException {
-		assert Debugger.openNode("Faux Template Initializations", "Initializing terrestrial faux template");
+		assert Logs.openNode("Faux Template Initializations", "Initializing terrestrial faux template");
 		this.addConstructor(this.getType());
 		List<ScriptValue> fxnParams = new LinkedList<ScriptValue>();
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.DOUBLE));
@@ -97,7 +97,7 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
 		fxnParams.add(new ScriptValue_Faux(this.getEnvironment(), ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Point.POINTSTRING)));
 		this.addFauxFunction("getPath", ScriptValueType.createType(this.getEnvironment(), FauxTemplate_Path.PATHSTRING), fxnParams, ScriptKeywordType.PUBLIC, false, false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	// Define default constructor here
@@ -108,9 +108,9 @@ public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConv
 
 	@Override
 	public void nodificate() {
-		assert Debugger.openNode("Terrestrial Faux Template");
+		assert Logs.openNode("Terrestrial Faux Template");
 		super.nodificate();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	public void setTerrestrial(Terrestrial terrestrial) {

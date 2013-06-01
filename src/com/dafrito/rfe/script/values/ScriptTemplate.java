@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.dafrito.rfe.gui.debug.Debugger;
 import com.dafrito.rfe.inspect.Nodeable;
+import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.AbstractFunctionNotImplementedScriptException;
 import com.dafrito.rfe.script.exceptions.FunctionAlreadyDefinedScriptException;
@@ -66,11 +66,11 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 			this.getEnvironment().getTemplate(this.getType()).addFunction(ref, name, function);
 			return;
 		}
-		assert Debugger.openNode("Object Function Additions", "Adding Function to Object (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
-		assert Debugger.addNode(this);
-		assert Debugger.addNode(function);
+		assert Logs.openNode("Object Function Additions", "Adding Function to Object (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.addNode(this);
+		assert Logs.addNode(function);
 		if (!this.isFullCreation() && (name == null || name.equals(""))) {
-			assert Debugger.closeNode("Function is a constructor, and our template is not in its full-creation phase.");
+			assert Logs.closeNode("Function is a constructor, and our template is not in its full-creation phase.");
 			return;
 		}
 		if (this.functions.get(name) != null) {
@@ -79,7 +79,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 				for (ScriptFunction currentFxn : list) {
 					// It's an abstract function and we implement it, so return.
 					if (function.areParametersEqual(currentFxn.getParameters())) {
-						assert Debugger.closeNode("The template has this abstract function implemented.");
+						assert Logs.closeNode("The template has this abstract function implemented.");
 						return;
 					}
 				}
@@ -93,79 +93,79 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 						}
 						list.remove(i);
 						list.add(function);
-						assert Debugger.closeNode("The template overloads an existing function");
+						assert Logs.closeNode("The template overloads an existing function");
 						return;
 					}
 				}
 				list.add(function);
-				assert Debugger.closeNode("Function was successfully added", this);
+				assert Logs.closeNode("Function was successfully added", this);
 				return;
 			}
 		}
 		this.functions.put(name, new LinkedList<ScriptFunction>());
 		this.functions.get(name).add(function);
-		assert Debugger.closeNode("Function was successfully added", this);
+		assert Logs.closeNode("Function was successfully added", this);
 	}
 
 	@Override
 	public void addPreconstructorExpression(ScriptExecutable exec) throws ScriptException {
-		assert Debugger.openNode("Preconstructor Additions", "Adding Preconstructor");
-		assert Debugger.addNode("Template", this);
-		assert Debugger.addNode(exec);
+		assert Logs.openNode("Preconstructor Additions", "Adding Preconstructor");
+		assert Logs.addNode("Template", this);
+		assert Logs.addNode(exec);
 		this.preconstructors.add(exec);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override
 	public void addTemplatePreconstructorExpression(ScriptExecutable exec) throws ScriptException {
-		assert Debugger.openNode("Template Preconstructor Additions", "Adding Template Preconstructor");
-		assert Debugger.addNode("Template", this);
-		assert Debugger.addNode(exec);
+		assert Logs.openNode("Template Preconstructor Additions", "Adding Template Preconstructor");
+		assert Logs.addNode("Template", this);
+		assert Logs.addNode(exec);
 		this.templatePreconstructors.add(exec);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override
 	public ScriptValue_Variable addVariable(Referenced ref, String name, ScriptValue_Variable value) throws ScriptException {
 		if (this.isConstructing()) {
-			assert Debugger.openNode("Object Variable Additions", "Adding Variable to Object (" + name + ")");
-			assert Debugger.addNode(this);
-			assert Debugger.addNode(value);
+			assert Logs.openNode("Object Variable Additions", "Adding Variable to Object (" + name + ")");
+			assert Logs.addNode(this);
+			assert Logs.addNode(value);
 			if (this.variables.get(name) != null) {
 				throw new Exception_Nodeable_VariableAlreadyDefined(ref, this, name);
 			}
 			if (this.isFullCreation() || !value.getPermission().equals(ScriptKeywordType.PRIVATE)) {
 				this.variables.put(name, value);
-				assert Debugger.addSnapNode("Variable successfully added", this);
+				assert Logs.addSnapNode("Variable successfully added", this);
 			} else {
-				assert Debugger.addNode("Variable is private, and our template is not in its full-creation phase.");
+				assert Logs.addNode("Variable is private, and our template is not in its full-creation phase.");
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 			return value;
 		}
-		assert Debugger.openNode("Local Variable Additions", "Adding Variable to Stack (" + name + ")");
-		assert Debugger.addNode(value);
+		assert Logs.openNode("Local Variable Additions", "Adding Variable to Stack (" + name + ")");
+		assert Logs.addNode(value);
 		if (this.getEnvironment().getVariableFromStack(name) != null) {
 			throw new Exception_Nodeable_VariableAlreadyDefined(ref, this, name);
 		}
 		this.getEnvironment().addVariableToStack(name, value);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return value;
 	}
 
 	@Override
 	public ScriptTemplate_Abstract createObject(Referenced ref, ScriptTemplate_Abstract object) throws ScriptException {
-		assert Debugger.openNode("Object Creations", "Object Creation");
+		assert Logs.openNode("Object Creations", "Object Creation");
 		if (object == null) {
 			if (this.isAbstract()) {
 				throw new IllegalAbstractObjectCreationScriptException(ref);
 			}
 			object = this.instantiateTemplate();
 		}
-		assert Debugger.addNode(object);
+		assert Logs.addNode(object);
 		this.getEnvironment().advanceStack(object, NoopScriptFunction.instance());
 		if (this.preconstructors.size() > 0) {
-			assert Debugger.openNode("Calling preconstructor expressions (" + this.preconstructors.size() + " expression(s))");
+			assert Logs.openNode("Calling preconstructor expressions (" + this.preconstructors.size() + " expression(s))");
 			if (!object.isConstructing()) {
 				object.disableFullCreation();
 			}
@@ -173,20 +173,20 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 			for (ScriptExecutable exec : this.preconstructors) {
 				exec.execute();
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		object.disableFullCreation();
 		if (this.getExtendedClass() != null) {
-			assert Debugger.openNode("Now sending to base class preconstructor (" + this.getEnvironment().getName(this.getExtendedClass().getType()) + ")");
+			assert Logs.openNode("Now sending to base class preconstructor (" + this.getEnvironment().getName(this.getExtendedClass().getType()) + ")");
 			object = this.getExtendedClass().createObject(ref, object);
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		if (this.getInterfaces() != null && this.getInterfaces().size() > 0) {
-			assert Debugger.openNode("Calling interface preconstructors (" + this.getInterfaces().size() + " preconstructor(s))");
+			assert Logs.openNode("Calling interface preconstructors (" + this.getInterfaces().size() + " preconstructor(s))");
 			for (ScriptValueType interfaceType : this.getInterfaces()) {
 				object = this.getEnvironment().getTemplate(interfaceType).createObject(ref, object);
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		object.setConstructing(false);
 		if (object.getFunctions() != null) {
@@ -196,10 +196,10 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 				}
 			}
 		} else {
-			assert Debugger.addNode(object);
+			assert Logs.addNode(object);
 		}
 		this.getEnvironment().retreatStack();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		return object;
 	}
 
@@ -213,14 +213,14 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		if (this.getEnvironment().getTemplate(this.getType()) != null && this.getEnvironment().getTemplate(this.getType()) != this) {
 			return this.getEnvironment().getTemplate(this.getType()).getFunction(name, params);
 		}
-		assert Debugger.openNode("Object Function Retrievals", "Retrieving Function from Object (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
-		assert Debugger.addSnapNode("Current template", this);
+		assert Logs.openNode("Object Function Retrievals", "Retrieving Function from Object (" + RiffScriptFunction.getDisplayableFunctionName(name) + ")");
+		assert Logs.addSnapNode("Current template", this);
 		List<ScriptFunction> list = this.functions.get(name);
 		if (list != null && !list.isEmpty()) {
-			assert Debugger.addSnapNode("Functions found", list);
+			assert Logs.addSnapNode("Functions found", list);
 			for (ScriptFunction function : list) {
 				if (function.areParametersConvertible(params)) {
-					assert Debugger.closeNode("Params match, returning function", function);
+					assert Logs.closeNode("Params match, returning function", function);
 					return function;
 				}
 			}
@@ -230,9 +230,9 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 			fxn = this.getExtendedClass().getFunction(name, params);
 		}
 		if (fxn != null) {
-			assert Debugger.closeNode("Returning function", fxn);
+			assert Logs.closeNode("Returning function", fxn);
 		} else {
-			assert Debugger.closeNode("Function not found");
+			assert Logs.closeNode("Function not found");
 		}
 		return fxn;
 	}
@@ -273,26 +273,26 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 
 	@Override
 	public ScriptValue_Variable getVariable(String name) throws ScriptException {
-		assert Debugger.openNode("Object Variable Retrievals", "Retrieving Variable From Object ('" + name + "')");
-		assert Debugger.addNode(this);
+		assert Logs.openNode("Object Variable Retrievals", "Retrieving Variable From Object ('" + name + "')");
+		assert Logs.addNode(this);
 		ScriptValue_Variable var = this.variables.get(name);
 		if (var == null && this.isObject()) {
-			assert Debugger.openNode("Variable not a member, so checking static members");
+			assert Logs.openNode("Variable not a member, so checking static members");
 			var = this.getEnvironment().getTemplate(this.getType()).getVariable(name);
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		if (var != null) {
 			if (var.getPermission().equals(ScriptKeywordType.PUBLIC)) {
-				assert Debugger.closeNode("Variable found and permission valid (public)", var);
+				assert Logs.closeNode("Variable found and permission valid (public)", var);
 				return var;
 			} else if (var.getPermission().equals(ScriptKeywordType.PRIVATE)) {
 				if (this.getEnvironment().getCurrentObject() == this || (this.getEnvironment().getTemplate(this.getType()) == this && this.getEnvironment().getCurrentObject().getType().equals(this.getType()))) {
-					assert Debugger.closeNode("Variable found and permission valid (private)", var);
+					assert Logs.closeNode("Variable found and permission valid (private)", var);
 					return var;
 				}
 			}
 		}
-		assert Debugger.closeNode("Variable not found or permission is invalid");
+		assert Logs.closeNode("Variable not found or permission is invalid");
 		return null;
 	}
 
@@ -302,7 +302,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		if (this.templatePreconstructors == null || this.templatePreconstructors.size() == 0) {
 			return;
 		}
-		assert Debugger.openNode("Template Initializations", "Initializing Template (" + this.getType() + ")");
+		assert Logs.openNode("Template Initializations", "Initializing Template (" + this.getType() + ")");
 		if (!this.isAbstract()) {
 			for (Map.Entry<String, List<ScriptFunction>> entry : this.functions.entrySet()) {
 				List<ScriptFunction> functions = entry.getValue();
@@ -316,21 +316,21 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		}
 		this.getEnvironment().advanceStack(this, NoopScriptFunction.instance());
 		this.setConstructing(true);
-		assert Debugger.openNode("Executing preconstructors (" + this.templatePreconstructors.size() + " preconstructor(s))");
+		assert Logs.openNode("Executing preconstructors (" + this.templatePreconstructors.size() + " preconstructor(s))");
 		for (ScriptExecutable exec : this.templatePreconstructors) {
 			exec.execute();
 		}
 		this.setConstructing(false);
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		this.getEnvironment().retreatStack();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override
 	public void initializeFunctions(Referenced ref) throws ScriptException {
-		assert Debugger.openNode("Unparsed Member-Function Initialization", "Initializing Unparsed Member Functions (" + this.getType() + ")");
+		assert Logs.openNode("Unparsed Member-Function Initialization", "Initializing Unparsed Member Functions (" + this.getType() + ")");
 		this.getEnvironment().advanceStack(this, NoopScriptFunction.instance());
-		assert Debugger.openNode("Adding static member-variables");
+		assert Logs.openNode("Adding static member-variables");
 		for (ScriptExecutable exec : this.templatePreconstructors) {
 			if (exec instanceof ScriptExecutable_CreateVariable) {
 				this.getEnvironment().addVariableToStack(((ScriptExecutable_CreateVariable) exec).getName(), (ScriptValue_Variable) exec);
@@ -338,7 +338,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 				this.getEnvironment().addVariableToStack(((ScriptExecutable_CreateVariable) ((ScriptExecutable_AssignValue) exec).getLeft()).getName(), (ScriptValue_Variable) ((ScriptExecutable_AssignValue) exec).getLeft());
 			}
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 		List<Object> deleteList = new LinkedList<Object>();
 		for (Map.Entry<String, List<ScriptFunction>> entry : this.functions.entrySet()) {
 			List<ScriptFunction> functions = entry.getValue();
@@ -349,7 +349,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 					this.getEnvironment().advanceNestedStack();
 					assert fxn != null;
 					if ((fxn).getName() == null || (fxn).getName().equals("") || !(fxn).isStatic()) {
-						assert Debugger.openNode("Adding member-variables since this function is not static");
+						assert Logs.openNode("Adding member-variables since this function is not static");
 						for (ScriptExecutable exec : this.preconstructors) {
 							if (exec instanceof ScriptExecutable_CreateVariable) {
 								this.getEnvironment().addVariableToStack(((ScriptExecutable_CreateVariable) exec).getName(), (ScriptValue_Variable) exec);
@@ -357,17 +357,17 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 								this.getEnvironment().addVariableToStack(((ScriptExecutable_CreateVariable) ((ScriptExecutable_AssignValue) exec).getLeft()).getName(), (ScriptValue_Variable) ((ScriptExecutable_AssignValue) exec).getLeft());
 							}
 						}
-						assert Debugger.closeNode();
+						assert Logs.closeNode();
 					}
-					assert Debugger.openNode("Parameter Variable Additions");
+					assert Logs.openNode("Parameter Variable Additions");
 					for (ScriptValue value : fxn.getParameters()) {
 						if (value instanceof ScriptExecutable_CreateVariable) {
 							this.getEnvironment().addVariableToStack(((ScriptExecutable_CreateVariable) value).getName(), (ScriptExecutable_CreateVariable) value);
 						}
 					}
-					assert Debugger.closeNode();
+					assert Logs.closeNode();
 					ScriptFunction function = Parser.parseFunction(fxn, this.getType());
-					assert Debugger.addSnapNode("Adding function to this template", function);
+					assert Logs.addSnapNode("Adding function to this template", function);
 					functions.add(i, function);
 					this.getEnvironment().retreatNestedStack();
 				}
@@ -380,7 +380,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 			this.functions.remove(obj);
 		}
 		this.getEnvironment().retreatStack();
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override
@@ -415,46 +415,46 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 	@Override
 	public void nodificate() {
 		if (this.isObject) {
-			assert Debugger.openNode("Object (" + this.getType() + ")");
+			assert Logs.openNode("Object (" + this.getType() + ")");
 		} else {
-			assert Debugger.openNode("Object-Template (" + this.getType() + ")");
+			assert Logs.openNode("Object-Template (" + this.getType() + ")");
 		}
 		if (this.getExtendedClass() != null) {
-			assert Debugger.addSnapNode("Extended template (" + this.getExtendedClass().getType() + ")", this.getExtendedClass());
+			assert Logs.addSnapNode("Extended template (" + this.getExtendedClass().getType() + ")", this.getExtendedClass());
 		}
 		if (this.getInterfaces() != null && this.getInterfaces().size() > 0) {
-			assert Debugger.addSnapNode("Implemented templates (" + this.getInterfaces().size() + " template(s))", this.getInterfaces());
+			assert Logs.addSnapNode("Implemented templates (" + this.getInterfaces().size() + " template(s))", this.getInterfaces());
 		}
 		if (this.functions != null && this.functions.size() > 0) {
-			assert Debugger.openNode("Functions (" + this.functions.size() + " function(s))");
+			assert Logs.openNode("Functions (" + this.functions.size() + " function(s))");
 			for (Map.Entry<String, List<ScriptFunction>> entry : this.functions.entrySet()) {
-				assert Debugger.addSnapNode(RiffScriptFunction.getDisplayableFunctionName(entry.getKey()), entry.getValue());
+				assert Logs.addSnapNode(RiffScriptFunction.getDisplayableFunctionName(entry.getKey()), entry.getValue());
 			}
-			assert Debugger.closeNode();
+			assert Logs.closeNode();
 		}
 		if (this.variables != null && this.variables.size() > 0) {
-			assert Debugger.addSnapNode("Variables (" + this.variables.size() + " member variable(s))", this.variables);
+			assert Logs.addSnapNode("Variables (" + this.variables.size() + " member variable(s))", this.variables);
 		}
-		assert Debugger.addNode("Object: " + this.isObject);
+		assert Logs.addNode("Object: " + this.isObject);
 		if (!this.isObject) {
 			if (this.templatePreconstructors != null && this.templatePreconstructors.size() > 0) {
-				assert Debugger.addSnapNode("Template Preconstructors (" + this.templatePreconstructors.size() + " static preconstructor(s))", this.templatePreconstructors);
+				assert Logs.addSnapNode("Template Preconstructors (" + this.templatePreconstructors.size() + " static preconstructor(s))", this.templatePreconstructors);
 			}
 			if (this.preconstructors != null && this.preconstructors.size() > 0) {
-				assert Debugger.addSnapNode("Preconstructors (" + this.preconstructors.size() + " preconstructor(s))", this.preconstructors);
+				assert Logs.addSnapNode("Preconstructors (" + this.preconstructors.size() + " preconstructor(s))", this.preconstructors);
 			}
-			assert Debugger.addNode("Abstract: " + this.isAbstract);
+			assert Logs.addNode("Abstract: " + this.isAbstract);
 		} else {
-			assert Debugger.addNode("Constructing: " + this.isConstructing);
+			assert Logs.addNode("Constructing: " + this.isConstructing);
 		}
-		assert Debugger.closeNode();
+		assert Logs.closeNode();
 	}
 
 	@Override
 	public void setConstructing(boolean constructing) throws ScriptException {
-		assert Debugger.openNode("Object Construction Settings", "Setting constructing-boolean to: " + constructing);
+		assert Logs.openNode("Object Construction Settings", "Setting constructing-boolean to: " + constructing);
 		this.isConstructing = constructing;
-		assert Debugger.addNode(this);
-		assert Debugger.closeNode();
+		assert Logs.addNode(this);
+		assert Logs.closeNode();
 	}
 }

@@ -3,7 +3,7 @@
  */
 package com.dafrito.rfe.script;
 
-import com.dafrito.rfe.gui.debug.Debugger;
+import com.dafrito.rfe.logging.Logs;
 
 public class ExecutionThread extends Thread {
 	private ScriptEnvironment scriptEnvironment;
@@ -17,11 +17,11 @@ public class ExecutionThread extends Thread {
 
 	@Override
 	public void run() {
-		Debugger.hitStopWatch();
+		Logs.hitStopWatch();
 		try {
 			this.scriptEnvironment.execute();
 		} finally {
-			Debugger.hitStopWatch();
+			Logs.hitStopWatch();
 		}
 	}
 }
