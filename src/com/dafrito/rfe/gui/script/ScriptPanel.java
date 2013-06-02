@@ -94,6 +94,11 @@ public class ScriptPanel extends JPanel implements UndoableEditListener, ListSel
 		return this.edits.size() > 0;
 	}
 
+	/**
+	 * 
+	 * @return {@code true} if the file was successfully closed, {@code false}
+	 *         otherwise
+	 */
 	public boolean closeFile() {
 		this.debugger.showReferenced(this);
 		if (!this.hasChanged()) {
