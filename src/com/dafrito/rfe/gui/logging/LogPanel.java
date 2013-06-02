@@ -21,6 +21,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
 import com.dafrito.rfe.logging.BufferedTreeLog;
@@ -76,6 +78,35 @@ public class LogPanel<Message> extends JPanel {
 
 		treeBuilder = new TreeBuildingTreeLog<Message>(name);
 		logTree.setModel(treeBuilder.getModel());
+
+		// Clean up the display of the root node.
+		logTree.setRootVisible(false);
+		treeBuilder.getModel().addTreeModelListener(new TreeModelListener() {
+
+			@Override
+			public void treeStructureChanged(TreeModelEvent arg0) {
+				// Do nothing
+			}
+
+			@Override
+			public void treeNodesRemoved(TreeModelEvent arg0) {
+				// Do nothing
+			}
+
+			@Override
+			public void treeNodesInserted(TreeModelEvent event) {
+				if (event.getTreePath().getPathCount() > 1) {
+					// It's not a direct child of root, so just ignore it.
+					return;
+				}
+				logTree.expandPath(event.getTreePath());
+			}
+
+			@Override
+			public void treeNodesChanged(TreeModelEvent arg0) {
+				// Do nothing
+			}
+		});
 
 		bufferedLog = new BufferedTreeLog<>();
 		bufferedLog.setSink(treeBuilder);
