@@ -97,6 +97,9 @@ public class Logs {
 		if (message instanceof Map<?, ?>) {
 			return addMapNode((Map<?, ?>) message);
 		}
+		if (message instanceof CommonString) {
+			message = ((CommonString) message).getText();
+		}
 		masterLog.log(new LogMessage<Object>(message));
 
 		if (message instanceof Exception) {
