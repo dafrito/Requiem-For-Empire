@@ -66,7 +66,7 @@ public class ScriptEnvironment {
 	}
 
 	public void initialize() {
-		assert Logs.openNode("Initializing Script Environment");
+		assert Logs.openNode("Script environment initializations", "Initializing Script Environment");
 		try {
 			this.addType(null, "void", ScriptValueType.VOID);
 			this.addType(null, "boolean", ScriptValueType.BOOLEAN);
