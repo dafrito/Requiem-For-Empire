@@ -25,7 +25,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +38,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-import com.bluespot.logic.actors.Actor;
-import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.logging.CompositeTreeLog;
 
 /**
@@ -97,17 +94,6 @@ public class LogViewer<Message> extends JFrame {
 			}
 		});
 		listenerMenu.add(renameTab);
-
-		JMenuItem clearTab = new JMenuItem("Clear Tab", 'C');
-		clearTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-		clearTab.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				getSelectedLogPanel().clear();
-			}
-
-		});
-		listenerMenu.add(clearTab);
 
 		JMenuItem removeTab = new JMenuItem("Remove Tab", 'R');
 		removeTab.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
