@@ -125,7 +125,7 @@ public final class Logs {
 	}
 
 	public static boolean openNode(String scopeGroup, String scope) {
-		getMasterLog().enter(scope, scopeGroup != null ? scopeGroup : scope);
+		getMasterLog().enter(scope, scopeGroup);
 		return true;
 	}
 
