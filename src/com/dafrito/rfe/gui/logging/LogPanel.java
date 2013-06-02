@@ -94,12 +94,20 @@ public class LogPanel<Message> extends JPanel {
 			}
 
 			@Override
-			public void treeNodesInserted(TreeModelEvent event) {
+			public void treeNodesInserted(final TreeModelEvent event) {
 				if (event.getTreePath().getPathCount() > 1) {
 					// It's not a direct child of root, so just ignore it.
 					return;
 				}
-				logTree.expandPath(event.getTreePath());
+				// XXX The invokeLater works around a bug in the Synth look and feel.
+				// A correct implementation can invoke expandPath() directly.
+				// https://netbeans.org/bugzilla/show_bug.cgi?id=192080
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						logTree.expandPath(event.getTreePath());
+					}
+				});
 			}
 
 			@Override
