@@ -32,7 +32,7 @@ import com.bluespot.logic.runnables.Runnables;
  *            the type of log message
  * 
  */
-public class BufferedTreeLog<Message> implements TreeLog<Message>, Runnable {
+public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements Runnable {
 
 	private static enum Action {
 		MESSAGE,
@@ -40,8 +40,6 @@ public class BufferedTreeLog<Message> implements TreeLog<Message>, Runnable {
 		ENTER_SCOPE_WITH_GROUP,
 		LEAVE_SCOPE
 	};
-
-	private TreeLog<? super Message> sink;
 
 	private Deque<Object> commands = new ArrayDeque<>();
 
@@ -68,36 +66,25 @@ public class BufferedTreeLog<Message> implements TreeLog<Message>, Runnable {
 			switch ((Action) flushed.removeFirst()) {
 			case ENTER_SCOPE:
 				String scope = (String) flushed.removeFirst();
-				sink.enter(scope, null);
+				super.enter(scope, null);
 				break;
 			case ENTER_SCOPE_WITH_GROUP:
 				scope = (String) flushed.removeFirst();
 				String scopeGroup = (String) flushed.removeFirst();
-				sink.enter(scope, scopeGroup);
+				super.enter(scope, scopeGroup);
 				break;
 			case LEAVE_SCOPE:
-				sink.leave();
+				super.leave();
 				break;
 			case MESSAGE:
 				@SuppressWarnings("unchecked")
 				LogMessage<? extends Message> message = (LogMessage<? extends Message>) flushed.removeFirst();
-				sink.log(message);
+				super.log(message);
 				break;
 			default:
 				throw new AssertionError("Unhandled action");
 			}
 		}
-	}
-
-	public TreeLog<? super Message> getSink() {
-		if (sink == null) {
-			return NoopTreeLog.instance();
-		}
-		return sink;
-	}
-
-	public void setSink(TreeLog<? super Message> sink) {
-		this.sink = sink;
 	}
 
 	@Override

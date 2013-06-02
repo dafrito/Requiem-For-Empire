@@ -30,25 +30,12 @@ import com.bluespot.logic.predicates.Predicates;
  *            the type of log message
  * 
  */
-public class GuardedTreeLog<T> implements TreeLog<T> {
+public class GuardedTreeLog<T> extends ProxyTreeLog<T> {
 
 	private Predicate<? super LogMessage<?>> guard;
 
-	private TreeLog<? super T> sink;
-
 	public void setGuard(Predicate<? super LogMessage<?>> guard) {
 		this.guard = guard;
-	}
-
-	public TreeLog<? super T> getSink() {
-		if (sink == null) {
-			return NoopTreeLog.instance();
-		}
-		return sink;
-	}
-
-	public void setSink(TreeLog<? super T> sink) {
-		this.sink = sink;
 	}
 
 	public Predicate<? super LogMessage<?>> getGuard() {
@@ -61,17 +48,7 @@ public class GuardedTreeLog<T> implements TreeLog<T> {
 	@Override
 	public void log(LogMessage<? extends T> message) {
 		if (getGuard().test(message)) {
-			sink.log(message);
+			super.log(message);
 		}
-	}
-
-	@Override
-	public void enter(String scope, String scopeGroup) {
-		sink.enter(scope, scopeGroup);
-	}
-
-	@Override
-	public void leave() {
-		sink.leave();
 	}
 }

@@ -23,38 +23,37 @@ package com.dafrito.rfe.logging;
 
 /**
  * @author Aaron Faanes
- * @param <T>
- *            the type of log message
+ * @param <Message>
+ *            the type of logged value
+ * 
  */
-public abstract class ScopeGuardedTreeLog<T> extends ProxyTreeLog<T> {
+public class ProxyTreeLog<Message> implements TreeLog<Message> {
 
-	int levels;
+	private TreeLog<? super Message> sink;
 
-	protected abstract boolean allowEntry(String scope, String scopeGroup);
+	public TreeLog<? super Message> getSink() {
+		if (sink == null) {
+			return NoopTreeLog.instance();
+		}
+		return sink;
+	}
 
-	private boolean isAccepting() {
-		return levels > 0;
+	public void setSink(TreeLog<? super Message> sink) {
+		this.sink = sink;
 	}
 
 	@Override
-	public void log(LogMessage<? extends T> message) {
-		if (isAccepting()) {
-			super.log(message);
-		}
+	public void log(LogMessage<? extends Message> message) {
+		sink.log(message);
 	}
 
 	@Override
 	public void enter(String scope, String scopeGroup) {
-		if (levels == 0 && !allowEntry(scope, scopeGroup)) {
-			return;
-		}
-		++levels;
-		super.enter(scope, scopeGroup);
+		sink.enter(scope, scopeGroup);
 	}
 
 	@Override
 	public void leave() {
-		super.leave();
-		--levels;
+		sink.leave();
 	}
 }
