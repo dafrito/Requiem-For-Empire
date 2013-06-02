@@ -69,7 +69,7 @@ public class TreeBuildingTreeLogTests {
 		assertEquals(1, getRoot().getDepth());
 		assertEquals(2, getRoot().getChildCount());
 
-		log.enter("Scope", null);
+		log.enter(new LogMessage<String>("Scope", null));
 		assertEquals(1, getRoot().getDepth());
 		assertEquals(3, getRoot().getChildCount());
 
@@ -81,7 +81,7 @@ public class TreeBuildingTreeLogTests {
 
 	@Test
 	public void moreMerging() throws Exception {
-		log.enter("A", "Group");
+		log.enter(new LogMessage<String>("A", "Group"));
 		log.log(new LogMessage<String>("Message"));
 		log.leave();
 
@@ -89,7 +89,7 @@ public class TreeBuildingTreeLogTests {
 		assertEquals(1, getRoot().getChildCount());
 		assertEquals(2, getRoot().getDepth());
 
-		log.enter("B", "Group");
+		log.enter(new LogMessage<String>("B", "Group"));
 		log.log(new LogMessage<String>("Message"));
 		log.leave();
 
@@ -99,7 +99,7 @@ public class TreeBuildingTreeLogTests {
 
 		assertEquals(getRoot(), log.getCursor());
 
-		log.enter("C", null);
+		log.enter(new LogMessage<String>("C", null));
 		log.log(new LogMessage<String>("Message"));
 		log.leave();
 
@@ -111,19 +111,19 @@ public class TreeBuildingTreeLogTests {
 
 	@Test
 	public void equalScopeGroupsAreMerged() throws Exception {
-		log.enter("A", "GroupA");
+		log.enter(new LogMessage<String>("A", "GroupA"));
 		log.log(new LogMessage<String>("Message"));
 		log.leave();
 
-		log.enter("B", "GroupA");
+		log.enter(new LogMessage<String>("B", "GroupA"));
 		log.log(new LogMessage<String>("Message"));
 		log.leave();
 
-		log.enter("C", "GroupB");
+		log.enter(new LogMessage<String>("C", "GroupB"));
 		log.log(new LogMessage<String>("Message"));
 		log.leave();
 
-		log.enter("D", "GroupB");
+		log.enter(new LogMessage<String>("D", "GroupB"));
 		log.log(new LogMessage<String>("Message"));
 		log.leave();
 

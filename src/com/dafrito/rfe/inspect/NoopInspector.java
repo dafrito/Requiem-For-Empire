@@ -13,7 +13,7 @@ package com.dafrito.rfe.inspect;
 public class NoopInspector<T> implements Inspector<T> {
 
 	@Override
-	public void field(String name, T value) {
+	public void field(T name, T value) {
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class NoopInspector<T> implements Inspector<T> {
 	}
 
 	@Override
-	public Inspector<T> group(String groupName) {
+	public Inspector<T> group(T groupName) {
 		return this;
 	}
 

@@ -21,16 +21,30 @@
  */
 package com.dafrito.rfe.logging;
 
+import com.bluespot.logic.predicates.Predicate;
+import com.bluespot.logic.predicates.Predicates;
+
 /**
  * @author Aaron Faanes
  * @param <T>
  *            the type of log message
  */
-public abstract class ScopeGuardedTreeLog<T> extends ProxyTreeLog<T> {
+public class ScopeGuardedTreeLog<T> extends ProxyTreeLog<T> {
 
 	int levels;
 
-	protected abstract boolean allowEntry(String scope, String scopeGroup);
+	private Predicate<? super LogMessage<? extends T>> guard;
+
+	public void setGuard(Predicate<? super LogMessage<? extends T>> guard) {
+		this.guard = guard;
+	}
+
+	public Predicate<? super LogMessage<? extends T>> getGuard() {
+		if (this.guard == null) {
+			return Predicates.always();
+		}
+		return this.guard;
+	}
 
 	private boolean isAccepting() {
 		return levels > 0;
@@ -44,12 +58,12 @@ public abstract class ScopeGuardedTreeLog<T> extends ProxyTreeLog<T> {
 	}
 
 	@Override
-	public void enter(String scope, String scopeGroup) {
-		if (levels == 0 && !allowEntry(scope, scopeGroup)) {
+	public void enter(LogMessage<? extends T> scope) {
+		if (levels == 0 && !getGuard().test(scope)) {
 			return;
 		}
 		++levels;
-		super.enter(scope, scopeGroup);
+		super.enter(scope);
 	}
 
 	@Override

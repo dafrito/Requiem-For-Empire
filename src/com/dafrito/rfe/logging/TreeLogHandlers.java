@@ -155,7 +155,7 @@ public final class TreeLogHandlers {
 			Iterator<?> iter = map.entrySet().iterator();
 			while (iter.hasNext()) {
 				Map.Entry<?, ?> entry = (Map.Entry<?, ?>) iter.next();
-				getLog().enter(entry.getKey().toString(), null);
+				getLog().enter(message.changeMessage(entry.getKey()));
 				getLog().log(message.changeMessage(entry.getValue()));
 				getLog().leave();
 			}

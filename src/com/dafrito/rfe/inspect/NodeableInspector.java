@@ -39,10 +39,10 @@ public class NodeableInspector<Message> implements Inspector<Message> {
 	}
 
 	@Override
-	public void field(String name, Message value) {
+	public void field(Message name, Message value) {
 		this.ensureUnfrozen();
 		this.closeChild();
-		log.enter(name, null);
+		log.enter(new LogMessage<Message>(name));
 		log.log(new LogMessage<Message>(value));
 		log.leave();
 	}
@@ -55,12 +55,12 @@ public class NodeableInspector<Message> implements Inspector<Message> {
 	}
 
 	@Override
-	public Inspector<Message> group(String groupName) {
+	public Inspector<Message> group(Message groupName) {
 		this.ensureUnfrozen();
 		this.closeChild();
 		this.child = new NodeableInspector<Message>(log);
 
-		log.enter(groupName, null);
+		log.enter(new LogMessage<Message>(groupName));
 		return this.child;
 	}
 

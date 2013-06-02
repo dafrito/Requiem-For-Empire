@@ -25,7 +25,7 @@ public interface Inspector<T> {
 	 * @param value
 	 *            the value of the specified field. It may be null.
 	 */
-	public void field(String name, T value);
+	public void field(T name, T value);
 
 	/**
 	 * Visit some value. This may be the logical content of some group, or an
@@ -48,7 +48,7 @@ public interface Inspector<T> {
 	 * @return a {@link Inspector} that must be used to visit the content of the
 	 *         group
 	 */
-	public Inspector<T> group(String groupName);
+	public Inspector<T> group(T groupName);
 
 	/**
 	 * Visit a comment. This lets inspectors ignore descriptive information,

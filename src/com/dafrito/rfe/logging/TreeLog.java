@@ -52,7 +52,7 @@ public interface TreeLog<T> {
 	 *            scopes that have the same scope group into a single scope
 	 *            group node, so take care to use a reasonable plural name.
 	 */
-	void enter(String scope, String scopeGroup);
+	void enter(LogMessage<? extends T> scope);
 
 	/**
 	 * Leave the current scope.

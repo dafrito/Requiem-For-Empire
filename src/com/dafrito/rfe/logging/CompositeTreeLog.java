@@ -52,9 +52,9 @@ public class CompositeTreeLog<T> implements TreeLog<T> {
 	}
 
 	@Override
-	public void enter(String scope, String scopeGroup) {
+	public void enter(LogMessage<? extends T> scope) {
 		for (TreeLog<? super T> log : listeners) {
-			log.enter(scope, scopeGroup);
+			log.enter(scope);
 		}
 	}
 

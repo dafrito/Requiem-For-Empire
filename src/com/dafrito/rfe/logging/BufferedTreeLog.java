@@ -21,95 +21,59 @@
  */
 package com.dafrito.rfe.logging;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 import com.bluespot.logic.runnables.Runnables;
 
 /**
  * @author Aaron Faanes
  * @param <Message>
  *            the type of log message
- * 
+ * @see ReplayableTreeLog
  */
 public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements Runnable {
 
-	private static enum Action {
-		MESSAGE,
-		ENTER_SCOPE,
-		ENTER_SCOPE_WITH_GROUP,
-		LEAVE_SCOPE
-	};
-
-	private Deque<Object> commands = new ArrayDeque<>();
+	private ReplayableTreeLog<Message> log = new ReplayableTreeLog<>();
 
 	private Runnable notifier;
 
 	private boolean hasNotified;
 	private boolean alwaysNotify;
 
-	@Override
-	public void run() {
-		flush();
+	private int flushSize = 0;
+
+	public void setFlushSize(int flushSize) {
+		this.flushSize = flushSize;
 	}
 
-	private synchronized Deque<Object> swapCommands() {
-		Deque<Object> flushedCommands = commands;
-		commands = new ArrayDeque<>();
+	public int flush() {
+		return flush(0);
+	}
+
+	public synchronized int flush(int maxFlushed) {
+		int actuallyRemoved = log.remove(log.play(getSink(), maxFlushed));
+
 		hasNotified = false;
-		return flushedCommands;
-	}
-
-	public void flush() {
-		Deque<Object> flushed = swapCommands();
-		while (!flushed.isEmpty()) {
-			switch ((Action) flushed.removeFirst()) {
-			case ENTER_SCOPE:
-				String scope = (String) flushed.removeFirst();
-				super.enter(scope, null);
-				break;
-			case ENTER_SCOPE_WITH_GROUP:
-				scope = (String) flushed.removeFirst();
-				String scopeGroup = (String) flushed.removeFirst();
-				super.enter(scope, scopeGroup);
-				break;
-			case LEAVE_SCOPE:
-				super.leave();
-				break;
-			case MESSAGE:
-				@SuppressWarnings("unchecked")
-				LogMessage<? extends Message> message = (LogMessage<? extends Message>) flushed.removeFirst();
-				super.log(message);
-				break;
-			default:
-				throw new AssertionError("Unhandled action");
-			}
+		if (!log.isEmpty()) {
+			dispatch();
 		}
+
+		return actuallyRemoved;
 	}
 
 	@Override
-	public synchronized void log(LogMessage<? extends Message> message) {
-		commands.addLast(Action.MESSAGE);
-		commands.addLast(message);
+	public void log(LogMessage<? extends Message> message) {
+		log.log(message);
 		dispatch();
 	}
 
 	@Override
-	public synchronized void enter(String scope, String scopeGroup) {
-		if (scopeGroup != null) {
-			commands.addLast(Action.ENTER_SCOPE_WITH_GROUP);
-			commands.addLast(scope);
-			commands.addLast(scopeGroup);
-		} else {
-			commands.addLast(Action.ENTER_SCOPE);
-			commands.addLast(scope);
-		}
+	public void enter(LogMessage<? extends Message> scope) {
+		log.enter(scope);
 		dispatch();
 	}
 
 	@Override
-	public synchronized void leave() {
-		commands.addLast(Action.LEAVE_SCOPE);
+	public void leave() {
+		log.leave();
 		dispatch();
 	}
 
@@ -118,6 +82,11 @@ public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements R
 			hasNotified = true;
 			getNotifier().run();
 		}
+	}
+
+	@Override
+	public void run() {
+		flush(flushSize);
 	}
 
 	public boolean getAlwaysNotify() {
@@ -141,4 +110,5 @@ public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements R
 	public void setNotifier(Runnable notifier) {
 		this.notifier = notifier;
 	}
+
 }

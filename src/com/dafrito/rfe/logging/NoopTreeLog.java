@@ -35,7 +35,7 @@ public class NoopTreeLog implements TreeLog<Object> {
 	}
 
 	@Override
-	public void enter(String scope, String scopeGroup) {
+	public void enter(LogMessage<? extends Object> scope) {
 		// Intentionally do nothing.
 	}
 

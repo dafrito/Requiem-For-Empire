@@ -107,8 +107,8 @@ public abstract class ThreadLocalTreeLog<T, Log extends TreeLog<? super T>> impl
 	}
 
 	@Override
-	public void enter(String scope, String scopeGroup) {
-		get().enter(scope, scopeGroup);
+	public void enter(LogMessage<? extends T> scope) {
+		get().enter(scope);
 	}
 
 	@Override

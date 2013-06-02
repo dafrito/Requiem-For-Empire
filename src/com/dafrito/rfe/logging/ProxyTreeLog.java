@@ -48,8 +48,8 @@ public class ProxyTreeLog<Message> implements TreeLog<Message> {
 	}
 
 	@Override
-	public void enter(String scope, String scopeGroup) {
-		sink.enter(scope, scopeGroup);
+	public void enter(LogMessage<? extends Message> scope) {
+		sink.enter(scope);
 	}
 
 	@Override
