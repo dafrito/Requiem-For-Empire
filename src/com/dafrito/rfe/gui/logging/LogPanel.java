@@ -2,19 +2,13 @@ package com.dafrito.rfe.gui.logging;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -28,7 +22,7 @@ import javax.swing.tree.TreePath;
 import com.dafrito.rfe.logging.BufferedTreeLog;
 import com.dafrito.rfe.logging.CompositeTreeLog;
 import com.dafrito.rfe.logging.TreeBuildingTreeLog;
-import com.dafrito.rfe.strings.NamedTreePath;
+import com.dafrito.rfe.logging.TreeLog;
 
 /**
  * A panel for a {@link TreeLog}.
