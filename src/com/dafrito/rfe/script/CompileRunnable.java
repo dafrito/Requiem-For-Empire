@@ -6,22 +6,28 @@ package com.dafrito.rfe.script;
 import java.util.List;
 
 import com.dafrito.rfe.gui.script.ScriptEditor;
-import com.dafrito.rfe.gui.script.ScriptPanel;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Parser;
 
-public class CompileThread extends Thread {
-	private final ScriptEditor scriptEditor;
-	private boolean shouldExecute;
-	private final ScriptEnvironment scriptEnvironment;
+public class CompileRunnable implements Runnable {
 	public static final String COMPILETHREADSTRING = "Compilation";
 	private static int threadNum = 0;
 
-	public CompileThread(ScriptEditor scriptEditor, ScriptEnvironment scriptEnv, boolean shouldExecute) {
-		super(COMPILETHREADSTRING + " " + threadNum++);
+	private final ScriptEditor scriptEditor;
+	private final boolean shouldExecute;
+	private final ScriptEnvironment scriptEnvironment;
+
+	private final String name;
+
+	public CompileRunnable(ScriptEditor scriptEditor, ScriptEnvironment scriptEnv, boolean shouldExecute) {
+		name = COMPILETHREADSTRING + " " + threadNum++;
 		this.scriptEditor = scriptEditor;
 		this.scriptEnvironment = scriptEnv;
 		this.shouldExecute = shouldExecute;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	@Override
@@ -30,16 +36,7 @@ public class CompileThread extends Thread {
 		try {
 			this.scriptEnvironment.reset();
 			Parser.clearPreparseLists();
-			boolean compilationFailed = true;
-			for (int i = 0; i < this.scriptEditor.getScriptElements().size(); i++) {
-				ScriptPanel element = this.scriptEditor.getScriptElements().get(i);
-				element.saveFile();
-				if (!element.compile(this.scriptEnvironment)) {
-					compilationFailed = false;
-					this.scriptEditor.setTitleAt(i + 1, element.getName());
-				}
-			}
-			if (!compilationFailed) {
+			if (!scriptEditor.compileAll()) {
 				this.scriptEditor.setStatus("One or more files had errors during compilation.");
 				return;
 			}

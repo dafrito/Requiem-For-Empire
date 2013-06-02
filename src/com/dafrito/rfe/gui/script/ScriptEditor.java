@@ -26,8 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -39,7 +37,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import com.dafrito.rfe.logging.Logs;
-import com.dafrito.rfe.script.CompileThread;
+import com.dafrito.rfe.script.CompileRunnable;
 import com.dafrito.rfe.script.ExecutionThread;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -51,7 +49,7 @@ import com.dafrito.rfe.strings.ExtensionFilter;
  */
 public class ScriptEditor extends JFrame {
 
-	private final JTabbedPane tabbedPane = new JTabbedPane();
+	private final JTabbedPane scriptElements = new JTabbedPane();
 
 	private final JLabel status = new JLabel();
 
@@ -75,8 +73,6 @@ public class ScriptEditor extends JFrame {
 	private final JMenuItem compile = new JMenuItem("Compile", 'C');
 	private final JMenuItem execute = new JMenuItem("Execute", 'X');
 
-	private final List<ScriptPanel> scriptElements = new ArrayList<ScriptPanel>();
-
 	private final JMenuItem saveFile = new JMenuItem("Save", 'S');
 
 	private ScriptEnvironment scriptEnvironment;
@@ -86,7 +82,7 @@ public class ScriptEditor extends JFrame {
 
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().add(this.status, BorderLayout.SOUTH);
-		this.getContentPane().add(this.tabbedPane);
+		this.getContentPane().add(this.scriptElements);
 
 		this.setJMenuBar(this.menuBar);
 
@@ -121,9 +117,8 @@ public class ScriptEditor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (getSelectedScriptPanel().closeFile()) {
-					int index = tabbedPane.getSelectedIndex();
-					tabbedPane.remove(index);
-					scriptElements.remove(index - 1);
+					int index = scriptElements.getSelectedIndex();
+					scriptElements.remove(index);
 				}
 			}
 		});
@@ -166,21 +161,11 @@ public class ScriptEditor extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				java.util.List<ScriptPanel> removedElements = new LinkedList<ScriptPanel>();
-				int index = tabbedPane.getSelectedIndex();
-				for (; scriptElements.size() > 0;) {
-					ScriptPanel element = scriptElements.get(0);
+				for (int i = 0; i < scriptElements.getComponentCount(); ++i) {
+					ScriptPanel element = (ScriptPanel) scriptElements.getComponentAt(i);
 					if (!element.closeFile()) {
-						for (ScriptPanel added : removedElements) {
-							scriptElements.add(0, added);
-							tabbedPane.add(added, 1);
-						}
-						tabbedPane.setSelectedIndex(index);
 						return;
 					}
-					tabbedPane.remove(1);
-					scriptElements.remove(0);
-					removedElements.add(element);
 				}
 				dispose();
 			}
@@ -245,7 +230,7 @@ public class ScriptEditor extends JFrame {
 	}
 
 	private ScriptPanel getSelectedScriptPanel() {
-		return this.scriptElements.get(this.tabbedPane.getSelectedIndex());
+		return (ScriptPanel) this.scriptElements.getSelectedComponent();
 	}
 
 	private void run() {
@@ -257,9 +242,19 @@ public class ScriptEditor extends JFrame {
 		scriptEnvironment = new ScriptEnvironment();
 		setStatus("Compiling...");
 		execute.setEnabled(false);
-		CompileThread thread = new CompileThread(this, scriptEnvironment, runOnSuccess);
-		thread.start();
 
+		CompileRunnable job = new CompileRunnable(this, scriptEnvironment, runOnSuccess);
+		new Thread(job, job.getName()).start();
+	}
+
+	public boolean compileAll() {
+		boolean succeeded = true;
+		for (int i = 0; i < scriptElements.getComponentCount(); ++i) {
+			ScriptPanel panel = (ScriptPanel) scriptElements.getComponentAt(i);
+			succeeded = panel.compile(this.scriptEnvironment) && succeeded;
+			resetTitle(panel);
+		}
+		return succeeded;
 	}
 
 	/**
@@ -280,9 +275,8 @@ public class ScriptEditor extends JFrame {
 	}
 
 	public void addReferenced(ScriptPanel element) {
-		this.tabbedPane.add(element.getName(), element);
 		this.scriptElements.add(element);
-		this.tabbedPane.setSelectedIndex(this.tabbedPane.getComponents().length - 1);
+		this.scriptElements.setSelectedComponent(element);
 	}
 
 	public void canExecute(boolean value) {
@@ -290,7 +284,8 @@ public class ScriptEditor extends JFrame {
 	}
 
 	public ScriptPanel getReferenced(String name) {
-		for (ScriptPanel element : this.scriptElements) {
+		for (int i = 0; i < this.scriptElements.getComponentCount(); ++i) {
+			ScriptPanel element = (ScriptPanel) this.scriptElements.getComponentAt(i);
 			if (element.getFilename().equals(name)) {
 				return element;
 			}
@@ -298,20 +293,16 @@ public class ScriptEditor extends JFrame {
 		throw new IllegalArgumentException("Script element not found: " + name);
 	}
 
-	public List<ScriptPanel> getScriptElements() {
-		return this.scriptElements;
-	}
-
 	public void setStatus(String text) {
 		this.status.setText(" " + text);
 	}
 
 	public void setTitleAt(int i, String title) {
-		this.tabbedPane.setTitleAt(i, title);
+		this.scriptElements.setTitleAt(i, title);
 	}
 
 	public void showReferenced(ScriptPanel element) {
-		this.tabbedPane.setSelectedIndex(this.scriptElements.indexOf(element) + 1);
+		this.scriptElements.setSelectedComponent(element);
 	}
 
 	public void addExceptions(List<? extends Exception> exceptions) {
@@ -319,15 +310,17 @@ public class ScriptEditor extends JFrame {
 			if (rawEx instanceof ScriptException && !((ScriptException) rawEx).isAnonymous()) {
 				ScriptException ex = (ScriptException) rawEx;
 				this.getReferenced(ex.getFilename()).addException(ex);
-				this.tabbedPane.setTitleAt(this.scriptElements.indexOf(this.getReferenced(ex.getFilename())) + 1, this.getReferenced(ex.getFilename()).getName());
-			} else {
-				this.scriptElements.get(0).addException(rawEx);
+				resetTitle(this.getReferenced(ex.getFilename()));
 			}
 		}
 	}
 
 	public void resetTitle(ScriptPanel element) {
-		this.tabbedPane.setTitleAt(this.scriptElements.indexOf(element) + 1, element.getName());
+		for (int i = 0; i < this.scriptElements.getComponentCount(); ++i) {
+			if (this.scriptElements.getComponentAt(i).equals(element)) {
+				this.scriptElements.setTitleAt(i, element.getName());
+			}
+		}
 	}
 
 	public void setCanRedo(boolean canRedo) {
@@ -340,7 +333,7 @@ public class ScriptEditor extends JFrame {
 
 	public void setChanged(boolean changed) {
 		this.saveFile.setEnabled(changed);
-		this.tabbedPane.setTitleAt(this.tabbedPane.getSelectedIndex(), this.scriptElements.get(this.tabbedPane.getSelectedIndex() - 1).getName());
+		resetTitle(getSelectedScriptPanel());
 	}
 
 	private static final long serialVersionUID = -7041673678775610605L;
