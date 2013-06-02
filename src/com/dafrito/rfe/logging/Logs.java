@@ -28,7 +28,7 @@ public final class Logs {
 
 	private static boolean initialized = false;
 
-	private static void initialize() {
+	private static synchronized void initialize() {
 		if (initialized) {
 			return;
 		}
