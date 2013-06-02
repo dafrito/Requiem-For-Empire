@@ -51,6 +51,10 @@ public final class Inspection {
 			String logicalName = inspectable.value();
 			if (logicalName.equals("")) {
 				logicalName = method.getName();
+				if (logicalName.startsWith("get")) {
+					logicalName = logicalName.substring(3);
+				}
+				logicalName = logicalName.replaceAll("([a-z])([A-Z])", "$1 $2");
 			}
 			Class<?> returned = method.getReturnType();
 			try {
