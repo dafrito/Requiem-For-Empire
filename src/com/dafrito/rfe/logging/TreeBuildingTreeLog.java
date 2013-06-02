@@ -168,7 +168,7 @@ class MergingInserter implements Inserter {
 		DefaultMutableTreeNode lastChild = (DefaultMutableTreeNode) cursor.getLastChild();
 		if (merged) {
 			// we've already merged before, so the last child is our merge node.
-			lastChild.add(child);
+			treeLog.getModel().insertNodeInto(child, lastChild, lastChild.getChildCount());
 		} else {
 			merged = true;
 			// We've never merged before, so we need to create a new merge node and add the last child to it.
