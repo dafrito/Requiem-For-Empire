@@ -41,7 +41,7 @@ import javax.swing.KeyStroke;
 
 import com.bluespot.logic.actors.Actor;
 import com.dafrito.rfe.logging.Logs;
-import com.dafrito.rfe.logging.ProxyTreeLog;
+import com.dafrito.rfe.logging.CompositeTreeLog;
 
 /**
  * @author Aaron Faanes
@@ -169,7 +169,7 @@ public class LogViewer<Message> extends JFrame {
 			return this.filteredOutputMap.get(Thread.currentThread().getName()).get(0);
 		}*/
 
-	public void addLogPanel(ProxyTreeLog<Message> log, String name) {
+	public void addLogPanel(CompositeTreeLog<Message> log, String name) {
 		addLogPanel(new LogPanel<Message>(this, log, name));
 	}
 

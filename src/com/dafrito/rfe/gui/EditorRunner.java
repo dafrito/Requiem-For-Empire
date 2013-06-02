@@ -8,7 +8,7 @@ import com.bluespot.swing.Components;
 import com.dafrito.rfe.gui.logging.LogViewer;
 import com.dafrito.rfe.gui.script.ScriptEditor;
 import com.dafrito.rfe.logging.Logs;
-import com.dafrito.rfe.logging.ProxyTreeLog;
+import com.dafrito.rfe.logging.CompositeTreeLog;
 
 /**
  * Create a new editing environment.
@@ -34,10 +34,10 @@ public class EditorRunner implements Runnable {
 		Components.center(logFrame);
 		logFrame.setVisible(true);
 
-		Logs.addListener(new Actor<ProxyTreeLog<Object>>() {
+		Logs.addListener(new Actor<CompositeTreeLog<Object>>() {
 
 			@Override
-			public void receive(ProxyTreeLog<Object> log) {
+			public void receive(CompositeTreeLog<Object> log) {
 				logFrame.addLogPanel(log, Thread.currentThread().getName());
 			}
 		});

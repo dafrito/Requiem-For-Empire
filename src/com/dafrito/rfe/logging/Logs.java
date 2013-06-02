@@ -17,10 +17,10 @@ import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 
 public class Logs {
-	private static final ThreadLocalTreeLog<Object, ProxyTreeLog<Object>> masterLog = new ThreadLocalTreeLog<Object, ProxyTreeLog<Object>>() {
+	private static final ThreadLocalTreeLog<Object, CompositeTreeLog<Object>> masterLog = new ThreadLocalTreeLog<Object, CompositeTreeLog<Object>>() {
 		@Override
-		protected ProxyTreeLog<? super Object> newTreeLog(Thread thread) {
-			return new ProxyTreeLog<>();
+		protected CompositeTreeLog<? super Object> newTreeLog(Thread thread) {
+			return new CompositeTreeLog<>();
 		}
 	};
 
@@ -35,9 +35,9 @@ public class Logs {
 	 * @param listener
 	 *            the listener that will receive new logs for every thread
 	 * @see ThreadLocalTreeLog#addListener(Actor)
-	 * @see ProxyTreeLog#removeListener(TreeLog)
+	 * @see CompositeTreeLog#removeListener(TreeLog)
 	 */
-	public static void addListener(Actor<? super ProxyTreeLog<? super Object>> listener) {
+	public static void addListener(Actor<? super CompositeTreeLog<? super Object>> listener) {
 		masterLog.addListener(listener);
 	}
 
@@ -52,7 +52,7 @@ public class Logs {
 	 *            the listener to remove
 	 * @see ThreadLocalTreeLog#removeListener(Actor)
 	 */
-	public static void removeListener(Actor<? super ProxyTreeLog<? super Object>> listener) {
+	public static void removeListener(Actor<? super CompositeTreeLog<? super Object>> listener) {
 		masterLog.removeListener(listener);
 	}
 

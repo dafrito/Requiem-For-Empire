@@ -26,7 +26,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
 import com.dafrito.rfe.logging.BufferedTreeLog;
-import com.dafrito.rfe.logging.ProxyTreeLog;
+import com.dafrito.rfe.logging.CompositeTreeLog;
 import com.dafrito.rfe.logging.TreeBuildingTreeLog;
 import com.dafrito.rfe.strings.NamedTreePath;
 
@@ -55,20 +55,20 @@ public class LogPanel<Message> extends JPanel {
 
 	private LogPanel<? extends Message> parent;
 
-	private ProxyTreeLog<? extends Message> log;
+	private CompositeTreeLog<? extends Message> log;
 
 	private DefaultListModel<TreePath> hotspotPaths = new DefaultListModel<TreePath>();
 	private JList<TreePath> hotspots = new JList<TreePath>(this.hotspotPaths);
 
-	public LogPanel(LogViewer<Message> viewer, ProxyTreeLog<? extends Message> log) {
+	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> log) {
 		this(viewer, log, "<untitled>");
 	}
 
-	public LogPanel(LogViewer<Message> viewer, ProxyTreeLog<? extends Message> log, String name) {
+	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> log, String name) {
 		this(viewer, log, name, null);
 	}
 
-	public LogPanel(LogViewer<Message> viewer, ProxyTreeLog<? extends Message> log, String name, LogPanel<Message> parent) {
+	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> log, String name, LogPanel<Message> parent) {
 		this.viewer = viewer;
 		this.parent = parent;
 		this.log = log;
@@ -155,7 +155,7 @@ public class LogPanel<Message> extends JPanel {
 		filterByMessage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ProxyTreeLog<Message> childLog = new ProxyTreeLog<>();
+				CompositeTreeLog<Message> childLog = new CompositeTreeLog<>();
 				log.addListener(childLog);
 
 				LogPanel<Message> panel = new LogPanel<>(viewer, childLog, "Child of " + treeBuilder.getName());
@@ -251,7 +251,7 @@ public class LogPanel<Message> extends JPanel {
 		logTree.setModel(treeBuilder.getModel());
 	}
 
-	public ProxyTreeLog<? extends Message> getLog() {
+	public CompositeTreeLog<? extends Message> getLog() {
 		return log;
 	}
 

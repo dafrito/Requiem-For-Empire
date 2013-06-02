@@ -32,7 +32,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *            the type of message
  * 
  */
-public class ProxyTreeLog<T> implements TreeLog<T> {
+public class CompositeTreeLog<T> implements TreeLog<T> {
 
 	List<TreeLog<? super T>> listeners = new CopyOnWriteArrayList<>();
 
