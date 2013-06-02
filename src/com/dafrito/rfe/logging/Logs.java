@@ -5,24 +5,70 @@ package com.dafrito.rfe.logging;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import com.bluespot.logic.actors.Actor;
-import com.dafrito.rfe.inspect.Inspectable;
-import com.dafrito.rfe.inspect.Inspection;
-import com.dafrito.rfe.inspect.Nodeable;
-import com.dafrito.rfe.inspect.NodeableInspector;
+import com.bluespot.logic.handlers.ChainedHandler;
+import com.bluespot.logic.handlers.Handler;
 import com.dafrito.rfe.script.exceptions.Exception_InternalError;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 
-public class Logs {
-	private static final ThreadLocalTreeLog<Object, CompositeTreeLog<Object>> masterLog = new ThreadLocalTreeLog<Object, CompositeTreeLog<Object>>() {
-		@Override
-		protected CompositeTreeLog<? super Object> newTreeLog(Thread thread) {
-			return new CompositeTreeLog<>();
+public final class Logs {
+
+	private Logs() {
+		// Suppress default constructor to ensure non-instantiability.
+		throw new AssertionError("Instantiation not allowed");
+	}
+
+	private static ChainedHandler<LogMessage<? extends Object>> masterHandler;
+
+	private static ThreadLocalTreeLog<Object, CompositeTreeLog<Object>> threadLocalLog;
+
+	private static HandledTreeLog<Object> masterLog;
+
+	private static boolean initialized = false;
+
+	private static void initialize() {
+		if (initialized) {
+			return;
 		}
-	};
+		initialized = true;
+
+		threadLocalLog = new ThreadLocalTreeLog<Object, CompositeTreeLog<Object>>() {
+			@Override
+			protected CompositeTreeLog<? super Object> newTreeLog(Thread thread) {
+				return new CompositeTreeLog<>();
+			}
+		};
+
+		masterHandler = new ChainedHandler<>();
+
+		masterLog = new HandledTreeLog<>();
+		masterLog.setHandler(masterHandler);
+		masterLog.setSink(threadLocalLog);
+
+		addHandler(TreeLogHandlers.commonStrings());
+		addHandler(TreeLogHandlers.inspectable());
+		addHandler(TreeLogHandlers.nodeable());
+		addHandler(TreeLogHandlers.iterable());
+		addHandler(TreeLogHandlers.map());
+		addHandler(TreeLogHandlers.nullHandler());
+	}
+
+	private static HandledTreeLog<Object> getMasterLog() {
+		initialize();
+		return masterLog;
+	}
+
+	private static ThreadLocalTreeLog<Object, CompositeTreeLog<Object>> getThreadLocalLog() {
+		initialize();
+		return threadLocalLog;
+	}
+
+	private static ChainedHandler<LogMessage<? extends Object>> getMasterHandler() {
+		initialize();
+		return masterHandler;
+	}
 
 	/**
 	 * Immediately add the specified listener. See
@@ -38,7 +84,7 @@ public class Logs {
 	 * @see CompositeTreeLog#removeListener(TreeLog)
 	 */
 	public static void addListener(Actor<? super CompositeTreeLog<? super Object>> listener) {
-		masterLog.addListener(listener);
+		getThreadLocalLog().addListener(listener);
 	}
 
 	/**
@@ -53,7 +99,20 @@ public class Logs {
 	 * @see ThreadLocalTreeLog#removeListener(Actor)
 	 */
 	public static void removeListener(Actor<? super CompositeTreeLog<? super Object>> listener) {
-		masterLog.removeListener(listener);
+		getThreadLocalLog().removeListener(listener);
+	}
+
+	public static void addHandler(Handler<? super LogMessage<? extends Object>> handler) {
+		getMasterHandler().addHandler(handler);
+	}
+
+	public static void addHandler(TreeLogHandler<Object> handler) {
+		handler.setLog(getMasterLog());
+		getMasterHandler().addHandler(handler);
+	}
+
+	public static void removeHandler(Handler<? super LogMessage<? extends Object>> handler) {
+		getMasterHandler().removeHandler(handler);
 	}
 
 	public static boolean openNode(CommonString scope) {
@@ -66,7 +125,7 @@ public class Logs {
 	}
 
 	public static boolean openNode(String scopeGroup, String scope) {
-		masterLog.enter(scope, scopeGroup != null ? scopeGroup : scope);
+		getMasterLog().enter(scope, scopeGroup != null ? scopeGroup : scope);
 		return true;
 	}
 
@@ -75,33 +134,7 @@ public class Logs {
 	}
 
 	public static boolean addNode(Object scope, Object message) {
-		if (message == null) {
-			return addNode(scope, "null");
-		}
-		if (message.getClass().isAnnotationPresent(Inspectable.class)) {
-			NodeableInspector<Object> inspector = new NodeableInspector<Object>(masterLog);
-			Inspection.reflect(inspector, message);
-			inspector.close();
-			return true;
-		}
-		if (message instanceof Nodeable) {
-			addNodeableNode(scope, (Nodeable) message);
-			if (message instanceof Exception) {
-				registerHotspot((Exception) message);
-			}
-			return true;
-		}
-		if (message instanceof Iterable<?>) {
-			return addCollectionNode((Iterable<?>) message);
-		}
-		if (message instanceof Map<?, ?>) {
-			return addMapNode((Map<?, ?>) message);
-		}
-		if (message instanceof CommonString) {
-			message = ((CommonString) message).getText();
-		}
-		masterLog.log(new LogMessage<Object>(message));
-
+		getMasterLog().log(new LogMessage<Object>(message));
 		if (message instanceof Exception) {
 			registerHotspot((Exception) message);
 		}
@@ -123,31 +156,6 @@ public class Logs {
 		// getDebugger().getUnfilteredOutput().getHotspotPanel().addHotspot(getDebugInspector().getLastNodeAdded(), exceptionName);
 	}
 
-	public static boolean addNodeableNode(Object group, Nodeable nodeable) {
-		nodeable.nodificate();
-		return true;
-	}
-
-	public synchronized static boolean addCollectionNode(Iterable<?> iterable) {
-		Iterator<?> iter = iterable.iterator();
-		while (iter.hasNext()) {
-			addNode(iter.next());
-		}
-		return true;
-	}
-
-	public synchronized static boolean addMapNode(Map<?, ?> map) {
-		if (map.isEmpty()) {
-			return true;
-		}
-		Iterator<?> iter = map.entrySet().iterator();
-		while (iter.hasNext()) {
-			Map.Entry<?, ?> entry = (Map.Entry<?, ?>) iter.next();
-			addSnapNode(entry.getKey().toString(), entry.getValue());
-		}
-		return true;
-	}
-
 	public static boolean addSnapNode(CommonString scope, Object message) {
 		return addSnapNode(scope.getText(), message);
 	}
@@ -164,7 +172,7 @@ public class Logs {
 	}
 
 	public static boolean closeNode() {
-		masterLog.leave();
+		getMasterLog().leave();
 		return true;
 	}
 
