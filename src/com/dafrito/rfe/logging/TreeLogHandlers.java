@@ -87,7 +87,7 @@ public final class TreeLogHandlers {
 				return false;
 			}
 			NodeableInspector<Object> inspector = new NodeableInspector<Object>(getLog());
-			Inspection.reflect(inspector, message);
+			Inspection.reflect(inspector, value);
 			inspector.close();
 			return true;
 		}
