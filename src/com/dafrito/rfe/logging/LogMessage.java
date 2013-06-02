@@ -35,15 +35,15 @@ public class LogMessage<T> {
 
 	private Object sender;
 
-	private T category;
+	private String category;
 
 	private T message;
 
-	public LogMessage(Object sender, T category, T message) {
+	public LogMessage(Object sender, String category, T message) {
 		this(System.currentTimeMillis(), sender, category, message);
 	}
 
-	public LogMessage(T category, T message) {
+	public LogMessage(String category, T message) {
 		this(System.currentTimeMillis(), null, category, message);
 	}
 
@@ -51,7 +51,7 @@ public class LogMessage<T> {
 		this(System.currentTimeMillis(), null, null, message);
 	}
 
-	public LogMessage(long timestamp, Object sender, T category, T message) {
+	public LogMessage(long timestamp, Object sender, String category, T message) {
 		this.timestamp = timestamp;
 		this.sender = sender;
 		this.category = category;
@@ -66,7 +66,7 @@ public class LogMessage<T> {
 		return new LogMessage<T>(timestamp, sender, category, newMessage);
 	}
 
-	public T getCategory() {
+	public String getCategory() {
 		return this.category;
 	}
 
