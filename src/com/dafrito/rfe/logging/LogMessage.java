@@ -62,6 +62,10 @@ public class LogMessage<T> {
 		return this.message;
 	}
 
+	public LogMessage<T> changeMessage(T newMessage) {
+		return new LogMessage<T>(timestamp, sender, category, newMessage);
+	}
+
 	public T getCategory() {
 		return this.category;
 	}
