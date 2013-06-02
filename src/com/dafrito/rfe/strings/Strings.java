@@ -16,6 +16,11 @@ import com.dafrito.rfe.logging.Logs;
  */
 public final class Strings {
 
+	private Strings() {
+		// Suppress default constructor to ensure non-instantiability.
+		throw new AssertionError("Instantiation not allowed");
+	}
+
 	public static String getExtension(File f) {
 		String ext = null;
 		String s = f.getName();
