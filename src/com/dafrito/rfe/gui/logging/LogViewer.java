@@ -102,8 +102,12 @@ public class LogViewer<Message> extends JFrame {
 	}
 
 	@SuppressWarnings("unchecked")
-	private LogPanel<? extends Message> getSelectedLogPanel() {
+	public LogPanel<? extends Message> getSelectedLogPanel() {
 		return (LogPanel<? extends Message>) logPanelTabs.getSelectedComponent();
+	}
+
+	public void setSelectedLogPanel(LogPanel<? extends Message> panel) {
+		logPanelTabs.setSelectedComponent(panel);
 	}
 
 	/*
