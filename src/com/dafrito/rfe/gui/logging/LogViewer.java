@@ -174,6 +174,7 @@ public class LogViewer<Message> extends JFrame {
 		if (panel == null) {
 			return;
 		}
+		panel.prepareToRemove();
 		logPanelTabs.remove(panel);
 	}
 

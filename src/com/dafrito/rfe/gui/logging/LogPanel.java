@@ -1,10 +1,13 @@
 package com.dafrito.rfe.gui.logging;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -17,10 +20,17 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import com.bluespot.logic.predicates.Predicate;
+import com.bluespot.swing.Dialogs;
+import com.bluespot.swing.Dialogs.CancelledException;
 import com.dafrito.rfe.logging.BufferedTreeLog;
 import com.dafrito.rfe.logging.CompositeTreeLog;
+import com.dafrito.rfe.logging.LogMessage;
+import com.dafrito.rfe.logging.ReplayableTreeLog;
+import com.dafrito.rfe.logging.ScopeGuardedTreeLog;
 import com.dafrito.rfe.logging.TreeBuildingTreeLog;
 import com.dafrito.rfe.logging.TreeLog;
 
@@ -40,37 +50,87 @@ import com.dafrito.rfe.logging.TreeLog;
 public class LogPanel<Message> extends JPanel {
 	private LogViewer<Message> viewer;
 
-	private JButton filterByMessage, jump;
+	private JButton jump;
 
 	private final JTree logTree = new JTree();
 
-	private BufferedTreeLog<Message> bufferedLog;
 	private TreeBuildingTreeLog<Message> treeBuilder;
 
-	private LogPanel<? extends Message> parent;
+	private LogPanel<Message> parent;
+	private List<LogPanel<Message>> children = new ArrayList<>();
 
-	private CompositeTreeLog<? extends Message> log;
+	/**
+	 * This log is buffered, so children can safely connect to it as long as
+	 * they're on the Swing EDT.
+	 */
+	private CompositeTreeLog<Message> log = new CompositeTreeLog<>();
+
+	private ReplayableTreeLog<Message> replayLog = new ReplayableTreeLog<>();
 
 	private DefaultListModel<TreePath> hotspotPaths = new DefaultListModel<TreePath>();
 	private JList<TreePath> hotspots = new JList<TreePath>(this.hotspotPaths);
 
-	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> log) {
-		this(viewer, log, "<untitled>");
+	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> source) {
+		this(viewer, source, "<untitled>");
 	}
 
-	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> log, String name) {
-		this(viewer, log, name, null);
+	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> source, String name) {
+		this(viewer, source, name, null);
 	}
 
-	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> log, String name, LogPanel<Message> parent) {
+	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> source, String name, LogPanel<Message> parent) {
 		this.viewer = viewer;
-		this.parent = parent;
-		this.log = log;
 		setName(name);
 
 		setLayout(new BorderLayout());
+		//
+		//		JSplitPane mainPanel = new JSplitPane();
+		//		mainPanel.setContinuousLayout(true);
+		//		mainPanel.setResizeWeight(1d);
+		//		mainPanel.setLeftComponent();
+		//
+		//		//		JTabbedPane hotspotAndFiltersPanel = new JTabbedPane();
+		//		//		hotspotAndFiltersPanel.add("Hotspots", buildHotspotsPanel());
+		//		// TODO Reenable filters
+		//		//		hotspotAndFiltersPanel.add("Filters", this.treePanel.getFilter());
+		//		//		mainPanel.setRightComponent(hotspotAndFiltersPanel);
 
-		treeBuilder = new TreeBuildingTreeLog<Message>(name);
+		add(buildButtons(), BorderLayout.NORTH);
+		add(new JScrollPane(this.logTree), BorderLayout.CENTER);
+
+		// TODO Disabled until we reimplement hotspots
+		//			hotspotAndFiltersPanel.setEnabledAt(1, hasParent());
+
+		setParent(parent);
+		setupLogs(source);
+		createTreeBuilder();
+	}
+
+	private void setupLogs(CompositeTreeLog<? extends Message> source) {
+		// The ordering here is quite sensitive (to ensure the buffered log generates useful output)
+		// so be sure to consider threading issues before making changes. Generally speaking, the buffered
+		// log is safe to use if you're on the EDT.
+		final BufferedTreeLog<Message> bufferedLog = new BufferedTreeLog<>();
+		bufferedLog.setFlushSize(10000);
+		bufferedLog.setNotifier(new Runnable() {
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(bufferedLog);
+			}
+		});
+		bufferedLog.setSink(log);
+		source.addListener(bufferedLog);
+
+		log.addListener(replayLog);
+	}
+
+	private void createTreeBuilder() {
+		if (treeBuilder != null) {
+			log.removeListener(treeBuilder);
+			logTree.setModel(null);
+		}
+
+		treeBuilder = new TreeBuildingTreeLog<Message>(getName());
 		logTree.setModel(treeBuilder.getModel());
 
 		// Clean up the display of the root node.
@@ -110,62 +170,188 @@ public class LogPanel<Message> extends JPanel {
 			}
 		});
 
-		bufferedLog = new BufferedTreeLog<>();
-		bufferedLog.setSink(treeBuilder);
-		bufferedLog.setNotifier(new Runnable() {
-			@Override
-			public void run() {
-				SwingUtilities.invokeLater(bufferedLog);
-			}
-		});
+		log.addListener(treeBuilder);
+	}
 
-		log.addListener(bufferedLog);
+	private LogPanel<Message> createLogPanel(CompositeTreeLog<? extends Message> log, String name) {
+		LogPanel<Message> panel = new LogPanel<>(viewer, log, name, LogPanel.this);
 
-		JSplitPane mainPanel = new JSplitPane();
-		mainPanel.setContinuousLayout(true);
-		mainPanel.setResizeWeight(1d);
-		mainPanel.setLeftComponent(new JScrollPane(this.logTree));
-
-		JTabbedPane hotspotAndFiltersPanel = new JTabbedPane();
-		hotspotAndFiltersPanel.add("Hotspots", buildHotspotsPanel());
-		// TODO Reenable filters
-		//		hotspotAndFiltersPanel.add("Filters", this.treePanel.getFilter());
-		mainPanel.setRightComponent(hotspotAndFiltersPanel);
-
-		add(buildButtons(), BorderLayout.NORTH);
-		add(mainPanel, BorderLayout.CENTER);
-
-		// TODO Disabled until we reimplement hotspots
-		//			hotspotAndFiltersPanel.setEnabledAt(1, hasParent());
+		children.add(panel);
+		viewer.addLogPanel(panel);
+		return panel;
 	}
 
 	private JPanel buildButtons() {
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new FlowLayout(FlowLayout.LEFT));
+		buttons.setLayout(new BoxLayout(buttons, BoxLayout.LINE_AXIS));
 
 		jump = new JButton("Show in parent");
 		jump.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				jump();
+				if (parent == null) {
+					return;
+				}
+				parent.showNode(getSelectedMessage());
+				if (viewer.getSelectedLogPanel() == LogPanel.this) {
+					viewer.setSelectedLogPanel(parent);
+				}
 			}
 		});
-		jump.setEnabled(hasParent());
 		buttons.add(jump);
 
-		filterByMessage = new JButton("Filter by message");
+		JButton filterByMessage = new JButton("Filter by message");
 		filterByMessage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				final LogMessage<? extends Message> selectedMessage = getSelectedMessage();
+				if (selectedMessage == null) {
+					return;
+				}
+
+				ScopeGuardedTreeLog<Message> guard = new ScopeGuardedTreeLog<Message>();
+				guard.setGuard(new Predicate<LogMessage<? extends Message>>() {
+
+					@Override
+					public boolean test(LogMessage<? extends Message> candidate) {
+						if (candidate == null) {
+							return false;
+						}
+
+						if (selectedMessage.getMessage() != null && selectedMessage.getMessage().equals(candidate.getMessage())) {
+							return true;
+						}
+
+						if (selectedMessage.getCategory() != null && selectedMessage.getCategory().equals(candidate.getCategory())) {
+							return true;
+						}
+
+						return false;
+					}
+				});
+
 				CompositeTreeLog<Message> childLog = new CompositeTreeLog<>();
-				log.addListener(childLog);
+				guard.setSink(childLog);
 
-				LogPanel<Message> panel = new LogPanel<>(viewer, childLog, "Child of " + treeBuilder.getName());
+				String title;
+				if (selectedMessage.getCategory() != null) {
+					title = selectedMessage.getCategory().toString();
+				}
+				else {
+					title = selectedMessage.getMessage().toString();
+				}
 
-				viewer.addLogPanel(panel);
+				createLogPanel(childLog, title);
+
+				replayLog.play(guard);
+				log.addListener(guard);
 			}
 		});
 		buttons.add(filterByMessage);
+
+		JButton filterBySender = new JButton("Filter by sender");
+		filterBySender.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final LogMessage<? extends Message> selectedMessage = getSelectedMessage();
+				if (selectedMessage == null || selectedMessage.getSender() == null) {
+					return;
+				}
+
+				ScopeGuardedTreeLog<Message> guard = new ScopeGuardedTreeLog<Message>();
+				guard.setGuard(new Predicate<LogMessage<? extends Message>>() {
+
+					@Override
+					public boolean test(LogMessage<? extends Message> candidate) {
+						return candidate != null && selectedMessage.getSender().equals(candidate.getSender());
+					}
+				});
+
+				CompositeTreeLog<Message> childLog = new CompositeTreeLog<>();
+				guard.setSink(childLog);
+
+				createLogPanel(childLog, selectedMessage.getSender().toString());
+
+				replayLog.play(guard);
+				log.addListener(guard);
+			}
+		});
+		buttons.add(filterBySender);
+
+		JButton filterByText = new JButton("Filter by text");
+		filterByText.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final LogMessage<? extends Message> selectedMessage = getSelectedMessage();
+
+				try {
+					final String filterText = Dialogs.getString("Enter the text used for this filter", selectedMessage != null ? selectedMessage.toString() : "");
+
+					ScopeGuardedTreeLog<Message> guard = new ScopeGuardedTreeLog<Message>();
+					guard.setGuard(new Predicate<LogMessage<? extends Message>>() {
+
+						@Override
+						public boolean test(LogMessage<? extends Message> candidate) {
+							if (candidate == null) {
+								return false;
+							}
+							return candidate.toString().contains(filterText);
+						}
+					});
+
+					CompositeTreeLog<Message> childLog = new CompositeTreeLog<>();
+					guard.setSink(childLog);
+
+					createLogPanel(childLog, filterText);
+
+					replayLog.play(guard);
+					log.addListener(guard);
+				} catch (CancelledException e1) {
+					return;
+				}
+			}
+		});
+		buttons.add(filterByText);
+
+		JButton filterBySubtree = new JButton("Filter by subtree");
+		filterBySubtree.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final LogMessage<? extends Message> selectedMessage = getSelectedMessage();
+				if (selectedMessage == null) {
+					return;
+				}
+
+				ScopeGuardedTreeLog<Message> guard = new ScopeGuardedTreeLog<Message>();
+				guard.setGuard(new Predicate<LogMessage<? extends Message>>() {
+
+					@Override
+					public boolean test(LogMessage<? extends Message> candidate) {
+						return candidate != null && selectedMessage.equals(candidate);
+					}
+				});
+
+				CompositeTreeLog<Message> childLog = new CompositeTreeLog<>();
+				guard.setSink(childLog);
+
+				createLogPanel(childLog, selectedMessage.toString());
+
+				replayLog.play(guard);
+				log.addListener(guard);
+			}
+		});
+		buttons.add(filterBySubtree);
+
+		buttons.add(Box.createHorizontalGlue());
+
+		JButton clear = new JButton("Clear");
+		clear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				createTreeBuilder();
+			}
+		});
+		buttons.add(clear);
 
 		return buttons;
 	}
@@ -231,12 +417,6 @@ public class LogPanel<Message> extends JPanel {
 		return new JScrollPane(hotspotsPanel);
 	}
 
-	public void jump() {
-		//		TreePath path = this.getTreePanel().getSelectedRelativeTreePath();
-		//		this.debugger.focusOnOutput(this.source);
-		//		this.source.getTreePanel().showTreePath(path);
-	}
-
 	//	public void addHotspot(Debug_TreeNode node, String name) {
 	//		this.addHotspot(node.getTreePath(name));
 	//	}
@@ -245,16 +425,37 @@ public class LogPanel<Message> extends JPanel {
 	//		this.hotspotPaths.addElement(path);
 	//	}
 
-	public void clear() {
-		this.hotspotPaths.clear();
-		log.removeListener(this.treeBuilder);
-		this.treeBuilder = new TreeBuildingTreeLog<>(treeBuilder.getName());
-		log.addListener(treeBuilder);
-		logTree.setModel(treeBuilder.getModel());
+	@SuppressWarnings("unchecked")
+	public LogMessage<? extends Message> getSelectedMessage() {
+		TreePath path = logTree.getSelectionPath();
+		if (path == null) {
+			return null;
+		}
+		DefaultMutableTreeNode lastComponent = (DefaultMutableTreeNode) path.getLastPathComponent();
+		if (lastComponent == null) {
+			return null;
+		}
+		return (LogMessage<? extends Message>) lastComponent.getUserObject();
 	}
 
-	public CompositeTreeLog<? extends Message> getLog() {
-		return log;
+	public void showNode(LogMessage<? extends Message> message) {
+		if (message == null) {
+			return;
+		}
+		DefaultMutableTreeNode node = treeBuilder.getNodeFor(message);
+		if (node == null) {
+			return;
+		}
+		TreePath path = new TreePath(treeBuilder.getModel().getPathToRoot(node));
+		logTree.expandPath(path);
+		logTree.setSelectionPath(path);
+		logTree.scrollPathToVisible(path);
+	}
+
+	public void prepareToRemove() {
+		for (LogPanel<Message> child : children) {
+			child.setParent(this.parent);
+		}
 	}
 
 	public boolean isRoot() {
@@ -263,6 +464,13 @@ public class LogPanel<Message> extends JPanel {
 
 	public boolean hasParent() {
 		return this.parent != null;
+	}
+
+	public void setParent(LogPanel<Message> parent) {
+		this.parent = parent;
+		if (jump != null) {
+			jump.setEnabled(hasParent());
+		}
 	}
 
 	private static final long serialVersionUID = -6965306788286409632L;

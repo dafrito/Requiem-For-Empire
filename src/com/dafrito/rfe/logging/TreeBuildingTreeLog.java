@@ -22,7 +22,9 @@
 package com.dafrito.rfe.logging;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -32,11 +34,11 @@ import javax.swing.tree.TreeModel;
  * A {@link TreeLog} that creates a {@link TreeModel}.
  * 
  * @author Aaron Faanes
- * @param <T>
+ * @param <Message>
  *            the type of message
  * 
  */
-public class TreeBuildingTreeLog<T> implements TreeLog<T> {
+public class TreeBuildingTreeLog<Message> implements TreeLog<Message> {
 
 	private final DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 
@@ -46,10 +48,12 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 
 	private int level = 0;
 
-	private Inserter rootInserter;
-	private List<Inserter> inserterStack = new ArrayList<>();
+	private Inserter<? super Message> rootInserter;
+	private List<Inserter<? super Message>> inserterStack = new ArrayList<>();
 
-	public TreeBuildingTreeLog(String name, Inserter rootInserter) {
+	private Map<LogMessage<? extends Message>, DefaultMutableTreeNode> nodeMapping = new HashMap<>();
+
+	public TreeBuildingTreeLog(String name, Inserter<? super Message> rootInserter) {
 		root.setUserObject(name);
 
 		cursor = root;
@@ -58,15 +62,13 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 	}
 
 	public TreeBuildingTreeLog(String name) {
-		this(name, new MergingInserter());
+		this(name, new MergingInserter<Message>());
 	}
 
-	private DefaultMutableTreeNode newNode(LogMessage<? extends T> message) {
-		String messageString = "";
-		if (message != null && message.getMessage() != null) {
-			messageString = message.getMessage().toString();
-		}
-		return new DefaultMutableTreeNode(messageString);
+	private DefaultMutableTreeNode newNode(LogMessage<? extends Message> message) {
+		DefaultMutableTreeNode node = new DefaultMutableTreeNode(message);
+		nodeMapping.put(message, node);
+		return node;
 	}
 
 	public String getName() {
@@ -82,12 +84,13 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 	}
 
 	@Override
-	public void log(LogMessage<? extends T> message) {
-		addNodeAtCursor(newNode(message));
+	public void log(LogMessage<? extends Message> message) {
+		enter(message);
+		leave();
 	}
 
 	@Override
-	public void enter(LogMessage<? extends T> scope) {
+	public void enter(LogMessage<? extends Message> scope) {
 		DefaultMutableTreeNode child = newNode(scope);
 
 		if (level >= inserterStack.size()) {
@@ -102,7 +105,11 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 	@Override
 	public void leave() {
 		if (cursor == root) {
-			throw new IllegalStateException("leave() must never be called when at root");
+			// Pedantically, this is an error. However, if we forget to use an "enter" or forget to call "leave", we don't
+			// crash. Instead, the log just gets confused. Having a spurious leave() be called is asymmetric relative to
+			// the quiet failures of "enter" and neglected "leaves".
+			log(new LogMessage<Message>("Leave was called while at the root node", null));
+			return;
 		}
 		assert level >= 0 : "Level must be at least one before leaving";
 		cursor = inserterStack.get(--level).leave(this);
@@ -117,49 +124,58 @@ public class TreeBuildingTreeLog<T> implements TreeLog<T> {
 		return cursor;
 	}
 
-	private Inserter newInserter() {
+	private Inserter<? super Message> newInserter() {
 		return rootInserter.newInserter();
 	}
+
+	public DefaultMutableTreeNode getNodeFor(LogMessage<? extends Message> message) {
+		return nodeMapping.get(message);
+	}
 }
 
-interface Inserter {
+interface Inserter<Message> {
 
-	public Inserter newInserter();
+	public Inserter<? super Message> newInserter();
 
-	public DefaultMutableTreeNode enter(TreeBuildingTreeLog<?> treeLog, DefaultMutableTreeNode scope, LogMessage<?> message);
+	public DefaultMutableTreeNode enter(TreeBuildingTreeLog<? extends Message> treeLog, DefaultMutableTreeNode scope, LogMessage<? extends Message> message);
 
-	public DefaultMutableTreeNode leave(TreeBuildingTreeLog<?> treeLog);
+	public DefaultMutableTreeNode leave(TreeBuildingTreeLog<? extends Message> treeLog);
 }
 
-class DefaultInserter implements Inserter {
+class DefaultInserter<Message> implements Inserter<Message> {
 
 	@Override
-	public Inserter newInserter() {
-		return new DefaultInserter();
+	public Inserter<? super Message> newInserter() {
+		return new DefaultInserter<Message>();
 	}
 
 	@Override
-	public DefaultMutableTreeNode enter(TreeBuildingTreeLog<?> treeLog, DefaultMutableTreeNode scope, LogMessage<?> message) {
+	public DefaultMutableTreeNode enter(TreeBuildingTreeLog<? extends Message> treeLog, DefaultMutableTreeNode scope, LogMessage<? extends Message> message) {
 		treeLog.addNodeAtCursor(scope);
 		return scope;
 	}
 
 	@Override
-	public DefaultMutableTreeNode leave(TreeBuildingTreeLog<?> treeLog) {
-		return (DefaultMutableTreeNode) treeLog.getCursor().getParent();
+	public DefaultMutableTreeNode leave(TreeBuildingTreeLog<? extends Message> treeLog) {
+		DefaultMutableTreeNode cursor = treeLog.getCursor();
+		if (cursor.isLeaf()) {
+			cursor.setAllowsChildren(false);
+		}
+		treeLog.getModel().nodeStructureChanged(cursor);
+		return (DefaultMutableTreeNode) cursor.getParent();
 	}
 }
 
-class MergingInserter implements Inserter {
+class MergingInserter<Message> implements Inserter<Message> {
 	private String scopeGroup;
 	private boolean merged;
 
 	@Override
-	public DefaultMutableTreeNode enter(TreeBuildingTreeLog<?> treeLog, DefaultMutableTreeNode scope, LogMessage<?> message) {
+	public DefaultMutableTreeNode enter(TreeBuildingTreeLog<? extends Message> treeLog, DefaultMutableTreeNode scope, LogMessage<? extends Message> message) {
 		String scopeGroup = message.getCategory();
 		DefaultMutableTreeNode cursor = treeLog.getCursor();
 
-		if (scopeGroup == null || this.scopeGroup != scopeGroup || cursor.isLeaf()) {
+		if (scopeGroup == null || !scopeGroup.equals(this.scopeGroup) || cursor.isLeaf()) {
 			// No match, so invalidate ourselves.
 			this.scopeGroup = scopeGroup;
 			merged = false;
@@ -175,7 +191,7 @@ class MergingInserter implements Inserter {
 		} else {
 			merged = true;
 			// We've never merged before, so we need to create a new merge node and add the last child to it.
-			DefaultMutableTreeNode scopeGroupNode = new DefaultMutableTreeNode(scopeGroup);
+			DefaultMutableTreeNode scopeGroupNode = new DefaultMutableTreeNode(message.changeSender(null, null));
 			treeLog.getModel().removeNodeFromParent(lastChild);
 			scopeGroupNode.add(lastChild);
 			scopeGroupNode.add(scope);
@@ -185,8 +201,13 @@ class MergingInserter implements Inserter {
 	}
 
 	@Override
-	public DefaultMutableTreeNode leave(TreeBuildingTreeLog<?> treeLog) {
-		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) treeLog.getCursor().getParent();
+	public DefaultMutableTreeNode leave(TreeBuildingTreeLog<? extends Message> treeLog) {
+		DefaultMutableTreeNode cursor = treeLog.getCursor();
+		if (cursor.isLeaf()) {
+			cursor.setAllowsChildren(false);
+		}
+		treeLog.getModel().nodeStructureChanged(cursor);
+		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) cursor.getParent();
 		if (hasMerged()) {
 			assert parent != null : "A merged scope group must always have its merged node as its parent";
 			return (DefaultMutableTreeNode) parent.getParent();
@@ -195,8 +216,8 @@ class MergingInserter implements Inserter {
 	}
 
 	@Override
-	public Inserter newInserter() {
-		return new MergingInserter();
+	public Inserter<? super Message> newInserter() {
+		return new MergingInserter<Message>();
 	}
 
 	public boolean hasMerged() {
