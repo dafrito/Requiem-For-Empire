@@ -85,4 +85,21 @@ public class LogMessage<T> {
 	public long getTimestamp() {
 		return this.timestamp;
 	}
+
+	@Override
+	public String toString() {
+		String message = "";
+		if (getSender() != null) {
+			message = getSender().toString() + ": ";
+		}
+
+		if (getMessage() != null) {
+			message += getMessage().toString();
+		} else if (getCategory() != null) {
+			message += getCategory().toString();
+		} else {
+			message += super.toString();
+		}
+		return message;
+	}
 }
