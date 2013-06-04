@@ -52,7 +52,7 @@ public class ScopeGuardedTreeLog<T> extends ProxyTreeLog<T> {
 
 	@Override
 	public void log(LogMessage<? extends T> message) {
-		if (isAccepting()) {
+		if (isAccepting() || getGuard().test(message)) {
 			super.log(message);
 		}
 	}
