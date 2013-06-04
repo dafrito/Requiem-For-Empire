@@ -1050,7 +1050,7 @@ public final class Parser {
 					} else {
 						throw new Exception_Nodeable_UnexpectedType(env, list.get(i), "Keyword or code group");
 					}
-					Logs.closeNode("'Else' script group parsed", previous);
+					assert Logs.closeNode("'Else' script group parsed", previous);
 					env.retreatNestedStack();
 					return null;
 				}
@@ -1065,9 +1065,9 @@ public final class Parser {
 						assert Logs.openNode("Found else keyword, recursing...");
 						list.add(i, exec);
 						parseFlowElement(env, list, type);
-						Logs.closeNode();
+						assert Logs.closeNode();
 					}
-					Logs.closeNode("If group parsed", exec);
+					assert Logs.closeNode("If group parsed", exec);
 					return exec;
 				}
 			}
