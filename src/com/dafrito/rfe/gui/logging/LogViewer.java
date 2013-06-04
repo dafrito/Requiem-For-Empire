@@ -53,8 +53,6 @@ public class LogViewer<Message> extends JFrame {
 	 */
 	private final JTabbedPane logPanelTabs = new JTabbedPane();
 
-	private final JLabel status = new JLabel();
-
 	private final JMenuBar menuBar = new JMenuBar();
 
 	final Map<String, List<LogPanel<Message>>> filteredOutputMap = new HashMap<String, List<LogPanel<Message>>>();
@@ -63,10 +61,7 @@ public class LogViewer<Message> extends JFrame {
 		super("RFE Log Viewer");
 
 		this.getContentPane().setLayout(new BorderLayout());
-		this.getContentPane().add(this.status, BorderLayout.SOUTH);
 		this.getContentPane().add(this.logPanelTabs);
-
-		status.setText("No fucking time.");
 
 		this.setJMenuBar(this.menuBar);
 
