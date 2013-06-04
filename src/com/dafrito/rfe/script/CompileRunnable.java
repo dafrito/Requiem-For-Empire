@@ -32,8 +32,8 @@ public class CompileRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		Logs.hitStopWatch();
 		try {
+			Logs.hitStopWatch();
 			this.scriptEnvironment.reset();
 			Parser.clearPreparseLists();
 			if (!scriptEditor.compileAll()) {
@@ -41,10 +41,10 @@ public class CompileRunnable implements Runnable {
 				return;
 			}
 			List<Exception> exceptions = Parser.parseElements(this.scriptEnvironment);
+
 			if (exceptions.isEmpty()) {
 				this.scriptEditor.canExecute(true);
 				this.scriptEditor.setStatus("All files compiled successfully.");
-				Logs.hitStopWatch();
 				assert Logs.addSnapNode("Compile successful", this.scriptEnvironment);
 				if (this.shouldExecute) {
 					ExecutionThread thread = new ExecutionThread(this.scriptEnvironment);
