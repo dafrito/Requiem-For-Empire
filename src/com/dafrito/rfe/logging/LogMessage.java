@@ -66,6 +66,14 @@ public class LogMessage<T> {
 		return new LogMessage<U>(timestamp, sender, category, newMessage);
 	}
 
+	public LogMessage<T> changeSender(Object sender) {
+		return new LogMessage<T>(timestamp, sender, category, message);
+	}
+
+	public <U> LogMessage<U> changeSender(Object sender, U message) {
+		return new LogMessage<U>(timestamp, sender, category, message);
+	}
+
 	public String getCategory() {
 		return this.category;
 	}
