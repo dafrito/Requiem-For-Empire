@@ -8,14 +8,9 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
@@ -67,9 +62,6 @@ public class LogPanel<Message> extends JPanel {
 
 	private ReplayableTreeLog<Message> replayLog = new ReplayableTreeLog<>();
 
-	private DefaultListModel<TreePath> hotspotPaths = new DefaultListModel<TreePath>();
-	private JList<TreePath> hotspots = new JList<TreePath>(this.hotspotPaths);
-
 	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> source) {
 		this(viewer, source, "<untitled>");
 	}
@@ -83,17 +75,6 @@ public class LogPanel<Message> extends JPanel {
 		setName(name);
 
 		setLayout(new BorderLayout());
-		//
-		//		JSplitPane mainPanel = new JSplitPane();
-		//		mainPanel.setContinuousLayout(true);
-		//		mainPanel.setResizeWeight(1d);
-		//		mainPanel.setLeftComponent();
-		//
-		//		//		JTabbedPane hotspotAndFiltersPanel = new JTabbedPane();
-		//		//		hotspotAndFiltersPanel.add("Hotspots", buildHotspotsPanel());
-		//		// TODO Reenable filters
-		//		//		hotspotAndFiltersPanel.add("Filters", this.treePanel.getFilter());
-		//		//		mainPanel.setRightComponent(hotspotAndFiltersPanel);
 
 		add(buildButtons(), BorderLayout.NORTH);
 		add(new JScrollPane(this.logTree), BorderLayout.CENTER);
@@ -355,75 +336,6 @@ public class LogPanel<Message> extends JPanel {
 
 		return buttons;
 	}
-
-	private JComponent buildHotspotsPanel() {
-		JPanel hotspotsPanel = new JPanel();
-		hotspotsPanel.setLayout(new BorderLayout());
-
-		hotspotsPanel.add(new JScrollPane(this.hotspots));
-
-		JPanel hotspotButtons = new JPanel();
-		hotspotsPanel.add(hotspotButtons, BorderLayout.NORTH);
-		// TODO Disabled until we reenable hotspots
-		/*
-				this.hotspots.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						if (e.getClickCount() == 2) {
-							if (hotspots.getSelectedValue() != null) {
-								getTreePanel().showTreePath(hotspots.getSelectedValue());
-							}
-						}
-					}
-				});
-
-				JButton createHotspot = new JButton("New hotspot...");
-				createHotspot.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if (getTreePanel().getSelectionPath() == null) {
-							return;
-						}
-						String hotspotName;
-						do {
-							hotspotName = JOptionPane.showInputDialog(null, "Enter hotspot name", ((Debug_TreeNode) getTreePanel().getSelectionPath().getLastPathComponent()).getData());
-							if (hotspotName == null) {
-								return;
-							}
-							if ("".equals(hotspotName)) {
-								JOptionPane.showMessageDialog(HotspotsPanel.this, "Please insert a name.");
-								hotspotName = null;
-							}
-						} while (hotspotName == null);
-						hotspotPaths.addElement(new NamedTreePath(hotspotName, getTreePanel().getSelectionPath()));
-					}
-				});
-				hotspotButtons.add(createHotspot);
-
-				JButton removeHotspot = new JButton("Remove hotspot");
-				removeHotspot.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if (hotspots.getSelectedValue() != null) {
-							hotspotPaths.remove(hotspots.getSelectedIndex());
-						}
-					}
-				});
-				hotspotButtons.add(removeHotspot);
-
-				hotspotButtons.setLayout(new GridLayout(hotspotButtons.getComponentCount(), 0));*/
-
-		return new JScrollPane(hotspotsPanel);
-	}
-
-	//	public void addHotspot(Debug_TreeNode node, String name) {
-	//		this.addHotspot(node.getTreePath(name));
-	//	}
-	//
-	//	public void addHotspot(TreePath path) {
-	//		this.hotspotPaths.addElement(path);
-	//	}
 
 	@SuppressWarnings("unchecked")
 	public LogMessage<? extends Message> getSelectedMessage() {
