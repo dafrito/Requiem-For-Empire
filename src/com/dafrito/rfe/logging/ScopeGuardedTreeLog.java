@@ -68,7 +68,7 @@ public class ScopeGuardedTreeLog<T> extends ProxyTreeLog<T> {
 
 	@Override
 	public void leave() {
-		if (isAccepting()) {
+		if (levels == 0) {
 			return;
 		}
 		super.leave();
