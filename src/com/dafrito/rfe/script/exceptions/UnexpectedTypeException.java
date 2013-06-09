@@ -7,7 +7,7 @@ import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_UnexpectedType extends ScriptException {
+public class UnexpectedTypeException extends ScriptException {
 	/**
 	 * 
 	 */
@@ -15,19 +15,19 @@ public class Exception_Nodeable_UnexpectedType extends ScriptException {
 	private String expectedType;
 	private Object providedType;
 
-	public Exception_Nodeable_UnexpectedType(Referenced ref, Object provided, String exp) {
+	public UnexpectedTypeException(Referenced ref, Object provided, String exp) {
 		super(ref);
 		this.providedType = provided;
 		this.expectedType = exp;
 	}
 
-	public Exception_Nodeable_UnexpectedType(Referenced provided, String expectedType) {
+	public UnexpectedTypeException(Referenced provided, String expectedType) {
 		super(provided.getEnvironment(), provided);
 		this.expectedType = expectedType;
 		this.providedType = provided;
 	}
 
-	public Exception_Nodeable_UnexpectedType(ScriptEnvironment env, Object provided, String exp) {
+	public UnexpectedTypeException(ScriptEnvironment env, Object provided, String exp) {
 		super(env);
 		this.providedType = provided;
 		this.expectedType = exp;

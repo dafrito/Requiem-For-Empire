@@ -31,14 +31,14 @@ import com.dafrito.rfe.gui.style.dimensions.StylesheetPercentageWidthElement;
 import com.dafrito.rfe.logging.CommonString;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateNotFound;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnenclosedBracket;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnexpectedType;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnknownModifier;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnparseableElement;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableAlreadyDefined;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableNotFound;
+import com.dafrito.rfe.script.exceptions.InternalException;
+import com.dafrito.rfe.script.exceptions.TemplateNotFoundException;
+import com.dafrito.rfe.script.exceptions.UnenclosedBracketException;
+import com.dafrito.rfe.script.exceptions.UnexpectedTypeException;
+import com.dafrito.rfe.script.exceptions.UnknownModifierException;
+import com.dafrito.rfe.script.exceptions.UnparseableElementException;
+import com.dafrito.rfe.script.exceptions.VariableAlreadyDefinedException;
+import com.dafrito.rfe.script.exceptions.VariableNotFoundException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.operations.ScriptExecutable_AssignValue;
@@ -135,7 +135,7 @@ public final class Parser {
 		} catch (ScriptException ex) {
 			Logs.printException(ex);
 			exceptions.add(ex);
-		} catch (Exception_InternalError ex) {
+		} catch (InternalException ex) {
 			Logs.printException(ex);
 			exceptions.add(ex);
 		} finally {
@@ -171,7 +171,7 @@ public final class Parser {
 					ref = (ScriptKeyword) modifiers.get(i);
 				}
 				if (i == modifiers.size() - 1) {
-					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Function name");
+					throw new UnexpectedTypeException((Referenced) modifiers.get(i), "Function name");
 				}
 				ScriptKeyword keyword = (ScriptKeyword) modifiers.get(i);
 				if (keyword.equals(ScriptKeywordType.STATIC)) {
@@ -187,7 +187,7 @@ public final class Parser {
 					if (ScriptValueType.isReturnablePrimitiveType(keyword.getValueType()) && returnType == null) {
 						returnType = keyword.getValueType();
 					} else {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Modifier");
+						throw new UnexpectedTypeException((Referenced) modifiers.get(i), "Modifier");
 					}
 				}
 			}
@@ -208,13 +208,13 @@ public final class Parser {
 					}
 				}
 				if (i != modifiers.size() - 2) {
-					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Modifier");
+					throw new UnexpectedTypeException((Referenced) modifiers.get(i), "Modifier");
 				}
 				if (!(modifiers.get(modifiers.size() - 1) instanceof ScriptLine)) {
-					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(modifiers.size() - 1), "Function name");
+					throw new UnexpectedTypeException((Referenced) modifiers.get(modifiers.size() - 1), "Function name");
 				}
 				if (returnType != null) {
-					throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(i), "Modifier");
+					throw new UnexpectedTypeException((Referenced) modifiers.get(i), "Modifier");
 				}
 				returnType = ScriptValueType.createType((ScriptLine) modifiers.get(i), ((ScriptLine) modifiers.get(i)).getString());
 				functionName = ((ScriptLine) modifiers.get(modifiers.size() - 1)).getString();
@@ -227,7 +227,7 @@ public final class Parser {
 			function = new ScriptExecutable_ParseFunction(ref, returnType, object, functionName, parseParamGroup(env, paramGroup, object.getType()), permission, isStatic, isAbstract, body);
 			assert Logs.addSnapNode("Function parsed is a regular function with a primitive return type (" + returnType + ")", function);
 		} else {
-			throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(modifiers.size() - 1), "Function parameters");
+			throw new UnexpectedTypeException((Referenced) modifiers.get(modifiers.size() - 1), "Function parameters");
 		}
 		assert Logs.closeNode();
 		return function;
@@ -273,7 +273,7 @@ public final class Parser {
 				int x = backwardScriptLine.getString().lastIndexOf(group.getStart());
 				if (x == -1) {
 					if (q == 0) {
-						throw new Exception_Nodeable_UnenclosedBracket(scriptLine);
+						throw new UnenclosedBracketException(scriptLine);
 					}
 					newList.add(backwardScriptLine);
 					stringList.remove(q);
@@ -646,7 +646,7 @@ public final class Parser {
 		} catch (ScriptException ex) {
 			Logs.printException(ex);
 			exceptions.add(ex);
-		} catch (Exception_InternalError ex) {
+		} catch (InternalException ex) {
 			Logs.printException(ex);
 			exceptions.add(ex);
 		} finally {
@@ -724,7 +724,7 @@ public final class Parser {
 				int loc = i;
 				while (loc > 0) {
 					if (!(list.get(loc) instanceof ScriptKeyword)) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(loc), "Keyword");
+						throw new UnexpectedTypeException((Referenced) list.get(loc), "Keyword");
 					}
 					loc--;
 				}
@@ -742,11 +742,11 @@ public final class Parser {
 				}
 				do {
 					if (!(list.get(i + 1) instanceof ScriptLine)) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(i + 1), "Variable name");
+						throw new UnexpectedTypeException((Referenced) list.get(i + 1), "Variable name");
 					}
 					String name = ((ScriptLine) list.get(i + 1)).getString();
 					if (env.retrieveVariable(name) != null) {
-						throw new Exception_Nodeable_VariableAlreadyDefined((Referenced) list.get(i + 1), null, name);
+						throw new VariableAlreadyDefinedException((Referenced) list.get(i + 1), null, name);
 					}
 					ScriptValue_Variable creator;
 					if (((ScriptKeyword) obj).equals(ScriptKeywordType.STYLESHEET)) {
@@ -782,13 +782,13 @@ public final class Parser {
 			// Object creation
 			if (obj.equals(ScriptKeywordType.NEW)) {
 				if (!(nextObj instanceof ScriptLine)) {
-					throw new Exception_Nodeable_UnexpectedType((Referenced) nextObj, "Object name");
+					throw new UnexpectedTypeException((Referenced) nextObj, "Object name");
 				}
 				if (!(list.get(i + 2) instanceof ScriptGroup)) {
-					throw new Exception_Nodeable_UnexpectedType((Referenced) nextObj, "Parameters");
+					throw new UnexpectedTypeException((Referenced) nextObj, "Parameters");
 				}
 				if (env.getTemplate(((ScriptLine) nextObj).getString()) == null) {
-					throw new Exception_Nodeable_TemplateNotFound((ScriptLine) nextObj, ((ScriptLine) nextObj).getString());
+					throw new TemplateNotFoundException((ScriptLine) nextObj, ((ScriptLine) nextObj).getString());
 				}
 				ScriptExecutable returnValue = new ScriptExecutable_CallFunction((Referenced) obj, new ScriptExecutable_RetrieveVariable((Referenced) obj, null, ((ScriptLine) nextObj).getString(), env.retrieveVariable(((ScriptLine) nextObj).getString()).getType()), "", parseParamGroup(env, (ScriptGroup) list.get(i + 2), type));
 				assert Logs.addSnapNode("Object construction element parsed", returnValue);
@@ -812,7 +812,7 @@ public final class Parser {
 				case EQUIVALENCY:
 				case NONEQUIVALENCY:
 					if (i < 1 || !(list.get(i - 1) instanceof ScriptValue)) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(i), "Variable");
+						throw new UnexpectedTypeException((Referenced) list.get(i), "Variable");
 					}
 					i--;
 					left = (ScriptValue) list.get(i);
@@ -829,14 +829,14 @@ public final class Parser {
 					return returnValue;
 				case PERIOD:
 					if (i < 1 || !(list.get(i - 1) instanceof ScriptValue)) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(i - 1), "Variable");
+						throw new UnexpectedTypeException((Referenced) list.get(i - 1), "Variable");
 					}
 					i--;
 					left = (ScriptValue) list.get(i);
 					list.remove(i);
 					list.remove(i);
 					if (!(list.get(i) instanceof ScriptLine)) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(i), "Function name");
+						throw new UnexpectedTypeException((Referenced) list.get(i), "Function name");
 					}
 					ScriptLine name = (ScriptLine) list.get(i);
 					list.remove(i);
@@ -854,7 +854,7 @@ public final class Parser {
 				case ASSIGNMENT:
 					i--;
 					if (!(list.get(i) instanceof ScriptExecutable)) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(i), "Variable name");
+						throw new UnexpectedTypeException((Referenced) list.get(i), "Variable name");
 					}
 					lhs = (ScriptValue_Variable) list.get(i);
 					list.remove(i);
@@ -872,7 +872,7 @@ public final class Parser {
 				case DIVIDE:
 				case MODULUS:
 					if (i == 0 || !(list.get(0) instanceof ScriptValue)) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(0), "Variable");
+						throw new UnexpectedTypeException((Referenced) list.get(0), "Variable");
 					}
 					left = (ScriptValue) list.get(0);
 					list.remove(0);
@@ -891,7 +891,7 @@ public final class Parser {
 				case DIVIDEEQUALS:
 				case MODULUSEQUALS:
 					if (i == 0 || !(list.get(0) instanceof ScriptExecutable)) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) list.get(0), "Variable");
+						throw new UnexpectedTypeException((Referenced) list.get(0), "Variable");
 					}
 					lhs = (ScriptValue_Variable) list.get(0);
 					list.remove(0);
@@ -933,7 +933,7 @@ public final class Parser {
 					// It's a variable we've previously defined
 					if (env.retrieveVariable(((ScriptLine) obj).getString()) == null) {
 						Logs.addSnapNode("Environment before exception", env);
-						throw new Exception_Nodeable_VariableNotFound((Referenced) obj, ((ScriptLine) obj).getString());
+						throw new VariableNotFoundException((Referenced) obj, ((ScriptLine) obj).getString());
 					}
 					list.remove(i);
 					returnValue = new ScriptExecutable_RetrieveVariable((Referenced) obj, null, ((ScriptLine) obj).getString(), env.retrieveVariable(((ScriptLine) obj).getString()).getType());
@@ -960,7 +960,7 @@ public final class Parser {
 				if (nextObj instanceof ScriptLine) {
 					// Object placeholder creation
 					if (env.retrieveVariable(((ScriptLine) nextObj).getString()) != null) {
-						throw new Exception_Nodeable_VariableAlreadyDefined((Referenced) nextObj, null, ((ScriptLine) nextObj).getString());
+						throw new VariableAlreadyDefinedException((Referenced) nextObj, null, ((ScriptLine) nextObj).getString());
 					}
 					ScriptKeywordType permission = ScriptKeywordType.PRIVATE;
 					boolean isStatic = false;
@@ -1011,15 +1011,15 @@ public final class Parser {
 					env.advanceNestedStack();
 					list.remove(i);
 					if (!(list.get(i) instanceof ScriptGroup)) {
-						throw new Exception_Nodeable_UnexpectedType(env, list.get(i), "Param group");
+						throw new UnexpectedTypeException(env, list.get(i), "Param group");
 					}
 					List<ScriptExecutable> parameterList = parseBodyList(env, ((ScriptGroup) list.get(i)).getElements(), type);
 					if (parameterList.size() != 3) {
-						throw new Exception_Nodeable_UnexpectedType(env, list.get(i), "'for' statement parameters");
+						throw new UnexpectedTypeException(env, list.get(i), "'for' statement parameters");
 					}
 					list.remove(i);
 					if (!(list.get(i) instanceof ScriptGroup)) {
-						throw new Exception_Nodeable_UnexpectedType(env, list.get(i), "Curly group");
+						throw new UnexpectedTypeException(env, list.get(i), "Curly group");
 					}
 					List<ScriptExecutable> bodyList = parseBodyList(env, ((ScriptGroup) list.get(i)).getElements(), type);
 					ScriptExecutable_ForStatement forStatement = new ScriptExecutable_ForStatement(parameterList.get(0), parameterList.get(1), parameterList.get(2), bodyList);
@@ -1036,7 +1036,7 @@ public final class Parser {
 						if (q < 0) {
 							q = 0;
 						}
-						throw new Exception_Nodeable_UnexpectedType(env, list.get(q), "If statement");
+						throw new UnexpectedTypeException(env, list.get(q), "If statement");
 					}
 					ScriptExecutable_IfStatement previous = (ScriptExecutable_IfStatement) list.get(i);
 					list.remove(i);
@@ -1048,7 +1048,7 @@ public final class Parser {
 						Referenced ref = (Referenced) list.get(i);
 						previous.setElseStatement(parseIfStatement(ref, list, new ScriptValue_Boolean(((Referenced) obj).getEnvironment(), true), i, type));
 					} else {
-						throw new Exception_Nodeable_UnexpectedType(env, list.get(i), "Keyword or code group");
+						throw new UnexpectedTypeException(env, list.get(i), "Keyword or code group");
 					}
 					assert Logs.closeNode("'Else' script group parsed", previous);
 					env.retreatNestedStack();
@@ -1072,7 +1072,7 @@ public final class Parser {
 				}
 			}
 		}
-		throw new Exception_Nodeable_UnexpectedType(env, list.get(0), "Keyword");
+		throw new UnexpectedTypeException(env, list.get(0), "Keyword");
 	}
 
 	public static ScriptFunction parseFunction(ScriptExecutable_ParseFunction function, ScriptValueType type) throws ScriptException {
@@ -1094,13 +1094,13 @@ public final class Parser {
 		assert Logs.addSnapNode("Body Elements", list);
 		if (value == null) {
 			if (!(list.get(i) instanceof ScriptGroup)) {
-				throw new Exception_Nodeable_UnexpectedType(ref, list.get(i), "Param group");
+				throw new UnexpectedTypeException(ref, list.get(i), "Param group");
 			}
 			value = (ScriptValue) parseExpression(ref.getEnvironment(), ((ScriptGroup) list.get(i)).getElements(), false, type);
 			list.remove(i);
 		}
 		if (!(list.get(i) instanceof ScriptGroup)) {
-			throw new Exception_Nodeable_UnexpectedType(ref, list.get(i), "Curly group");
+			throw new UnexpectedTypeException(ref, list.get(i), "Curly group");
 		}
 		ScriptExecutable_IfStatement statement = new ScriptExecutable_IfStatement(ref, value, parseBodyList(ref.getEnvironment(), ((ScriptGroup) list.get(i)).getElements(), type));
 		assert Logs.closeNode();
@@ -1281,24 +1281,24 @@ public final class Parser {
 				StylesheetBorderElement borderElem;
 				if (!(elements.get(offset) instanceof ScriptOperator) || ((ScriptOperator) elements.get(offset)).getType() != ScriptOperatorType.COLON) {
 					if (elements.get(offset) instanceof Referenced) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) elements.get(offset), "colon");
+						throw new UnexpectedTypeException((Referenced) elements.get(offset), "colon");
 					} else {
-						throw new Exception_Nodeable_UnexpectedType(keyRef, elements.get(offset), "colon");
+						throw new UnexpectedTypeException(keyRef, elements.get(offset), "colon");
 					}
 				}
 				offset++;
 				if (!(elements.get(offset) instanceof ScriptValue_Numeric)) {
 					if (elements.get(offset) instanceof Referenced) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) elements.get(offset), "Number");
+						throw new UnexpectedTypeException((Referenced) elements.get(offset), "Number");
 					} else {
-						throw new Exception_Nodeable_UnexpectedType(keyRef, elements.get(offset), "Number");
+						throw new UnexpectedTypeException(keyRef, elements.get(offset), "Number");
 					}
 				}
 				if (!(elements.get(offset + 1) instanceof ScriptKeyword)) {
 					if (elements.get(offset + 1) instanceof Referenced) {
-						throw new Exception_Nodeable_UnexpectedType((Referenced) elements.get(offset + 1), "Border Style");
+						throw new UnexpectedTypeException((Referenced) elements.get(offset + 1), "Border Style");
 					} else {
-						throw new Exception_Nodeable_UnexpectedType(keyRef, elements.get(offset + 1), "Border Style");
+						throw new UnexpectedTypeException(keyRef, elements.get(offset + 1), "Border Style");
 					}
 				}
 				int width = ((ScriptValue_Numeric) elements.get(offset++)).intValue();
@@ -1314,7 +1314,7 @@ public final class Parser {
 				} else {
 					color = Stylesheets.getColor(((ScriptLine) elements.get(offset)).getString());
 					if (color == null) {
-						throw new Exception_Nodeable_UnparseableElement((ScriptLine) elements.get(offset), "parseStylesheet");
+						throw new UnparseableElementException((ScriptLine) elements.get(offset), "parseStylesheet");
 					}
 				}
 				borderElem = new StylesheetBorderElement(width, style, color);
@@ -1374,7 +1374,7 @@ public final class Parser {
 					i++;
 					if (!(lineList.get(i) instanceof ScriptLine)) {
 						// If there's no name for the class, throw an exception. (Anonymous classes are not currently allowed.)
-						throw new Exception_Nodeable_UnexpectedType((Referenced) lineList.get(i), "Class name");
+						throw new UnexpectedTypeException((Referenced) lineList.get(i), "Class name");
 					}
 					String name = ((ScriptLine) lineList.get(i)).getString();
 					i++;
@@ -1384,11 +1384,11 @@ public final class Parser {
 						if (ScriptKeywordType.PUBLIC.equals(modifiers.get(0))) {
 							modifiers.remove(0);
 						} else {
-							throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(0), "Keyword");
+							throw new UnexpectedTypeException((Referenced) modifiers.get(0), "Keyword");
 						}
 					} else if (modifiers.size() > 1) {
 						// We don't allow modifiers for classes.
-						throw new Exception_Nodeable_UnexpectedType((Referenced) modifiers.get(0), "Keyword");
+						throw new UnexpectedTypeException((Referenced) modifiers.get(0), "Keyword");
 					}
 					do {
 						// Collect suffix modifiers until we reach our curlyGroup
@@ -1401,7 +1401,7 @@ public final class Parser {
 					} while (i < lineList.size());
 					if (body == null) {
 						// If there's no body, throw an exception
-						throw new Exception_Nodeable_UnexpectedType((Referenced) lineList.get(i - 1), "Class Definition Body");
+						throw new UnexpectedTypeException((Referenced) lineList.get(i - 1), "Class Definition Body");
 					}
 					List<Object> thisModifiers = new LinkedList<Object>();
 					thisModifiers.addAll(modifiers);
@@ -1414,7 +1414,7 @@ public final class Parser {
 			modifiers.add(lineList.get(i));
 		}
 		if (modifiers.size() != 0) {
-			throw new Exception_Nodeable_UnknownModifier((Referenced) lineList.get(lineList.size() - 1), modifiers);
+			throw new UnknownModifierException((Referenced) lineList.get(lineList.size() - 1), modifiers);
 		}
 		assert Logs.closeNode();
 	}
@@ -1431,7 +1431,7 @@ public final class Parser {
 			if (modifiers.get(i) instanceof ScriptKeyword) {
 				if (modifiers.get(i).equals(ScriptKeywordType.EXTENDS)) {
 					if (i >= modifiers.size() - 1 || !(modifiers.get(i + 1) instanceof ScriptLine)) {
-						throw new Exception_Nodeable_UnexpectedType(env, modifiers.get(i), "Class type");
+						throw new UnexpectedTypeException(env, modifiers.get(i), "Class type");
 					}
 					extendedClass = ((ScriptLine) modifiers.get(i + 1)).getString();
 					assert Logs.addNode("Extended class parsed (" + extendedClass + ")");
@@ -1440,23 +1440,23 @@ public final class Parser {
 					i--;
 				} else if (modifiers.get(i).equals(ScriptKeywordType.IMPLEMENTS)) {
 					if (i == modifiers.size() - 1) {
-						throw new Exception_Nodeable_UnexpectedType(env, modifiers.get(i), "Interfaces");
+						throw new UnexpectedTypeException(env, modifiers.get(i), "Interfaces");
 					}
 					boolean flag = false;
 					while (i < modifiers.size()) {
 						flag = true;
 						modifiers.remove(i);
 						if (!(modifiers.get(i) instanceof ScriptLine)) {
-							throw new Exception_Nodeable_UnexpectedType(env, modifiers.get(i), "Interface type");
+							throw new UnexpectedTypeException(env, modifiers.get(i), "Interface type");
 						}
 						implemented.add(ScriptValueType.createType((ScriptLine) modifiers.get(i), ((ScriptLine) modifiers.get(i)).getString()));
 						modifiers.remove(i);
 					}
 					if (!flag) {
-						throw new Exception_Nodeable_UnexpectedType(env, obj, "Interfaces");
+						throw new UnexpectedTypeException(env, obj, "Interfaces");
 					}
 				} else {
-					throw new Exception_Nodeable_UnexpectedType(env, modifiers.get(i), "Keyword");
+					throw new UnexpectedTypeException(env, modifiers.get(i), "Keyword");
 				}
 			}
 		}

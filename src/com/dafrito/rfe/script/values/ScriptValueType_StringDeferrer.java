@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.values;
 
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableTypeNotFound;
+import com.dafrito.rfe.script.exceptions.VariableTypeNotFoundException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 
@@ -29,9 +29,9 @@ public class ScriptValueType_StringDeferrer extends ScriptValueType {
 		ScriptValueType kw = this.getEnvironment().getType(this.typeString);
 		if (kw == null) {
 			if (this.reference == null) {
-				throw new Exception_Nodeable_VariableTypeNotFound((ScriptEnvironment) null, this.typeString);
+				throw new VariableTypeNotFoundException((ScriptEnvironment) null, this.typeString);
 			} else {
-				throw new Exception_Nodeable_VariableTypeNotFound(this.reference, this.typeString);
+				throw new VariableTypeNotFoundException(this.reference, this.typeString);
 			}
 		}
 		return kw;

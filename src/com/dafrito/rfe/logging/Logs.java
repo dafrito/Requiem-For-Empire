@@ -10,7 +10,7 @@ import java.util.Map;
 import com.bluespot.logic.actors.Actor;
 import com.bluespot.logic.handlers.ChainedHandler;
 import com.bluespot.logic.handlers.Handler;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.InternalException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 
 public final class Logs {
@@ -147,8 +147,8 @@ public final class Logs {
 		String exceptionName;
 		if (exception instanceof ScriptException) {
 			exceptionName = ((ScriptException) exception).getName();
-		} else if (exception instanceof Exception_InternalError) {
-			exceptionName = ((Exception_InternalError) exception).getMessage();
+		} else if (exception instanceof InternalException) {
+			exceptionName = ((InternalException) exception).getMessage();
 		} else {
 			exceptionName = "Exception";
 		}
@@ -190,7 +190,7 @@ public final class Logs {
 
 	public static void printException(Exception ex) {
 		System.err.println(ex);
-		if (ex instanceof ScriptException || ex instanceof Exception_InternalError) {
+		if (ex instanceof ScriptException || ex instanceof InternalException) {
 			assert addNode("Exceptions and Errors", ex);
 		} else {
 			assert addSnapNode("Exceptions and Errors", "Exception", ex);

@@ -5,13 +5,13 @@ package com.dafrito.rfe.script.exceptions;
 
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_UnenclosedBracket extends ScriptException {
+public class UnenclosedBracketException extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4450711851110352808L;
 
-	public Exception_Nodeable_UnenclosedBracket(Referenced elem) {
+	public UnenclosedBracketException(Referenced elem) {
 		super(elem);
 	}
 

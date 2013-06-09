@@ -33,7 +33,7 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.CompoundEdit;
 
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.InternalException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Parser;
 import com.dafrito.rfe.strings.ExtensionFilter;
@@ -134,8 +134,8 @@ public class ScriptPanel extends JPanel implements UndoableEditListener, ListSel
 			for (Exception ex : this.exceptions) {
 				if (ex instanceof ScriptException) {
 					this.displayedExceptions.add(((ScriptException) ex).getName());
-				} else if (ex instanceof Exception_InternalError) {
-					this.displayedExceptions.add(((Exception_InternalError) ex).getName());
+				} else if (ex instanceof InternalException) {
+					this.displayedExceptions.add(((InternalException) ex).getName());
 				} else {
 					this.displayedExceptions.add(ex.getMessage());
 				}

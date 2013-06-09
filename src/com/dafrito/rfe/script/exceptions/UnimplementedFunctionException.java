@@ -7,7 +7,7 @@ import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 
-public class Exception_Nodeable_UnimplementedFunction extends ScriptException {
+public class UnimplementedFunctionException extends ScriptException {
 	/**
 	 * 
 	 */
@@ -15,7 +15,7 @@ public class Exception_Nodeable_UnimplementedFunction extends ScriptException {
 	private ScriptTemplate_Abstract template;
 	private String name;
 
-	public Exception_Nodeable_UnimplementedFunction(ScriptEnvironment env, ScriptTemplate_Abstract template, String name) {
+	public UnimplementedFunctionException(ScriptEnvironment env, ScriptTemplate_Abstract template, String name) {
 		super(env);
 		this.template = template;
 		this.name = name;

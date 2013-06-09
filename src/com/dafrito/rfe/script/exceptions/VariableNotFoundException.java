@@ -6,14 +6,14 @@ package com.dafrito.rfe.script.exceptions;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_VariableNotFound extends ScriptException {
+public class VariableNotFoundException extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3774953699349441078L;
 	private String name;
 
-	public Exception_Nodeable_VariableNotFound(Referenced ref, String name) {
+	public VariableNotFoundException(Referenced ref, String name) {
 		super(ref);
 		this.name = name;
 	}

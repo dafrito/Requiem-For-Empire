@@ -5,7 +5,7 @@ import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.exceptions.ClassCastScriptException;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IncomparableObjects;
+import com.dafrito.rfe.script.exceptions.IncompatibleObjectsException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 
@@ -76,7 +76,7 @@ public class ScriptValue_Boolean implements ScriptConvertible<Boolean>, ScriptVa
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
-		throw new Exception_Nodeable_IncomparableObjects(ref, this, rhs);
+		throw new IncompatibleObjectsException(ref, this, rhs);
 	}
 
 	@Override

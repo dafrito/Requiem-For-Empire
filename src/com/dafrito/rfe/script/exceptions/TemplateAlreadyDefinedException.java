@@ -6,14 +6,14 @@ package com.dafrito.rfe.script.exceptions;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_TemplateAlreadyDefined extends ScriptException {
+public class TemplateAlreadyDefinedException extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7184264414947646959L;
 	private String name;
 
-	public Exception_Nodeable_TemplateAlreadyDefined(Referenced ref, String name) {
+	public TemplateAlreadyDefinedException(Referenced ref, String name) {
 		super(ref);
 		this.name = name;
 	}

@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.InternalException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -45,7 +45,7 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 
 	@Override
 	public void addTemplatePreconstructorExpression(ScriptExecutable exec) throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in FauxTemplate");
+		throw new InternalException(this.getEnvironment(), "Invalid call in FauxTemplate");
 	}
 
 	// Function bodies are contained via a series of if statements in execute
@@ -55,7 +55,7 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 		FauxTemplate_InterfaceElement template = (FauxTemplate_InterfaceElement) rawTemplate;
 		assert Logs.addSnapNode("Template provided", template);
 		assert Logs.addSnapNode("Parameters provided", params);
-		throw new Exception_InternalError("Invalid default in FauxTemplate:execute");
+		throw new InternalException("Invalid default in FauxTemplate:execute");
 	}
 
 	public FauxTemplate getExtendedFauxClass() {
@@ -80,11 +80,11 @@ public abstract class FauxTemplate extends ScriptTemplate implements ScriptValue
 
 	@Override
 	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in FauxTemplate");
+		throw new InternalException(this.getEnvironment(), "Invalid call in FauxTemplate");
 	}
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in FauxTemplate");
+		throw new InternalException(this.getEnvironment(), "Invalid call in FauxTemplate");
 	}
 }

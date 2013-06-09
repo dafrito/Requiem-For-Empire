@@ -2,7 +2,7 @@ package com.dafrito.rfe.script.operations;
 
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.logging.Logs;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.InternalException;
 import com.dafrito.rfe.script.exceptions.DivisionByZeroScriptException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -100,7 +100,7 @@ public class ScriptExecutable_EvaluateMathExpression extends ScriptElement imple
 
 	@Override
 	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
-		throw new Exception_InternalError(this, "Unexecuted Variable");
+		throw new InternalException(this, "Unexecuted Variable");
 	}
 
 	@Override

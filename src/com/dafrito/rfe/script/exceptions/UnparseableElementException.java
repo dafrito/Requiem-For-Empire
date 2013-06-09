@@ -6,14 +6,14 @@ package com.dafrito.rfe.script.exceptions;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_UnparseableElement extends ScriptException {
+public class UnparseableElementException extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7815806790954972711L;
 	private String source;
 
-	public Exception_Nodeable_UnparseableElement(Referenced ref, String thrownFrom) {
+	public UnparseableElementException(Referenced ref, String thrownFrom) {
 		super(ref);
 		this.source = thrownFrom;
 	}

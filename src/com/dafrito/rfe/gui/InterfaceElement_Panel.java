@@ -22,7 +22,7 @@ import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.InternalException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Panel;
@@ -169,7 +169,7 @@ public class InterfaceElement_Panel extends InterfaceElement implements ScriptCo
 				ScriptExecutable_CallFunction.callFunction(this.getEnvironment(), null, this.dali, "paintPanel", params);
 			}
 		} catch (ScriptException exception) {
-			throw new Exception_InternalError(this.getEnvironment(), exception);
+			throw new InternalException(this.getEnvironment(), exception);
 		}
 		for (GraphicalElement elem : this.elements) {
 			elem.paint(g2d);

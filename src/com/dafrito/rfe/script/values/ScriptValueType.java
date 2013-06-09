@@ -1,7 +1,7 @@
 package com.dafrito.rfe.script.values;
 
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.InternalException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -222,7 +222,7 @@ public class ScriptValueType {
 		try {
 			return ((ScriptValueType) obj).getType() == this.getType();
 		} catch (ScriptException e) {
-			throw new Exception_InternalError(this.getEnvironment(), e);
+			throw new InternalException(this.getEnvironment(), e);
 		}
 	}
 
@@ -231,7 +231,7 @@ public class ScriptValueType {
 		try {
 			return this.getType();
 		} catch (ScriptException e) {
-			throw new Exception_InternalError(this.getEnvironment(), e);
+			throw new InternalException(this.getEnvironment(), e);
 		}
 	}
 

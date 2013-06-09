@@ -6,7 +6,7 @@ package com.dafrito.rfe.script.exceptions;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.proxies.FauxTemplate_Color;
 
-public class Exception_Nodeable_InvalidColorRange extends ScriptException {
+public class InvalidColorRangeException extends ScriptException {
 	/**
 	 * 
 	 */
@@ -14,7 +14,7 @@ public class Exception_Nodeable_InvalidColorRange extends ScriptException {
 	private Number invalid;
 	private FauxTemplate_Color template;
 
-	public Exception_Nodeable_InvalidColorRange(FauxTemplate_Color template, Number num) {
+	public InvalidColorRangeException(FauxTemplate_Color template, Number num) {
 		super(template.getEnvironment());
 		this.template = template;
 		this.invalid = num;

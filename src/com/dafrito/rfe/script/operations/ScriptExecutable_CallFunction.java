@@ -6,7 +6,7 @@ import java.util.List;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.InternalException;
 import com.dafrito.rfe.script.exceptions.FunctionNotFoundScriptException;
 import com.dafrito.rfe.script.exceptions.IllegalNullReturnValueException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
@@ -112,7 +112,7 @@ public class ScriptExecutable_CallFunction extends ScriptElement implements Scri
 		try {
 			return ((ScriptTemplate_Abstract) this.object.getValue()).getFunction(this.functionName, this.params).getReturnType();
 		} catch (ScriptException ex) {
-			throw new Exception_InternalError(this.getEnvironment(), ex.toString());
+			throw new InternalException(this.getEnvironment(), ex.toString());
 		}
 	}
 

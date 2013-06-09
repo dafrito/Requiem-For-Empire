@@ -7,19 +7,19 @@ import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_VariableTypeNotFound extends ScriptException {
+public class VariableTypeNotFoundException extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6495019820246931939L;
 	private String type;
 
-	public Exception_Nodeable_VariableTypeNotFound(Referenced ref, String type) {
+	public VariableTypeNotFoundException(Referenced ref, String type) {
 		super(ref);
 		this.type = type;
 	}
 
-	public Exception_Nodeable_VariableTypeNotFound(ScriptEnvironment env, String type) {
+	public VariableTypeNotFoundException(ScriptEnvironment env, String type) {
 		super(env);
 		this.type = type;
 	}

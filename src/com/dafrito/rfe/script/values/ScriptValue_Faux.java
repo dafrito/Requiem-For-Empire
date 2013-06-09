@@ -3,7 +3,7 @@ package com.dafrito.rfe.script.values;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.InternalException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 
@@ -18,7 +18,7 @@ public class ScriptValue_Faux implements Nodeable, ScriptValue {
 
 	@Override
 	public ScriptValue castToType(Referenced ref, ScriptValueType type) throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
+		throw new InternalException(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class ScriptValue_Faux implements Nodeable, ScriptValue {
 
 	@Override
 	public ScriptValue getValue() throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
+		throw new InternalException(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 
 	@Override
@@ -47,21 +47,21 @@ public class ScriptValue_Faux implements Nodeable, ScriptValue {
 	}
 
 	protected void setType(ScriptValueType type) {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
+		throw new InternalException(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 
 	@Override
 	public ScriptValue setValue(Referenced ref, ScriptValue value) throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
+		throw new InternalException(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
+		throw new InternalException(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 
 	@Override
 	public boolean valuesEqual(Referenced ref, ScriptValue rhs) throws ScriptException {
-		throw new Exception_InternalError(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
+		throw new InternalException(this.getEnvironment(), "Invalid call in ScriptValue_Faux");
 	}
 }

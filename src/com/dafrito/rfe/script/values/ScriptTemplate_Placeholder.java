@@ -5,7 +5,7 @@ import java.util.List;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
+import com.dafrito.rfe.script.exceptions.InternalException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -90,7 +90,7 @@ public class ScriptTemplate_Placeholder extends ScriptTemplate_Abstract implemen
 			assert template != null : "Template could not be retrieved (" + this.name + ")";
 			return template;
 		} catch (ScriptException ex) {
-			throw new Exception_InternalError("Exception occurred while retrieving template: " + ex);
+			throw new InternalException("Exception occurred while retrieving template: " + ex);
 		}
 	}
 

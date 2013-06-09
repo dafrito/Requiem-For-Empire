@@ -10,7 +10,7 @@ import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.Conversions;
 import com.dafrito.rfe.script.ScriptConvertible;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_InvalidColorRange;
+import com.dafrito.rfe.script.exceptions.InvalidColorRangeException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.parsing.ScriptKeywordType;
@@ -62,13 +62,13 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 					g = Conversions.getInteger(this.getEnvironment(), params.get(1));
 					b = Conversions.getInteger(this.getEnvironment(), params.get(2));
 					if (r < 0 || r > 255) {
-						throw new Exception_Nodeable_InvalidColorRange(this, new Integer(r));
+						throw new InvalidColorRangeException(this, new Integer(r));
 					}
 					if (g < 0 || g > 255) {
-						throw new Exception_Nodeable_InvalidColorRange(this, new Integer(g));
+						throw new InvalidColorRangeException(this, new Integer(g));
 					}
 					if (b < 0 || b > 255) {
-						throw new Exception_Nodeable_InvalidColorRange(this, new Integer(b));
+						throw new InvalidColorRangeException(this, new Integer(b));
 					}
 					template.setColor(new java.awt.Color(r, g, b));
 				} else {
@@ -78,13 +78,13 @@ public class FauxTemplate_Color extends FauxTemplate implements ScriptConvertibl
 					g = Conversions.getFloat(this.getEnvironment(), params.get(1));
 					b = Conversions.getFloat(this.getEnvironment(), params.get(2));
 					if (r < 0.0d || r > 1.0d) {
-						throw new Exception_Nodeable_InvalidColorRange(this, new Float(r));
+						throw new InvalidColorRangeException(this, new Float(r));
 					}
 					if (g < 0.0d || g > 1.0d) {
-						throw new Exception_Nodeable_InvalidColorRange(this, new Float(g));
+						throw new InvalidColorRangeException(this, new Float(g));
 					}
 					if (b < 0.0d || b > 1.0d) {
-						throw new Exception_Nodeable_InvalidColorRange(this, new Float(b));
+						throw new InvalidColorRangeException(this, new Float(b));
 					}
 					template.setColor(new java.awt.Color(r, g, b));
 				}

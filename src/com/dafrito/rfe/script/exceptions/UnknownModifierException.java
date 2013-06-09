@@ -8,14 +8,14 @@ import java.util.List;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_UnknownModifier extends ScriptException {
+public class UnknownModifierException extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7862513783807915122L;
 	private List<Object> modifiers;
 
-	public Exception_Nodeable_UnknownModifier(Referenced ref, List<Object> modifiers) {
+	public UnknownModifierException(Referenced ref, List<Object> modifiers) {
 		super(ref);
 		this.modifiers = modifiers;
 	}

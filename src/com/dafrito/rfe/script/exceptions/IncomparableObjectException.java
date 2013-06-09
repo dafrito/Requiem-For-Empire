@@ -5,13 +5,13 @@ package com.dafrito.rfe.script.exceptions;
 
 import com.dafrito.rfe.script.parsing.Referenced;
 
-class Exception_Nodeable_IncomparableObject extends ScriptException {
+class IncomparableObjectException extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7488728539343927636L;
 
-	public Exception_Nodeable_IncomparableObject(Referenced ref) {
+	public IncomparableObjectException(Referenced ref) {
 		super(ref);
 	}
 

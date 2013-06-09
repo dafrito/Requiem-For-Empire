@@ -2,7 +2,7 @@ package com.dafrito.rfe.script.values;
 
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.logging.Logs;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_IncomparableObjects;
+import com.dafrito.rfe.script.exceptions.IncompatibleObjectsException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -51,7 +51,7 @@ public class ScriptValue_Null extends ScriptElement implements ScriptExecutable,
 
 	@Override
 	public int valuesCompare(Referenced ref, ScriptValue rhs) throws ScriptException {
-		throw new Exception_Nodeable_IncomparableObjects(ref, this, rhs);
+		throw new IncompatibleObjectsException(ref, this, rhs);
 	}
 
 	@Override

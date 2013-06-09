@@ -8,11 +8,11 @@ import java.util.Map;
 import com.dafrito.rfe.inspect.Nodeable;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.ScriptEnvironment;
-import com.dafrito.rfe.script.exceptions.AbstractFunctionNotImplementedScriptException;
+import com.dafrito.rfe.script.exceptions.AbstractFunctionNotImplementedException;
 import com.dafrito.rfe.script.exceptions.FunctionAlreadyDefinedScriptException;
 import com.dafrito.rfe.script.exceptions.IllegalAbstractObjectCreationScriptException;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_UnimplementedFunction;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableAlreadyDefined;
+import com.dafrito.rfe.script.exceptions.UnimplementedFunctionException;
+import com.dafrito.rfe.script.exceptions.VariableAlreadyDefinedException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable;
 import com.dafrito.rfe.script.operations.ScriptExecutable_AssignValue;
@@ -132,7 +132,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 			assert Logs.addNode(this);
 			assert Logs.addNode(value);
 			if (this.variables.get(name) != null) {
-				throw new Exception_Nodeable_VariableAlreadyDefined(ref, this, name);
+				throw new VariableAlreadyDefinedException(ref, this, name);
 			}
 			if (this.isFullCreation() || !value.getPermission().equals(ScriptKeywordType.PRIVATE)) {
 				this.variables.put(name, value);
@@ -146,7 +146,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		assert Logs.openNode("Local Variable Additions", "Adding Variable to Stack (" + name + ")");
 		assert Logs.addNode(value);
 		if (this.getEnvironment().getVariableFromStack(name) != null) {
-			throw new Exception_Nodeable_VariableAlreadyDefined(ref, this, name);
+			throw new VariableAlreadyDefinedException(ref, this, name);
 		}
 		this.getEnvironment().addVariableToStack(name, value);
 		assert Logs.closeNode();
@@ -192,7 +192,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 		if (object.getFunctions() != null) {
 			for (ScriptFunction function : object.getFunctions()) {
 				if (function.isAbstract()) {
-					throw new AbstractFunctionNotImplementedScriptException(ref, object, function);
+					throw new AbstractFunctionNotImplementedException(ref, object, function);
 				}
 			}
 		} else {
@@ -309,7 +309,7 @@ public class ScriptTemplate extends ScriptTemplate_Abstract implements ScriptVal
 				for (int i = 0; i < functions.size(); i++) {
 					if (functions.get(i).isAbstract()) {
 						// We don't implement it, so fail.
-						throw new Exception_Nodeable_UnimplementedFunction(this.getEnvironment(), this, entry.getKey());
+						throw new UnimplementedFunctionException(this.getEnvironment(), this, entry.getKey());
 					}
 				}
 			}

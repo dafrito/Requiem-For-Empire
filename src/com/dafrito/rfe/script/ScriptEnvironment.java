@@ -12,9 +12,9 @@ import javax.swing.JOptionPane;
 import com.dafrito.rfe.gui.style.Stylesheet;
 import com.dafrito.rfe.inspect.Inspectable;
 import com.dafrito.rfe.logging.Logs;
-import com.dafrito.rfe.script.exceptions.Exception_InternalError;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_TemplateAlreadyDefined;
-import com.dafrito.rfe.script.exceptions.Exception_Nodeable_VariableTypeAlreadyDefined;
+import com.dafrito.rfe.script.exceptions.InternalException;
+import com.dafrito.rfe.script.exceptions.TemplateAlreadyDefinedException;
+import com.dafrito.rfe.script.exceptions.VariableTypeAlreadyDefinedException;
 import com.dafrito.rfe.script.exceptions.ScriptException;
 import com.dafrito.rfe.script.operations.ScriptExecutable_CallFunction;
 import com.dafrito.rfe.script.parsing.Referenced;
@@ -128,7 +128,7 @@ public class ScriptEnvironment {
 			template = new FauxTemplate_ArchetypeTree(this);
 			this.addType(null, FauxTemplate_ArchetypeTree.ARCHETYPETREESTRING, template);
 		} catch (ScriptException ex) {
-			throw new Exception_InternalError("Exception occurred during script initialization: " + ex);
+			throw new InternalException("Exception occurred during script initialization: " + ex);
 		} finally {
 			assert Logs.closeNode();
 		}
@@ -137,7 +137,7 @@ public class ScriptEnvironment {
 	// Template functions
 	public void addTemplate(Referenced ref, String name, ScriptTemplate_Abstract template) throws ScriptException {
 		if (this.templates.containsKey(name)) {
-			throw new Exception_Nodeable_TemplateAlreadyDefined(ref, name);
+			throw new TemplateAlreadyDefinedException(ref, name);
 		}
 		this.templates.put(name, template);
 	}
@@ -172,7 +172,7 @@ public class ScriptEnvironment {
 	public void addType(Referenced ref, String name, ScriptValueType keyword) throws ScriptException {
 		assert Logs.addNode("Variable-Type Additions", "Adding variable type name to the variable-map (" + name + ")");
 		if (this.variableTypes.containsKey(name)) {
-			throw new Exception_Nodeable_VariableTypeAlreadyDefined(ref, name);
+			throw new VariableTypeAlreadyDefinedException(ref, name);
 		}
 		this.variableTypes.put(name, keyword);
 	}
@@ -248,7 +248,7 @@ public class ScriptEnvironment {
 			ScriptExecutable_CallFunction.callFunction(this, null, this.getTemplate((String) selection), "main", params);
 		} catch (ScriptException ex) {
 			Logs.printException(ex);
-		} catch (Exception_InternalError ex) {
+		} catch (InternalException ex) {
 			Logs.printException(ex);
 		} finally {
 			assert Logs.closeNode();

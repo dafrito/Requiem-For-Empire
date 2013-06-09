@@ -14,7 +14,7 @@ import com.dafrito.rfe.script.parsing.ScriptElement;
  * @author Aaron Faanes
  * @see ScriptException
  */
-public class Exception_InternalError extends RuntimeException implements Nodeable {
+public class InternalException extends RuntimeException implements Nodeable {
 	/**
 	 * 
 	 */
@@ -24,15 +24,15 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 	private final ScriptEnvironment environment;
 	private final Object object;
 
-	public Exception_InternalError(Referenced ref, String message) {
+	public InternalException(Referenced ref, String message) {
 		this(ref.getDebugReference().getEnvironment(), ref.getDebugReference(), message);
 	}
 
-	public Exception_InternalError(ScriptEnvironment env, Exception object) {
+	public InternalException(ScriptEnvironment env, Exception object) {
 		this(env, object, "");
 	}
 
-	public Exception_InternalError(ScriptEnvironment env, Object element, String message) {
+	public InternalException(ScriptEnvironment env, Object element, String message) {
 		this.environment = env;
 		this.object = element;
 		this.filename = null;
@@ -43,7 +43,7 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 		this.message = message;
 	}
 
-	public Exception_InternalError(ScriptEnvironment env, ScriptElement element, String message) {
+	public InternalException(ScriptEnvironment env, ScriptElement element, String message) {
 		this.object = null;
 		this.environment = env;
 		this.message = message;
@@ -62,7 +62,7 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 		}
 	}
 
-	public Exception_InternalError(ScriptEnvironment env, String message) {
+	public InternalException(ScriptEnvironment env, String message) {
 		this.environment = env;
 		this.object = null;
 		this.filename = null;
@@ -73,11 +73,11 @@ public class Exception_InternalError extends RuntimeException implements Nodeabl
 		this.message = message;
 	}
 
-	public Exception_InternalError(String message) {
+	public InternalException(String message) {
 		this((ScriptEnvironment) null, message);
 	}
 
-	public Exception_InternalError(String message, Exception exception) {
+	public InternalException(String message, Exception exception) {
 		this(null, exception, message);
 	}
 

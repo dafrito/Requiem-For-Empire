@@ -7,7 +7,7 @@ import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 import com.dafrito.rfe.script.values.ScriptTemplate_Abstract;
 
-public class Exception_Nodeable_VariableAlreadyDefined extends ScriptException {
+public class VariableAlreadyDefinedException extends ScriptException {
 	/**
 	 * 
 	 */
@@ -15,7 +15,7 @@ public class Exception_Nodeable_VariableAlreadyDefined extends ScriptException {
 	private String name;
 	private ScriptTemplate_Abstract template;
 
-	public Exception_Nodeable_VariableAlreadyDefined(Referenced elem, ScriptTemplate_Abstract template, String name) {
+	public VariableAlreadyDefinedException(Referenced elem, ScriptTemplate_Abstract template, String name) {
 		super(elem);
 		this.template = template;
 		this.name = name;

@@ -6,14 +6,14 @@ package com.dafrito.rfe.script.exceptions;
 import com.dafrito.rfe.logging.Logs;
 import com.dafrito.rfe.script.parsing.Referenced;
 
-public class Exception_Nodeable_TemplateNotFound extends ScriptException {
+public class TemplateNotFoundException extends ScriptException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6044178726296381294L;
 	private String name;
 
-	public Exception_Nodeable_TemplateNotFound(Referenced ref, String name) {
+	public TemplateNotFoundException(Referenced ref, String name) {
 		super(ref);
 		this.name = name;
 	}
