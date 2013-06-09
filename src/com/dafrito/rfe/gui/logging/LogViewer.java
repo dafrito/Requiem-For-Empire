@@ -153,7 +153,7 @@ public class LogViewer<Message> extends JFrame {
 			return this.filteredOutputMap.get(Thread.currentThread().getName()).get(0);
 		}*/
 
-	public void addLogPanel(CompositeTreeLog<Message> log, String name) {
+	public void addLogPanel(CompositeTreeLog<? extends Message> log, String name) {
 		addLogPanel(new LogPanel<Message>(this, log, name));
 	}
 
