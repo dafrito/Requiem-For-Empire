@@ -329,6 +329,9 @@ public class LogPanel<Message> extends JPanel {
 		clear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				log.removeListener(replayLog);
+				replayLog = new ReplayableTreeLog<>();
+				log.addListener(replayLog);
 				createTreeBuilder();
 			}
 		});
