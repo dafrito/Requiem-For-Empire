@@ -29,6 +29,44 @@ import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.dafrito.rfe.gui.logging.LogViewer;
+
+class SenderReference {
+	private final Object reference;
+	private final Object name;
+
+	public SenderReference(Object reference, Object name) {
+		this.reference = reference;
+		this.name = name;
+	}
+
+	public Object getReference() {
+		return reference;
+	}
+
+	@Override
+	public String toString() {
+		return name.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return reference.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof SenderReference)) {
+			return false;
+		}
+		SenderReference other = (SenderReference) obj;
+		return reference.equals(other.getReference());
+	}
+}
+
 /**
  * @author Aaron Faanes
  * 
@@ -36,7 +74,8 @@ import java.util.regex.Pattern;
 public class TreeLogServer implements Runnable {
 
 	private ServerSocket serverSocket;
-	private TreeLog<? super String> log;
+	private CompositeTreeLog<String> log;
+	private LogViewer<? super String> sink;
 
 	public TreeLogServer(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
@@ -48,7 +87,7 @@ public class TreeLogServer implements Runnable {
 					+ space + "(<+|>+)?"
 					+ space + "(\\d+)?"
 					+ space + "(?: \\(+" + "([^)]+?)" + "\\)+ )?"
-					+ space + "(?: \\[+" + "([^\\]]+?)" + "\\]+ )?"
+					+ space + "(?: \\[+" + "([^\\]]+?)" + "\\]+(?:@(?:0x)?([0-9a-fA-F]+))?)?"
 					+ space + "(.+)?"
 					+ "$",
 			Pattern.COMMENTS
@@ -58,17 +97,14 @@ public class TreeLogServer implements Runnable {
 	private static final int TIMESTAMP = 2;
 	private static final int CATEGORY = 3;
 	private static final int SENDER = 4;
-	private static final int MESSAGE = 5;
+	private static final int SENDER_ID = 5;
+	private static final int MESSAGE = 6;
 
 	private static enum ScopeAction {
 		NONE,
 		ENTER,
 		LEAVE
 	};
-
-	public void setLog(TreeLog<? super String> log) {
-		this.log = log;
-	}
 
 	private void readLine(String line) {
 		Matcher matcher = PATTERN.matcher(line);
@@ -78,13 +114,20 @@ public class TreeLogServer implements Runnable {
 
 		long timestamp = System.currentTimeMillis();
 		String category = matcher.group(CATEGORY);
-		String sender = matcher.group(SENDER);
+		Object sender = matcher.group(SENDER);
+		Object senderId = matcher.group(SENDER_ID);
+
 		String message = matcher.group(MESSAGE);
 		ScopeAction action = ScopeAction.NONE;
 
 		if (matcher.group(TIMESTAMP) != null) {
 			timestamp = Long.valueOf(matcher.group(TIMESTAMP));
 		}
+
+		if (senderId != null) {
+			sender = new SenderReference(senderId, sender);
+		}
+
 		if (matcher.group(SCOPE) != null) {
 			switch (matcher.group(SCOPE).charAt(0)) {
 			case '>':
@@ -116,6 +159,12 @@ public class TreeLogServer implements Runnable {
 	}
 
 	private void serve(Socket connection) throws IOException {
+		if (this.sink == null) {
+			return;
+		}
+		log = new CompositeTreeLog<>();
+		sink.addLogPanel(log, String.format("%s:%d", connection.getInetAddress().getHostAddress(), connection.getPort()));
+
 		log.enter(new LogMessage<String>("Connection received from " + connection));
 		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		while (true) {
@@ -131,6 +180,9 @@ public class TreeLogServer implements Runnable {
 
 	@Override
 	public void run() {
+		if (this.sink == null) {
+			return;
+		}
 		try {
 			while (true) {
 				serve(serverSocket.accept());
@@ -139,5 +191,9 @@ public class TreeLogServer implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void setSink(LogViewer<? super String> sink) {
+		this.sink = sink;
 	}
 }

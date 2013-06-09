@@ -55,11 +55,7 @@ public class EditorRunner implements Runnable {
 	private void createLogServer(LogViewer<Object> viewer) {
 		try {
 			TreeLogServer server = new TreeLogServer(28122);
-
-			CompositeTreeLog<Object> serverLog = new CompositeTreeLog<>();
-			server.setLog(serverLog);
-
-			viewer.addLogPanel(serverLog, "Server");
+			server.setSink(viewer);
 
 			new Thread(server).start();
 		} catch (IOException e) {
