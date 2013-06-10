@@ -112,7 +112,7 @@ class InitialBenchmark extends RiffDali implements SchedulerListener, MovementEv
 	}
 
 	public double evaluateMovementCost(DiscreteRegion region, Asset asset) {
-		return 1.0d - region.getProperty("Terrain").getBrushDensity();
+		return region.getProperty("Terrain").getBrushDensity();
 	}
 
 	public Scenario getScenario() {
