@@ -84,11 +84,11 @@ public class TreeLogServer implements Runnable {
 	private static final String space = "\\s*";
 	private static final Pattern PATTERN = Pattern.compile(
 			"^"
-					+ space + "(<+|>+)?"
-					+ space + "(\\d+)?"
-					+ space + "(?: \\(+" + "([^)]+?)" + "\\)+ )?"
-					+ space + "(?: \\[+" + "([^\\]]+?)" + "\\]+(?:@(?:0x)?([0-9a-fA-F]+))?)?"
-					+ space + "(.+)?"
+					+ space + "(<+|>+)?" // scope
+					+ space + "(\\d+)?" // timestamp
+					+ space + "(?: \\(+" + "([^)]+?)" + "\\)+ )?" // category
+					+ space + "(?: \\[+" + "([^\\]]+?)" + "\\]+(?:@(?:0x)?([0-9a-fA-F]+))?)?" // sender and sender id
+					+ space + "(.+)?" // message
 					+ "$",
 			Pattern.COMMENTS
 			);
