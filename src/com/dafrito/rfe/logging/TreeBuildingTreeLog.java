@@ -175,7 +175,7 @@ class MergingInserter<Message> implements Inserter<Message> {
 		String scopeGroup = message.getCategory();
 		DefaultMutableTreeNode cursor = treeLog.getCursor();
 
-		if (scopeGroup == null || !scopeGroup.equals(this.scopeGroup) || cursor.isLeaf()) {
+		if (scopeGroup == null || scopeGroup.equals("") || !scopeGroup.equals(this.scopeGroup) || cursor.isLeaf()) {
 			// No match, so invalidate ourselves.
 			this.scopeGroup = scopeGroup;
 			merged = false;
