@@ -31,7 +31,7 @@ import com.bluespot.logic.runnables.Runnables;
  */
 public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements Runnable {
 
-	private ReplayableTreeLog<Message> log = new ReplayableTreeLog<>();
+	private ReplayableTreeLog<Message> buffer = new ReplayableTreeLog<>();
 
 	private Runnable notifier;
 
@@ -49,10 +49,10 @@ public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements R
 	}
 
 	public synchronized int flush(int maxFlushed) {
-		int actuallyRemoved = log.remove(log.play(getSink(), maxFlushed));
+		int actuallyRemoved = buffer.remove(buffer.play(getSink(), maxFlushed));
 
 		hasNotified = false;
-		if (!log.isEmpty()) {
+		if (!buffer.isEmpty()) {
 			dispatch();
 		}
 
@@ -61,19 +61,19 @@ public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements R
 
 	@Override
 	public void log(LogMessage<? extends Message> message) {
-		log.log(message);
+		buffer.log(message);
 		dispatch();
 	}
 
 	@Override
 	public void enter(LogMessage<? extends Message> scope) {
-		log.enter(scope);
+		buffer.enter(scope);
 		dispatch();
 	}
 
 	@Override
 	public void leave() {
-		log.leave();
+		buffer.leave();
 		dispatch();
 	}
 
