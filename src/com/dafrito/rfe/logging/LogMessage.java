@@ -74,10 +74,20 @@ public class LogMessage<T> {
 		return new LogMessage<U>(timestamp, sender, category, message);
 	}
 
+	/**
+	 * The logical category of this message. It is optional and may be null.
+	 * 
+	 * @return the category of this message
+	 */
 	public String getCategory() {
 		return this.category;
 	}
 
+	/**
+	 * The logical source of this message. It may be null.
+	 * 
+	 * @return the sender of this message
+	 */
 	public Object getSender() {
 		return this.sender;
 	}
