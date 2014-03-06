@@ -110,50 +110,6 @@ public class LogViewer<Message> extends JFrame {
 	}
 
 	public void addLogPanel(BufferedTreeLog<? extends Message> log, String name) {
-	/*
-		// TODO This is disabled until we get it implemented properly
-		
-		public LogPanel<Message> isFilterUsed(Object filter, String threadName) {
-			for (LogPanel<Message> listener : this.filteredOutputMap.get(threadName)) {
-				if (!listener.isRoot() && listener.getTreePanel().getFilter().isFilterUsed(filter)) {
-					return listener;
-				}
-			}
-			return null;
-		}
-
-		public LogPanel addOutputListener(LogPanel source, Object filter) {
-			if (filter == null || "".equals(filter)) {
-				return null;
-			}
-			if (this.isFilterUsed(filter, source.getThreadName()) != null) {
-				JOptionPane.showMessageDialog(this, "An output listener has an identical filter to the one provided.", "Listener Already Exists", JOptionPane.INFORMATION_MESSAGE);
-				this.focusOnOutput(this.isFilterUsed(filter, source.getThreadName()));
-				return null;
-			}
-			LogPanel output = new LogPanel(source.getThreadName(), this, source);
-			output.getTreePanel().getFilter().addFilter(filter);
-			output.getTreePanel().refresh();
-			source.addChildOutput(output);
-			this.logPanelTabs.add(filter.toString(), output);
-			this.logPanelTabs.setSelectedIndex(this.logPanelTabs.getComponentCount() - 1);
-			this.filteredOutputMap.get(source.getThreadName()).add(output);
-			return output;
-		}
-
-		public void focusOnOutput(LogPanel output) {
-			assert output != null;
-			this.logPanelTabs.setSelectedIndex(this.logPanelTabs.indexOfComponent(output));
-		}
-
-		public Debug_TreeNode getUnfilteredCurrentNode() {
-			return this.getUnfilteredOutput().getTreePanel().getCurrentNode();
-		}
-
-		public LogPanel getUnfilteredOutput() {
-			return this.filteredOutputMap.get(Thread.currentThread().getName()).get(0);
-		}*/
-
 		addLogPanel(new LogPanel<Message>(this, log, name));
 	}
 
