@@ -199,7 +199,6 @@ public class TreeLogServer implements Runnable {
 				serve(serverSocket.accept());
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
