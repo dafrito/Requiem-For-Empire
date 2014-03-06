@@ -3,8 +3,11 @@ package com.dafrito.rfe.gui.logging;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,6 +27,7 @@ import com.bluespot.swing.Dialogs.CancelledException;
 import com.dafrito.rfe.logging.BufferedTreeLog;
 import com.dafrito.rfe.logging.CompositeTreeLog;
 import com.dafrito.rfe.logging.LogMessage;
+import com.dafrito.rfe.logging.ProxyTreeLog;
 import com.dafrito.rfe.logging.ReplayableTreeLog;
 import com.dafrito.rfe.logging.ScopeGuardedTreeLog;
 import com.dafrito.rfe.logging.TreeBuildingTreeLog;
@@ -81,30 +85,33 @@ public class LogPanel<Message> extends JPanel {
 		add(buildButtons(), BorderLayout.NORTH);
 		add(new JScrollPane(this.logTree), BorderLayout.CENTER);
 
-		// TODO Disabled until we reimplement hotspots
-		//			hotspotAndFiltersPanel.setEnabledAt(1, hasParent());
-
 		setParent(parent);
-		setupLogs(source);
-		createTreeBuilder();
-	}
-
-	private void setupLogs(CompositeTreeLog<? extends Message> source) {
-		// The ordering here is quite sensitive (to ensure the buffered log generates useful output)
-		// so be sure to consider threading issues before making changes. Generally speaking, the buffered
-		// log is safe to use if you're on the EDT.
-		final BufferedTreeLog<Message> bufferedLog = new BufferedTreeLog<>();
-		bufferedLog.setFlushSize(10000);
-		bufferedLog.setNotifier(new Runnable() {
-			@Override
-			public void run() {
-				SwingUtilities.invokeLater(bufferedLog);
-			}
-		});
-		bufferedLog.setSink(log);
-		source.addListener(bufferedLog);
+		setSource(source);
 
 		log.addListener(replayLog);
+
+		createTreeBuilder();
+
+	}
+
+	private void setSource(BufferedTreeLog<? extends Message> source) {
+		if (sourceLog == source) {
+			return;
+		}
+		if (sourceLog != null) {
+			sourceLog.setSink(null);
+			sourceLog.setNotifier(null);
+		}
+		sourceLog = source;
+		if (sourceLog != null) {
+			sourceLog.setSink(log);
+			sourceLog.setNotifier(new Runnable() {
+				@Override
+				public void run() {
+					SwingUtilities.invokeLater(sourceLog);
+				}
+			});
+		}
 	}
 
 	private void createTreeBuilder() {
@@ -156,12 +163,32 @@ public class LogPanel<Message> extends JPanel {
 		log.addListener(treeBuilder);
 	}
 
-	private LogPanel<Message> createLogPanel(CompositeTreeLog<? extends Message> log, String name) {
-		LogPanel<Message> panel = new LogPanel<>(viewer, log, name, LogPanel.this);
+	private LogPanel<Message> createLogPanel(ProxyTreeLog<Message> childSource, String name) {
+		BufferedTreeLog<Message> bufferedLog = new BufferedTreeLog<>();
+		childSource.setSink(bufferedLog);
+
+		LogPanel<Message> panel = new LogPanel<>(viewer, bufferedLog, name, LogPanel.this);
 
 		children.add(panel);
 		viewer.addLogPanel(panel);
+
+		replayLog.play(childSource);
+		log.addListener(childSource);
+
 		return panel;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void expandTree(DefaultMutableTreeNode node, int depth) {
+		if (node == null) {
+			return;
+		}
+		logTree.scrollPathToVisible(new TreePath(node.getPath()));
+		if (depth > 0) {
+			for (Object child : Collections.<Object> list(node.children())) {
+				expandTree((DefaultMutableTreeNode) child, depth - 1);
+			}
+		}
 	}
 
 	private JPanel buildButtons() {
@@ -169,6 +196,7 @@ public class LogPanel<Message> extends JPanel {
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.LINE_AXIS));
 
 		jump = new JButton("Show in parent");
+		jump.setMnemonic(KeyEvent.VK_A);
 		jump.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -183,7 +211,42 @@ public class LogPanel<Message> extends JPanel {
 		});
 		buttons.add(jump);
 
+		JButton expandTree = new JButton("Expand Tree");
+		expandTree.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				expandTree(getSelectedNode(), 3);
+			}
+		});
+		expandTree.setMnemonic(KeyEvent.VK_X);
+		buttons.add(expandTree);
+
+		JButton filterBySubtree = new JButton("Show subtree");
+		filterBySubtree.setMnemonic(KeyEvent.VK_W);
+		filterBySubtree.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final LogMessage<? extends Message> selectedMessage = getSelectedMessage();
+				if (selectedMessage == null) {
+					return;
+				}
+
+				ScopeGuardedTreeLog<Message> guard = new ScopeGuardedTreeLog<Message>();
+				guard.setGuard(new Predicate<LogMessage<? extends Message>>() {
+
+					@Override
+					public boolean test(LogMessage<? extends Message> candidate) {
+						return candidate != null && selectedMessage.equals(candidate);
+					}
+				});
+
+				viewer.setSelectedLogPanel(createLogPanel(guard, selectedMessage.toString()));
+			}
+		});
+		buttons.add(filterBySubtree);
+
 		JButton filterByMessage = new JButton("Filter by message");
+		filterByMessage.setMnemonic(KeyEvent.VK_S);
 		filterByMessage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -205,16 +268,13 @@ public class LogPanel<Message> extends JPanel {
 							return true;
 						}
 
-						if (selectedMessage.getCategory() != null && selectedMessage.getCategory().equals(candidate.getCategory())) {
+						if (!selectedMessage.getCategory().equals("") && selectedMessage.getCategory().equals(candidate.getCategory())) {
 							return true;
 						}
 
 						return false;
 					}
 				});
-
-				CompositeTreeLog<Message> childLog = new CompositeTreeLog<>();
-				guard.setSink(childLog);
 
 				String title;
 				if (selectedMessage.getCategory() != null) {
@@ -224,44 +284,58 @@ public class LogPanel<Message> extends JPanel {
 					title = selectedMessage.getMessage().toString();
 				}
 
-				createLogPanel(childLog, title);
-
-				replayLog.play(guard);
-				log.addListener(guard);
+				viewer.setSelectedLogPanel(createLogPanel(guard, title));
 			}
 		});
 		buttons.add(filterByMessage);
 
 		JButton filterBySender = new JButton("Filter by sender");
+		filterBySender.setMnemonic(KeyEvent.VK_D);
 		filterBySender.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final LogMessage<? extends Message> selectedMessage = getSelectedMessage();
-				if (selectedMessage == null || selectedMessage.getSender() == null) {
-					return;
-				}
+				String panelName;
 
 				ScopeGuardedTreeLog<Message> guard = new ScopeGuardedTreeLog<Message>();
-				guard.setGuard(new Predicate<LogMessage<? extends Message>>() {
 
-					@Override
-					public boolean test(LogMessage<? extends Message> candidate) {
-						return candidate != null && selectedMessage.getSender().equals(candidate.getSender());
+				if (selectedMessage != null && selectedMessage.getSender() != null) {
+					guard.setGuard(new Predicate<LogMessage<? extends Message>>() {
+						@Override
+						public boolean test(LogMessage<? extends Message> candidate) {
+							return candidate != null && selectedMessage.getSender().equals(candidate.getSender());
+						}
+					});
+
+					panelName = selectedMessage.getSender().toString();
+				} else {
+					try {
+						String senderPattern = Dialogs.getString("Enter the name of the sender used for this filter");
+						final Pattern pattern = Pattern.compile(senderPattern);
+
+						guard.setGuard(new Predicate<LogMessage<? extends Message>>() {
+							@Override
+							public boolean test(LogMessage<? extends Message> candidate) {
+								if (candidate == null || candidate.getSender() == null) {
+									return false;
+								}
+								return pattern.matcher(candidate.getSender().toString()).find();
+							}
+						});
+
+						panelName = "\"" + senderPattern + "\"";
+					} catch (CancelledException ex) {
+						return;
 					}
-				});
+				}
 
-				CompositeTreeLog<Message> childLog = new CompositeTreeLog<>();
-				guard.setSink(childLog);
-
-				createLogPanel(childLog, selectedMessage.getSender().toString());
-
-				replayLog.play(guard);
-				log.addListener(guard);
+				viewer.setSelectedLogPanel(createLogPanel(guard, panelName));
 			}
 		});
 		buttons.add(filterBySender);
 
 		JButton filterByText = new JButton("Filter by text");
+		filterByText.setMnemonic(KeyEvent.VK_E);
 		filterByText.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -282,48 +356,13 @@ public class LogPanel<Message> extends JPanel {
 						}
 					});
 
-					CompositeTreeLog<Message> childLog = new CompositeTreeLog<>();
-					guard.setSink(childLog);
-
-					createLogPanel(childLog, filterText);
-
-					replayLog.play(guard);
-					log.addListener(guard);
+					viewer.setSelectedLogPanel(createLogPanel(guard, filterText));
 				} catch (CancelledException e1) {
 					return;
 				}
 			}
 		});
 		buttons.add(filterByText);
-
-		JButton filterBySubtree = new JButton("Filter by subtree");
-		filterBySubtree.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final LogMessage<? extends Message> selectedMessage = getSelectedMessage();
-				if (selectedMessage == null) {
-					return;
-				}
-
-				ScopeGuardedTreeLog<Message> guard = new ScopeGuardedTreeLog<Message>();
-				guard.setGuard(new Predicate<LogMessage<? extends Message>>() {
-
-					@Override
-					public boolean test(LogMessage<? extends Message> candidate) {
-						return candidate != null && selectedMessage.equals(candidate);
-					}
-				});
-
-				CompositeTreeLog<Message> childLog = new CompositeTreeLog<>();
-				guard.setSink(childLog);
-
-				createLogPanel(childLog, selectedMessage.toString());
-
-				replayLog.play(guard);
-				log.addListener(guard);
-			}
-		});
-		buttons.add(filterBySubtree);
 
 		buttons.add(Box.createHorizontalGlue());
 
@@ -342,6 +381,14 @@ public class LogPanel<Message> extends JPanel {
 		return buttons;
 	}
 
+	public DefaultMutableTreeNode getSelectedNode() {
+		TreePath path = logTree.getSelectionPath();
+		if (path == null) {
+			return null;
+		}
+		return (DefaultMutableTreeNode) path.getLastPathComponent();
+	}
+
 	@SuppressWarnings("unchecked")
 	public LogMessage<? extends Message> getSelectedMessage() {
 		TreePath path = logTree.getSelectionPath();
@@ -355,15 +402,19 @@ public class LogPanel<Message> extends JPanel {
 		return (LogMessage<? extends Message>) lastComponent.getUserObject();
 	}
 
-	public void showNode(LogMessage<? extends Message> message) {
+	private DefaultMutableTreeNode getNodeFor(LogMessage<? extends Message> message) {
 		if (message == null) {
-			return;
+			throw new NullPointerException("Message must not be null");
 		}
 		DefaultMutableTreeNode node = treeBuilder.getNodeFor(message);
 		if (node == null) {
-			return;
+			throw new IllegalArgumentException("The specified message does not have a corresponding node.");
 		}
-		TreePath path = new TreePath(treeBuilder.getModel().getPathToRoot(node));
+		return node;
+	}
+
+	public void showNode(LogMessage<? extends Message> message) {
+		TreePath path = new TreePath(treeBuilder.getModel().getPathToRoot(getNodeFor(message)));
 		logTree.expandPath(path);
 		logTree.setSelectionPath(path);
 		logTree.scrollPathToVisible(path);
