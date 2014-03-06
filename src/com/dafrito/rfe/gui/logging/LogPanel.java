@@ -58,19 +58,21 @@ public class LogPanel<Message> extends JPanel {
 	 * This log is buffered, so children can safely connect to it as long as
 	 * they're on the Swing EDT.
 	 */
+	private BufferedTreeLog<? extends Message> sourceLog;
+
 	private CompositeTreeLog<Message> log = new CompositeTreeLog<>();
 
 	private ReplayableTreeLog<Message> replayLog = new ReplayableTreeLog<>();
 
-	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> source) {
+	public LogPanel(LogViewer<Message> viewer, BufferedTreeLog<? extends Message> source) {
 		this(viewer, source, "<untitled>");
 	}
 
-	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> source, String name) {
+	public LogPanel(LogViewer<Message> viewer, BufferedTreeLog<? extends Message> source, String name) {
 		this(viewer, source, name, null);
 	}
 
-	public LogPanel(LogViewer<Message> viewer, CompositeTreeLog<? extends Message> source, String name, LogPanel<Message> parent) {
+	public LogPanel(LogViewer<Message> viewer, BufferedTreeLog<? extends Message> source, String name, LogPanel<Message> parent) {
 		this.viewer = viewer;
 		setName(name);
 

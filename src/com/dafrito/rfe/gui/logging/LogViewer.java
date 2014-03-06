@@ -37,7 +37,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-import com.dafrito.rfe.logging.CompositeTreeLog;
+import com.dafrito.rfe.logging.BufferedTreeLog;
 
 /**
  * @author Aaron Faanes
@@ -109,6 +109,7 @@ public class LogViewer<Message> extends JFrame {
 		logPanelTabs.setSelectedComponent(panel);
 	}
 
+	public void addLogPanel(BufferedTreeLog<? extends Message> log, String name) {
 	/*
 		// TODO This is disabled until we get it implemented properly
 		
@@ -153,7 +154,6 @@ public class LogViewer<Message> extends JFrame {
 			return this.filteredOutputMap.get(Thread.currentThread().getName()).get(0);
 		}*/
 
-	public void addLogPanel(CompositeTreeLog<? extends Message> log, String name) {
 		addLogPanel(new LogPanel<Message>(this, log, name));
 	}
 

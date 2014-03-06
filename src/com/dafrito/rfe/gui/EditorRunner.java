@@ -9,8 +9,8 @@ import com.bluespot.logic.actors.Actor;
 import com.bluespot.swing.Components;
 import com.dafrito.rfe.gui.logging.LogViewer;
 import com.dafrito.rfe.gui.script.ScriptEditor;
+import com.dafrito.rfe.logging.BufferedTreeLog;
 import com.dafrito.rfe.logging.Logs;
-import com.dafrito.rfe.logging.CompositeTreeLog;
 import com.dafrito.rfe.logging.TreeLogServer;
 
 /**
@@ -32,10 +32,10 @@ public class EditorRunner implements Runnable {
 		Components.center(logFrame);
 		logFrame.setVisible(true);
 
-		Logs.addListener(new Actor<CompositeTreeLog<Object>>() {
+		Logs.addListener(new Actor<BufferedTreeLog<Object>>() {
 
 			@Override
-			public void receive(CompositeTreeLog<Object> log) {
+			public void receive(BufferedTreeLog<Object> log) {
 				logFrame.addLogPanel(log, Thread.currentThread().getName());
 			}
 		});

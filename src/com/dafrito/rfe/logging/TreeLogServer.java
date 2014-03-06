@@ -74,7 +74,7 @@ class SenderReference {
 public class TreeLogServer implements Runnable {
 
 	private ServerSocket serverSocket;
-	private CompositeTreeLog<String> log;
+	private BufferedTreeLog<String> log;
 	private LogViewer<? super String> sink;
 
 	public TreeLogServer(int port) throws IOException {
@@ -173,7 +173,7 @@ public class TreeLogServer implements Runnable {
 		if (this.sink == null) {
 			return;
 		}
-		log = new CompositeTreeLog<>();
+		log = new BufferedTreeLog<>();
 		sink.addLogPanel(log, String.format("%s:%d", connection.getInetAddress().getHostAddress(), connection.getPort()));
 
 		log.enter(new LogMessage<String>("Connection received from " + connection));

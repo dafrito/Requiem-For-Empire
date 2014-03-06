@@ -22,7 +22,7 @@ public final class Logs {
 
 	private static ChainedHandler<LogMessage<? extends Object>> masterHandler;
 
-	private static ThreadLocalTreeLog<Object, CompositeTreeLog<Object>> threadLocalLog;
+	private static ThreadLocalTreeLog<Object, BufferedTreeLog<Object>> threadLocalLog;
 
 	private static HandledTreeLog<Object> masterLog;
 
@@ -34,10 +34,10 @@ public final class Logs {
 		}
 		initialized = true;
 
-		threadLocalLog = new ThreadLocalTreeLog<Object, CompositeTreeLog<Object>>() {
+		threadLocalLog = new ThreadLocalTreeLog<Object, BufferedTreeLog<Object>>() {
 			@Override
-			protected CompositeTreeLog<? super Object> newTreeLog(Thread thread) {
-				return new CompositeTreeLog<>();
+			protected BufferedTreeLog<? super Object> newTreeLog(Thread thread) {
+				return new BufferedTreeLog<>();
 			}
 		};
 
@@ -60,7 +60,7 @@ public final class Logs {
 		return masterLog;
 	}
 
-	private static ThreadLocalTreeLog<Object, CompositeTreeLog<Object>> getThreadLocalLog() {
+	private static ThreadLocalTreeLog<Object, BufferedTreeLog<Object>> getThreadLocalLog() {
 		initialize();
 		return threadLocalLog;
 	}
@@ -81,9 +81,9 @@ public final class Logs {
 	 * @param listener
 	 *            the listener that will receive new logs for every thread
 	 * @see ThreadLocalTreeLog#addListener(Actor)
-	 * @see CompositeTreeLog#removeListener(TreeLog)
+	 * @see BufferedTreeLog#removeListener(TreeLog)
 	 */
-	public static void addListener(Actor<? super CompositeTreeLog<? super Object>> listener) {
+	public static void addListener(Actor<? super BufferedTreeLog<? super Object>> listener) {
 		getThreadLocalLog().addListener(listener);
 	}
 
@@ -98,7 +98,7 @@ public final class Logs {
 	 *            the listener to remove
 	 * @see ThreadLocalTreeLog#removeListener(Actor)
 	 */
-	public static void removeListener(Actor<? super CompositeTreeLog<? super Object>> listener) {
+	public static void removeListener(Actor<? super BufferedTreeLog<? super Object>> listener) {
 		getThreadLocalLog().removeListener(listener);
 	}
 
