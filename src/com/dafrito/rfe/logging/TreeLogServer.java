@@ -181,7 +181,12 @@ public class TreeLogServer implements Runnable {
 		while (true) {
 			String line = in.readLine();
 			if (line == null) {
-				log.log(new LogMessage<String>("Disconnected"));
+				log.log(new LogMessage<String>("Connection was abruptly closed by peer."));
+				break;
+			}
+			if (line.equals("CLOSE")) {
+				connection.close();
+				log.log(new LogMessage<String>("Closing connection on request."));
 				break;
 			}
 			readLine(line);
