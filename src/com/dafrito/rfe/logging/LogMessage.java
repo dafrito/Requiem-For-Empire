@@ -99,16 +99,15 @@ public class LogMessage<T> {
 	@Override
 	public String toString() {
 		String message = "";
+
 		if (getSender() != null) {
-			message = getSender().toString() + ": ";
+			message += getSender().toString() + ": ";
 		}
 
 		if (getMessage() != null) {
 			message += getMessage().toString();
 		} else if (getCategory() != null) {
 			message += getCategory().toString();
-		} else {
-			message += super.toString();
 		}
 		return message;
 	}
