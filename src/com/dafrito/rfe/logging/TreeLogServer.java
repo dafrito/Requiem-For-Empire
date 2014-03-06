@@ -86,8 +86,8 @@ public class TreeLogServer implements Runnable {
 			"^"
 					+ space + "(<+|>+|!+)?" // scope
 					+ space + "(\\d+)?" // timestamp
-					+ space + "(?: \\(+" + "([^)]+?)" + "\\)+ )?" // category
-					+ space + "(?: \\[+" + "([^\\]]+?)" + "\\]+(?:@(?:0x)?([0-9a-fA-F]+))?)?" // sender and sender id
+					+ space + "(?: \\(+" + "([^)]*)" + "\\)+ )?" // category
+					+ space + "(?: \\[+" + "([^\\]]*)" + "\\]+(?:@(?:0x)?([0-9a-fA-F]+))?)?" // sender and sender id
 					+ space + "(.+)?" // message
 					+ "$",
 			Pattern.COMMENTS
