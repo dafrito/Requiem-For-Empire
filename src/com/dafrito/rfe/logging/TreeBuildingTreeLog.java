@@ -116,6 +116,13 @@ public class TreeBuildingTreeLog<Message> implements TreeLog<Message> {
 		assert cursor != null : "Cursor must never be null (it's possible the cursor tried to advance past the root";
 	}
 
+	@Override
+	public void reset() {
+		while (level > 1) {
+			leave();
+		}
+	}
+
 	public int getLevel() {
 		return level;
 	}

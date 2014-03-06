@@ -58,4 +58,13 @@ public interface TreeLog<T> {
 	 * Leave the current scope.
 	 */
 	void leave();
+
+	/**
+	 * Indicate that all open scopes should be immediately closed.
+	 * <p>
+	 * This is useful if an error has occurred that will disrupt normal logging.
+	 * Without reset, new root output would remain inside the node that caused
+	 * the initial error.
+	 */
+	void reset();
 }

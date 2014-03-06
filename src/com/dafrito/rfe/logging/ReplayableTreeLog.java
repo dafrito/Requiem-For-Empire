@@ -97,6 +97,11 @@ public class ReplayableTreeLog<Message> implements TreeLog<Message> {
 	public void leave() {
 		actions.add(new LeaveLogAction<Message>());
 	}
+
+	@Override
+	public void reset() {
+		actions.add(new ResetLogAction<Message>());
+	}
 }
 
 class EnterLogAction<Message> implements Actor<TreeLog<? super Message>> {
@@ -129,6 +134,16 @@ class LeaveLogAction<Message> implements Actor<TreeLog<? super Message>> {
 			return;
 		}
 		log.leave();
+	}
+}
+
+class ResetLogAction<Message> implements Actor<TreeLog<? super Message>> {
+	@Override
+	public void receive(TreeLog<? super Message> log) {
+		if (log == null) {
+			return;
+		}
+		log.reset();
 	}
 }
 

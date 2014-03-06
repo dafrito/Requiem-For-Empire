@@ -77,6 +77,12 @@ public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements R
 		dispatch();
 	}
 
+	@Override
+	public void reset() {
+		buffer.reset();
+		dispatch();
+	}
+
 	private void dispatch() {
 		if (!hasNotified || alwaysNotify) {
 			hasNotified = true;

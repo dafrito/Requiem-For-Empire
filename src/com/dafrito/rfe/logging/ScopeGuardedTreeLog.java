@@ -74,4 +74,11 @@ public class ScopeGuardedTreeLog<T> extends ProxyTreeLog<T> {
 		super.leave();
 		--levels;
 	}
+
+	@Override
+	public void reset() {
+		while (levels > 0) {
+			leave();
+		}
+	}
 }

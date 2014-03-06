@@ -84,7 +84,7 @@ public class TreeLogServer implements Runnable {
 	private static final String space = "\\s*";
 	private static final Pattern PATTERN = Pattern.compile(
 			"^"
-					+ space + "(<+|>+)?" // scope
+					+ space + "(<+|>+|!+)?" // scope
 					+ space + "(\\d+)?" // timestamp
 					+ space + "(?: \\(+" + "([^)]+?)" + "\\)+ )?" // category
 					+ space + "(?: \\[+" + "([^\\]]+?)" + "\\]+(?:@(?:0x)?([0-9a-fA-F]+))?)?" // sender and sender id
@@ -103,7 +103,8 @@ public class TreeLogServer implements Runnable {
 	private static enum ScopeAction {
 		NONE,
 		ENTER,
-		LEAVE
+		LEAVE,
+		RESET
 	};
 
 	private void readLine(String line) {
@@ -136,6 +137,9 @@ public class TreeLogServer implements Runnable {
 			case '<':
 				action = ScopeAction.LEAVE;
 				break;
+			case '!':
+				action = ScopeAction.RESET;
+				break;
 			default:
 				throw new AssertionError("Impossible (I probably botched the regex)");
 			}
@@ -155,6 +159,13 @@ public class TreeLogServer implements Runnable {
 				log.log(logMessage);
 			}
 			log.leave();
+			break;
+		case RESET:
+			if (category != null || message != null) {
+				log.log(logMessage);
+			}
+			log.reset();
+			break;
 		}
 	}
 

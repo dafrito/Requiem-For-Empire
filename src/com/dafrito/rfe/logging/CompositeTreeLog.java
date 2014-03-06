@@ -65,4 +65,11 @@ public class CompositeTreeLog<T> implements TreeLog<T> {
 		}
 	}
 
+	@Override
+	public void reset() {
+		for (TreeLog<? super T> log : listeners) {
+			log.reset();
+		}
+	}
+
 }

@@ -56,4 +56,9 @@ public class ProxyTreeLog<Message> implements TreeLog<Message> {
 	public void leave() {
 		sink.leave();
 	}
+
+	@Override
+	public void reset() {
+		sink.reset();
+	}
 }

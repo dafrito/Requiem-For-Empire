@@ -44,6 +44,11 @@ public class NoopTreeLog implements TreeLog<Object> {
 		// Intentionally do nothing.
 	}
 
+	@Override
+	public void reset() {
+		// Intentionally do nothing.
+	}
+
 	private static NoopTreeLog INSTANCE;
 
 	public static TreeLog<Object> instance() {

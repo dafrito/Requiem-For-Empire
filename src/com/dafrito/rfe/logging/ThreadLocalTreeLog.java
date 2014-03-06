@@ -116,6 +116,11 @@ public abstract class ThreadLocalTreeLog<T, Log extends TreeLog<? super T>> impl
 		get().leave();
 	}
 
+	@Override
+	public void reset() {
+		get().reset();
+	}
+
 	private TreeLog<? super T> get() {
 		return log.get();
 	}
